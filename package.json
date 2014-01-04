@@ -9,7 +9,7 @@
   "keywords": [],
   "dependencies": {
     "ws": "~0.4.31",
-    "minecraft-protocol": "git://github.com/deathcap/node-minecraft-protocol.git#7bd9eca84b4a5d01f31df4a27d4cc286076648ea"
+    "minecraft-protocol": "git://github.com/deathcap/node-minecraft-protocol.git#c3a2c44e23755ef504bdcf9a2d64ea3f615b6d09"
   },
   "scripts": {
     "start": "node index.js"
