@@ -12,7 +12,12 @@
   });
 
   client.on('packet', function(p) {
-    return console.log(p);
+    var name;
+    name = mc.protocol.packetNames.play.toClient[p.id];
+    if (name.indexOf('entity_') === 0) {
+      return;
+    }
+    return console.log(name, p);
   });
 
 }).call(this);
