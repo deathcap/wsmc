@@ -40,23 +40,30 @@ wss.on 'connection', (ws) ->
     console.log "Kicked for #{p.reason}"
 
 
-  ws.on 'message', (msg) ->
-    console.log "websocket received: #{msg}"
+  ws.on 'message', (raw) ->
+    console.log "websocket received: #{raw}"
     try
-      p = JSON.parse(msg)
+      array = JSON.parse(raw)
     catch e
-      console.log "bad message from websocket client, invalid JSON: #{msg}"
+      console.log "bad message from websocket client, invalid JSON: #{raw}"
       return
 
-    id = p.id ? sids[p.name]
+    if array.length != 2
+      console.log "bad message from websocket client, invalid format: #{raw}"
+      return
+
+    # [id, payload]
+
+    id = array[0]
+    if typeof id == 'string'
+      id = sids[id]
+
     if not id?
-      console.log "bad message from websocket client, no such id #{p.name}: #{msg}"
+      console.log "bad message from websocket client, no such id '#{array[0]}': #{raw}"
       return
 
-    # just the payload
-    delete p.name
-    delete p.id
+    payload = array[1]
 
-    client.write id, p
+    client.write id, payload
 
 

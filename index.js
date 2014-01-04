@@ -42,24 +42,30 @@
     client.on([states.PLAY, ids.disconnect], function(p) {
       return console.log("Kicked for " + p.reason);
     });
-    return ws.on('message', function(msg) {
-      var e, id, p, _ref;
-      console.log("websocket received: " + msg);
+    return ws.on('message', function(raw) {
+      var array, e, id, payload;
+      console.log("websocket received: " + raw);
       try {
-        p = JSON.parse(msg);
+        array = JSON.parse(raw);
       } catch (_error) {
         e = _error;
-        console.log("bad message from websocket client, invalid JSON: " + msg);
+        console.log("bad message from websocket client, invalid JSON: " + raw);
         return;
       }
-      id = (_ref = p.id) != null ? _ref : sids[p.name];
+      if (array.length !== 2) {
+        console.log("bad message from websocket client, invalid format: " + raw);
+        return;
+      }
+      id = array[0];
+      if (typeof id === 'string') {
+        id = sids[id];
+      }
       if (id == null) {
-        console.log("bad message from websocket client, no such id " + p.name + ": " + msg);
+        console.log("bad message from websocket client, no such id '" + array[0] + "': " + raw);
         return;
       }
-      delete p.name;
-      delete p.id;
-      return client.write(id, p);
+      payload = array[1];
+      return client.write(id, payload);
     });
   });
 
