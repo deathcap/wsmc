@@ -18,7 +18,9 @@
 
   wss.on('connection', function(ws) {
     var client;
-    ws.send('hello');
+    ws.send(JSON.stringify({
+      name: 'wsmc-welcome'
+    }));
     client = mc.createClient({
       host: 'localhost',
       port: 25565,
@@ -30,10 +32,9 @@
       return client.socket.end();
     });
     client.on('packet', function(p) {
-      var name;
-      name = mc.protocol.packetNames.play.toClient[p.id];
-      p.name = name;
-      return ws.send(JSON.stringify(p));
+      var name, _ref;
+      name = (_ref = mc.protocol.packetNames.play.toClient[p.id]) != null ? _ref : pi.id;
+      return ws.send(JSON.stringify([name, p]));
     });
     client.on('connect', function() {
       return console.log('Successfully connected to MC');

@@ -8,7 +8,7 @@ sids = mc.protocol.packetIDs.play.toServer
 
 wss = new WebSocketServer {port: 1234}
 wss.on 'connection', (ws) ->
-  ws.send 'hello'
+  ws.send JSON.stringify {name:'wsmc-welcome'}
 
   client = mc.createClient
     host: 'localhost'
@@ -22,12 +22,9 @@ wss.on 'connection', (ws) ->
 
   client.on 'packet', (p) ->
 
-    name = mc.protocol.packetNames.play.toClient[p.id]
-    #console.log p.id
-    #return if name.indexOf('entity_') == 0  # skip noisy packets
+    name = mc.protocol.packetNames.play.toClient[p.id] ? pi.id
 
-    p.name = name
-    ws.send JSON.stringify(p)
+    ws.send JSON.stringify([name, p])
 
   client.on 'connect', () ->
     console.log 'Successfully connected to MC'
