@@ -6,11 +6,13 @@
     "type": "git",
     "url": "git@github.com:deathcap/wsmc.git"
   },
-  "keywords": [
-  ],
+  "keywords": [],
   "dependencies": {
+    "ws": "~0.4.31",
+    "minecraft-protocol": "git://github.com/deathcap/node-minecraft-protocol.git#7bd9eca84b4a5d01f31df4a27d4cc286076648ea"
   },
-  "peerDependencies": {
+  "scripts": {
+    "start": "node index.js"
   },
   "license": "MIT"
 }
