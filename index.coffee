@@ -8,9 +8,6 @@ sids = mc.protocol.packetIDs.play.toServer
 
 wss = new WebSocketServer {port: 1234}
 wss.on 'connection', (ws) ->
-  ws.on 'message', (msg) ->
-    console.log "websocket received: #{msg}"
-
   ws.send 'hello'
 
   client = mc.createClient
@@ -42,5 +39,24 @@ wss.on 'connection', (ws) ->
   client.on [states.PLAY, ids.disconnect], (p) ->
     console.log "Kicked for #{p.reason}"
 
+
+  ws.on 'message', (msg) ->
+    console.log "websocket received: #{msg}"
+    try
+      p = JSON.parse(msg)
+    catch e
+      console.log "bad message from websocket client, invalid JSON: #{msg}"
+      return
+
+    id = p.id ? sids[p.name]
+    if not id?
+      console.log "bad message from websocket client, no such id #{p.name}: #{msg}"
+      return
+
+    # just the payload
+    delete p.name
+    delete p.id
+
+    client.write id, p
 
 

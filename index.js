@@ -18,9 +18,6 @@
 
   wss.on('connection', function(ws) {
     var client;
-    ws.on('message', function(msg) {
-      return console.log("websocket received: " + msg);
-    });
     ws.send('hello');
     client = mc.createClient({
       host: 'localhost',
@@ -42,8 +39,27 @@
       return console.log('Successfully connected to MC');
     });
     client.on([states.PLAY, ids.chat], function(p) {});
-    return client.on([states.PLAY, ids.disconnect], function(p) {
+    client.on([states.PLAY, ids.disconnect], function(p) {
       return console.log("Kicked for " + p.reason);
+    });
+    return ws.on('message', function(msg) {
+      var e, id, p, _ref;
+      console.log("websocket received: " + msg);
+      try {
+        p = JSON.parse(msg);
+      } catch (_error) {
+        e = _error;
+        console.log("bad message from websocket client, invalid JSON: " + msg);
+        return;
+      }
+      id = (_ref = p.id) != null ? _ref : sids[p.name];
+      if (id == null) {
+        console.log("bad message from websocket client, no such id " + p.name + ": " + msg);
+        return;
+      }
+      delete p.name;
+      delete p.id;
+      return client.write(id, p);
     });
   });
 
