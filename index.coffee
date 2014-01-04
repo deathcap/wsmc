@@ -12,7 +12,6 @@ wss.on 'connection', (ws) ->
     console.log "websocket received: #{msg}"
 
   ws.send 'hello'
-  ws.send 'connecting to Minecraft...'
 
   client = mc.createClient
     host: 'localhost'
@@ -20,6 +19,9 @@ wss.on 'connection', (ws) ->
     username: 'webuser'
     password: null
 
+  ws.on 'close', () ->
+    console.log 'WebSocket disconnected, closing MC'
+    client.socket.end()
 
   client.on 'packet', (p) ->
 
@@ -31,7 +33,7 @@ wss.on 'connection', (ws) ->
     ws.send JSON.stringify(p)
 
   client.on 'connect', () ->
-    console.log 'Successfully connected'
+    console.log 'Successfully connected to MC'
 
   client.on [states.PLAY, ids.chat], (p) ->
     #client.write sids.chat_message, {message: 'test'}

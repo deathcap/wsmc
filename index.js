@@ -22,12 +22,15 @@
       return console.log("websocket received: " + msg);
     });
     ws.send('hello');
-    ws.send('connecting to Minecraft...');
     client = mc.createClient({
       host: 'localhost',
       port: 25565,
       username: 'webuser',
       password: null
+    });
+    ws.on('close', function() {
+      console.log('WebSocket disconnected, closing MC');
+      return client.socket.end();
     });
     client.on('packet', function(p) {
       var name;
@@ -36,7 +39,7 @@
       return ws.send(JSON.stringify(p));
     });
     client.on('connect', function() {
-      return console.log('Successfully connected');
+      return console.log('Successfully connected to MC');
     });
     client.on([states.PLAY, ids.chat], function(p) {});
     return client.on([states.PLAY, ids.disconnect], function(p) {
