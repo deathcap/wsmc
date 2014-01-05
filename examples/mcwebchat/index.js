@@ -46,7 +46,7 @@ ws.on('data', function(data) {
   var shouldParsePayload = true;
 
   var result = minecraft_protocol.protocol.parsePacket(buffer, state, isServer, shouldParsePayload);
-  if (result.error) {
+  if (!result || result.error) {
     log('protocol parse error: ' + JSON.stringify(result.error));
     return;
   }
