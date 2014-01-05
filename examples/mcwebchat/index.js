@@ -1,6 +1,5 @@
 var websocket_stream = require('websocket-stream');
 var minecraft_protocol = require('minecraft-protocol');
-window.m = minecraft_protocol;
 var tellraw2dom = require('tellraw2dom');
 
 var outputNode = document.getElementById('output');
@@ -31,12 +30,11 @@ ws.on('close', function() {
   console.log('WebSocket closed');
 });
 
-ws.on('data', function(data) {
+// decode the binary packet
+var decodePacket = function(data) {
   if (!(data instanceof Uint8Array)) {
-    return;
+    return undefined;
   }
-
-  // decode the binary packet
 
   // convert typed array to NodeJS buffer for minecraft-protocol's API
   // TODO: is this conversion fast? backed by ArrayBuffer in Browserify 3, see https://npmjs.org/package/native-buffer-browserify
@@ -58,8 +56,10 @@ ws.on('data', function(data) {
   var name = minecraft_protocol.protocol.packetNames[state].toClient[id];
 
 
-  // handle it
+  return {name:name, id:id, payload:payload};
+};
 
+var handlePacket = function(id, name, payload) {
   // show formatted chat
   if (name === 'chat') {
     console.log(payload);
@@ -81,7 +81,15 @@ ws.on('data', function(data) {
     if (payload.online)
       log('Ping: ' + payload.playerName + ' ('+payload.ping+' ms)');
   }
+};
+
+ws.on('data', function(data) {
+  var packet = decodePacket(data);
+  if (!packet) return;
+
+  handlePacket(packet.id, packet.name, packet.payload);
 });
+
 
 document.body.addEventListener('keyup', function(event) {
   if (event.keyCode !== 13) return;
