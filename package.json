@@ -13,7 +13,7 @@
     "optimist": "~0.6.0"
   },
   "scripts": {
-    "start": "node index.js"
+    "start": "node wsmc.js"
   },
   "license": "MIT"
 }
