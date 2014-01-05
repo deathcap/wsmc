@@ -23,7 +23,7 @@ wss = new WebSocketServer
   port: argv.wsport
 
 wss.on 'connection', (ws) ->
-  ws.send JSON.stringify {name:'wsmc-welcome'}
+  ws.send JSON.stringify ['wsmc-welcome', {}]
 
   client = mc.createClient
     host: argv.mchost

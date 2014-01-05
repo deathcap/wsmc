@@ -25,9 +25,7 @@
 
   wss.on('connection', function(ws) {
     var client;
-    ws.send(JSON.stringify({
-      name: 'wsmc-welcome'
-    }));
+    ws.send(JSON.stringify(['wsmc-welcome', {}]));
     client = mc.createClient({
       host: argv.mchost,
       port: argv.mcport,
