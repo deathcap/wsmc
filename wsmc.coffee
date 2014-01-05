@@ -1,6 +1,7 @@
 
 mc = require 'minecraft-protocol'
 WebSocketServer = (require 'ws').Server
+websocket = require 'websocket-stream'
 argv = (require 'optimist')
   .default('wshost', '0.0.0.0')
   .default('wsport', 1234)
@@ -23,17 +24,20 @@ wss = new WebSocketServer
   port: argv.wsport
 
 wss.on 'connection', (ws) ->
-  ws.send JSON.stringify ['wsmc-welcome', {}]
+  stream = websocket(ws)
+
+  stream.write JSON.stringify ['wsmc-welcome', {}]
 
   client = mc.createClient
     host: argv.mchost
     port: argv.mcport
     username: argv.prefix + userIndex
     password: null
+    parsePayload: true
 
   userIndex += 1
 
-  ws.on 'close', () ->
+  stream.on 'close', () ->
     console.log 'WebSocket disconnected, closing MC'
     client.socket.end()
 
@@ -41,7 +45,7 @@ wss.on 'connection', (ws) ->
 
     name = mc.protocol.packetNames.play.toClient[p.id] ? pi.id
 
-    ws.send JSON.stringify([name, p])
+    stream.write JSON.stringify([name, p])  # TODO: binary data
 
   client.on 'connect', () ->
     console.log 'Successfully connected to MC'
@@ -54,8 +58,8 @@ wss.on 'connection', (ws) ->
     console.log "Kicked for #{p.reason}"
 
 
-  ws.on 'message', (raw) ->
-    console.log "websocket received: #{raw}"
+  stream.on 'data', (raw) ->
+    console.log "websocket stream received: #{raw}"
     try
       array = JSON.parse(raw)
     catch e
