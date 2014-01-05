@@ -28,13 +28,13 @@
   wss.on('connection', function(new_websocket_connection) {
     var mc, ws;
     ws = websocket_stream(new_websocket_connection);
-    ws.write(JSON.stringify(['wsmc-welcome', {}]));
+    ws.write('welcome');
     mc = minecraft_protocol.createClient({
       host: argv.mchost,
       port: argv.mcport,
       username: argv.prefix + userIndex,
       password: null,
-      parsePayload: true
+      parsePayload: false
     });
     userIndex += 1;
     ws.on('close', function() {
@@ -42,9 +42,7 @@
       return mc.socket.end();
     });
     mc.on('packet', function(p) {
-      var name, _ref;
-      name = (_ref = minecraft_protocol.protocol.packetNames.play.toClient[p.id]) != null ? _ref : pi.id;
-      return ws.write(JSON.stringify([name, p]));
+      return ws.write(p.raw);
     });
     mc.on('connect', function() {
       return console.log('Successfully connected to MC');

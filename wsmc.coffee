@@ -26,14 +26,14 @@ wss = new WebSocketServer
 wss.on 'connection', (new_websocket_connection) ->
   ws = websocket_stream(new_websocket_connection)
 
-  ws.write JSON.stringify ['wsmc-welcome', {}]
+  ws.write 'welcome'
 
   mc = minecraft_protocol.createClient
     host: argv.mchost
     port: argv.mcport
     username: argv.prefix + userIndex
     password: null
-    parsePayload: true
+    parsePayload: false
 
   userIndex += 1
 
@@ -42,10 +42,7 @@ wss.on 'connection', (new_websocket_connection) ->
     mc.socket.end()
 
   mc.on 'packet', (p) ->
-
-    name = minecraft_protocol.protocol.packetNames.play.toClient[p.id] ? pi.id
-
-    ws.write JSON.stringify([name, p])  # TODO: binary data
+    ws.write p.raw
 
   mc.on 'connect', () ->
     console.log 'Successfully connected to MC'
