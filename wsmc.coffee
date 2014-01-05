@@ -1,7 +1,7 @@
 
-mc = require 'minecraft-protocol'
+minecraft_protocol = require 'minecraft-protocol'
 WebSocketServer = (require 'ws').Server
-websocket = require 'websocket-stream'
+websocket_stream = require 'websocket-stream'
 argv = (require 'optimist')
   .default('wshost', '0.0.0.0')
   .default('wsport', 1234)
@@ -12,9 +12,9 @@ argv = (require 'optimist')
 
 console.log "WS(#{argv.wshost}:#{argv.wsport}) <--> MC(#{argv.mchost}:#{argv.mcport})"
 
-states = mc.protocol.states
-ids = mc.protocol.packetIDs.play.toClient
-sids = mc.protocol.packetIDs.play.toServer
+states = minecraft_protocol.protocol.states
+ids = minecraft_protocol.protocol.packetIDs.play.toClient
+sids = minecraft_protocol.protocol.packetIDs.play.toServer
 
 
 userIndex = 1
@@ -23,12 +23,12 @@ wss = new WebSocketServer
   host: argv.wshost
   port: argv.wsport
 
-wss.on 'connection', (ws) ->
-  stream = websocket(ws)
+wss.on 'connection', (new_websocket_connection) ->
+  ws = websocket_stream(new_websocket_connection)
 
-  stream.write JSON.stringify ['wsmc-welcome', {}]
+  ws.write JSON.stringify ['wsmc-welcome', {}]
 
-  client = mc.createClient
+  mc = minecraft_protocol.createClient
     host: argv.mchost
     port: argv.mcport
     username: argv.prefix + userIndex
@@ -37,29 +37,29 @@ wss.on 'connection', (ws) ->
 
   userIndex += 1
 
-  stream.on 'close', () ->
+  ws.on 'close', () ->
     console.log 'WebSocket disconnected, closing MC'
-    client.socket.end()
+    mc.socket.end()
 
-  client.on 'packet', (p) ->
+  mc.on 'packet', (p) ->
 
-    name = mc.protocol.packetNames.play.toClient[p.id] ? pi.id
+    name = minecraft_protocol.protocol.packetNames.play.toClient[p.id] ? pi.id
 
-    stream.write JSON.stringify([name, p])  # TODO: binary data
+    ws.write JSON.stringify([name, p])  # TODO: binary data
 
-  client.on 'connect', () ->
+  mc.on 'connect', () ->
     console.log 'Successfully connected to MC'
 
-  client.on [states.PLAY, ids.chat], (p) ->
-    #client.write sids.chat_message, {message: 'test'}
+  mc.on [states.PLAY, ids.chat], (p) ->
+    #mc.write sids.chat_message, {message: 'test'}
     #console.log "Chat: #{p}"
 
-  client.on [states.PLAY, ids.disconnect], (p) ->
+  mc.on [states.PLAY, ids.disconnect], (p) ->
     console.log "Kicked for #{p.reason}"
 
 
-  stream.on 'data', (raw) ->
-    console.log "websocket stream received: #{raw}"
+  ws.on 'data', (raw) ->
+    console.log "websocket received data: #{raw}"
     try
       array = JSON.parse(raw)
     catch e
@@ -82,6 +82,6 @@ wss.on 'connection', (ws) ->
 
     payload = array[1]
 
-    client.write id, payload
+    mc.write id, payload
 
 
