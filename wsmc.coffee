@@ -46,7 +46,7 @@ wss.on 'connection', (new_websocket_connection) ->
   mc.on 'connect', () ->
     console.log 'Successfully connected to MC'
 
-  mc.once [states.LOGIN, minecraft_protocol.protocol.packetIDs[states.LOGIN].toClient.login_success], (p) ->
+  mc.once 'login_success', (p) ->
     # after login completes, stop parsing packet payloads and forward as-is to client
     mc.shouldParsePayload = false
 
