@@ -33,7 +33,6 @@ wss.on 'connection', (new_websocket_connection) ->
     port: argv.mcport
     username: argv.prefix + userIndex
     password: null
-    parsePayload: false
 
   userIndex += 1
 
@@ -47,12 +46,9 @@ wss.on 'connection', (new_websocket_connection) ->
   mc.on 'connect', () ->
     console.log 'Successfully connected to MC'
 
-  mc.on [states.PLAY, ids.chat], (p) ->
-    #mc.write sids.chat_message, {message: 'test'}
-    #console.log "Chat: #{p}"
-
-  mc.on [states.PLAY, ids.disconnect], (p) ->
-    console.log "Kicked for #{p.reason}"
+  mc.once [states.LOGIN, minecraft_protocol.protocol.packetIDs[states.LOGIN].toClient.login_success], (p) ->
+    # after login completes, stop parsing packet payloads and forward as-is to client
+    mc.shouldParsePayload = false
 
 
   ws.on 'data', (raw) ->

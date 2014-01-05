@@ -33,8 +33,7 @@
       host: argv.mchost,
       port: argv.mcport,
       username: argv.prefix + userIndex,
-      password: null,
-      parsePayload: false
+      password: null
     });
     userIndex += 1;
     ws.on('close', function() {
@@ -47,9 +46,8 @@
     mc.on('connect', function() {
       return console.log('Successfully connected to MC');
     });
-    mc.on([states.PLAY, ids.chat], function(p) {});
-    mc.on([states.PLAY, ids.disconnect], function(p) {
-      return console.log("Kicked for " + p.reason);
+    mc.once([states.LOGIN, minecraft_protocol.protocol.packetIDs[states.LOGIN].toClient.login_success], function(p) {
+      return mc.shouldParsePayload = false;
     });
     return ws.on('data', function(raw) {
       console.log("websocket received " + raw.length + " bytes");

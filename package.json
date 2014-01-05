@@ -9,7 +9,7 @@
   "keywords": [],
   "dependencies": {
     "ws": "~0.4.31",
-    "minecraft-protocol": "git://github.com/deathcap/node-minecraft-protocol.git#b752247008c9aed38e135eb682ee0212f3f24e70",
+    "minecraft-protocol": "git://github.com/deathcap/node-minecraft-protocol.git#a5cc8bf065610fea5d412ed6f124215af1188033",
     "optimist": "~0.6.0",
     "websocket-stream": "~0.4.0"
   },
