@@ -6,6 +6,7 @@ argv = (require 'optimist')
   .default('wsport', 1234)
   .default('mchost', 'localhost')
   .default('mcport', 25565)
+  .default('prefix', 'webuser-')
   .argv
 
 console.log "WS(#{argv.wshost}:#{argv.wsport}) <--> MC(#{argv.mchost}:#{argv.mcport})"
@@ -14,7 +15,8 @@ states = mc.protocol.states
 ids = mc.protocol.packetIDs.play.toClient
 sids = mc.protocol.packetIDs.play.toServer
 
-i = 0
+
+userIndex = 1
 
 wss = new WebSocketServer
   host: argv.wshost
@@ -26,10 +28,10 @@ wss.on 'connection', (ws) ->
   client = mc.createClient
     host: argv.mchost
     port: argv.mcport
-    username: (if (i % 2) == 0 then 'webuser' else 'Player1')
+    username: argv.prefix + userIndex
     password: null
 
-  i += 1
+  userIndex += 1
 
   ws.on 'close', () ->
     console.log 'WebSocket disconnected, closing MC'
