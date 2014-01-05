@@ -12,9 +12,13 @@ var log = function(s) {
 var ws = new WebSocket('ws://localhost:1234');
 console.log('ws',ws);
 ws.addEventListener('open', function() {
-  log('Connected to WebSocket');
+  log('Successfully connected to WebSocket');
 });
 
+ws.addEventListener('error', function(event) {
+  console.log(event);
+  log('WebSocket error connecting to ' + event.currentTarget.URL);
+});
 
 ws.addEventListener('message', function(event, flags) {
   var packet = JSON.parse(event.data);
