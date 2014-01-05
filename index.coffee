@@ -1,6 +1,14 @@
 
 mc = require 'minecraft-protocol'
 WebSocketServer = (require 'ws').Server
+argv = (require 'optimist')
+  .default('wshost', '0.0.0.0')
+  .default('wsport', 1234)
+  .default('mchost', 'localhost')
+  .default('mcport', 25565)
+  .argv
+
+console.log "WS(#{argv.wshost}:#{argv.wsport}) <--> MC(#{argv.mchost}:#{argv.mcport})"
 
 states = mc.protocol.states
 ids = mc.protocol.packetIDs.play.toClient
@@ -8,13 +16,16 @@ sids = mc.protocol.packetIDs.play.toServer
 
 i = 0
 
-wss = new WebSocketServer {port: 1234}
+wss = new WebSocketServer
+  host: argv.wshost
+  port: argv.wsport
+
 wss.on 'connection', (ws) ->
   ws.send JSON.stringify {name:'wsmc-welcome'}
 
   client = mc.createClient
-    host: 'localhost'
-    port: 25565
+    host: argv.mchost
+    port: argv.mcport
     username: (if (i % 2) == 0 then 'webuser' else 'Player1')
     password: null
 
