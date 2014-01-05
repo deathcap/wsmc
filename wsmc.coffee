@@ -56,29 +56,9 @@ wss.on 'connection', (new_websocket_connection) ->
 
 
   ws.on 'data', (raw) ->
-    console.log "websocket received data: #{raw}"
-    try
-      array = JSON.parse(raw)
-    catch e
-      console.log "bad message from websocket client, invalid JSON: #{raw}"
-      return
+    console.log "websocket received #{raw.length} bytes"
+    #console.log "websocket received #{raw.length} bytes: #{raw.toJSON()}"
 
-    if array.length != 2
-      console.log "bad message from websocket client, invalid format: #{raw}"
-      return
-
-    # [id, payload]
-
-    id = array[0]
-    if typeof id == 'string'
-      id = sids[id]
-
-    if not id?
-      console.log "bad message from websocket client, no such id '#{array[0]}': #{raw}"
-      return
-
-    payload = array[1]
-
-    mc.write id, payload
+    mc.writeRaw raw
 
 

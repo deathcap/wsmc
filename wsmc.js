@@ -52,29 +52,8 @@
       return console.log("Kicked for " + p.reason);
     });
     return ws.on('data', function(raw) {
-      var array, e, id, payload;
-      console.log("websocket received data: " + raw);
-      try {
-        array = JSON.parse(raw);
-      } catch (_error) {
-        e = _error;
-        console.log("bad message from websocket client, invalid JSON: " + raw);
-        return;
-      }
-      if (array.length !== 2) {
-        console.log("bad message from websocket client, invalid format: " + raw);
-        return;
-      }
-      id = array[0];
-      if (typeof id === 'string') {
-        id = sids[id];
-      }
-      if (id == null) {
-        console.log("bad message from websocket client, no such id '" + array[0] + "': " + raw);
-        return;
-      }
-      payload = array[1];
-      return mc.write(id, payload);
+      console.log("websocket received " + raw.length + " bytes");
+      return mc.writeRaw(raw);
     });
   });
 

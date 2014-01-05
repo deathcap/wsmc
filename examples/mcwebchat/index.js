@@ -90,12 +90,29 @@ ws.on('data', function(data) {
   handlePacket(packet.id, packet.name, packet.payload);
 });
 
+var encodePacket = function(name, params) {
+  var state = minecraft_protocol.protocol.states.PLAY;
+  var isServer = false;
+  var id = minecraft_protocol.protocol.packetIDs[state].toServer[name];
+  if (id === undefined) {
+    log('Attempted to send unknown packet: ' + name + ' for ' + JSON.stringify(params));
+    return;
+  }
+
+  console.log(params);
+  var buffer = minecraft_protocol.protocol.createPacketBuffer(id, state, params, isServer);
+
+  return buffer;
+};
 
 document.body.addEventListener('keyup', function(event) {
   if (event.keyCode !== 13) return;
 
   var input = inputNode.value;
-  ws.write(JSON.stringify(['chat_message', {message: input}]));
+  var data = encodePacket('chat_message', {message: input});
+  console.log('sending data',data);
+
+  ws.write(data);
   
   inputNode.value = '';
 });
