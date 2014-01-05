@@ -1,5 +1,4 @@
 var WebSocket = require('ws');
-var ever = require('ever');
 var tellraw2dom = require('tellraw2dom');
 
 var outputNode = document.getElementById('output');
@@ -12,12 +11,12 @@ var log = function(s) {
 
 var ws = new WebSocket('ws://localhost:1234');
 console.log('ws',ws);
-ever(ws).on('open', function() {
+ws.addEventListener('open', function() {
   log('Connected to WebSocket');
 });
 
 
-ever(ws).on('message', function(event, flags) {
+ws.addEventListener('message', function(event, flags) {
   var packet = JSON.parse(event.data);
   var name = packet[0], payload = packet[1];
 
@@ -40,11 +39,11 @@ ever(ws).on('message', function(event, flags) {
     log('Spawned at ('+payload.x+','+payload.y+','+payload.z+')');
   } else if (name === 'player_list_item') {
     if (payload.online)
-      log(payload.playerName + ' ('+payload.ping+' ms)');
+      log('Ping: ' + payload.playerName + ' ('+payload.ping+' ms)');
   }
 });
 
-ever(document.body).on('keyup', function(event) {
+document.body.addEventListener('keyup', function(event) {
   if (event.keyCode !== 13) return;
 
   var input = inputNode.value;
