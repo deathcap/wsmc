@@ -21,7 +21,10 @@ ws.addEventListener('open', function() {
 
 ws.on('error', function(exception) {
   console.log(exception);
-  log('WebSocket error connecting to: ' + exception.currentTarget.URL);
+  if (exception.currentTarget)
+    log('WebSocket error connecting to ' + exception.currentTarget.URL);
+  else
+    log('WebSocket error: ' + exception);
 });
 
 ws.on('close', function() {
@@ -36,9 +39,9 @@ ws.on('data', function(data) {
   // decode the binary packet
 
   // convert typed array to NodeJS buffer for minecraft-protocol's API
-  // unfortunately, this performs a copy (inefficient) TODO: change minecraft-protocol?
-  // http://nodejs.org/api/buffer.html#buffer_buffer
-  // see http://stackoverflow.com/questions/8609289/convert-a-binary-nodejs-buffer-to-javascript-arraybuffer#12101012
+  // TODO: is this conversion fast? backed by ArrayBuffer in Browserify 3, see https://npmjs.org/package/native-buffer-browserify
+  //  but is this the right way to "convert" from an ArrayBuffer to a Buffer, without copying?
+  data._isBuffer = true;
   var buffer = new Buffer(data);
 
   var state = minecraft_protocol.protocol.states.PLAY;
