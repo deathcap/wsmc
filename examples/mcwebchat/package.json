@@ -8,8 +8,8 @@
   },
   "keywords": [],
   "dependencies": {
-    "ws": "~0.4.31",
-    "tellraw2dom": "0.0.4"
+    "tellraw2dom": "0.0.4",
+    "websocket-stream": "~0.4.0"
   },
   "devDependencies": {
     "beefy": "0.4.5"

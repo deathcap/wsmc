@@ -1,4 +1,4 @@
-var WebSocket = require('ws');
+var websocket_stream = require('websocket-stream');
 var tellraw2dom = require('tellraw2dom');
 
 var outputNode = document.getElementById('output');
@@ -9,19 +9,25 @@ var log = function(s) {
   outputNode.appendChild(document.createElement('br'));
 }
 
-var ws = new WebSocket('ws://localhost:1234');
+var ws = websocket_stream('ws://localhost:1234');
 console.log('ws',ws);
+/*
 ws.addEventListener('open', function() {
   log('Successfully connected to WebSocket');
 });
+*/
 
-ws.addEventListener('error', function(event) {
-  console.log(event);
-  log('WebSocket error connecting to ' + event.currentTarget.URL);
+ws.on('error', function(exception) {
+  console.log(exception);
+  log('WebSocket error connecting to: ' + exception.currentTarget.URL);
 });
 
-ws.addEventListener('message', function(event, flags) {
-  var packet = JSON.parse(event.data);
+ws.on('close', function() {
+  console.log('WebSocket closed');
+});
+
+ws.on('data', function(data) {
+  var packet = JSON.parse(data);
   var name = packet[0], payload = packet[1];
 
   // show formatted chat
@@ -51,7 +57,7 @@ document.body.addEventListener('keyup', function(event) {
   if (event.keyCode !== 13) return;
 
   var input = inputNode.value;
-  ws.send(JSON.stringify(['chat_message', {message: input}]));
+  ws.write(JSON.stringify(['chat_message', {message: input}]));
   
   inputNode.value = '';
 });
