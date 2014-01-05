@@ -6,6 +6,8 @@ states = mc.protocol.states
 ids = mc.protocol.packetIDs.play.toClient
 sids = mc.protocol.packetIDs.play.toServer
 
+i = 0
+
 wss = new WebSocketServer {port: 1234}
 wss.on 'connection', (ws) ->
   ws.send JSON.stringify {name:'wsmc-welcome'}
@@ -13,8 +15,10 @@ wss.on 'connection', (ws) ->
   client = mc.createClient
     host: 'localhost'
     port: 25565
-    username: 'webuser'
+    username: (if (i % 2) == 0 then 'webuser' else 'Player1')
     password: null
+
+  i += 1
 
   ws.on 'close', () ->
     console.log 'WebSocket disconnected, closing MC'
