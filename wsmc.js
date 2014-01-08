@@ -14,9 +14,9 @@
 
   states = minecraft_protocol.protocol.states;
 
-  ids = minecraft_protocol.protocol.packetIDs.play.toClient;
+  ids = minecraft_protocol.protocol.packetIds.play.toClient;
 
-  sids = minecraft_protocol.protocol.packetIDs.play.toServer;
+  sids = minecraft_protocol.protocol.packetIds.play.toServer;
 
   userIndex = 1;
 
@@ -46,7 +46,7 @@
     mc.on('connect', function() {
       return console.log('Successfully connected to MC');
     });
-    mc.once([states.LOGIN, minecraft_protocol.protocol.packetIDs[states.LOGIN].toClient.login_success], function(p) {
+    mc.once('login_success', function(p) {
       return mc.shouldParsePayload = false;
     });
     return ws.on('data', function(raw) {

@@ -13,8 +13,8 @@ argv = (require 'optimist')
 console.log "WS(#{argv.wshost}:#{argv.wsport}) <--> MC(#{argv.mchost}:#{argv.mcport})"
 
 states = minecraft_protocol.protocol.states
-ids = minecraft_protocol.protocol.packetIDs.play.toClient
-sids = minecraft_protocol.protocol.packetIDs.play.toServer
+ids = minecraft_protocol.protocol.packetIds.play.toClient
+sids = minecraft_protocol.protocol.packetIds.play.toServer
 
 
 userIndex = 1
