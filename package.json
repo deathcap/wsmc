@@ -2,6 +2,7 @@
   "name": "wsmc",
   "description": "WebSocket proxy to Minecraft",
   "version": "0.0.1",
+  "main": "wsmc.js",
   "repository": {
     "type": "git",
     "url": "git@github.com:deathcap/wsmc.git"
