@@ -8,7 +8,7 @@
   },
   "keywords": [],
   "dependencies": {
-    "minecraft-protocol": "git://github.com/deathcap/node-minecraft-protocol.git#e866ede78d7781a352ef7c60850d3812beb92f32",
+    "minecraft-protocol": "git://github.com/deathcap/node-minecraft-protocol.git#71687ce8d5427ad0aaa74c28ca773b6204a93973",
     "tellraw2dom": "^0.0.4",
     "websocket-stream": "^0.5.1"
   },

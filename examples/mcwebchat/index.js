@@ -77,7 +77,7 @@ var handlePacket = function(id, name, payload) {
     log('Kicked by server! Reason: ' + payload.reason);
   } else if (name === 'spawn_position') {
     log('Spawned at ('+payload.x+','+payload.y+','+payload.z+')');
-  } else if (name === 'player_list_item') {
+  } else if (name === 'player_info') {
     if (payload.online)
       log('Ping: ' + payload.playerName + ' ('+payload.ping+' ms)');
   }
@@ -94,7 +94,7 @@ document.body.addEventListener('keyup', function(event) {
   if (event.keyCode !== 13) return;
 
   var input = inputNode.value;
-  var data = minecraft_protocol.protocol.createPacketBuffer('chat_message', {message: input});
+  var data = minecraft_protocol.protocol.createPacketBuffer('chat', {message: input});
   console.log('sending data',data);
 
   ws.write(data);
