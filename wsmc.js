@@ -42,8 +42,8 @@ wss.on('connection', function(new_websocket_connection) {
     mc.socket.end();
   });
 
-  mc.on('packet', function(p) {
-    ws.write(p.raw);
+  mc.on('raw', function(buffer) {
+    ws.write(buffer);
   });
 
   mc.on('connect', function() {

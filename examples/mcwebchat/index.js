@@ -44,7 +44,7 @@ var decodePacket = function(data) {
 
   var state = minecraft_protocol.protocol.states.PLAY;
   var isServer = false;
-  var shouldParsePayload = true;
+  var shouldParsePayload = {packet: 1}; // somehow this is needed to parse the fields TODO: figure out how this is supposed to work
 
   var result = minecraft_protocol.protocol.parsePacket(buffer, state, isServer, shouldParsePayload);
   if (!result || result.error) {
