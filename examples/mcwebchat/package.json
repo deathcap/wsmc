@@ -9,8 +9,8 @@
   "keywords": [],
   "dependencies": {
     "minecraft-protocol": "git://github.com/deathcap/node-minecraft-protocol.git#e866ede78d7781a352ef7c60850d3812beb92f32",
-    "tellraw2dom": "0.0.4",
-    "websocket-stream": "~0.4.0"
+    "tellraw2dom": "^0.0.4",
+    "websocket-stream": "^0.5.1"
   },
   "devDependencies": {
     "beefy": "0.4.5"
