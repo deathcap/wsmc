@@ -50,9 +50,9 @@ wss.on('connection', function(new_websocket_connection) {
     console.log('Successfully connected to MC');
   });
 
-  mc.once('login_success', function(p) {
+  mc.once(['login', 'success'], function(p) {
     // after login completes, stop parsing packet payloads and forward as-is to client
-    mc.shouldParsePayload = false;
+    //mc.shouldParsePayload = false; // removed
   });
 
   ws.on('data', function(raw) {
