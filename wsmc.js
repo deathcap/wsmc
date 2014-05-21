@@ -59,7 +59,12 @@ wss.on('connection', function(new_websocket_connection) {
     console.log('websocket received '+raw.length+' bytes');
     //console.log "websocket received '+raw.length+' bytes: '+JSON.stringify(raw));
 
-    mc.writeRaw(raw);
+    try {
+      mc.writeRaw(raw);
+    } catch (e) {
+      console.log('error in mc.writeRaw:',e);
+      mc.socket.end();
+    }
   });
 });
 
