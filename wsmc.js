@@ -2,7 +2,7 @@
 
 var minecraft_protocol = require('minecraft-protocol');
 var WebSocketServer = (require('ws')).Server;
-var websocket_stream = require('websocket-stream')
+var websocket_stream = require('websocket-stream');
 var argv = (require('optimist'))
   .default('wshost', '0.0.0.0')
   .default('wsport', 1234)
@@ -35,7 +35,7 @@ wss.on('connection', function(new_websocket_connection) {
     username: argv.prefix + userIndex,
     password: null});
 
-  userIndex += 1
+  userIndex += 1;
 
   ws.on('close', function() {
     console.log('WebSocket disconnected, closing MC');
