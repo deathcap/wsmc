@@ -50,6 +50,10 @@ wss.on('connection', function(new_websocket_connection) {
     console.log('Successfully connected to MC');
   });
 
+  mc.on('error', function(err) {
+    console.log('Received error from MC:',err);
+  });
+
   mc.once(['login', 'success'], function(p) {
     // after login completes, stop parsing packet payloads and forward as-is to client
     //mc.shouldParsePayload = false; // removed
