@@ -42,6 +42,11 @@ wss.on('connection', function(new_websocket_connection) {
     mc.socket.end();
   });
 
+  ws.on('error', function(err) {
+    console.log('WebSocket error: ',err);
+    mc.socket.end();
+  });
+
   mc.on('raw', function(buffer) {
     ws.write(buffer);
   });
