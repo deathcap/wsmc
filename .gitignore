@@ -19,3 +19,6 @@ npm-debug.log
 node_modules
 
 target
+*.iml
+.idea
+dependency-reduced-pom.xml
