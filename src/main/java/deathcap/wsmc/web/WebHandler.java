@@ -34,7 +34,7 @@ public class WebHandler extends Thread {
         this.plugin = plugin;
     }
 
-    private final ChannelGroup channels = new DefaultChannelGroup("ThinkMap Connections",
+    private final ChannelGroup channels = new DefaultChannelGroup("wsmc Connections",
             GlobalEventExecutor.INSTANCE);
 
     @Override

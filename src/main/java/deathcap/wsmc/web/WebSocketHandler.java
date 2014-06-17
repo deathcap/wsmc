@@ -18,6 +18,7 @@ package deathcap.wsmc.web;
 
 import deathcap.wsmc.WsmcPlugin;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
@@ -43,24 +44,19 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<BinaryWebSocke
             firstMessage = false;
             plugin.getWebHandler().getChannelGroup().add(ctx.channel());
         }
-        ByteBuf data = msg.content();
-        switch (data.readUnsignedByte()) {
-            case 0: // Start
-                plugin.getServer().getScheduler().runTask(plugin, new Runnable() {
-                    @Override
-                    public void run() {
-                        System.out.println("ws recv");
-                        Location spawn = plugin.getTargetWorld().getSpawnLocation();
-                        ctx.writeAndFlush(new BinaryWebSocketFrame(
-                                Packets.writeSpawnPosition(spawn.getBlockX(), spawn.getBlockY(), spawn.getBlockZ())
-                        ));
-                        ctx.writeAndFlush(new BinaryWebSocketFrame(
-                                Packets.writeTimeUpdate((int) plugin.getTargetWorld().getTime())
-                        ));
-                    }
-                });
-                break;
-        }
+        ByteBuf buf = msg.content();
+
+        byte[] bytes = new byte[buf.readableBytes()];
+        buf.readBytes(bytes);
+        System.out.println("ws received "+bytes.length+" bytes");
+
+        final ByteBuf reply = Unpooled.wrappedBuffer(bytes);
+        plugin.getServer().getScheduler().runTask(plugin, new Runnable() {
+            @Override
+            public void run() {
+                ctx.writeAndFlush(new BinaryWebSocketFrame(reply)); // echo
+            }
+        });
         msg.release();
     }
 }
