@@ -107,11 +107,10 @@ public class HTTPHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
             );
             stream = new FileInputStream(file);
         } else {
-            stream = this.getClass().getClassLoader()
-                    .getResourceAsStream("www" +
-                            request.getUri());
-        }
         */
+        stream = this.getClass().getClassLoader()
+                .getResourceAsStream("www" +
+                        request.getUri());
         if (stream == null) {
             sendHttpResponse(context, request, new DefaultFullHttpResponse(HTTP_1_1, NOT_FOUND));
             return;

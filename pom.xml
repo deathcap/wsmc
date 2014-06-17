@@ -40,6 +40,17 @@
 
   <build>
     <finalName>wsmc-${project.version}</finalName>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>true</filtering>
+        <targetPath>./</targetPath>
+      </resource>
+      <resource>
+          <directory>src/main/resources/www</directory>
+          <targetPath>./www</targetPath>
+      </resource>
+    </resources>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

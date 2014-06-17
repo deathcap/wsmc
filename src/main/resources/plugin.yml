@@ -1,5 +1,5 @@
 name: WSMC
-version: ${project.version}-${build.number}
+version: ${project.version}
 description: WebSocket proxy to Minecraft
 author: deathcap
 

@@ -5,6 +5,8 @@ import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
+
 public class WsmcPlugin extends JavaPlugin {
 
     private WebHandler webHandler;
