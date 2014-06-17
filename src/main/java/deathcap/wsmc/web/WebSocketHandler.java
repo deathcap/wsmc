@@ -41,6 +41,7 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<BinaryWebSocke
     @Override
     protected void messageReceived(final ChannelHandlerContext ctx, BinaryWebSocketFrame msg) throws Exception {
         if (firstMessage) {
+            plugin.getLogger().info("Received WS connection: "+ctx.channel().remoteAddress()+" --> "+ctx.channel().localAddress());
             firstMessage = false;
             plugin.getWebHandler().getChannelGroup().add(ctx.channel());
         }
