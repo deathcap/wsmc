@@ -1,0 +1,13 @@
+name: WSMC
+version: ${project.version}-${build.number}
+description: WebSocket proxy to Minecraft
+author: deathcap
+
+main: deathcap.wsmc.WsmcPlugin
+load: STARTUP
+
+commands:
+   wsmc:
+     description: TODO
+     permission: wsmc.command
+     usage: N/A

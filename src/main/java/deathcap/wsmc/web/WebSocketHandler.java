@@ -16,12 +16,12 @@
 
 package deathcap.wsmc.web;
 
+import deathcap.wsmc.WsmcPlugin;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
 import org.bukkit.Location;
-import uk.co.thinkofdeath.thinkmap.bukkit.ThinkMapPlugin;
 
 import java.util.logging.Logger;
 
@@ -29,10 +29,10 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<BinaryWebSocke
 
     private final static Logger logger = Logger.getLogger(WebSocketHandler.class.getName());
 
-    private final ThinkMapPlugin plugin;
+    private final WsmcPlugin plugin;
     private boolean firstMessage = true;
 
-    public WebSocketHandler(ThinkMapPlugin plugin) {
+    public WebSocketHandler(WsmcPlugin plugin) {
         super(false);
         this.plugin = plugin;
     }
@@ -49,6 +49,7 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<BinaryWebSocke
                 plugin.getServer().getScheduler().runTask(plugin, new Runnable() {
                     @Override
                     public void run() {
+                        System.out.println("ws recv");
                         Location spawn = plugin.getTargetWorld().getSpawnLocation();
                         ctx.writeAndFlush(new BinaryWebSocketFrame(
                                 Packets.writeSpawnPosition(spawn.getBlockX(), spawn.getBlockY(), spawn.getBlockZ())

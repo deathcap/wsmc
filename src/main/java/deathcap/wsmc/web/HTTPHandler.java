@@ -17,6 +17,7 @@
 package deathcap.wsmc.web;
 
 import com.google.common.base.Charsets;
+import deathcap.wsmc.WsmcPlugin;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufOutputStream;
 import io.netty.buffer.Unpooled;
@@ -29,7 +30,6 @@ import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.util.CharsetUtil;
 import org.apache.commons.io.IOUtils;
-import uk.co.thinkofdeath.thinkmap.bukkit.ThinkMapPlugin;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -56,9 +56,9 @@ public class HTTPHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
         mimeTypes.put("css", "text/css");
     }
 
-    private final ThinkMapPlugin plugin;
+    private final WsmcPlugin plugin;
 
-    public HTTPHandler(ThinkMapPlugin plugin) {
+    public HTTPHandler(WsmcPlugin plugin) {
         this.plugin = plugin;
     }
 
@@ -89,23 +89,6 @@ public class HTTPHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
             sendHttpResponse(context, request, response);
         }
 
-        if (request.getMethod() == POST && request.getUri().equals("/chunk")) {
-            String[] args = request.content().toString(Charsets.UTF_8).split(":");
-            ByteBuf out = Unpooled.buffer();
-            if (plugin.getChunkManager(plugin.getTargetWorld()).getChunkBytes(Integer.parseInt(args[0]), Integer.parseInt(args[1]), out)) {
-                FullHttpResponse response = new DefaultFullHttpResponse(HTTP_1_1, OK, out);
-                response.headers().add("Content-Encoding", "gzip");
-                response.headers().add("Access-Control-Allow-Origin", "*");
-                sendHttpResponse(context, request, response);
-                return;
-            }
-            out.writeBytes("Chunk not found".getBytes(Charsets.UTF_8));
-            DefaultFullHttpResponse response = new DefaultFullHttpResponse(HTTP_1_1, OK, out);
-            response.headers().add("Access-Control-Allow-Origin", "*");
-            sendHttpResponse(context, request, response);
-            return;
-        }
-
         if (request.getMethod() != GET) {
             sendHttpResponse(context, request, new DefaultFullHttpResponse(HTTP_1_1, FORBIDDEN));
             return;
@@ -116,6 +99,7 @@ public class HTTPHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
         }
 
         InputStream stream = null;
+        /*
         if (request.getUri().startsWith("/resources/")) {
             File file = new File(
                     plugin.getResourceDir(),
@@ -127,6 +111,7 @@ public class HTTPHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
                     .getResourceAsStream("www" +
                             request.getUri());
         }
+        */
         if (stream == null) {
             sendHttpResponse(context, request, new DefaultFullHttpResponse(HTTP_1_1, NOT_FOUND));
             return;

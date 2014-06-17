@@ -16,6 +16,7 @@
 
 package deathcap.wsmc.web;
 
+import deathcap.wsmc.WsmcPlugin;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.EventLoopGroup;
@@ -24,13 +25,12 @@ import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.util.concurrent.GlobalEventExecutor;
-import uk.co.thinkofdeath.thinkmap.bukkit.ThinkMapPlugin;
 
 public class WebHandler extends Thread {
 
-    private ThinkMapPlugin plugin;
+    private WsmcPlugin plugin;
 
-    public WebHandler(ThinkMapPlugin plugin) {
+    public WebHandler(WsmcPlugin plugin) {
         this.plugin = plugin;
     }
 

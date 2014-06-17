@@ -16,19 +16,19 @@
 
 package deathcap.wsmc.web;
 
+import deathcap.wsmc.WsmcPlugin;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
-import uk.co.thinkofdeath.thinkmap.bukkit.ThinkMapPlugin;
 
 public class ServerHandler extends ChannelInitializer<SocketChannel> {
 
-    private final ThinkMapPlugin plugin;
+    private final WsmcPlugin plugin;
 
-    public ServerHandler(ThinkMapPlugin plugin) {
+    public ServerHandler(WsmcPlugin plugin) {
         this.plugin = plugin;
     }
 
