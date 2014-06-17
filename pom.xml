@@ -10,6 +10,13 @@
   <name>wsmc</name>
   <url>https://github.com/deathcap/wsmc</url>
   <inceptionYear>2014</inceptionYear>
+  <dependencies>
+    <dependency>
+      <groupId>io.netty</groupId>
+      <artifactId>netty-all</artifactId>
+      <version>5.0.0.Alpha1</version>
+    </dependency>
+  </dependencies>
   <build>
     <plugins>
       <plugin>
