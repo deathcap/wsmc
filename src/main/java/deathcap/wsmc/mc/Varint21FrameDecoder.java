@@ -31,6 +31,7 @@ POSSIBILITY OF SUCH DAMAGE.
  */
 package deathcap.wsmc.mc;
 
+import com.flowpowered.networking.util.ByteBufUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
@@ -59,7 +60,7 @@ public class Varint21FrameDecoder extends ByteToMessageDecoder
             buf[i] = in.readByte();
             if ( buf[i] >= 0 )
             {
-                int length = DefinedPacket.readVarInt( Unpooled.wrappedBuffer(buf) );
+                int length = ByteBufUtils.readVarInt(Unpooled.wrappedBuffer(buf));
 
                 if ( in.readableBytes() < length )
                 {
