@@ -2,6 +2,7 @@ package deathcap.wsmc;
 
 import deathcap.wsmc.web.WebHandler;
 import org.bukkit.World;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class WsmcPlugin extends JavaPlugin {
@@ -11,6 +12,12 @@ public class WsmcPlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
+
+        final FileConfiguration config = getConfig();
+        config.options().copyDefaults(true);
+        config.addDefault("webserver.port", 24444);
+        config.addDefault("webserver.bind-address", "0.0.0.0");
+
         webHandler = new WebHandler(this);
         webHandler.start();
     }
