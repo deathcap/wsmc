@@ -6,13 +6,22 @@ import io.netty.buffer.Unpooled;
 import io.netty.channel.*;
 import io.netty.util.ReferenceCountUtil;
 
+import java.io.IOException;
+
 public class MinecraftClientHandler extends ChannelHandlerAdapter {
 
     public static final int HANDSHAKE_OPCODE = 0;
-    public static final int MC_PROTOCOL_VERSION = 4; // 1.7.2
+    public static final int MC_PROTOCOL_VERSION = 5; // 1.7.9
     public static final int NEXT_STATE_LOGIN = 2;
 
-    public static final int DISCONNECT_OPCODE = 0;
+    // http://wiki.vg/Protocol#Clientbound_3
+    public static final int LOGIN_DISCONNECT_OPCODE = 0;
+    public static final int LOGIN_ENCRYPTION_REQUEST_OPCODE  = 1;
+    public static final int LOGIN_SUCCESS_OPCODE = 2;
+
+    public static final int LOGIN_OPCODE = 0;
+
+    private boolean loggingIn = true;
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
@@ -21,11 +30,20 @@ public class MinecraftClientHandler extends ChannelHandlerAdapter {
         try {
             int opcode = ByteBufUtils.readVarInt(m);
             System.out.println("opcode = " + opcode);
-            if (opcode == DISCONNECT_OPCODE) {
-                String reason = ByteBufUtils.readUTF8(m);
-                System.out.println("disconnect reason = " + reason);
+            if (loggingIn) {
+                if (opcode == LOGIN_DISCONNECT_OPCODE) {
+                    String reason = ByteBufUtils.readUTF8(m);
+                    System.out.println("disconnect reason = " + reason);
+                } else if (opcode == LOGIN_ENCRYPTION_REQUEST_OPCODE) {
+                    System.out.println("encryption request!");
+                    ctx.close();
+                } else if (opcode == LOGIN_SUCCESS_OPCODE) {
+                    System.out.println("login success");
+                } else {
+                    System.out.println("?? unrecognized opcode: "+opcode);
+                }
+                loggingIn = false;
             }
-            ctx.close();
         } finally {
             ReferenceCountUtil.release(msg);
         }
@@ -41,11 +59,14 @@ public class MinecraftClientHandler extends ChannelHandlerAdapter {
     public void channelActive(final ChannelHandlerContext ctx) {
         System.out.println("Connected to "+ctx.channel().remoteAddress());
 
+        String address = "localhost";
+        int port = 25565;
+        String username = "test";
+
         ByteBuf handshake = Unpooled.buffer();
         ByteBufUtils.writeVarInt(handshake, HANDSHAKE_OPCODE);
         ByteBufUtils.writeVarInt(handshake, MC_PROTOCOL_VERSION);
-        String address = "localhost";
-        int port = 25565;
+
         ByteBufUtils.writeVarInt(handshake, address.length());
         handshake.writeBytes(address.getBytes());
         handshake.writeShort(port);
@@ -59,6 +80,17 @@ public class MinecraftClientHandler extends ChannelHandlerAdapter {
                 assert f == channelFuture;
             }
         });
+
+        ByteBuf login = Unpooled.buffer();
+        ByteBufUtils.writeVarInt(login, LOGIN_OPCODE);
+        try {
+            ByteBufUtils.writeUTF8(login, username);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            System.out.println("exception writing username");
+        }
+
+        ctx.writeAndFlush(login);
     }
 
     @Override
