@@ -3,10 +3,7 @@ package deathcap.wsmc.mc;
 import com.flowpowered.networking.util.ByteBufUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelFutureListener;
-import io.netty.channel.ChannelHandlerAdapter;
-import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.*;
 import io.netty.util.ReferenceCountUtil;
 
 import java.io.IOException;
@@ -18,16 +15,15 @@ public class MinecraftClientHandler extends ChannelHandlerAdapter {
     public static final int NEXT_STATE_LOGIN = 2;
 
     @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) {
+    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         ByteBuf m = (ByteBuf) msg;
 
-        System.out.println("channelRead = "+msg);
+        System.out.println(m.toString(io.netty.util.CharsetUtil.US_ASCII));
 
         try {
-            System.out.println("varint = " + ByteBufUtils.readVarInt(m));
+            int opcode = ByteBufUtils.readVarInt(m);
+            System.out.println("opcode = " + opcode);
             ctx.close();
-        } catch (IOException ex) {
-            ex.printStackTrace();
         } finally {
             ReferenceCountUtil.release(msg);
         }
@@ -59,8 +55,12 @@ public class MinecraftClientHandler extends ChannelHandlerAdapter {
             public void operationComplete(ChannelFuture channelFuture) throws Exception {
                 System.out.println("wrote handshake packet");
                 assert f == channelFuture;
-                ctx.close();
             }
         });
+    }
+
+    @Override
+    public void channelInactive(ChannelHandlerContext ctx) {
+        System.out.println("Disconnected from "+ctx.channel().remoteAddress());
     }
 }

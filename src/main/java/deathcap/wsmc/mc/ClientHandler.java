@@ -6,6 +6,8 @@ import io.netty.channel.socket.SocketChannel;
 public class ClientHandler extends ChannelInitializer<SocketChannel> {
     @Override
     public void initChannel(SocketChannel ch) throws Exception {
-        ch.pipeline().addLast(new Varint21FrameDecoder(), new Varint21LengthFieldPrepender(), new MinecraftClientHandler());
+        ch.pipeline().addLast("frame-decoder", new Varint21FrameDecoder());
+        ch.pipeline().addLast("frame-encoder", new Varint21LengthFieldPrepender());
+        ch.pipeline().addLast("inbound-handler", new MinecraftClientHandler());
     }
 }
