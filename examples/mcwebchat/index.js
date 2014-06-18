@@ -10,8 +10,9 @@ var log = function(s) {
   outputNode.appendChild(document.createElement('br'));
 }
 
-var ws = websocket_stream('ws://localhost:1234', {type: Uint8Array});
+var ws = websocket_stream('ws://localhost:24444/server', {type: Uint8Array});
 console.log('ws',ws);
+ws.write(new Buffer('mcwebchatuser')); // send username, as buffer so binary
 /*
 ws.addEventListener('open', function() {
   log('Successfully connected to WebSocket');
@@ -48,7 +49,7 @@ var decodePacket = function(data) {
 
   var result = minecraft_protocol.protocol.parsePacket(buffer, state, isServer, shouldParsePayload);
   if (!result || result.error) {
-    log('protocol parse error: ' + JSON.stringify(result.error));
+    log('protocol parse error: ' + JSON.stringify(result));
     return;
   }
   var payload = result.results;
