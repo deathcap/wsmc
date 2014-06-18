@@ -47,8 +47,6 @@ public class Varint21FrameDecoder extends ByteToMessageDecoder
     {
         in.markReaderIndex();
 
-        System.out.println("decoding frame, readable="+in.readableBytes());
-
         final byte[] buf = new byte[ 3 ];
         for ( int i = 0; i < buf.length; i++ )
         {

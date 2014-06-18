@@ -74,6 +74,7 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<BinaryWebSocke
                 }
             });
             */
+            minecraftThreads.put(ctx.channel().remoteAddress().toString(), minecraft); // TODO: cleanup
             return;
         }
 
