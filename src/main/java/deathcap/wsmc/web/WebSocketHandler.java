@@ -17,13 +17,18 @@
 package deathcap.wsmc.web;
 
 import deathcap.wsmc.WsmcPlugin;
+import deathcap.wsmc.mc.MinecraftThread;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
-import org.bukkit.Location;
+import io.netty.util.CharsetUtil;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 public class WebSocketHandler extends SimpleChannelInboundHandler<BinaryWebSocketFrame> {
@@ -32,6 +37,7 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<BinaryWebSocke
 
     private final WsmcPlugin plugin;
     private boolean firstMessage = true;
+    private Map<String, MinecraftThread> minecraftThreads = new HashMap<String, MinecraftThread>();
 
     public WebSocketHandler(WsmcPlugin plugin) {
         super(false);
@@ -41,10 +47,24 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<BinaryWebSocke
     @Override
     protected void messageReceived(final ChannelHandlerContext ctx, BinaryWebSocketFrame msg) throws Exception {
         if (firstMessage) {
-            plugin.getLogger().info("Received WS connection: "+ctx.channel().remoteAddress()+" --> "+ctx.channel().localAddress());
             firstMessage = false;
-            plugin.getWebHandler().getChannelGroup().add(ctx.channel());
+            plugin.getWebThread().getChannelGroup().add(ctx.channel());
         }
+
+        MinecraftThread minecraft = minecraftThreads.get(ctx.channel().remoteAddress().toString());
+        if (minecraft == null) {
+            // initial client connection
+            plugin.getLogger().info("Received WS connection: "+ctx.channel().remoteAddress()+" --> "+ctx.channel().localAddress());
+
+            // current protocol: first websocket message is username
+            System.out.println("readableBytes = "+msg.content().readableBytes());
+            String clientCredential = msg.content().toString(CharsetUtil.UTF_8);
+            plugin.getLogger().info("clientCredential = "+clientCredential); // TODO: username, key, auth
+
+            minecraft = new MinecraftThread("localhost", 25565, clientCredential);
+            minecraft.start();
+        }
+
         ByteBuf buf = msg.content();
 
         byte[] bytes = new byte[buf.readableBytes()];

@@ -1,15 +1,14 @@
 package deathcap.wsmc;
 
-import deathcap.wsmc.web.WebHandler;
+import deathcap.wsmc.mc.MinecraftThread;
+import deathcap.wsmc.web.WebThread;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.File;
-
 public class WsmcPlugin extends JavaPlugin {
 
-    private WebHandler webHandler;
+    private WebThread webThread;
     private World targetWorld;
 
     @Override
@@ -20,19 +19,19 @@ public class WsmcPlugin extends JavaPlugin {
         config.addDefault("webserver.port", 24444);
         config.addDefault("webserver.bind-address", "0.0.0.0");
 
-        webHandler = new WebHandler(this);
-        webHandler.start();
+        webThread = new WebThread(this);
+        webThread.start();
     }
 
     @Override
     public void onDisable() {
-        if (webHandler != null) {
-            webHandler.interrupt();
+        if (webThread != null) {
+            webThread.interrupt();
         }
     }
 
-    public WebHandler getWebHandler() {
-        return this.webHandler;
+    public WebThread getWebThread() {
+        return this.webThread;
     }
 
     public World getTargetWorld() {

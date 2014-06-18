@@ -26,11 +26,11 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.util.concurrent.GlobalEventExecutor;
 
-public class WebHandler extends Thread {
+public class WebThread extends Thread {
 
     private WsmcPlugin plugin;
 
-    public WebHandler(WsmcPlugin plugin) {
+    public WebThread(WsmcPlugin plugin) {
         this.plugin = plugin;
     }
 

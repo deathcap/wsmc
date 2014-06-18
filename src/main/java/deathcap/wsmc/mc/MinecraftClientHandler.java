@@ -23,6 +23,12 @@ public class MinecraftClientHandler extends ChannelHandlerAdapter {
 
     private boolean loggingIn = true;
 
+    public final MinecraftThread minecraft;
+
+    public MinecraftClientHandler(MinecraftThread minecraft) {
+        this.minecraft = minecraft;
+    }
+
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         ByteBuf m = (ByteBuf) msg;
@@ -34,7 +40,7 @@ public class MinecraftClientHandler extends ChannelHandlerAdapter {
                 if (opcode == LOGIN_DISCONNECT_OPCODE) {
                     String reason = ByteBufUtils.readUTF8(m);
                     System.out.println("Server disconnect reason = " + reason);
-                    ctx.disconnect()
+                    ctx.close();
                 } else if (opcode == LOGIN_ENCRYPTION_REQUEST_OPCODE) {
                     // http://wiki.vg/Protocol#Login says
                     // "For unauthenticated and* localhost connections there is no encryption. In that case Login Start is directly followed by Login Success."
@@ -64,17 +70,13 @@ public class MinecraftClientHandler extends ChannelHandlerAdapter {
     public void channelActive(final ChannelHandlerContext ctx) {
         System.out.println("Connected to "+ctx.channel().remoteAddress());
 
-        String address = "localhost";
-        int port = 25565;
-        String username = "test";
-
         ByteBuf handshake = Unpooled.buffer();
         ByteBufUtils.writeVarInt(handshake, HANDSHAKE_OPCODE);
         ByteBufUtils.writeVarInt(handshake, MC_PROTOCOL_VERSION);
 
-        ByteBufUtils.writeVarInt(handshake, address.length());
-        handshake.writeBytes(address.getBytes());
-        handshake.writeShort(port);
+        ByteBufUtils.writeVarInt(handshake, this.minecraft.host.length());
+        handshake.writeBytes(this.minecraft.host.getBytes());
+        handshake.writeShort(this.minecraft.port);
         ByteBufUtils.writeVarInt(handshake, NEXT_STATE_LOGIN);
 
         final ChannelFuture f = ctx.writeAndFlush(handshake);
@@ -89,7 +91,7 @@ public class MinecraftClientHandler extends ChannelHandlerAdapter {
         ByteBuf login = Unpooled.buffer();
         ByteBufUtils.writeVarInt(login, LOGIN_OPCODE);
         try {
-            ByteBufUtils.writeUTF8(login, username);
+            ByteBufUtils.writeUTF8(login, this.minecraft.username);
         } catch (IOException ex) {
             ex.printStackTrace();
             System.out.println("exception writing username");
