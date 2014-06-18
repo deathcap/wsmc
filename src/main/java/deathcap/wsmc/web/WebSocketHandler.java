@@ -63,6 +63,7 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<BinaryWebSocke
             msg.release();
 
             minecraft = new MinecraftThread("localhost", 25565, clientCredential, ctx);
+            minecraftThreads.put(ctx.channel().remoteAddress().toString(), minecraft); // TODO: cleanup
             minecraft.start();
 
             /*
@@ -74,7 +75,6 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<BinaryWebSocke
                 }
             });
             */
-            minecraftThreads.put(ctx.channel().remoteAddress().toString(), minecraft); // TODO: cleanup
             return;
         }
 
