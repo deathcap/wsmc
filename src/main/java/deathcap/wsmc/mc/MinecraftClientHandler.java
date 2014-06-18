@@ -6,23 +6,25 @@ import io.netty.buffer.Unpooled;
 import io.netty.channel.*;
 import io.netty.util.ReferenceCountUtil;
 
-import java.io.IOException;
-
 public class MinecraftClientHandler extends ChannelHandlerAdapter {
 
     public static final int HANDSHAKE_OPCODE = 0;
     public static final int MC_PROTOCOL_VERSION = 4; // 1.7.2
     public static final int NEXT_STATE_LOGIN = 2;
 
+    public static final int DISCONNECT_OPCODE = 0;
+
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         ByteBuf m = (ByteBuf) msg;
 
-        System.out.println(m.toString(io.netty.util.CharsetUtil.US_ASCII));
-
         try {
             int opcode = ByteBufUtils.readVarInt(m);
             System.out.println("opcode = " + opcode);
+            if (opcode == DISCONNECT_OPCODE) {
+                String reason = ByteBufUtils.readUTF8(m);
+                System.out.println("disconnect reason = " + reason);
+            }
             ctx.close();
         } finally {
             ReferenceCountUtil.release(msg);
