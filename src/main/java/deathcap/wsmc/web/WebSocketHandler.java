@@ -78,19 +78,16 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<BinaryWebSocke
             return;
         }
 
-        ByteBuf buf = msg.content();
+        final ByteBuf buf = msg.content();
 
-        byte[] bytes = new byte[buf.readableBytes()];
-        buf.readBytes(bytes);
-        System.out.println("ws received "+bytes.length+" bytes");
+        System.out.println("ws received "+buf.readableBytes()+" bytes");
 
-        final ByteBuf reply = Unpooled.wrappedBuffer(bytes);
         final MinecraftThread mc = minecraft;
         plugin.getServer().getScheduler().runTask(plugin, new Runnable() {
             @Override
             public void run() {
                 // forward MC to WS
-                mc.clientHandler.minecraftClientHandler.ctx.writeAndFlush(reply);
+                mc.clientHandler.minecraftClientHandler.ctx.writeAndFlush(buf);
                 //ctx.writeAndFlush(new BinaryWebSocketFrame(reply)); // echo
             }
         });
