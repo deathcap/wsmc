@@ -85,10 +85,13 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<BinaryWebSocke
         System.out.println("ws received "+bytes.length+" bytes");
 
         final ByteBuf reply = Unpooled.wrappedBuffer(bytes);
+        final MinecraftThread mc = minecraft;
         plugin.getServer().getScheduler().runTask(plugin, new Runnable() {
             @Override
             public void run() {
-                ctx.writeAndFlush(new BinaryWebSocketFrame(reply)); // echo
+                // forward MC to WS
+                mc.clientHandler.minecraftClientHandler.ctx.writeAndFlush(reply);
+                //ctx.writeAndFlush(new BinaryWebSocketFrame(reply)); // echo
             }
         });
         msg.release();

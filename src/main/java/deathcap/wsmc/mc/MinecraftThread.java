@@ -15,6 +15,7 @@ public class MinecraftThread extends Thread {
     public final int port;
     public final String username;
     public final ChannelHandlerContext websocket;
+    public ClientHandler clientHandler;
 
     public MinecraftThread(String host, int port, String username, ChannelHandlerContext websocket) {
         this.host = host;
@@ -30,11 +31,12 @@ public class MinecraftThread extends Thread {
         System.out.println("Connecting to "+host+":"+port+" as "+username);
 
         try {
+            this.clientHandler = new ClientHandler(this);
             Bootstrap b = new Bootstrap();
             b.group(workerGroup)
                     .channel(NioSocketChannel.class)
                     .option(ChannelOption.SO_KEEPALIVE, true)
-                    .handler(new ClientHandler(this));
+                    .handler(this.clientHandler);
 
             ChannelFuture f = b.connect(host, port).sync();
 

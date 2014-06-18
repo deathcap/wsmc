@@ -6,6 +6,7 @@ import io.netty.channel.socket.SocketChannel;
 public class ClientHandler extends ChannelInitializer<SocketChannel> {
 
     public final MinecraftThread minecraft;
+    public MinecraftClientHandler minecraftClientHandler;
 
     ClientHandler(MinecraftThread minecraft) {
         this.minecraft = minecraft;
@@ -15,6 +16,7 @@ public class ClientHandler extends ChannelInitializer<SocketChannel> {
     public void initChannel(SocketChannel ch) throws Exception {
         ch.pipeline().addLast("frame-decoder", new Varint21FrameDecoder());
         ch.pipeline().addLast("frame-encoder", new Varint21LengthFieldPrepender());
-        ch.pipeline().addLast("inbound-handler", new MinecraftClientHandler(this.minecraft));
+        minecraftClientHandler = new MinecraftClientHandler(this.minecraft);
+        ch.pipeline().addLast("inbound-handler", minecraftClientHandler);
     }
 }

@@ -24,6 +24,7 @@ public class MinecraftClientHandler extends ChannelHandlerAdapter {
     private boolean loggingIn = true;
 
     public final MinecraftThread minecraft;
+    public ChannelHandlerContext ctx;
 
     public MinecraftClientHandler(MinecraftThread minecraft) {
         this.minecraft = minecraft;
@@ -78,6 +79,7 @@ public class MinecraftClientHandler extends ChannelHandlerAdapter {
     @Override
     public void channelActive(final ChannelHandlerContext ctx) {
         System.out.println("Connected to "+ctx.channel().remoteAddress());
+        this.ctx = ctx;
 
         ByteBuf handshake = Unpooled.buffer();
         DefinedPacket.writeVarInt(HANDSHAKE_OPCODE, handshake);
