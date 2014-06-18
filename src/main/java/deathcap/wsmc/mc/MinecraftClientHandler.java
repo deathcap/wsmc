@@ -33,14 +33,19 @@ public class MinecraftClientHandler extends ChannelHandlerAdapter {
             if (loggingIn) {
                 if (opcode == LOGIN_DISCONNECT_OPCODE) {
                     String reason = ByteBufUtils.readUTF8(m);
-                    System.out.println("disconnect reason = " + reason);
+                    System.out.println("Server disconnect reason = " + reason);
+                    ctx.disconnect()
                 } else if (opcode == LOGIN_ENCRYPTION_REQUEST_OPCODE) {
-                    System.out.println("encryption request!");
+                    // http://wiki.vg/Protocol#Login says
+                    // "For unauthenticated and* localhost connections there is no encryption. In that case Login Start is directly followed by Login Success."
+                    // we don't implement encryption so this is a final error
+                    System.out.println("Received encryption request! Is the server not in offline mode?");
                     ctx.close();
                 } else if (opcode == LOGIN_SUCCESS_OPCODE) {
-                    System.out.println("login success");
+                    System.out.println("Login success");
                 } else {
                     System.out.println("?? unrecognized opcode: "+opcode);
+                    ctx.close();
                 }
                 loggingIn = false;
             }
