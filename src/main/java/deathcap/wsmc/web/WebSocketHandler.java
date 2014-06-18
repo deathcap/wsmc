@@ -45,7 +45,7 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<BinaryWebSocke
     }
 
     @Override
-    protected void messageReceived(final ChannelHandlerContext ctx, BinaryWebSocketFrame msg) throws Exception {
+    protected void messageReceived(final ChannelHandlerContext ctx, final BinaryWebSocketFrame msg) throws Exception {
         if (firstMessage) {
             firstMessage = false;
             plugin.getWebThread().getChannelGroup().add(ctx.channel());
@@ -89,8 +89,8 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<BinaryWebSocke
                 // forward MC to WS
                 mc.clientHandler.minecraftClientHandler.ctx.writeAndFlush(buf);
                 //ctx.writeAndFlush(new BinaryWebSocketFrame(reply)); // echo
+                msg.release();
             }
         });
-        msg.release();
     }
 }
