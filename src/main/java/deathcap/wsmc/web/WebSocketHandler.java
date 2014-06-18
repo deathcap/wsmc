@@ -60,9 +60,21 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<BinaryWebSocke
             System.out.println("readableBytes = "+msg.content().readableBytes());
             String clientCredential = msg.content().toString(CharsetUtil.UTF_8);
             plugin.getLogger().info("clientCredential = "+clientCredential); // TODO: username, key, auth
+            msg.release();
 
-            minecraft = new MinecraftThread("localhost", 25565, clientCredential);
+            minecraft = new MinecraftThread("localhost", 25565, clientCredential, ctx);
             minecraft.start();
+
+            /*
+            final ByteBuf reply = Unpooled.wrappedBuffer("OK".getBytes());
+            plugin.getServer().getScheduler().runTask(plugin, new Runnable() {
+                @Override
+                public void run() {
+                    ctx.writeAndFlush(new BinaryWebSocketFrame(reply));
+                }
+            });
+            */
+            return;
         }
 
         ByteBuf buf = msg.content();

@@ -31,7 +31,6 @@ POSSIBILITY OF SUCH DAMAGE.
  */
 package deathcap.wsmc.mc;
 
-import com.flowpowered.networking.util.ByteBufUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -49,7 +48,7 @@ public class Varint21LengthFieldPrepender extends MessageToByteEncoder<ByteBuf>
         int headerLen = varintSize( bodyLen );
         out.ensureWritable( headerLen + bodyLen );
 
-        ByteBufUtils.writeVarInt(out, bodyLen);
+        DefinedPacket.writeVarInt(bodyLen, out);
         out.writeBytes( msg );
     }
 

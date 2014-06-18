@@ -1,9 +1,9 @@
 package deathcap.wsmc.mc;
 
-import com.flowpowered.networking.util.ByteBufUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.*;
+import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
 import io.netty.util.ReferenceCountUtil;
 
 import java.io.IOException;
@@ -34,11 +34,12 @@ public class MinecraftClientHandler extends ChannelHandlerAdapter {
         ByteBuf m = (ByteBuf) msg;
 
         try {
-            int opcode = ByteBufUtils.readVarInt(m);
-            System.out.println("opcode = " + opcode);
             if (loggingIn) {
+                int opcode = DefinedPacket.readVarInt(m);
+                System.out.println("opcode = " + opcode);
+                // we handle the login sequence
                 if (opcode == LOGIN_DISCONNECT_OPCODE) {
-                    String reason = ByteBufUtils.readUTF8(m);
+                    String reason = DefinedPacket.readString(m);
                     System.out.println("Server disconnect reason = " + reason);
                     ctx.close();
                 } else if (opcode == LOGIN_ENCRYPTION_REQUEST_OPCODE) {
@@ -54,6 +55,14 @@ public class MinecraftClientHandler extends ChannelHandlerAdapter {
                     ctx.close();
                 }
                 loggingIn = false;
+            } else {
+                // otherwise proxy through to WS
+                ByteBuf out = Unpooled.buffer(m.readableBytes() + 2);
+                // prepend length
+                Varint21LengthFieldPrepender prepender = new Varint21LengthFieldPrepender();
+                prepender.encode(null, m, out);
+                minecraft.websocket.writeAndFlush(new BinaryWebSocketFrame(out));
+                //minecraft.websocket.writeAndFlush(new BinaryWebSocketFrame(m.retain()));
             }
         } finally {
             ReferenceCountUtil.release(msg);
@@ -71,13 +80,13 @@ public class MinecraftClientHandler extends ChannelHandlerAdapter {
         System.out.println("Connected to "+ctx.channel().remoteAddress());
 
         ByteBuf handshake = Unpooled.buffer();
-        ByteBufUtils.writeVarInt(handshake, HANDSHAKE_OPCODE);
-        ByteBufUtils.writeVarInt(handshake, MC_PROTOCOL_VERSION);
+        DefinedPacket.writeVarInt(HANDSHAKE_OPCODE, handshake);
+        DefinedPacket.writeVarInt(MC_PROTOCOL_VERSION, handshake);
 
-        ByteBufUtils.writeVarInt(handshake, this.minecraft.host.length());
+        DefinedPacket.writeVarInt(this.minecraft.host.length(), handshake);
         handshake.writeBytes(this.minecraft.host.getBytes());
         handshake.writeShort(this.minecraft.port);
-        ByteBufUtils.writeVarInt(handshake, NEXT_STATE_LOGIN);
+        DefinedPacket.writeVarInt(NEXT_STATE_LOGIN, handshake);
 
         final ChannelFuture f = ctx.writeAndFlush(handshake);
         f.addListener(new ChannelFutureListener() {
@@ -89,13 +98,8 @@ public class MinecraftClientHandler extends ChannelHandlerAdapter {
         });
 
         ByteBuf login = Unpooled.buffer();
-        ByteBufUtils.writeVarInt(login, LOGIN_OPCODE);
-        try {
-            ByteBufUtils.writeUTF8(login, this.minecraft.username);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            System.out.println("exception writing username");
-        }
+        DefinedPacket.writeVarInt(LOGIN_OPCODE, login);
+        DefinedPacket.writeString(this.minecraft.username, login);
 
         ctx.writeAndFlush(login);
     }

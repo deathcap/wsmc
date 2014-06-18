@@ -1,7 +1,9 @@
 package deathcap.wsmc.mc;
 
+import deathcap.wsmc.web.WebSocketHandler;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -12,11 +14,13 @@ public class MinecraftThread extends Thread {
     public final String host;
     public final int port;
     public final String username;
+    public final ChannelHandlerContext websocket;
 
-    public MinecraftThread(String host, int port, String username) {
+    public MinecraftThread(String host, int port, String username, ChannelHandlerContext websocket) {
         this.host = host;
         this.port = port;
         this.username = username;
+        this.websocket = websocket;
     }
 
     @Override
