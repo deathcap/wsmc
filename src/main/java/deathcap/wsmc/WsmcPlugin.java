@@ -25,6 +25,7 @@ public class WsmcPlugin extends JavaPlugin implements Listener {
         config.addDefault("websocket.external-port", 24444);
         config.addDefault("minecraft.connect-address", "localhost");
         config.addDefault("minecraft.connect-port", 25565);
+        config.addDefault("minecraft.announce-on-join", true);
         saveConfig();
 
         String url = this.getConfig().getString("websocket.external-scheme")
@@ -33,7 +34,7 @@ public class WsmcPlugin extends JavaPlugin implements Listener {
                 + (this.getConfig().getInt("websocket.external-port") != 80
                     ? (":" + this.getConfig().getInt("websocket.external-port")) : "")
                 + "/";
-        listener = new UserIdentityLinker(url);
+        listener = new UserIdentityLinker(url, this.getConfig().getBoolean("minecraft.announce-on-join"));
         getServer().getPluginManager().registerEvents(listener, this);
 
         webThread = new WebThread(

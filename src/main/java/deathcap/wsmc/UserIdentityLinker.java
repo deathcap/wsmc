@@ -15,9 +15,11 @@ public class UserIdentityLinker implements Listener {
     private Map<UUID, String> keys = new HashMap<UUID, String>(); // TODO: persist
     private SecureRandom random = new SecureRandom();
     private final String webURL;
+    private final boolean announceOnJoin;
 
-    public UserIdentityLinker(String webURL) {
+    public UserIdentityLinker(String webURL, boolean announceOnJoin) {
         this.webURL = webURL;
+        this.announceOnJoin = announceOnJoin;
     }
 
     private String newRandomKey() {
@@ -42,6 +44,8 @@ public class UserIdentityLinker implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
+        if (!this.announceOnJoin) return;
+
         Player player = event.getPlayer();
         /* TODO: how do we send links? can generate this JSON
         with http://deathcap.github.io/tellraw2dom/ but need to find proper API,
