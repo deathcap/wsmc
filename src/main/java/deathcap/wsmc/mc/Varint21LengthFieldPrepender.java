@@ -40,29 +40,15 @@ import io.netty.handler.codec.MessageToByteEncoder;
 public class Varint21LengthFieldPrepender extends MessageToByteEncoder<ByteBuf>
 {
 
-    //private MinecraftThread minecraft;
-
-    /*
-    public Varint21LengthFieldPrepender(MinecraftThread minecraft) {
-        this.minecraft = minecraft;
-    }
-
-    private boolean isEnabled() {
-        return this.minecraft.loggingIn == true;
-    }
-    */
-
     @Override
     protected void encode(ChannelHandlerContext ctx, ByteBuf msg, ByteBuf out) throws Exception
     {
         int bodyLen = msg.readableBytes();
 
-        //if (this.isEnabled()) {
         int headerLen = varintSize( bodyLen );
         out.ensureWritable( headerLen + bodyLen );
 
         DefinedPacket.writeVarInt(bodyLen, out);
-        //}
 
         out.writeBytes( msg );
     }

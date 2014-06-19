@@ -6,8 +6,6 @@ import io.netty.channel.*;
 import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
 import io.netty.util.ReferenceCountUtil;
 
-import java.io.IOException;
-
 public class MinecraftClientHandler extends ChannelHandlerAdapter {
 
     public static final int HANDSHAKE_OPCODE = 0;

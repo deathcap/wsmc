@@ -147,18 +147,4 @@ public abstract class DefinedPacket
             }
         }
     }
-
-    public void read(ByteBuf buf)
-    {
-        throw new UnsupportedOperationException( "Packet must implement read method" );
-    }
-
-    @Override
-    public abstract boolean equals(Object obj);
-
-    @Override
-    public abstract int hashCode();
-
-    @Override
-    public abstract String toString();
 }

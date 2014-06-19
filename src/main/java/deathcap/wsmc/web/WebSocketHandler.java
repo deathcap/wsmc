@@ -51,6 +51,21 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<BinaryWebSocke
         this.mcPort = mcPort;
     }
 
+    private void setupInitialConnection(final ChannelHandlerContext ctx, final BinaryWebSocketFrame msg) {
+        // initial client connection
+        System.out.println("Received WS connection: "+ctx.channel().remoteAddress()+" --> "+ctx.channel().localAddress());
+
+        // current protocol: first websocket message is username
+        System.out.println("readableBytes = "+msg.content().readableBytes());
+        String clientCredential = msg.content().toString(CharsetUtil.UTF_8);
+        System.out.println("clientCredential = "+clientCredential); // TODO: username, key, auth
+        msg.release();
+
+        MinecraftThread minecraft = new MinecraftThread(this.mcAddress, this.mcPort, clientCredential, ctx);
+        minecraftThreads.put(ctx.channel().remoteAddress().toString(), minecraft); // TODO: cleanup
+        minecraft.start();
+    }
+
     @Override
     protected void messageReceived(final ChannelHandlerContext ctx, final BinaryWebSocketFrame msg) throws Exception {
         if (firstMessage) {
@@ -60,39 +75,16 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<BinaryWebSocke
 
         MinecraftThread minecraft = minecraftThreads.get(ctx.channel().remoteAddress().toString());
         if (minecraft == null) {
-            // initial client connection
-            System.out.println("Received WS connection: "+ctx.channel().remoteAddress()+" --> "+ctx.channel().localAddress());
-
-            // current protocol: first websocket message is username
-            System.out.println("readableBytes = "+msg.content().readableBytes());
-            String clientCredential = msg.content().toString(CharsetUtil.UTF_8);
-            System.out.println("clientCredential = "+clientCredential); // TODO: username, key, auth
-            msg.release();
-
-            minecraft = new MinecraftThread(this.mcAddress, this.mcPort, clientCredential, ctx);
-            minecraftThreads.put(ctx.channel().remoteAddress().toString(), minecraft); // TODO: cleanup
-            minecraft.start();
-
-            /*
-            final ByteBuf reply = Unpooled.wrappedBuffer("OK".getBytes());
-            plugin.getServer().getScheduler().runTask(plugin, new Runnable() {
-                @Override
-                public void run() {
-                    ctx.writeAndFlush(new BinaryWebSocketFrame(reply));
-                }
-            });
-            */
+            this.setupInitialConnection(ctx, msg);
             return;
         }
 
         final ByteBuf buf = msg.content();
 
         System.out.println("ws received "+buf.readableBytes()+" bytes");
-        System.out.println("string = " + buf.toString(CharsetUtil.US_ASCII));
 
-        // strip length header since Varint21LengthFieldPrepender re-adds it
+        // strip length header since Varint21LengthFieldPrepender re-adds it TODO: refactor
         int length = DefinedPacket.readVarInt(buf);
-        System.out.println("length from header: "+length);
         byte bytes[] = new byte[length];
         buf.readBytes(bytes);
 
@@ -100,14 +92,13 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<BinaryWebSocke
         System.out.println("stripped "+reply.readableBytes());
 
         final MinecraftThread mc = minecraft;
-        //ctx.writeAndFlush(new BinaryWebSocketFrame(reply)); // echo
         // forward MC to WS
         final ChannelFuture f = mc.clientHandler.minecraftClientHandler.ctx.writeAndFlush(reply);
         f.addListener(new ChannelFutureListener() {
             @Override
             public void operationComplete(ChannelFuture channelFuture) throws Exception {
                 assert f == channelFuture;
-                System.out.println("forwarded WS -> MC");
+                System.out.println("forwarded WS -> MC, "+reply.readableBytes()+" bytes");
                 reply.release();
             }
         });
