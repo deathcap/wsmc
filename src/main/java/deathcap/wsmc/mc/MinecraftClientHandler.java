@@ -21,8 +21,6 @@ public class MinecraftClientHandler extends ChannelHandlerAdapter {
 
     public static final int LOGIN_OPCODE = 0;
 
-    private boolean loggingIn = true;
-
     public final MinecraftThread minecraft;
     public ChannelHandlerContext ctx;
 
@@ -35,7 +33,7 @@ public class MinecraftClientHandler extends ChannelHandlerAdapter {
         ByteBuf m = (ByteBuf) msg;
 
         try {
-            if (loggingIn) {
+            if (this.minecraft.loggingIn) {
                 int opcode = DefinedPacket.readVarInt(m);
                 System.out.println("opcode = " + opcode);
                 // we handle the login sequence
@@ -55,7 +53,7 @@ public class MinecraftClientHandler extends ChannelHandlerAdapter {
                     System.out.println("?? unrecognized opcode: "+opcode);
                     ctx.close();
                 }
-                loggingIn = false;
+                this.minecraft.loggingIn = false;
             } else {
                 // otherwise proxy through to WS
                 ByteBuf out = Unpooled.buffer(m.readableBytes() + 2);

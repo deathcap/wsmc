@@ -17,9 +17,12 @@
 package deathcap.wsmc.web;
 
 import deathcap.wsmc.WsmcPlugin;
+import deathcap.wsmc.mc.DefinedPacket;
 import deathcap.wsmc.mc.MinecraftThread;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
@@ -81,15 +84,27 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<BinaryWebSocke
         final ByteBuf buf = msg.content();
 
         System.out.println("ws received "+buf.readableBytes()+" bytes");
+        System.out.println("string = " + buf.toString(CharsetUtil.US_ASCII));
+
+        // strip length header since Varint21LengthFieldPrepender re-adds it
+        int length = DefinedPacket.readVarInt(buf);
+        System.out.println("length from header: "+length);
+        byte bytes[] = new byte[length];
+        buf.readBytes(bytes);
+
+        final ByteBuf reply = Unpooled.wrappedBuffer(bytes).retain();
+        System.out.println("stripped "+reply.readableBytes());
 
         final MinecraftThread mc = minecraft;
-        plugin.getServer().getScheduler().runTask(plugin, new Runnable() {
+        //ctx.writeAndFlush(new BinaryWebSocketFrame(reply)); // echo
+        // forward MC to WS
+        final ChannelFuture f = mc.clientHandler.minecraftClientHandler.ctx.writeAndFlush(reply);
+        f.addListener(new ChannelFutureListener() {
             @Override
-            public void run() {
-                // forward MC to WS
-                mc.clientHandler.minecraftClientHandler.ctx.writeAndFlush(buf);
-                //ctx.writeAndFlush(new BinaryWebSocketFrame(reply)); // echo
-                msg.release();
+            public void operationComplete(ChannelFuture channelFuture) throws Exception {
+                assert f == channelFuture;
+                System.out.println("forwarded WS -> MC");
+                reply.release();
             }
         });
     }

@@ -16,6 +16,7 @@ public class MinecraftThread extends Thread {
     public final String username;
     public final ChannelHandlerContext websocket;
     public ClientHandler clientHandler;
+    public boolean loggingIn = true;
 
     public MinecraftThread(String host, int port, String username, ChannelHandlerContext websocket) {
         this.host = host;
