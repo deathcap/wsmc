@@ -36,6 +36,7 @@ public class WsmcPlugin extends JavaPlugin implements Listener {
                 + "/";
         listener = new UserIdentityLinker(url, this.getConfig().getBoolean("minecraft.announce-on-join"));
         getServer().getPluginManager().registerEvents(listener, this);
+        getCommand("web").setExecutor(listener);
 
         webThread = new WebThread(
                 this.getConfig().getString("websocket.bind-address"),
