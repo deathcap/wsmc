@@ -7,7 +7,7 @@ main: deathcap.wsmc.WsmcPlugin
 load: STARTUP
 
 commands:
-   wsmc:
+   web:
      description: TODO
-     permission: wsmc.command
+     permission: web.command
      usage: N/A
