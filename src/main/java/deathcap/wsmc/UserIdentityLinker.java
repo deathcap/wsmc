@@ -1,5 +1,6 @@
 package deathcap.wsmc;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -92,23 +93,6 @@ public class UserIdentityLinker implements Listener, CommandExecutor, UserAuthen
         if (!this.announceOnJoin) return;
 
         Player player = event.getPlayer();
-        /* TODO: how do we send links? can generate this JSON
-        with http://deathcap.github.io/tellraw2dom/ but need to find proper API,
-        sendRawMessage() seems to just send {"text":...}
-        String raw =
-        "{" +
-            "\"extra\": [" +
-            "{" +
-                "\"text\": \"Web client enabled (click to view)\"," +
-                    "\"bold\": \"true\"," +
-                    "\"clickEvent\": {" +
-                        "\"action\": \"open_url\"," +
-                        "\"value\": \"https://github.com\"" +
-                    "}" +
-                "}" +
-            "]" +
-        "}";
-         */
 
         // TODO: don't show if client brand is our own
         // TODO: option to only show on first connect
@@ -117,16 +101,38 @@ public class UserIdentityLinker implements Listener, CommandExecutor, UserAuthen
     }
 
     // Give a player a URL to authenticate and join over the websocket
-    private void tellPlayer(Player whom, CommandSender destination) {
-        String username = whom.getName();
-        this.tellPlayer(username, destination);
+    private void tellPlayer(Player whom, Player destination) {
+        this.tellPlayer(whom.getName(), destination.getName());
     }
 
-    private void tellPlayer(String username, CommandSender destination) {
+    private void tellPlayer(String username, String destination) {
         String key = this.getOrGenerateUserKey(username);
-        String msg = "Web client enabled: "+webURL+"#"+username+":"+key; // TODO: urlencode
-
-        destination.sendMessage(msg);
+        String url = this.webURL+"#"+username+":"+key; // TODO: urlencode
+        if (destination == null) {
+            // console
+            String msg = "Web client enabled: "+url;
+            Bukkit.getServer().getConsoleSender().sendMessage(msg);
+        } else {
+            // player - /tellraw link
+            String raw =
+            "{" +
+                "\"text\": \"\"," + // required though unused
+                "\"extra\": [" +    // clickable link
+                "{" +
+                    "\"text\": \"Web client enabled (click to view)\"," +
+                        "\"bold\": \"true\"," +
+                        "\"clickEvent\": {" +
+                            "\"action\": \"open_url\"," +
+                            "\"value\": \"" + url + "\"" +  // TODO: json encode
+                        "}" +
+                    "}" +
+                "]" +
+            "}";
+            // TODO: switch to RichMessage API after https://github.com/Bukkit/Bukkit/pull/1065
+            //player.sendRawMessage(raw); // not what we want, actually just strips ChatColors
+            // TODO: note /tellraw Glowstone https://github.com/SpaceManiac/Glowstone/issues/124
+            plugin.getServer().dispatchCommand(Bukkit.getConsoleSender(), "tellraw "+destination+" "+raw);
+        }
     }
 
     @Override
@@ -151,7 +157,7 @@ public class UserIdentityLinker implements Listener, CommandExecutor, UserAuthen
             }
             */
 
-            this.tellPlayer(playerName, commandSender);
+            this.tellPlayer(playerName, null);
 
             return false;
         }

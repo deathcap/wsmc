@@ -91,6 +91,7 @@ public class HTTPHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
             return;
         }
 
+        // TODO: send browserified page
         if (request.getUri().equals("/")) {
             request.setUri("/index.html");
         }
