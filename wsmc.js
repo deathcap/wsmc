@@ -5,7 +5,7 @@ var WebSocketServer = (require('ws')).Server;
 var websocket_stream = require('websocket-stream');
 var argv = (require('optimist'))
   .default('wshost', '0.0.0.0')
-  .default('wsport', 1234)
+  .default('wsport', 24444)
   .default('mchost', 'localhost')
   .default('mcport', 25565)
   .default('prefix', 'webuser-')
@@ -26,8 +26,9 @@ var wss = new WebSocketServer({
 
 wss.on('connection', function(new_websocket_connection) {
   var ws = websocket_stream(new_websocket_connection);
+  var loggingIn = true;
 
-  ws.write('welcome');
+  ws.write('OK', {binary: true});
 
   var mc = minecraft_protocol.createClient({
     host: argv.mchost,
@@ -66,6 +67,14 @@ wss.on('connection', function(new_websocket_connection) {
 
   ws.on('data', function(raw) {
     console.log('websocket received '+raw.length+' bytes');
+
+    if (loggingIn) {
+      // first packet username
+      console.log('WS requested username: '+raw); // TODO: use it
+      loggingIn = false;
+      return;
+    }
+
     //console.log "websocket received '+raw.length+' bytes: '+JSON.stringify(raw));
 
     try {
