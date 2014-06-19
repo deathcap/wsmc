@@ -41,10 +41,14 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<BinaryWebSocke
     private boolean firstMessage = true;
     private Map<String, MinecraftThread> minecraftThreads = new HashMap<String, MinecraftThread>();
     private final WebThread webThread;
+    private final String mcAddress;
+    private final int mcPort;
 
-    public WebSocketHandler(WebThread webThread) {
+    public WebSocketHandler(WebThread webThread, String mcAddress, int mcPort) {
         super(false);
         this.webThread = webThread;
+        this.mcAddress = mcAddress;
+        this.mcPort = mcPort;
     }
 
     @Override
@@ -65,7 +69,7 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<BinaryWebSocke
             System.out.println("clientCredential = "+clientCredential); // TODO: username, key, auth
             msg.release();
 
-            minecraft = new MinecraftThread("localhost", 25565, clientCredential, ctx);
+            minecraft = new MinecraftThread(this.mcAddress, this.mcPort, clientCredential, ctx);
             minecraftThreads.put(ctx.channel().remoteAddress().toString(), minecraft); // TODO: cleanup
             minecraft.start();
 

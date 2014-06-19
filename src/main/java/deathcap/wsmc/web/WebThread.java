@@ -28,12 +28,16 @@ import io.netty.util.concurrent.GlobalEventExecutor;
 
 public class WebThread extends Thread {
 
-    public String address;
-    public int port;
+    public String wsAddress;
+    public int wsPort;
+    public String mcAddress;
+    public int mcPort;
 
-    public WebThread(String address, int port) {
-        this.address = address;
-        this.port = port;
+    public WebThread(String wsAddress, int wsPort, String mcAddress, int mcPort) {
+        this.wsAddress = wsAddress;
+        this.wsPort = wsPort;
+        this.mcAddress = mcAddress;
+        this.mcPort = mcPort;
     }
 
     private final ChannelGroup channels = new DefaultChannelGroup("wsmc Connections",
@@ -47,9 +51,9 @@ public class WebThread extends Thread {
             ServerBootstrap bootstrap = new ServerBootstrap();
             bootstrap.group(bossGroup, workerGroup).
                     channel(NioServerSocketChannel.class).
-                    childHandler(new ServerHandler(this));
+                    childHandler(new ServerHandler(this, this.mcAddress, this.mcPort));
 
-            Channel channel = bootstrap.bind(this.address, this.port)
+            Channel channel = bootstrap.bind(this.wsAddress, this.wsPort)
                 .sync()
                 .channel();
 

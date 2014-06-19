@@ -16,12 +16,16 @@ public class WsmcPlugin extends JavaPlugin {
 
         final FileConfiguration config = getConfig();
         config.options().copyDefaults(true);
-        config.addDefault("webserver.port", 24444);
-        config.addDefault("webserver.bind-address", "0.0.0.0");
+        config.addDefault("websocket.bind-address", "0.0.0.0");
+        config.addDefault("websocket.bind-port", 24444);
+        config.addDefault("minecraft.connect-address", "localhost");
+        config.addDefault("minecraft.connect-port", 25565);
 
         webThread = new WebThread(
-                this.getConfig().getString("webserver.bind-address"),
-                this.getConfig().getInt("webserver.port"));
+                this.getConfig().getString("websocket.bind-address"),
+                this.getConfig().getInt("websocket.bind-port"),
+                this.getConfig().getString("minecraft.connect-address"),
+                this.getConfig().getInt("minecraft.connect-port"));
         webThread.start();
     }
 
