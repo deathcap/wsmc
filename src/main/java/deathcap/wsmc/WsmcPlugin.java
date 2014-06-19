@@ -20,6 +20,7 @@ public class WsmcPlugin extends JavaPlugin {
         config.addDefault("websocket.bind-port", 24444);
         config.addDefault("minecraft.connect-address", "localhost");
         config.addDefault("minecraft.connect-port", 25565);
+        saveConfig();
 
         webThread = new WebThread(
                 this.getConfig().getString("websocket.bind-address"),
