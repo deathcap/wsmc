@@ -31,18 +31,20 @@ POSSIBILITY OF SUCH DAMAGE.
  */
 package deathcap.wsmc.mc;
 
-import com.google.common.base.Charsets;
-import com.google.common.base.Preconditions;
 import io.netty.buffer.ByteBuf;
+
+import java.nio.charset.Charset;
 
 public abstract class DefinedPacket
 {
+    private static final Charset utf8 = Charset.forName("UTF-8");
 
     public static void writeString(String s, ByteBuf buf)
     {
-        Preconditions.checkArgument(s.length() <= Short.MAX_VALUE, "Cannot send string longer than Short.MAX_VALUE (got %s characters)", s.length());
+        if (s.length() > Short.MAX_VALUE)
+            throw new IllegalArgumentException("Cannot send string longer than Short.MAX_VALUE (got %s characters): " + s.length());
 
-        byte[] b = s.getBytes( Charsets.UTF_8 );
+        byte[] b = s.getBytes(utf8);
         writeVarInt( b.length, buf );
         buf.writeBytes( b );
     }
@@ -50,17 +52,19 @@ public abstract class DefinedPacket
     public static String readString(ByteBuf buf)
     {
         int len = readVarInt( buf );
-        Preconditions.checkArgument(len <= Short.MAX_VALUE, "Cannot receive string longer than Short.MAX_VALUE (got %s characters)", len);
+        if (len > Short.MAX_VALUE)
+            throw new IllegalArgumentException("Cannot receive string longer than Short.MAX_VALUE (got %s characters): " + len);
 
         byte[] b = new byte[ len ];
         buf.readBytes( b );
 
-        return new String( b, Charsets.UTF_8 );
+        return new String( b, utf8 );
     }
 
     public static void writeArray(byte[] b, ByteBuf buf)
     {
-        Preconditions.checkArgument(b.length <= Short.MAX_VALUE, "Cannot send array longer than Short.MAX_VALUE (got %s bytes)", b.length);
+        if (b.length > Short.MAX_VALUE)
+            throw new IllegalArgumentException("Cannot send array longer than Short.MAX_VALUE (got %s bytes): " + b.length);
 
         buf.writeShort( b.length );
         buf.writeBytes( b );
@@ -69,7 +73,8 @@ public abstract class DefinedPacket
     public static byte[] readArray(ByteBuf buf)
     {
         short len = buf.readShort();
-        Preconditions.checkArgument(len <= Short.MAX_VALUE, "Cannot receive array longer than Short.MAX_VALUE (got %s bytes)", len);
+        if (len > Short.MAX_VALUE)
+            throw new IllegalArgumentException("Cannot receive array longer than Short.MAX_VALUE (got %s bytes): " + len);
 
         byte[] ret = new byte[ len ];
         buf.readBytes( ret );

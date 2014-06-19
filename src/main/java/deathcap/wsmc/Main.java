@@ -1,12 +1,15 @@
 package deathcap.wsmc;
 
-import deathcap.wsmc.mc.MinecraftThread;
+import deathcap.wsmc.web.WebThread;
 
 public class Main {
     public static void main(String[] args)
     {
-        //new MinecraftThread("localhost", 25565, "test1").run();
-        //WsmcPlugin plugin = new WsmcPlugin();
-        //plugin.onEnable();
+        String wsAddress = args.length > 0 ? args[0] : "localhost";
+        int wsPort = args.length > 1 ? Integer.parseInt(args[1]) : 24444;
+
+        System.out.println("WS("+wsAddress+":"+wsPort+") <--> MC");
+        WebThread webThread = new WebThread(wsAddress, wsPort);
+        webThread.start();
     }
 }

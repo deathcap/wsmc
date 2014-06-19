@@ -19,7 +19,9 @@ public class WsmcPlugin extends JavaPlugin {
         config.addDefault("webserver.port", 24444);
         config.addDefault("webserver.bind-address", "0.0.0.0");
 
-        webThread = new WebThread(this);
+        webThread = new WebThread(
+                this.getConfig().getString("webserver.bind-address"),
+                this.getConfig().getInt("webserver.port"));
         webThread.start();
     }
 

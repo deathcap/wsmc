@@ -38,31 +38,31 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<BinaryWebSocke
 
     private final static Logger logger = Logger.getLogger(WebSocketHandler.class.getName());
 
-    private final WsmcPlugin plugin;
     private boolean firstMessage = true;
     private Map<String, MinecraftThread> minecraftThreads = new HashMap<String, MinecraftThread>();
+    private final WebThread webThread;
 
-    public WebSocketHandler(WsmcPlugin plugin) {
+    public WebSocketHandler(WebThread webThread) {
         super(false);
-        this.plugin = plugin;
+        this.webThread = webThread;
     }
 
     @Override
     protected void messageReceived(final ChannelHandlerContext ctx, final BinaryWebSocketFrame msg) throws Exception {
         if (firstMessage) {
             firstMessage = false;
-            plugin.getWebThread().getChannelGroup().add(ctx.channel());
+            this.webThread.getChannelGroup().add(ctx.channel());
         }
 
         MinecraftThread minecraft = minecraftThreads.get(ctx.channel().remoteAddress().toString());
         if (minecraft == null) {
             // initial client connection
-            plugin.getLogger().info("Received WS connection: "+ctx.channel().remoteAddress()+" --> "+ctx.channel().localAddress());
+            System.out.println("Received WS connection: "+ctx.channel().remoteAddress()+" --> "+ctx.channel().localAddress());
 
             // current protocol: first websocket message is username
             System.out.println("readableBytes = "+msg.content().readableBytes());
             String clientCredential = msg.content().toString(CharsetUtil.UTF_8);
-            plugin.getLogger().info("clientCredential = "+clientCredential); // TODO: username, key, auth
+            System.out.println("clientCredential = "+clientCredential); // TODO: username, key, auth
             msg.release();
 
             minecraft = new MinecraftThread("localhost", 25565, clientCredential, ctx);

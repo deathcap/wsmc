@@ -28,10 +28,12 @@ import io.netty.util.concurrent.GlobalEventExecutor;
 
 public class WebThread extends Thread {
 
-    private WsmcPlugin plugin;
+    public String address;
+    public int port;
 
-    public WebThread(WsmcPlugin plugin) {
-        this.plugin = plugin;
+    public WebThread(String address, int port) {
+        this.address = address;
+        this.port = port;
     }
 
     private final ChannelGroup channels = new DefaultChannelGroup("wsmc Connections",
@@ -45,12 +47,11 @@ public class WebThread extends Thread {
             ServerBootstrap bootstrap = new ServerBootstrap();
             bootstrap.group(bossGroup, workerGroup).
                     channel(NioServerSocketChannel.class).
-                    childHandler(new ServerHandler(plugin));
+                    childHandler(new ServerHandler(this));
 
-            Channel channel = bootstrap.bind(
-                    plugin.getConfig().getString("webserver.bind-address"),
-                    plugin.getConfig().getInt("webserver.port")
-            ).sync().channel();
+            Channel channel = bootstrap.bind(this.address, this.port)
+                .sync()
+                .channel();
 
             channel.closeFuture().sync();
         } catch (InterruptedException e) {

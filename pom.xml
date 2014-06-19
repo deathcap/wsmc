@@ -27,6 +27,7 @@
       <groupId>io.netty</groupId>
       <artifactId>netty-all</artifactId>
       <version>5.0.0.Alpha1</version>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>commons-io</groupId>
@@ -88,9 +89,9 @@
                   </shadedPattern>
                 </relocation>
                 <relocation>
-                  <pattern>com.google.code.gson</pattern>
+                  <pattern>com.google</pattern>
                   <shadedPattern>
-                    deathcap.wsmc.lib.gson
+                    deathcap.wsmc.lib.google
                   </shadedPattern>
                 </relocation>
               </relocations>

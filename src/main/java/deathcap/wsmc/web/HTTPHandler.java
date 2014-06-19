@@ -56,10 +56,10 @@ public class HTTPHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
         mimeTypes.put("css", "text/css");
     }
 
-    private final WsmcPlugin plugin;
+    private final int port;
 
-    public HTTPHandler(WsmcPlugin plugin) {
-        this.plugin = plugin;
+    public HTTPHandler(int port) {
+        this.port = port;
     }
 
     @Override
@@ -123,7 +123,7 @@ public class HTTPHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
         ByteBuf buffer = out.buffer();
         if (request.getUri().equals("/index.html")) {
             String page = buffer.toString(Charsets.UTF_8);
-            page = page.replaceAll("%SERVERPORT%", Integer.toString(plugin.getConfig().getInt("webserver.port")));
+            page = page.replaceAll("%SERVERPORT%", Integer.toString(this.port));
             buffer.release();
             buffer = Unpooled.wrappedBuffer(page.getBytes(Charsets.UTF_8));
         }

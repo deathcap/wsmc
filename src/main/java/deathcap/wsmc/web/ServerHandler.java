@@ -26,10 +26,10 @@ import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
 
 public class ServerHandler extends ChannelInitializer<SocketChannel> {
 
-    private final WsmcPlugin plugin;
+    private final WebThread webThread;
 
-    public ServerHandler(WsmcPlugin plugin) {
-        this.plugin = plugin;
+    public ServerHandler(WebThread webThread) {
+        this.webThread = webThread;
     }
 
     @Override
@@ -37,8 +37,8 @@ public class ServerHandler extends ChannelInitializer<SocketChannel> {
         ChannelPipeline pipeline = socketChannel.pipeline();
         pipeline.addLast("codec-http", new HttpServerCodec());
         pipeline.addLast("aggregator", new HttpObjectAggregator(65536));
-        pipeline.addLast("handler", new HTTPHandler(plugin));
+        pipeline.addLast("handler", new HTTPHandler(this.webThread.port));
         pipeline.addLast("websocket", new WebSocketServerProtocolHandler("/server"));
-        pipeline.addLast("websocket-handler", new WebSocketHandler(plugin));
+        pipeline.addLast("websocket-handler", new WebSocketHandler(webThread));
     }
 }
