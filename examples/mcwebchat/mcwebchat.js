@@ -58,7 +58,7 @@ var decodePacket = function(data) {
   var payload = result.results;
   var id = result.results.id;
   var name = minecraft_protocol.protocol.packetNames[state].toClient[id];
-  log('parsed '+name+': '+JSON.stringify(result));
+  //console.log('parsed',name,result);
 
   return {name:name, id:id, payload:payload};
 };
