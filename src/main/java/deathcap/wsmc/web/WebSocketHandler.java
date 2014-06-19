@@ -66,10 +66,16 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<BinaryWebSocke
 
         System.out.println("clientCredential = "+clientCredential); // TODO: username, key, auth
 
-        String username = users.verifyLogin(clientCredential);
-        if (username == null) {
-            System.out.println("refusing connection for "+clientCredential+" from "+ctx.channel().remoteAddress());
-            return;
+        String username;
+        if (users != null) {
+            username = users.verifyLogin(clientCredential);
+            if (username == null) {
+                System.out.println("refusing connection for "+clientCredential+" from "+ctx.channel().remoteAddress());
+                return;
+            }
+        } else {
+            System.out.println("command-line mode, allowing everyone");
+            username = clientCredential;
         }
 
         msg.release();
