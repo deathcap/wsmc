@@ -6,6 +6,37 @@ Allows you to write Minecraft clients connecting over [WebSockets](http://www.we
 
 ## Proxy Usage
 
+### WSMC for Java (Bukkit plugin)
+
+Install [Maven](https://maven.apache.org/) and build with:
+
+    mvn clean install
+
+The resulting binary can be used from the command-line:
+
+    java -cp target/wsmc*.jar deathcap.wsmc.Main 0.0.0.0 24444 localhost 25565
+
+but it also loadable with software implementing the [Bukkit API](https://github.com/Bukkit/Bukkit),
+simply copy the jar into the `plugins` directory.
+Tested with:
+
+* [Glowstone](https://github.com/SpaceManiac/Glowstone) - an open source server for Minecraft and Bukkit
+* [Spigot](https://github.com/SpigotMC/Spigot) - a modification to Minecraft implementing Bukkit
+* [Junket](https://github.com/deathcap/Junket) - partial implementation of Bukkit (no server)
+
+Configure in `plugins/WSMC/plugin.yml`, default:
+
+    websocket:
+      bind-address: 0.0.0.0
+      bind-port: 24444
+    minecraft:
+      connect-address: localhost
+      connect-port: 25565
+
+### WSMC for JavaScript (Node.js script)
+
+Install [Node.js](http://nodejs.org/) then run:
+
     node wsmc.js
 
 Options default to:
