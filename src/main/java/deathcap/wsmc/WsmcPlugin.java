@@ -11,7 +11,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class WsmcPlugin extends JavaPlugin implements Listener {
 
     private WebThread webThread;
-    private UserIdentityLinker listener;
+    private UserIdentityLinker users;
 
     @Override
     public void onEnable() {
@@ -26,6 +26,7 @@ public class WsmcPlugin extends JavaPlugin implements Listener {
         config.addDefault("minecraft.connect-address", "localhost");
         config.addDefault("minecraft.connect-port", 25565);
         config.addDefault("minecraft.announce-on-join", true);
+        config.addDefault("minecraft.allow-anonymous", false);
         saveConfig();
 
         String url = this.getConfig().getString("websocket.external-scheme")
@@ -34,15 +35,19 @@ public class WsmcPlugin extends JavaPlugin implements Listener {
                 + (this.getConfig().getInt("websocket.external-port") != 80
                     ? (":" + this.getConfig().getInt("websocket.external-port")) : "")
                 + "/";
-        listener = new UserIdentityLinker(url, this.getConfig().getBoolean("minecraft.announce-on-join"));
-        getServer().getPluginManager().registerEvents(listener, this);
-        getCommand("web").setExecutor(listener);
+        users = new UserIdentityLinker(url,
+                this.getConfig().getBoolean("minecraft.announce-on-join"),
+                this.getConfig().getBoolean("minecraft.allow-anonymous"),
+                this);
+        getServer().getPluginManager().registerEvents(users, this);
+        getCommand("web").setExecutor(users);
 
         webThread = new WebThread(
                 this.getConfig().getString("websocket.bind-address"),
                 this.getConfig().getInt("websocket.bind-port"),
                 this.getConfig().getString("minecraft.connect-address"),
-                this.getConfig().getInt("minecraft.connect-port"));
+                this.getConfig().getInt("minecraft.connect-port"),
+                users);
         webThread.start();
     }
 

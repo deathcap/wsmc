@@ -16,6 +16,8 @@
 
 package deathcap.wsmc.web;
 
+import deathcap.wsmc.UserAuthenticator;
+import deathcap.wsmc.UserIdentityLinker;
 import deathcap.wsmc.WsmcPlugin;
 import deathcap.wsmc.mc.DefinedPacket;
 import deathcap.wsmc.mc.MinecraftThread;
@@ -43,13 +45,16 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<BinaryWebSocke
     private final WebThread webThread;
     private final String mcAddress;
     private final int mcPort;
+    private final UserAuthenticator users;
 
-    public WebSocketHandler(WebThread webThread, String mcAddress, int mcPort) {
+    public WebSocketHandler(WebThread webThread, String mcAddress, int mcPort, UserAuthenticator users) {
         super(false);
         this.webThread = webThread;
         this.mcAddress = mcAddress;
         this.mcPort = mcPort;
+        this.users = users;
     }
+
 
     private void setupInitialConnection(final ChannelHandlerContext ctx, final BinaryWebSocketFrame msg) {
         // initial client connection
@@ -58,10 +63,18 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<BinaryWebSocke
         // current protocol: first websocket message is username
         System.out.println("readableBytes = "+msg.content().readableBytes());
         String clientCredential = msg.content().toString(CharsetUtil.UTF_8);
+
         System.out.println("clientCredential = "+clientCredential); // TODO: username, key, auth
+
+        String username = users.verifyLogin(clientCredential);
+        if (username == null) {
+            System.out.println("refusing connection for "+clientCredential+" from "+ctx.channel().remoteAddress());
+            return;
+        }
+
         msg.release();
 
-        MinecraftThread minecraft = new MinecraftThread(this.mcAddress, this.mcPort, clientCredential, ctx);
+        MinecraftThread minecraft = new MinecraftThread(this.mcAddress, this.mcPort, username, ctx);
         minecraftThreads.put(ctx.channel().remoteAddress().toString(), minecraft); // TODO: cleanup
         minecraft.start();
     }

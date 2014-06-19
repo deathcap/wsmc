@@ -16,6 +16,7 @@
 
 package deathcap.wsmc.web;
 
+import deathcap.wsmc.UserIdentityLinker;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
@@ -28,11 +29,13 @@ public class ServerHandler extends ChannelInitializer<SocketChannel> {
     private final WebThread webThread;
     private final String mcAddress;
     private final int mcPort;
+    private final UserIdentityLinker users;
 
-    public ServerHandler(WebThread webThread, String mcAddress, int mcPort) {
+    public ServerHandler(WebThread webThread, String mcAddress, int mcPort, UserIdentityLinker users) {
         this.webThread = webThread;
         this.mcAddress = mcAddress;
         this.mcPort = mcPort;
+        this.users = users;
     }
 
     @Override
@@ -42,6 +45,6 @@ public class ServerHandler extends ChannelInitializer<SocketChannel> {
         pipeline.addLast("aggregator", new HttpObjectAggregator(65536));
         pipeline.addLast("handler", new HTTPHandler(this.webThread.wsPort));
         pipeline.addLast("websocket", new WebSocketServerProtocolHandler("/server"));
-        pipeline.addLast("websocket-handler", new WebSocketHandler(webThread, this.mcAddress, this.mcPort));
+        pipeline.addLast("websocket-handler", new WebSocketHandler(webThread, this.mcAddress, this.mcPort, this.users));
     }
 }

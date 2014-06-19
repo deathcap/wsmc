@@ -12,7 +12,18 @@ var log = function(s) {
 
 var ws = websocket_stream('ws://localhost:24444/server', {type: Uint8Array});
 console.log('ws',ws);
-ws.write(new Buffer('mcwebchatuser')); // send username, as buffer so binary
+// login credential
+// (note: send username, as buffer so binary - new Buffer())
+
+var hash = document.location.hash;
+if (hash.length < 2) {
+  // try anonymous auth
+  ws.write(new Buffer('mcwebchatuser'));
+} else {
+  hash = hash.substring(1); // remove #
+  ws.write(new Buffer(hash)); // credential
+}
+
 /*
 ws.addEventListener('open', function() {
   log('Successfully connected to WebSocket');
