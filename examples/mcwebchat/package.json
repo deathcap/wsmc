@@ -2,6 +2,7 @@
   "name": "mcwebchat",
   "description": "webchat client example for wsmc",
   "version": "0.0.1",
+  "main": "mcwebchat.js",
   "repository": {
     "type": "git",
     "url": "git@github.com:deathcap/wsmc.git"
@@ -16,7 +17,7 @@
     "beefy": "0.4.5"
   },
   "scripts": {
-    "start": "beefy index.js:bundle.js"
+    "start": "beefy mcwebchat.js:bundle.js"
   },
   "license": "MIT"
 }
