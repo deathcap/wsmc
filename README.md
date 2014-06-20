@@ -12,13 +12,9 @@ Install [Maven](https://maven.apache.org/) and build with:
 
     mvn clean install
 
-The resulting binary can be used from the command-line:
 
-    java -cp target/wsmc*.jar deathcap.wsmc.Main 0.0.0.0 24444 localhost 25565
-
-but it also loadable with software implementing the [Bukkit API](https://github.com/Bukkit/Bukkit),
-simply copy the jar into the `plugins` directory.
-Tested with:
+Load the plugin with with software implementing the [Bukkit API](https://github.com/Bukkit/Bukkit),
+simply copy the jar into the `plugins` directory. Tested with:
 
 * [Glowstone](https://github.com/SpaceManiac/Glowstone) - an open source server for Minecraft and Bukkit
 * [Spigot](https://github.com/SpigotMC/Spigot) - a modification to Minecraft implementing Bukkit
@@ -29,9 +25,30 @@ Configure in `plugins/WSMC/plugin.yml`, default:
     websocket:
       bind-address: 0.0.0.0
       bind-port: 24444
+      external-scheme: http
+      external-domain: localhost
+      external-port: 24444
     minecraft:
       connect-address: localhost
       connect-port: 25565
+      announce-on-join: true
+      allow-anonymous: false
+
+### Authentication
+
+TODO (incomplete, experimental), see [https://github.com/deathcap/wsmc/issues/2](https://github.com/deathcap/wsmc/issues/2).
+First login through the regular Minecraft client, with your account, and you'll get a per-user URL to login to WSMC
+(can be disabled with `announce-on-join: false`). Alternatively the same URL can be retrieved using the `/web` command,
+either from a player or with `/web playername` from the server console.
+
+Authentication can be disabled by setting `allow-anonymous: true` (for testing purposes, warning: allows logging in as any user).
+
+#### Command-line mode
+
+Alternatively, the plugin can be used from the command-line, for testing purposes (no auth):
+
+    java -cp target/wsmc*.jar deathcap.wsmc.Main 0.0.0.0 24444 localhost 25565
+
 
 ### WSMC for JavaScript (Node.js script)
 
