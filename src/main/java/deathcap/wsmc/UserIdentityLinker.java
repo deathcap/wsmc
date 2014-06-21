@@ -65,13 +65,20 @@ public class UserIdentityLinker implements Listener, CommandExecutor, UserAuthen
     }
 
 
+    private static final String KEY_ALPHABET = "abcdefghijkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ0123456789";
+    private static final int KEY_LENGTH = 8;
     // Generate a random secret key, suitable for embedding in a URL
     private String newRandomKey() {
-        byte[] bytes = new byte[4]; // TODO: more bytes?
-        random.nextBytes(bytes);
-        int n = bytes[0] | (bytes[1] << 8) | (bytes[2] << 16) | (bytes[3] << 24);
-        String s = ""+n; // TODO: base36(?) encoding
-        return s;
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < KEY_LENGTH; ++i) {
+            int index = random.nextInt(KEY_ALPHABET.length());
+            char c = KEY_ALPHABET.charAt(index);
+            sb.append(c);
+
+        }
+
+        return sb.toString();
     }
 
     public String getOrGenerateUserKey(String name) {
