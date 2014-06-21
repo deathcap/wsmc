@@ -109,9 +109,9 @@
                   </shadedPattern>
                 </relocation>
                 <relocation>
-                  <pattern>com.google</pattern>
+                  <pattern>com.google.code.gson</pattern>
                   <shadedPattern>
-                    deathcap.wsmc.lib.google
+                    deathcap.wsmc.lib.gson
                   </shadedPattern>
                 </relocation>
               </relocations>
