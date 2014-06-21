@@ -16,7 +16,6 @@
 
 package deathcap.wsmc.web;
 
-import com.google.common.base.Charsets;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufOutputStream;
 import io.netty.buffer.Unpooled;
@@ -28,10 +27,10 @@ import io.netty.handler.codec.http.DefaultFullHttpResponse;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.util.CharsetUtil;
-import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
@@ -63,6 +62,15 @@ public class HTTPHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
     protected void messageReceived(ChannelHandlerContext ctx, FullHttpRequest msg)
             throws Exception {
         httpRequest(ctx, msg);
+    }
+
+    private static final int BUFFER_SIZE = 1024 * 4; // same as commons-io IOUtils.copy
+    private static void copyStream(InputStream in, OutputStream out) throws IOException {
+        byte[] buffer = new byte[BUFFER_SIZE];
+        int length = 0;
+        while ((length = in.read(buffer)) >= 0) {
+            out.write(buffer, 0, length);
+        }
     }
 
     public void httpRequest(ChannelHandlerContext context, FullHttpRequest request) throws IOException {
@@ -114,16 +122,16 @@ public class HTTPHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
             return;
         }
         ByteBufOutputStream out = new ByteBufOutputStream(Unpooled.buffer());
-        IOUtils.copy(stream, out);
+        copyStream(stream, out);
         stream.close();
         out.close();
 
         ByteBuf buffer = out.buffer();
         if (request.getUri().equals("/index.html")) {
-            String page = buffer.toString(Charsets.UTF_8);
+            String page = buffer.toString(CharsetUtil.UTF_8);
             page = page.replaceAll("%SERVERPORT%", Integer.toString(this.port));
             buffer.release();
-            buffer = Unpooled.wrappedBuffer(page.getBytes(Charsets.UTF_8));
+            buffer = Unpooled.wrappedBuffer(page.getBytes(CharsetUtil.UTF_8));
         }
 
         FullHttpResponse response = new DefaultFullHttpResponse(HTTP_1_1, OK, buffer);
