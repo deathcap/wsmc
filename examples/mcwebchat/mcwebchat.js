@@ -7,10 +7,14 @@ var tellraw2dom = require('tellraw2dom');
 var outputNode = document.getElementById('output');
 var inputNode = document.getElementById('input');
 
-var log = function(s) {
-  outputNode.appendChild(document.createTextNode(s));
+var logNode = function(node) {
+  outputNode.appendChild(node);
   outputNode.appendChild(document.createElement('br'));
-}
+};
+
+var log = function(s) {
+  logNode(document.createTextNode(s));
+};
 
 // login credential
 var username;
@@ -25,8 +29,13 @@ if (hash.length < 2) {
 var bot = mineflayer.createBot({
   username: username
 });
+/* parsed chat event is available, but raw message has more information
 bot.on('chat', function(username, message) {
-  log('<'+username+'> '+message); // TODO: change to tellraw2dom raw message, instead of getting preparsed (strips colors, etc.)
+  log('<'+username+'> '+message);
+});
+*/
+bot.on('message', function(message) {
+  logNode(tellraw2dom(message.json)); // TODO: also decode color codes
 });
 
 bot.on('error', function(exception) {
