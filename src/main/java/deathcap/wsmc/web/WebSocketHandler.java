@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.RejectedExecutionException;
 import java.util.logging.Logger;
 
 public class WebSocketHandler extends SimpleChannelInboundHandler<BinaryWebSocketFrame> {
@@ -112,14 +113,20 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<BinaryWebSocke
 
         final MinecraftThread mc = minecraft;
         // forward MC to WS
-        final ChannelFuture f = mc.clientHandler.minecraftClientHandler.ctx.writeAndFlush(reply);
-        f.addListener(new ChannelFutureListener() {
-            @Override
-            public void operationComplete(ChannelFuture channelFuture) throws Exception {
-                assert f == channelFuture;
-                System.out.println("forwarded WS -> MC, "+reply.readableBytes()+" bytes");
-                reply.release();
-            }
-        });
+        try {
+            final ChannelFuture f = mc.clientHandler.minecraftClientHandler.ctx.writeAndFlush(reply);
+
+            f.addListener(new ChannelFutureListener() {
+                @Override
+                public void operationComplete(ChannelFuture channelFuture) throws Exception {
+                    assert f == channelFuture;
+                    System.out.println("forwarded WS -> MC, "+reply.readableBytes()+" bytes");
+                    reply.release();
+                }
+            });
+        } catch (RejectedExecutionException ex) {
+            //TODO mc.clientHandler.minecraftClientHandler.close(ctx, )
+        }
+
     }
 }
