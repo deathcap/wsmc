@@ -1,7 +1,4 @@
 var mineflayer = require('mineflayer');
-
-var websocket_stream = require('websocket-stream');
-var minecraft_protocol = require('minecraft-protocol');
 var tellraw2dom = require('tellraw2dom');
 
 var outputNode = document.getElementById('output');
