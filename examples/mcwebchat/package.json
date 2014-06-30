@@ -14,7 +14,7 @@
     "tellraw2dom": "^0.0.4"
   },
   "devDependencies": {
-    "beefy": "0.4.5"
+    "beefy": "^2.0.2"
   },
   "scripts": {
     "start": "beefy mcwebchat.js:bundle.js"
