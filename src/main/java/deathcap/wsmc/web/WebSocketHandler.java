@@ -119,9 +119,13 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<BinaryWebSocke
             f.addListener(new ChannelFutureListener() {
                 @Override
                 public void operationComplete(ChannelFuture channelFuture) throws Exception {
-                    assert f == channelFuture;
-                    System.out.println("forwarded WS -> MC, "+reply.readableBytes()+" bytes");
-                    reply.release();
+                    try {
+                        assert f == channelFuture;
+                        System.out.println("forwarded WS -> MC, "+reply.readableBytes()+" bytes");
+                        reply.release();
+                    } catch (RejectedExecutionException ex) {
+                        // TODO
+                    }
                 }
             });
         } catch (RejectedExecutionException ex) {
