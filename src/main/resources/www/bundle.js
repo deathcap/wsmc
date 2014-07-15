@@ -1,8 +1,5 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 var mineflayer = require('mineflayer');
-
-var websocket_stream = require('websocket-stream');
-var minecraft_protocol = require('minecraft-protocol');
 var tellraw2dom = require('tellraw2dom');
 
 var outputNode = document.getElementById('output');
@@ -62,1870 +59,7 @@ document.body.addEventListener('keyup', function(event) {
   inputNode.value = '';
 });
 
-},{"minecraft-protocol":2,"mineflayer":9,"tellraw2dom":61,"websocket-stream":62}],2:[function(require,module,exports){
-(function (Buffer){
-'use strict';
-
-var Client = require('./lib/client')
-    , protocol = require('./lib/protocol')
-    , assert = require('assert')
-    , states = protocol.states;
-
-module.exports = {
-  protocol: require('./lib/protocol'),
-  createClient: createClient
-};
-
-// websocket version of index.js createClient()
-function createClient(options) {
-  assert.ok(options, "options is required");
-  var port = options.port || 24444;
-  var host = options.host || 'localhost';
-  var protocol = options.protocol || 'ws';
-  var path = options.path || 'server';
-  var url = options.url || (options.protocol + '://' + options.host + ':' + options.port + '/' + options.path);
-
-  assert.ok(options.username, "username is required");
-  var keepAlive = options.keepAlive == null ? true : options.keepAlive;
-
-
-  var client = new Client(false);
-  client.on('connect', onConnect);
-  if (keepAlive) client.on([states.PLAY, 0x00], onKeepAlive);
-
-  client.username = options.username;
-  client.connectWS(url);
-
-  return client;
-
-  function onConnect() {
-    client.socket.write(new Buffer(client.username));
-    client.state = states.PLAY;
-  }
-
-  function onKeepAlive(packet) {
-    client.write(0x00, {
-      keepAliveId: packet.keepAliveId
-    });
-  }
-}
-
-
-}).call(this,require("buffer").Buffer)
-},{"./lib/client":3,"./lib/protocol":4,"assert":67,"buffer":83}],3:[function(require,module,exports){
-(function (Buffer){
-var net = require('net')
-  , EventEmitter = require('events').EventEmitter
-  , util = require('util')
-  , websocket_stream = require('websocket-stream')
-  , protocol = require('./protocol')
-  , dns = require('dns')
-  , createPacketBuffer = protocol.createPacketBuffer
-  , parsePacket = protocol.parsePacket
-  , states = protocol.states
-  , debug = protocol.debug
-;
-
-module.exports = Client;
-
-function Client(isServer) {
-  EventEmitter.call(this);
-
-  this._state = states.HANDSHAKING;
-  Object.defineProperty(this, "state", {
-    get: function() {
-      return this._state;
-    },
-    set: function(newProperty) {
-      var oldProperty = this._state;
-      this._state = newProperty;
-      this.emit('state', newProperty, oldProperty);
-    }
-  });
-  this.isServer = !!isServer;
-  this.socket = null;
-  this.encryptionEnabled = false;
-  this.cipher = null;
-  this.decipher = null;
-  this.packetsToParse = {};
-  this.on('newListener', function(event, listener) {
-    var direction = this.isServer ? 'toServer' : 'toClient';
-    if (protocol.packetStates[direction].hasOwnProperty(event) || event === "packet") {
-      if (typeof this.packetsToParse[event] === "undefined") this.packetsToParse[event] = 1;
-      else this.packetsToParse[event] += 1;
-    }
-  });
-  this.on('removeListener', function(event, listener) {
-    var direction = this.isServer ? 'toServer' : 'toClient';
-    if (protocol.packetStates[direction].hasOwnProperty(event) || event === "packet") {
-      this.packetsToParse[event] -= 1;
-    }
-  });
-}
-
-util.inherits(Client, EventEmitter);
-
-// Transform weird "packet" types into string representing their type. Should be mostly retro-compatible
-Client.prototype.on = function(type, func) {
-    var direction = this.isServer ? 'toServer' : 'toClient';
-    if (Array.isArray(type)) {
-        arguments[0] = protocol.packetNames[type[0]][direction][type[1]];
-    } else if (typeof type === "number") {
-        arguments[0] = protocol.packetNames[this.state][direction][type];
-    }
-    EventEmitter.prototype.on.apply(this, arguments);
-};
-
-Client.prototype.onRaw = function(type, func) {
-    var arg = "raw.";
-    if (Array.isArray(type)) {
-        arg += protocol.packetNames[type[0]][direction][type[1]];
-    } else if (typeof type === "number") {
-        arg += protocol.packetNames[this.state][direction][type];
-    } else {
-        arg += type;
-    }
-    arguments[0] = arg;
-    EventEmitter.prototype.on.apply(this, arguments);
-};
-
-Client.prototype.setSocket = function(socket) {
-  var self = this;
-  self.socket = socket;
-  var incomingBuffer = new Buffer(0);
-  self.socket.on('data', function(data) {
-    if (self.encryptionEnabled) data = new Buffer(self.decipher.update(data), 'binary');
-    if (!Buffer.isBuffer(data)) data = new Buffer(data);
-    incomingBuffer = Buffer.concat([incomingBuffer, data]);
-    var parsed, packet;
-    while (true) {
-      parsed = parsePacket(incomingBuffer, self.state, self.isServer, self.packetsToParse);
-      if (! parsed) break;
-      if (parsed.error) {
-          this.emit('error', parsed.error);
-          this.end("ProtocolError");
-          return;
-      }
-      packet = parsed.results;
-      incomingBuffer = incomingBuffer.slice(parsed.size);
-
-      var packetName = protocol.packetNames[self.state][self.isServer ? 'toServer' : 'toClient'][packet.id];
-      self.emit(packetName, packet);
-      self.emit('packet', packet);
-      self.emit('raw.' + packetName, parsed.buffer);
-      self.emit('raw', parsed.buffer);
-    }
-  });
-
-  self.socket.on('connect', function() {
-    self.emit('connect');
-  });
-
-  self.socket.on('error', onError);
-  self.socket.on('close', endSocket);
-  self.socket.on('end', endSocket);
-  self.socket.on('timeout', endSocket);
-
-  function onError(err) {
-    self.emit('error', err);
-    endSocket();
-  }
-
-  var ended = false;
-  function endSocket() {
-    if (ended) return;
-    ended = true;
-    self.socket.removeListener('close', endSocket);
-    self.socket.removeListener('end', endSocket);
-    self.socket.removeListener('timeout', endSocket);
-    self.emit('end', self._endReason);
-  }
-};
-
-Client.prototype.connectWS = function(url) {
-  var ws = websocket_stream(url, {type: Uint8Array});
-  this.setSocket(ws);
-};
-
-Client.prototype.connect = function(port, host) {
-  var self = this;
-  if (port == 25565) {
-      dns.resolveSrv("_minecraft._tcp." + host, function(err, addresses) {
-      if (addresses) {
-        self.setSocket(net.connect(addresses[0].port, addresses[0].name));
-      } else {
-        self.setSocket(net.connect(port, host));
-      }
-    });
-  } else {
-    self.setSocket(net.connect(port, host));
-  }
-};
-
-Client.prototype.end = function(reason) {
-  this._endReason = reason;
-  this.socket.end();
-};
-
-Client.prototype.write = function(packetId, params) {
-  if (Array.isArray(packetId)) {
-     if (packetId[0] !== this.state)
-      return false;
-    packetId = packetId[1];
-  }
-  
-  var buffer = createPacketBuffer(packetId, this.state, params, this.isServer);
-  debug("writing packetId " + packetId + " (0x" + packetId.toString(16) + ")");
-  debug(params);
-  var out = this.encryptionEnabled ? new Buffer(this.cipher.update(buffer), 'binary') : buffer;
-  this.socket.write(out);
-  return true;
-};
-
-Client.prototype.writeRaw = function(buffer, shouldEncrypt) {
-    if (shouldEncrypt === null) {
-        shouldEncrypt = true;
-    }
-    var out = (shouldEncrypt && this.encryptionEnabled) ? new Buffer(this.cipher.update(buffer), 'binary') : buffer;
-    this.socket.write(out);
-};
-}).call(this,require("buffer").Buffer)
-},{"./protocol":4,"buffer":83,"dns":66,"events":86,"net":66,"util":105,"websocket-stream":5}],4:[function(require,module,exports){
-(function (process,Buffer){
-var assert = require('assert');
-var util = require('util');
-
-var STRING_MAX_LENGTH = 240;
-var SRV_STRING_MAX_LENGTH = 32767;
-
-// This is really just for the client.
-var states = {
-  "HANDSHAKING": "handshaking",
-  "STATUS": "status",
-  "LOGIN": "login",
-  "PLAY": "play"
-}
-
-var packets = {
-  handshaking: {
-    toClient: {},
-    toServer: { 
-      set_protocol:          {id: 0x00, fields: [
-        { name: "protocolVersion", type: "varint" },
-        { name: "serverHost", type: "string" },
-        { name: "serverPort", type: "ushort" },
-        { name: "nextState", type: "varint" }
-      ]}
-    },
-  },
-
-// TODO : protocollib names aren't the best around here
-  status: {
-    toClient: {
-      server_info:    {id: 0x00, fields: [
-        { name: "response", type: "ustring" }
-      ]},
-      ping:        {id: 0x01, fields: [
-        { name: "time", type: "long" }
-      ]}
-    },
-    toServer: {
-      ping_start:     {id: 0x00, fields: []},
-      ping:        {id: 0x01, fields: [
-        { name: "time", type: "long" }
-      ]}
-    }
-  },
-
-  login: {
-    toClient: {
-      disconnect:   {id: 0x00, fields: [
-        { name: "reason", type: "string" }
-      ]},
-      encryption_begin: {id: 0x01, fields: [
-        { name: "serverId", type: "string" },
-        { name: "publicKeyLength", type: "count", typeArgs: { type: "short", countFor: "publicKey" } },
-        { name: "publicKey", type: "buffer", typeArgs: { count: "publicKeyLength" } },
-        { name: "verifyTokenLength", type: "count", typeArgs: { type: "short", countFor: "verifyToken" } },
-        { name: "verifyToken", type: "buffer", typeArgs: { count: "verifyTokenLength" } },
-      ]},
-      success:      {id: 0x02, fields: [
-        { name: "uuid", type: "string" },
-        { name: "username", type: "string" }
-      ]}
-    },
-    toServer: {
-      login_start:        {id: 0x00, fields: [
-        { name: "username", type: "string" }
-      ]},
-      encryption_begin: {id: 0x01, fields: [
-        { name: "sharedSecretLength", type: "count", typeArgs: { type: "short", countFor: "sharedSecret" } },
-        { name: "sharedSecret", type: "buffer", typeArgs: { count: "sharedSecretLength" } },
-        { name: "verifyTokenLength", type: "count", typeArgs: { type: "short", countFor: "verifyToken" } },
-        { name: "verifyToken", type: "buffer", typeArgs: { count: "verifyTokenLength" } },
-      ]}
-    }
-  },
-
-  play: {
-    toClient: {
-      keep_alive:         {id: 0x00, fields: [
-        { name: "keepAliveId", type: "int" },
-      ]},
-      login:          {id: 0x01, fields: [
-        { name: "entityId", type: "int" },
-        { name: "gameMode", type: "ubyte" },
-        { name: "dimension", type: "byte" },
-        { name: "difficulty", type: "ubyte" },
-        { name: "maxPlayers", type: "ubyte" },
-        { name: "levelType", type: "string" },
-      ]},
-      chat:               {id: 0x02, fields: [
-        { name: "message", type: "ustring" },
-      ]},
-      update_time:        {id: 0x03, fields: [
-        { name: "age", type: "long" },
-        { name: "time", type: "long" },
-      ]},
-      entity_equipment:   {id: 0x04, fields: [
-        { name: "entityId", type: "int" },
-        { name: "slot", type: "short" },
-        { name: "item", type: "slot" }
-      ]},
-      spawn_position:     {id: 0x05, fields: [
-        { name: "x", type: "int" },
-        { name: "y", type: "int" },
-        { name: "z", type: "int" }
-      ]},
-      update_health:      {id: 0x06, fields: [
-        { name: "health", type: "float" },
-        { name: "food", type: "short" },
-        { name: "foodSaturation", type: "float" }
-      ]},
-      respawn:            {id: 0x07, fields: [
-        { name: "dimension", type: "int" },
-        { name: "difficulty", type: "ubyte" },
-        { name: "gamemode", type: "ubyte" },
-        { name: "levelType", type: "string" }
-      ]},
-      position:    {id: 0x08, fields: [
-        { name: "x", type: "double" },
-        { name: "y", type: "double" },
-        { name: "z", type: "double" },
-        { name: "yaw", type: "float" },
-        { name: "pitch", type: "float" },
-        { name: "onGround", type: "bool" }
-      ]},
-      held_item_slot:   {id: 0x09, fields: [
-        { name: "slot", type: "byte" }
-      ]},
-      bed:            {id: 0x0a, fields: [
-        { name: "entityId", type: "int" },
-        { name: "x", type: "int" },
-        { name: "y", type: "ubyte" },
-        { name: "z", type: "int" }
-      ]},
-      animation:          {id: 0x0b, fields: [
-        { name: "entityId", type: "varint" },
-        { name: "animation", type: "byte" }
-      ]},
-      named_entity_spawn:       {id: 0x0c, fields: [
-        { name: "entityId", type: "varint" },
-        { name: "playerUUID", type: "string" },
-        { name: "playerName", type: "string" },
-        { name: "dataCount", type: "count", typeArgs: { type: "varint", countFor: "data" }},
-        { name: "data", type: "array", typeArgs: { count: "dataCount", 
-          type: "container", typeArgs: { fields: [
-            { name: "name", type: "string" },
-            { name: "value", type: "string" },
-            { name: "signature", type: "string" }
-        ]}}},
-        { name: "x", type: "int" },
-        { name: "y", type: "int" },
-        { name: "z", type: "int" },
-        { name: "yaw", type: "byte" },
-        { name: "pitch", type: "byte" },
-        { name: "currentItem", type: "short" },
-        { name: "metadata", type: "entityMetadata" }
-      ]},
-      collect:       {id: 0x0d, fields: [
-        { name: "collectedEntityId", type: "int" },
-        { name: "collectorEntityId", type: "int" }
-      ]},
-      spawn_entity:       {id: 0x0e, fields: [
-        { name: "entityId", type: "varint" },
-        { name: "type", type: "byte" },
-        { name: "x", type: "int" },
-        { name: "y", type: "int" },
-        { name: "z", type: "int" },
-        { name: "pitch", type: "byte" },
-        { name: "yaw", type: "byte" },
-        { name: "objectData", type: "container", typeArgs: { fields: [
-          { name: "intField", type: "int" },
-          { name: "velocityX", type: "short", condition: function(field_values) {
-            return field_values['this']['intField'] != 0;
-          }},
-          { name: "velocityY", type: "short", condition: function(field_values) {
-            return field_values['this']['intField'] != 0;
-          }},
-          { name: "velocityZ", type: "short", condition: function(field_values) {
-            return field_values['this']['intField'] != 0;
-          }}
-        ]}} 
-      ]},
-      spawn_entity_living:          {id: 0x0f, fields: [
-        { name: "entityId", type: "varint" },
-        { name: "type", type: "ubyte" },
-        { name: "x", type: "int" },
-        { name: "y", type: "int" },
-        { name: "z", type: "int" },
-        { name: "pitch", type: "byte" },
-        { name: "headPitch", type: "byte" },
-        { name: "yaw", type: "byte" },
-        { name: "velocityX", type: "short" },
-        { name: "velocityY", type: "short" },
-        { name: "velocityZ", type: "short" },
-        { name: "metadata", type: "entityMetadata" },
-      ]},
-      spawn_entity_painting:     {id: 0x10, fields: [
-        { name: "entityId", type: "varint" },
-        { name: "title", type: "string" },
-        { name: "x", type: "int" },
-        { name: "y", type: "int" },
-        { name: "z", type: "int" },
-        { name: "direction", type: "int" }
-      ]},
-      spawn_entity_experience_orb: {id: 0x11, fields: [
-        { name: "entityId", type: "varint" },
-        { name: "x", type: "int" },
-        { name: "y", type: "int" },
-        { name: "z", type: "int" },
-        { name: "count", type: "short" }
-      ]},
-      entity_velocity:    {id: 0x12, fields: [
-        { name: "entityId", type: "int" },
-        { name: "velocityX", type: "short" },
-        { name: "velocityY", type: "short" },
-        { name: "velocityZ", type: "short" }
-      ]},
-      entity_destroy:   {id: 0x13, fields: [
-        { name: "count", type: "count", typeArgs: { type: "byte", countFor: "entityIds" } },
-        { name: "entityIds", type: "array", typeArgs: { type: "int", count: "count" } }
-      ]},
-      entity:             {id: 0x14, fields: [
-        { name: "entityId", type: "int" } 
-      ]},
-      rel_entity_move: {id: 0x15, fields: [
-        { name: "entityId", type: "int" },
-        { name: "dX", type: "byte" },
-        { name: "dY", type: "byte" },
-        { name: "dZ", type: "byte" }
-      ]},
-      entity_look:        {id: 0x16, fields: [
-        { name: "entityId", type: "int" },
-        { name: "yaw", type: "byte" },
-        { name: "pitch", type: "byte" }
-      ]},
-      entity_move_look: {id: 0x17, fields: [
-        { name: "entityId", type: "int" },
-        { name: "dX", type: "byte" },
-        { name: "dY", type: "byte" },
-        { name: "dZ", type: "byte" },
-        { name: "yaw", type: "byte" },
-        { name: "pitch", type: "byte" }
-      ]},
-      entity_teleport:    {id: 0x18, fields: [
-        { name: "entityId", type: "int" },
-        { name: "x", type: "int" },
-        { name: "y", type: "int" },
-        { name: "z", type: "int" },
-        { name: "yaw", type: "byte" },
-        { name: "pitch", type: "byte" }
-      ]},
-      entity_head_rotation:   {id: 0x19, fields: [
-        { name: "entityId", type: "int" },
-        { name: "headYaw", type: "byte" },
-      ]},
-      entity_status:      {id: 0x1a, fields: [
-        { name: "entityId", type: "int" },
-        { name: "entityStatus", type: "byte" }
-      ]},
-      attach_entity:      {id: 0x1b, fields: [
-        { name: "entityId", type: "int" },
-        { name: "vehicleId", type: "int" },
-        { name: "leash", type: "bool" }
-      ]},
-      entity_metadata:    {id: 0x1c, fields: [
-        { name: "entityId", type: "int" },
-        { name: "metadata", type: "entityMetadata" }
-      ]},
-      entity_effect:      {id: 0x1d, fields: [
-        { name: "entityId", type: "int" },
-        { name: "effectId", type: "byte" },
-        { name: "amplifier", type: "byte" },
-        { name: "duration", type: "short" }
-      ]},
-      remove_entity_effect: {id: 0x1e, fields: [
-        { name: "entityId", type: "int" },
-        { name: "effectId", type: "byte" }
-      ]},
-      experience:     {id: 0x1f, fields: [
-        { name: "experienceBar", type: "float" },
-        { name: "level", type: "short" },
-        { name: "totalExperience", type: "short" }
-      ]},
-      update_attributes:  {id: 0x20, fields: [
-        { name: "entityId", type: "int" },
-        { name: "count", type: "count", typeArgs: { type: "int", countFor: "properties" } },
-        { name: "properties", type: "array", typeArgs: { count: "count", 
-          type: "container", typeArgs: { fields: [
-            { name: "key", type: "string" },
-            { name: "value", type: "double" },
-            { name: "listLength", type: "count", typeArgs: { type: "short", countFor: "this.modifiers" } },
-            { name: "modifiers", type: "array", typeArgs: { count: "this.listLength", 
-              type: "container", typeArgs: { fields: [
-                { name: "UUID", type: "UUID" },
-                { name: "amount", type: "double" },
-                { name: "operation", type: "byte" }
-              ]}}}
-          ]}
-        }}
-      ]},
-      map_chunk:         {id: 0x21, fields: [
-        { name: "x", type: "int" },
-        { name: "z", type: "int" },
-        { name: "groundUp", type: "bool" },
-        { name: "bitMap", type: "ushort" },
-        { name: "addBitMap", type: "ushort" },
-        { name: "compressedChunkDataLength", type: "count", typeArgs: { type: "int", countFor: "compressedChunkData" } },
-        { name: "compressedChunkData", type: "buffer", typeArgs: { count: "compressedChunkDataLength" } },
-      ]},
-      multi_block_change: {id: 0x22, fields: [
-        { name: "chunkX", type: "int" },
-        { name: "chunkZ", type: "int" },
-        { name: "recordCount", type: "short" },
-        { name: "dataLength", type: "count", typeArgs: { type: "int", countFor: "data" } },
-        { name: "data", type: "buffer", typeArgs: { count: "dataLength" } },
-      ]},
-      block_change:       {id: 0x23, fields: [
-        { name: "x", type: "int" },
-        { name: "y", type: "ubyte" },
-        { name: "z", type: "int" },
-        { name: "type", type: "varint" },
-        { name: "metadata", type: "ubyte" }
-      ]},
-      block_action:       {id: 0x24, fields: [
-        { name: "x", type: "int" },
-        { name: "y", type: "short" },
-        { name: "z", type: "int" },
-        { name: "byte1", type: "ubyte" },
-        { name: "byte2", type: "ubyte" },
-        { name: "blockId", type: "varint" }
-      ]},
-      block_break_animation:   {id: 0x25, fields: [
-        { name: "entityId", type: "varint" },
-        { name: "x", type: "int" },
-        { name: "y", type: "int" },
-        { name: "z", type: "int" },
-        { name: "destroyStage", type: "byte" }
-      ]},
-      map_chunk_bulk:     {id: 0x26, fields: [
-        { name: "chunkColumnCount", type: "count", typeArgs: { type: "short", countFor: "meta" } },
-        { name: "dataLength", type: "count", typeArgs: { type: "int", countFor: "compressedChunkData" } },
-        { name: "skyLightSent", type: "bool" },
-        { name: "compressedChunkData", type: "buffer", typeArgs: { count: "dataLength" } },
-        { name: "meta", type: "array", typeArgs: { count: "chunkColumnCount", 
-          type: "container", typeArgs: { fields: [
-            { name: "x", type: "int" },
-            { name: "z", type: "int" },
-            { name: "bitMap", type: "ushort" },
-            { name: "addBitMap", type: "ushort" }
-        ] } } }
-      ]},
-      explosion:          {id: 0x27, fields: [
-        { name: "x", type: "float" },
-        { name: "y", type: "float" },
-        { name: "z", type: "float" },
-        { name: "radius", type: "float" },
-        { name: "count", type: "count", typeArgs: { type: "int", countFor: "affectedBlockOffsets" } },
-        { name: "affectedBlockOffsets", type: "array", typeArgs: { count: "count", type: "container", typeArgs: {
-          fields: [
-            { name: "x", type: "byte" },
-            { name: "y", type: "byte" },
-            { name: "z", type: "byte" }
-          ]
-        }}},
-        { name: "playerMotionX", type: "float" },
-        { name: "playerMotionY", type: "float" },
-        { name: "playerMotionZ", type: "float" }
-      ]},
-      world_event:             {id: 0x28, fields: [ // TODO : kinda wtf naming there
-        { name: "effectId", type: "int" },
-        { name: "x", type: "int" },
-        { name: "y", type: "byte" },
-        { name: "z", type: "int" },
-        { name: "data", type: "int" },
-        { name: "global", type: "bool" }
-      ]},
-      named_sound_effect:       {id: 0x29, fields: [
-        { name: "soundName", type: "string" },
-        { name: "x", type: "int" },
-        { name: "y", type: "int" },
-        { name: "z", type: "int" },
-        { name: "volume", type: "float" },
-        { name: "pitch", type: "ubyte" }
-      ]},
-      world_particles:           {id: 0x2a, fields: [
-        { name: "particleName", type: "string" },
-        { name: "x", type: "float" },
-        { name: "y", type: "float" },
-        { name: "z", type: "float" },
-        { name: "offsetX", type: "float" },
-        { name: "offsetY", type: "float" },
-        { name: "offsetZ", type: "float" },
-        { name: "particleSpeed", type: "float" },
-        { name: "particles", type: "int" }
-      ]},
-      game_state_change:  {id: 0x2b, fields: [
-        { name: "reason", type: "ubyte" },
-        { name: "gameMode", type: "float" }
-      ]},
-      spawn_entity_weather:{id: 0x2c, fields: [
-        { name: "entityId", type: "varint" },
-        { name: "type", type: "byte" },
-        { name: "x", type: "int" },
-        { name: "y", type: "int" },
-        { name: "z", type: "int" }
-      ]},
-      open_window:        {id: 0x2d, fields: [
-        { name: "windowId", type: "ubyte" },
-        { name: "inventoryType", type: "ubyte" },
-        { name: "windowTitle", type: "string" },
-        { name: "slotCount", type: "ubyte" },
-        { name: "useProvidedTitle", type: "bool" },
-        { name: "entityId", type: "int", condition: function(field_values) {
-          return field_values['inventoryType'] == 11;
-        } }
-      ]},
-      close_window:       {id: 0x2e, fields: [
-        { name: "windowId", type: "ubyte" }
-      ]},
-      set_slot:           {id: 0x2f, fields: [
-        { name: "windowId", type: "ubyte" },
-        { name: "slot", type: "short" },
-        { name: "item", type: "slot" }
-      ]},
-      window_items:       {id: 0x30, fields: [
-        { name: "windowId", type: "ubyte" },
-        { name: "count", type: "count", typeArgs: { type: "short", countFor: "items" } },
-        { name: "items", type: "array", typeArgs: { type: "slot", count: "count" } }
-      ]},
-      craft_progress_bar:    {id: 0x31, fields: [
-        { name: "windowId", type: "ubyte" },
-        { name: "property", type: "short" },
-        { name: "value", type: "short" }
-      ]},
-      transaction:{id: 0x32, fields: [
-        { name: "windowId", type: "ubyte" },
-        { name: "action", type: "short" },
-        { name: "accepted", type: "bool" }
-      ]},
-      update_sign:        {id: 0x33, fields: [
-        { name: "x", type: "int" },
-        { name: "y", type: "short" },
-        { name: "z", type: "int" },
-        { name: "text1", type: "string" },
-        { name: "text2", type: "string" },
-        { name: "text3", type: "string" },
-        { name: "text4", type: "string" }
-      ]},
-      map:               {id: 0x34, fields: [
-        { name: "itemDamage", type: "varint" },
-        { name: "dataLength", type: "count", typeArgs: { type: "short", countFor: "data" } },
-        { name: "data", type: "buffer", typeArgs: { count: "dataLength" } },
-      ]},
-      tile_entity_data:{id: 0x35, fields: [
-        { name: "x", type: "int" },
-        { name: "y", type: "short" },
-        { name: "z", type: "int" },
-        { name: "action", type: "ubyte" },
-        { name: "nbtDataLength", type: "count", typeArgs: { type: "short", countFor: "nbtData" } },
-        { name: "nbtData", type: "buffer", typeArgs: { count: "nbtDataLength" } },
-      ]},
-      open_sign_entity:   {id: 0x36, fields: [
-        { name: "x", type: "int" },
-        { name: "y", type: "int" },
-        { name: "z", type: "int" }
-      ]},
-      statistics:         {id: 0x37, fields: [
-        { name: "count", type: "count", typeArgs: { type: "varint", countFor: "entries" } },
-        { name: "entries", type: "array", typeArgs: { count: "count", 
-          type: "container", typeArgs: { fields: [
-            { name: "name", type: "string" },
-            { name: "value", type: "varint" }
-          ]}
-        }}
-      ]},
-      player_info:   {id: 0x38, fields: [
-        { name: "playerName", type: "string" },
-        { name: "online", type: "bool" },
-        { name: "ping", type: "short" }
-      ]},
-      abilities:   {id: 0x39, fields: [
-        { name: "flags", type: "byte" },
-        { name: "flyingSpeed", type: "float" },
-        { name: "walkingSpeed", type: "float" }
-      ]},
-      tab_complete:       {id: 0x3a, fields: [
-        { name: "count", type: "count", typeArgs: { type: "varint", countFor: "matches" } },
-        { name: "matches", type: "array", typeArgs: { type: "string", count: "count" } }
-      ]},
-      scoreboard_objective: {id: 0x3b, fields: [
-        { name: "name", type: "string" },
-        { name: "displayText", type: "string" },
-        { name: "action", type: "byte" }
-      ]},
-      scoreboard_score:       {id: 0x3c, fields: [
-        { name: "itemName", type: "string" },
-        { name: "remove", type: "bool" },
-        { name: "scoreName", type: "string", condition: function(field_values) {
-          return !field_values['remove']
-        } },
-        { name: "value", type: "int", condition: function(field_values) {
-          return !field_values['remove']
-        } }
-      ]},
-      scoreboard_display_objective: {id: 0x3d, fields: [
-        { name: "position", type: "byte" },
-        { name: "name", type: "string" }
-      ]},
-      scoreboard_team:              {id: 0x3e, fields: [
-        { name: "team", type: "string" },
-        { name: "mode", type: "byte" },
-        { name: "name", type: "string", condition: function(field_values) {
-            return field_values['mode'] == 0 || field_values['mode'] == 2;
-        } },
-        { name: "prefix", type: "string", condition: function(field_values) {
-          return field_values['mode'] == 0 || field_values['mode'] == 2;
-        } },
-        { name: "suffix", type: "string", condition: function(field_values) {
-          return field_values['mode'] == 0 || field_values['mode'] == 2;
-        } },
-        { name: "friendlyFire", type: "byte", condition: function(field_values) {
-          return field_values['mode'] == 0 || field_values['mode'] == 2;
-        } },
-        { name: "playerCount", type: "count", condition: function(field_values) {
-          return field_values['mode'] == 0 || field_values['mode'] == 3 || field_values['mode'] == 4;
-        }, typeArgs: { type: "short", countFor: "players" } },
-        { name: "players", type: "array", condition: function(field_values) {
-          return field_values['mode'] == 0 || field_values['mode'] == 3 || field_values['mode'] == 4;
-        }, typeArgs: { type: "string", count: "playerCount" } }
-      ]},
-      custom_payload:     {id: 0x3f, fields: [
-        { name: "channel", type: "string" },
-        { name: "dataCount", type: 'count', typeArgs: { type: "short", countFor: "data" } },
-        { name: "data", type: "buffer", typeArgs: { count: "dataCount" } }
-      ]},
-      kick_disconnect:         {id: 0x40, fields: [
-        { name: "reason", type: "string" }
-      ]}
-    },
-    toServer: {
-      keep_alive:         {id: 0x00, fields: [
-        { name: "keepAliveId", type: "int" }
-      ]},
-      chat:       {id: 0x01, fields: [
-        { name: "message", type: "string" }
-      ]},
-      use_entity:         {id: 0x02, fields: [
-        { name: "target", type: "int" },
-        { name: "mouse", type: "byte" }
-      ]},
-      flying:             {id: 0x03, fields: [
-        { name: "onGround", type: "bool" }
-      ]},
-      position:    {id: 0x04, fields: [
-        { name: "x", type: "double" },
-        { name: "stance", type: "double" },
-        { name: "y", type: "double" },
-        { name: "z", type: "double" },
-        { name: "onGround", type: "bool" }
-      ]},
-      look:        {id: 0x05, fields: [
-        { name: "yaw", type: "float" },
-        { name: "pitch", type: "float" },
-        { name: "onGround", type: "bool" }
-      ]},
-      position_look: {id: 0x06, fields: [
-        { name: "x", type: "double" },
-        { name: "stance", type: "double" },
-        { name: "y", type: "double" },
-        { name: "z", type: "double" },
-        { name: "yaw", type: "float" },
-        { name: "pitch", type: "float" },
-        { name: "onGround", type: "bool" }
-      ]},
-      block_dig:     {id: 0x07, fields: [
-        { name: "status", type: "byte" },
-        { name: "x", type: "int" },
-        { name: "y", type: "ubyte" },
-        { name: "z", type: "int" },
-        { name: "face", type: "byte" }
-      ]},
-      block_place: {id: 0x08, fields: [
-        { name: "x", type: "int" },
-        { name: "y", type: "ubyte" },
-        { name: "z", type: "int" },
-        { name: "direction", type: "byte" },
-        { name: "heldItem", type: "slot" },
-        { name: "cursorX", type: "byte" },
-        { name: "cursorY", type: "byte" },
-        { name: "cursorZ", type: "byte" }
-      ]},
-      held_item_slot:   {id: 0x09, fields: [
-        { name: "slotId", type: "short" }
-      ]},
-      arm_animation:          {id: 0x0a, fields: [
-        { name: "entityId", type: "int" },
-        { name: "animation", type: "byte" }
-      ]},
-      entity_action:      {id: 0x0b, fields: [
-        { name: "entityId", type: "int" },
-        { name: "actionId", type: "byte" },
-        { name: "jumpBoost", type: "int" }
-      ]},
-      steer_vehicle:      {id: 0x0c, fields: [
-        { name: "sideways", type: "float" },
-        { name: "forward", type: "float" },
-        { name: "jump", type: "bool" },
-        { name: "unmount", type: "bool" }
-      ]},
-      close_window:       {id: 0x0d, fields: [
-        { name: "windowId", type: "byte" }
-      ]},
-      window_click:       {id: 0x0e, fields: [
-        { name: "windowId", type: "byte" },
-        { name: "slot", type: "short" },
-        { name: "mouseButton", type: "byte" },
-        { name: "action", type: "short" },
-        { name: "mode", type: "byte" },
-        { name: "item", type: "slot" }
-      ]},
-      transaction: {id: 0x0f, fields: [
-        { name: "windowId", type: "byte" },
-        { name: "action", type: "short" },
-        { name: "accepted", type: "bool" }
-      ]},
-      set_creative_slot: {id: 0x10, fields: [
-        { name: "slot", type: "short" },
-        { name: "item", type: "slot" }
-      ]},
-      enchant_item:       {id: 0x11, fields: [
-        { name: "windowId", type: "byte" },
-        { name: "enchantment", type: "byte" }
-      ]},
-      update_sign:        {id: 0x12, fields: [
-        { name: "x", type: "int" },
-        { name: "y", type: "short" },
-        { name: "z", type: "int" },
-        { name: "text1", type: "string" },
-        { name: "text2", type: "string" },
-        { name: "text3", type: "string" },
-        { name: "text4", type: "string" }
-      ]},
-      abilities:   {id: 0x13, fields: [
-        { name: "flags", type: "byte" },
-        { name: "flyingSpeed", type: "float" },
-        { name: "walkingSpeed", type: "float" }
-      ]},
-      tab_complete:       {id: 0x14, fields: [
-        { name: "text", type: "string" }
-      ]},
-      settings:    {id: 0x15, fields: [
-        { name: "locale", type: "string" },
-        { name: "viewDistance", type: "byte" },
-        { name: "chatFlags", type: "byte" },
-        { name: "chatColors", type: "bool" },
-        { name: "difficulty", type: "byte" },
-        { name: "showCape", type: "bool" }
-      ]},
-      client_command:      {id: 0x16, fields: [
-        { name: "payload", type: "byte" }
-      ]},
-      custom_payload:     {id: 0x17, fields: [
-        { name: "channel", type: "string" },
-        { name: "dataLength", type: "count", typeArgs: { type: "short", countFor: "data" } },
-        { name: "data", type: "buffer", typeArgs: { count: "dataLength" } },
-      ]}
-    }
-  }
-};
-
-var packetFields = {};
-var packetNames = {};
-var packetIds = {};
-var packetStates = {toClient: {}, toServer: {}};
-(function() {
-  for (var stateName in states) {
-    var state = states[stateName];
-
-    packetFields[state] = {toClient: [], toServer: []};
-    packetNames[state] = {toClient: [], toServer: []};
-    packetIds[state] = {toClient: [], toServer: []};
-
-    ['toClient', 'toServer'].forEach(function(direction) {
-      for (var name in packets[state][direction]) {
-        var info = packets[state][direction][name];
-        var id = info.id;
-        var fields = info.fields;
-
-        assert(id !== undefined, 'missing id for packet '+name);
-        assert(fields !== undefined, 'missing fields for packet '+name);
-        assert(!packetNames[state][direction].hasOwnProperty(id), 'duplicate packet id '+id+' for '+name);
-        assert(!packetIds[state][direction].hasOwnProperty(name), 'duplicate packet name '+name+' for '+id);
-        assert(!packetFields[state][direction].hasOwnProperty(id), 'duplicate packet id '+id+' for '+name);
-        assert(!packetStates[direction].hasOwnProperty(name), 'duplicate packet name '+name+' for '+id+', must be unique across all states');
-
-        packetNames[state][direction][id] = name;
-        packetIds[state][direction][name] = id;
-        packetFields[state][direction][id] = fields;
-        packetStates[direction][name] = state;
-      }
-    });
-  }
-})();
-
-
-
-var types = {
-  'byte': [readByte, writeByte, 1],
-  'ubyte': [readUByte, writeUByte, 1],
-  'short': [readShort, writeShort, 2],
-  'ushort': [readUShort, writeUShort, 2],
-  'int': [readInt, writeInt, 4],
-  'long': [readLong, writeLong, 8],
-  'varint': [readVarInt, writeVarInt, sizeOfVarInt],
-  'float': [readFloat, writeFloat, 4],
-  'double': [readDouble, writeDouble, 8],
-  'bool': [readBool, writeBool, 1],
-  'string': [readString, writeString, sizeOfString],
-  'ustring': [readString, writeString, sizeOfUString], // TODO : remove ustring
-  'UUID': [readUUID, writeUUID, 16],
-  'container': [readContainer, writeContainer, sizeOfContainer],
-  'array': [readArray, writeArray, sizeOfArray],
-  'buffer': [readBuffer, writeBuffer, sizeOfBuffer],
-  'count': [readCount, writeCount, sizeOfCount],
-  // TODO : remove type-specific, replace with generic containers and arrays.
-  'slot': [readSlot, writeSlot, sizeOfSlot],
-  'entityMetadata': [readEntityMetadata, writeEntityMetadata, sizeOfEntityMetadata],
-};
-
-var debug;
-if (process.env.NODE_DEBUG && /(minecraft-protocol|mc-proto)/.test(process.env.NODE_DEBUG)) {
-  var pid = process.pid;
-  debug = function(x) {
-    // if console is not set up yet, then skip this.
-    if (!console.error)
-      return;
-    console.error('MC-PROTO: %d', pid,
-                  util.format.apply(util, arguments).slice(0, 500));
-  };
-} else {
-  debug = function() { };
-}
-
-var entityMetadataTypes = {
-  0: { type: 'byte' },
-  1: { type: 'short' },
-  2: { type: 'int' },
-  3: { type: 'float' },
-  4: { type: 'string' },
-  5: { type: 'slot' },
-  6: { type: 'container', typeArgs: { fields: [
-       { name: 'x', type: 'int' },
-       { name: 'y', type: 'int' },
-       { name: 'z', type: 'int' }
-  ]}}
-};
-
-// maps string type name to number
-var entityMetadataTypeBytes = {};
-for (var n in entityMetadataTypes) {
-  if (!entityMetadataTypes.hasOwnProperty(n)) continue;
-
-  entityMetadataTypeBytes[entityMetadataTypes[n].type] = n;
-}
-
-function sizeOfEntityMetadata(value) {
-  var size = 1 + value.length;
-  var item;
-  for (var i = 0; i < value.length; ++i) {
-    item = value[i];
-    size += sizeOf(item.value, entityMetadataTypes[entityMetadataTypeBytes[item.type]], {});
-  }
-  return size;
-}
-
-function writeEntityMetadata(value, buffer, offset) {
-  value.forEach(function(item) {
-    var type = entityMetadataTypeBytes[item.type];
-    var headerByte = (type << 5) | item.key;
-    buffer.writeUInt8(headerByte, offset);
-    offset += 1;
-    offset = write(item.value, buffer, offset, entityMetadataTypes[type], {});
-  });
-  buffer.writeUInt8(0x7f, offset);
-  return offset + 1;
-}
-
-function writeUUID(value, buffer, offset) {
-  buffer.writeInt32BE(value[0], offset);
-  buffer.writeInt32BE(value[1], offset + 4);
-  buffer.writeInt32BE(value[2], offset + 8);
-  buffer.writeInt32BE(value[3], offset + 12);
-  return offset + 16;
-}
-
-function readEntityMetadata(buffer, offset) {
-  var cursor = offset;
-  var metadata = [];
-  var item, key, type, results, reader, typeName, dataType;
-  while (true) {
-    if (cursor + 1 > buffer.length) return null;
-    item = buffer.readUInt8(cursor);
-    cursor += 1;
-    if (item === 0x7f) {
-      return {
-        value: metadata,
-        size: cursor - offset,
-      };
-    }
-    key = item & 0x1f;
-    type = item >> 5;
-    dataType = entityMetadataTypes[type];
-    debug("Reading entity metadata type " + dataType + " (" + ( typeName || "unknown" ) + ")");
-    if (!dataType) {
-      return {
-        error: new Error("unrecognized entity metadata type " + type)
-      }
-    }
-    results = read(buffer, cursor, dataType, {});
-    if (! results) return null;
-    metadata.push({
-      key: key,
-      value: results.value,
-      type: typeName,
-    });
-    cursor += results.size;
-  }
-}
-
-function readString (buffer, offset) {
-  var length = readVarInt(buffer, offset);
-  if (!!!length) return null;
-  var cursor = offset + length.size;
-  var stringLength = length.value;
-  var strEnd = cursor + stringLength;
-  if (strEnd > buffer.length) return null;
-  
-  var value = buffer.toString('utf8', cursor, strEnd);
-  cursor = strEnd;
-  
-  return {
-    value: value,
-    size: cursor - offset,
-  };
-}
-
-function readUUID(buffer, offset) {
-  return {
-    value: [
-      buffer.readInt32BE(offset),
-      buffer.readInt32BE(offset + 4),
-      buffer.readInt32BE(offset + 8),
-      buffer.readInt32BE(offset + 12),
-    ],
-    size: 16,
-  };
-}
-
-function readShort(buffer, offset) {
-  if (offset + 2 > buffer.length) return null;
-  var value = buffer.readInt16BE(offset);
-  return {
-    value: value,
-    size: 2,
-  };
-}
-
-function readUShort(buffer, offset) {
-  if (offset + 2 > buffer.length) return null;
-  var value = buffer.readUInt16BE(offset);
-  return {
-    value: value,
-    size: 2,
-  };
-}
-
-function readInt(buffer, offset) {
-  if (offset + 4 > buffer.length) return null;
-  var value = buffer.readInt32BE(offset);
-  return {
-    value: value,
-    size: 4,
-  };
-}
-
-function readFloat(buffer, offset) {
-  if (offset + 4 > buffer.length) return null;
-  var value = buffer.readFloatBE(offset);
-  return {
-    value: value,
-    size: 4,
-  };
-}
-
-function readDouble(buffer, offset) {
-  if (offset + 8 > buffer.length) return null;
-  var value = buffer.readDoubleBE(offset);
-  return {
-    value: value,
-    size: 8,
-  };
-}
-
-function readLong(buffer, offset) {
-  if (offset + 8 > buffer.length) return null;
-  return {
-    value: [buffer.readInt32BE(offset), buffer.readInt32BE(offset + 4)],
-    size: 8,
-  };
-}
-
-function readByte(buffer, offset) {
-  if (offset + 1 > buffer.length) return null;
-  var value = buffer.readInt8(offset);
-  return {
-    value: value,
-    size: 1,
-  };
-}
-
-function readUByte(buffer, offset) {
-  if (offset + 1 > buffer.length) return null;
-  var value = buffer.readUInt8(offset);
-  return {
-    value: value,
-    size: 1,
-  };
-}
-
-function readBool(buffer, offset) {
-  if (offset + 1 > buffer.length) return null;
-  var value = buffer.readInt8(offset);
-  return {
-    value: !!value,
-    size: 1,
-  };
-}
-
-function readSlot(buffer, offset) {
-  var results = readShort(buffer, offset);
-  if (! results) return null;
-  var blockId = results.value;
-  var cursor = offset + results.size;
-
-  if (blockId === -1) {
-    return {
-      value: { id: blockId },
-      size: cursor - offset,
-    };
-  }
-
-  var cursorEnd = cursor + 5;
-  if (cursorEnd > buffer.length) return null;
-  var itemCount = buffer.readInt8(cursor);
-  var itemDamage = buffer.readInt16BE(cursor + 1);
-  var nbtDataSize = buffer.readInt16BE(cursor + 3);
-  if (nbtDataSize === -1) nbtDataSize = 0;
-  var nbtDataEnd = cursorEnd + nbtDataSize;
-  if (nbtDataEnd > buffer.length) return null;
-  var nbtData = buffer.slice(cursorEnd, nbtDataEnd);
-
-  return {
-    value: {
-      id: blockId,
-      itemCount: itemCount,
-      itemDamage: itemDamage,
-      nbtData: nbtData,
-    },
-    size: nbtDataEnd - offset,
-  };
-}
-
-function sizeOfSlot(value) {
-  return value.id === -1 ? 2 : 7 + value.nbtData.length;
-}
-
-function writeSlot(value, buffer, offset) {
-  buffer.writeInt16BE(value.id, offset);
-  if (value.id === -1) return offset + 2;
-  buffer.writeInt8(value.itemCount, offset + 2);
-  buffer.writeInt16BE(value.itemDamage, offset + 3);
-  var nbtDataSize = value.nbtData.length;
-  if (nbtDataSize === 0) nbtDataSize = -1; // I don't know wtf mojang smokes
-  buffer.writeInt16BE(nbtDataSize, offset + 5);
-  value.nbtData.copy(buffer, offset + 7);
-  return offset + 7 + value.nbtData.length;
-}
-
-function sizeOfString(value) {
-  var length = Buffer.byteLength(value, 'utf8');
-  assert.ok(length < STRING_MAX_LENGTH, "string greater than max length");
-  return sizeOfVarInt(length) + length;
-}
-
-function sizeOfUString(value) {
-  var length = Buffer.byteLength(value, 'utf8');
-  assert.ok(length < SRV_STRING_MAX_LENGTH, "string greater than max length");
-  return sizeOfVarInt(length) + length;
-}
-
-function writeString(value, buffer, offset) {
-  var length = Buffer.byteLength(value, 'utf8');
-  offset = writeVarInt(length, buffer, offset);
-  buffer.write(value, offset, length, 'utf8');
-  return offset + length;
-}
-
-function writeByte(value, buffer, offset) {
-  buffer.writeInt8(value, offset);
-  return offset + 1;
-}
-
-function writeBool(value, buffer, offset) {
-  buffer.writeInt8(+value, offset);
-  return offset + 1;
-}
-
-function writeUByte(value, buffer, offset) {
-  buffer.writeUInt8(value, offset);
-  return offset + 1;
-}
-
-function writeFloat(value, buffer, offset) {
-  buffer.writeFloatBE(value, offset);
-  return offset + 4;
-}
-
-function writeDouble(value, buffer, offset) {
-  buffer.writeDoubleBE(value, offset);
-  return offset + 8;
-}
-
-function writeShort(value, buffer, offset) {
-  buffer.writeInt16BE(value, offset);
-  return offset + 2;
-}
-
-function writeUShort(value, buffer, offset) {
-  buffer.writeUInt16BE(value, offset);
-  return offset + 2;
-}
-
-function writeInt(value, buffer, offset) {
-  buffer.writeInt32BE(value, offset);
-  return offset + 4;
-}
-
-function writeLong(value, buffer, offset) {
-  buffer.writeInt32BE(value[0], offset);
-  buffer.writeInt32BE(value[1], offset + 4);
-  return offset + 8;
-}
-
-function readVarInt(buffer, offset) {
-  var result = 0;
-  var shift = 0;
-  var cursor = offset;
-    
-  while (true) {
-    if (cursor + 1 > buffer.length) return null;
-    var b = buffer.readUInt8(cursor);
-    result |= ((b & 0x7f) << shift); // Add the bits to our number, except MSB
-    cursor++;
-    if (!(b & 0x80)) { // If the MSB is not set, we return the number
-      return {
-        value: result,
-        size: cursor - offset
-      };
-    }
-    shift += 7; // we only have 7 bits, MSB being the return-trigger
-    assert.ok(shift < 64, "varint is too big"); // Make sure our shift don't overflow.
-  }
-}
-
-function sizeOfVarInt(value) {
-  var cursor = 0;
-  while (value & ~0x7F) {
-    value >>>= 7;
-    cursor++;
-  }
-  return cursor + 1;
-}
-
-function writeVarInt(value, buffer, offset) {
-  var cursor = 0;
-  while (value & ~0x7F) {
-    buffer.writeUInt8((value & 0xFF) | 0x80, offset + cursor);
-    cursor++;
-    value >>>= 7;
-  }
-  buffer.writeUInt8(value, offset + cursor);
-  return offset + cursor + 1;
-}
-
-function readContainer(buffer, offset, typeArgs, rootNode) {
-    var results = {
-        value: {},
-        size: 0
-    };
-    // BLEIGH. Huge hack because I have no way of knowing my current name.
-    // TODO : either pass fieldInfo instead of typeArgs as argument (bleigh), or send name as argument (verybleigh).
-    rootNode.this = results.value;
-    for (var index in typeArgs.fields) {
-        var readResults = read(buffer, offset, typeArgs.fields[index], rootNode);
-        results.size += readResults.size;
-        offset += readResults.size;
-        results.value[typeArgs.fields[index].name] = readResults.value;
-    }
-    delete rootNode.this;
-    return results;
-}
-
-function writeContainer(value, buffer, offset, typeArgs, rootNode) {
-    rootNode.this = value;
-    for (var index in typeArgs.fields) {
-        offset = write(value[typeArgs.fields[index].name], buffer, offset, typeArgs.fields[index], rootNode);
-    }
-    delete rootNode.this;
-    return offset;
-}
-
-function sizeOfContainer(value, typeArgs, rootNode) {
-    var size = 0;
-    rootNode.this = value;
-    for (var index in typeArgs.fields) {
-        size += sizeOf(value[typeArgs.fields[index].name], typeArgs.fields[index], rootNode);
-    }
-    delete rootNode.this;
-    return size;
-}
-
-function readBuffer(buffer, offset, typeArgs, rootNode) {    
-    var count = getField(typeArgs.count, rootNode);
-    return {
-        value: buffer.slice(offset, offset + count),
-        size: count
-    };
-}
-
-function writeBuffer(value, buffer, offset) {
-    value.copy(buffer, offset);
-    return offset + value.length;
-}
-
-function sizeOfBuffer(value) {
-    return value.length;
-}
-
-function readArray(buffer, offset, typeArgs, rootNode) {
-    var results = {
-        value: [],
-        size: 0
-    }
-    var count = getField(typeArgs.count, rootNode);
-    for (var i = 0; i < count; i++) {
-        var readResults = read(buffer, offset, { type: typeArgs.type, typeArgs: typeArgs.typeArgs }, rootNode);
-        results.size += readResults.size;
-        offset += readResults.size;
-        results.value.push(readResults.value);
-    }
-    return results;
-}
-
-function writeArray(value, buffer, offset, typeArgs, rootNode) {
-    for (var index in value) {
-        offset = write(value[index], buffer, offset, { type: typeArgs.type, typeArgs: typeArgs.typeArgs }, rootNode);
-    }
-    return offset;
-}
-
-function sizeOfArray(value, typeArgs, rootNode) {
-    var size = 0;
-    for (var index in value) {
-        size += sizeOf(value[index], { type: typeArgs.type, typeArgs: typeArgs.typeArgs }, rootNode);
-    }
-    return size;
-}
-
-function getField(countField, rootNode) {
-    var countFieldArr = countField.split(".");
-    var count = rootNode;
-    for (var index in countFieldArr) {
-        count = count[countFieldArr[index]];
-    }
-    return count;
-}
-
-function readCount(buffer, offset, typeArgs, rootNode) {
-    return read(buffer, offset, { type: typeArgs.type }, rootNode);
-}
-
-function writeCount(value, buffer, offset, typeArgs, rootNode) {
-    // Actually gets the required field, and writes its length. Value is unused.
-    // TODO : a bit hackityhack.
-    return write(getField(typeArgs.countFor, rootNode).length, buffer, offset, { type: typeArgs.type }, rootNode);
-}
-
-function sizeOfCount(value, typeArgs, rootNode) {
-    // TODO : should I use value or getField().length ?
-    /*console.log(rootNode);
-    console.log(typeArgs);*/
-    return sizeOf(getField(typeArgs.countFor, rootNode).length, { type: typeArgs.type }, rootNode);
-}
-
-function read(buffer, cursor, fieldInfo, rootNodes) {
-  if (fieldInfo.condition && !fieldInfo.condition(rootNodes)) {
-    return null;
-  }
-  var type = types[fieldInfo.type];
-  if (!type) {
-    return {
-      error: new Error("missing data type: " + fieldInfo.type)
-    };
-  }
-  var readResults = type[0](buffer, cursor, fieldInfo.typeArgs, rootNodes);
-  if (readResults.error) return { error: readResults.error };
-  return readResults;
-}
-
-function write(value, buffer, offset, fieldInfo, rootNode) {
-  if (fieldInfo.condition && !fieldInfo.condition(rootNode)) {
-    return null;
-  }
-  var type = types[fieldInfo.type];
-  if (!type) {
-    return {
-      error: new Error("missing data type: " + fieldInfo.type)
-    };
-  }
-  return type[1](value, buffer, offset, fieldInfo.typeArgs, rootNode);
-}
-
-function sizeOf(value, fieldInfo, rootNode) {
-  if (fieldInfo.condition && !fieldInfo.condition(rootNode)) {
-    return 0;
-  }
-  var type = types[fieldInfo.type];
-  if (!type) {
-    throw new Error("missing data type: " + fieldInfo.type);
-  }
-  if (typeof type[2] === 'function') {
-    return type[2](value, fieldInfo.typeArgs, rootNode);
-  } else {
-    return type[2];
-  }
-}
-
-function get(packetId, state, toServer) {
-  var direction = toServer ? "toServer" : "toClient";
-  var packetInfo = packetFields[state][direction][packetId];
-  if (!packetInfo) {
-    return null;
-  }
-  return packetInfo;
-}
-
-function createPacketBuffer(packetId, state, params, isServer) {
-  var length = 0;
-  if (typeof packetId === 'string' && typeof state !== 'string' && !params) {
-    // simplified two-argument usage, createPacketBuffer(name, params)
-    params = state;
-    state = packetStates[!isServer ? 'toServer' : 'toClient'][packetId];
-  }
-  if (typeof packetId === 'string') packetId = packetIds[state][!isServer ? 'toServer' : 'toClient'][packetId];
-  assert.notEqual(packetId, undefined);
-
-  var packet = get(packetId, state, !isServer);
-  assert.notEqual(packet, null);
-  packet.forEach(function(fieldInfo) {
-    length += sizeOf(params[fieldInfo.name], fieldInfo, params);
-  });
-  length += sizeOfVarInt(packetId);
-  var size = length + sizeOfVarInt(length);
-  var buffer = new Buffer(size);
-  var offset = writeVarInt(length, buffer, 0);
-  offset = writeVarInt(packetId, buffer, offset);
-  packet.forEach(function(fieldInfo) {
-    var value = params[fieldInfo.name];
-    if(typeof value === "undefined") value = 0; // TODO : Why ?
-    offset = write(value, buffer, offset, fieldInfo, params);
-  });
-  return buffer;
-}
-
-function parsePacket(buffer, state, isServer, packetsToParse) {
-  if (state == null) state == states.PLAY;
-  var cursor = 0;
-  var lengthField = readVarInt(buffer, 0);
-  if (!!!lengthField) return null;
-  var length = lengthField.value;
-  cursor += lengthField.size;
-  if (length + lengthField.size > buffer.length) return null;
-  var buffer = buffer.slice(0, length + cursor); // fail early if too much is read.
-  
-  var packetIdField = readVarInt(buffer, cursor);
-  var packetId = packetIdField.value;
-  cursor += packetIdField.size;
-  
-  var results = { id: packetId };
-  // Only parse the packet if there is a need for it, AKA if there is a listener attached to it
-  var name = packetNames[state][isServer ? "toServer" : "toClient"][packetId];
-  var shouldParse = (!packetsToParse.hasOwnProperty(name) || packetsToParse[name] <= 0)
-                    && (!packetsToParse.hasOwnProperty("packet") || packetsToParse["packet"] <= 0);
-  if (shouldParse) {
-    return {
-        size: length + lengthField.size,
-        buffer: buffer,
-        results: results
-    };
-  }
-  
-  var packetInfo = get(packetId, state, isServer);
-  if (packetInfo === null) {
-    return {
-      error: new Error("Unrecognized packetId: " + packetId + " (0x" + packetId.toString(16) + ")"),
-      size: length + lengthField.size,
-      buffer: buffer,
-      results: results
-    };
-  } else {
-    debug("read packetId " + packetId + " (0x" + packetId.toString(16) + ")");
-  }
-  
-  var i, fieldInfo, readResults;
-  for (i = 0; i < packetInfo.length; ++i) {
-    fieldInfo = packetInfo[i];
-    readResults = read(buffer, cursor, fieldInfo, results);
-    /* A deserializer cannot return null anymore. Besides, read() returns
-     * null when the condition is not fulfilled.
-     if (!!!readResults) {
-        var error = new Error("A deserializer returned null");
-        error.packetId = packetId;
-        error.fieldInfo = fieldInfo.name;
-        return {
-            size: length + lengthField.size,
-            error: error,
-            results: results
-        };
-    }*/
-    if (readResults === null) continue;
-    if (readResults.error) {
-      return readResults;
-    }
-    results[fieldInfo.name] = readResults.value;
-    cursor += readResults.size;
-  }
-  debug(results);
-  return {
-    size: length + lengthField.size,
-    results: results,
-    buffer: buffer
-  };
-}
-
-module.exports = {
-  version: 5,
-  minecraftVersion: '1.7.6',
-  sessionVersion: 13,
-  parsePacket: parsePacket,
-  createPacketBuffer: createPacketBuffer,
-  STRING_MAX_LENGTH: STRING_MAX_LENGTH,
-  packetIds: packetIds,
-  packetNames: packetNames,
-  packetFields: packetFields,
-  packetStates: packetStates,
-  states: states,
-  get: get,
-  debug: debug,
-};
-
-}).call(this,require("q+64fw"),require("buffer").Buffer)
-},{"assert":67,"buffer":83,"q+64fw":89,"util":105}],5:[function(require,module,exports){
-(function (process){
-var through = require('through')
-var isBuffer = require('isbuffer')
-var WebSocketPoly = require('ws')
-
-function WebsocketStream(server, options) {
-  if (!(this instanceof WebsocketStream)) return new WebsocketStream(server, options)
-
-  this.stream = through(this.write.bind(this), this.end.bind(this))
-
-  this.stream.websocketStream = this
-  this.options = options || {}
-  this._buffer = []
- 
-  if (typeof server === "object") {
-    this.ws = server
-    this.ws.on('message', this.onMessage.bind(this))
-    this.ws.on('error', this.onError.bind(this))
-    this.ws.on('close', this.onClose.bind(this))
-    this.ws.on('open', this.onOpen.bind(this))
-    if (this.ws.readyState === 1) this._open = true
-  } else {
-    var opts = (process.title === 'browser') ? this.options.protocol : this.options
-    this.ws = new WebSocketPoly(server, opts)
-    this.ws.binaryType = this.options.binaryType || 'arraybuffer'
-    this.ws.onmessage = this.onMessage.bind(this)
-    this.ws.onerror = this.onError.bind(this)
-    this.ws.onclose = this.onClose.bind(this)
-    this.ws.onopen = this.onOpen.bind(this)
-  }
-  
-  return this.stream
-}
-
-module.exports = WebsocketStream
-module.exports.WebsocketStream = WebsocketStream
-
-WebsocketStream.prototype.onMessage = function(e) {
-  var data = e
-  if (typeof data.data !== 'undefined') data = data.data
-
-  // type must be a Typed Array (ArrayBufferView)
-  var type = this.options.type
-  if (type && data instanceof ArrayBuffer) data = new type(data)
-  
-  this.stream.queue(data)
-}
-
-WebsocketStream.prototype.onError = function(err) {
-  this.stream.emit('error', err)
-}
-
-WebsocketStream.prototype.onClose = function(err) {
-  if (this._destroy) return
-  this.stream.emit('end')
-  this.stream.emit('close')
-}
-
-WebsocketStream.prototype.onOpen = function(err) {
-  if (this._destroy) return
-  this._open = true
-  for (var i = 0; i < this._buffer.length; i++) {
-    this._write(this._buffer[i])
-  }
-  this._buffer = undefined
-  this.stream.emit('open')
-  this.stream.emit('connect')
-  if (this._end) this.ws.close()
-}
-
-WebsocketStream.prototype.write = function(data) {
-  if (!this._open) {
-    this._buffer.push(data)
-  } else {
-    this._write(data)
-  }
-}
-
-WebsocketStream.prototype._write = function(data) {
-  if (this.ws.readyState == 1)
-    // we are connected
-    typeof WebSocket != 'undefined' && this.ws instanceof WebSocket
-      ? this.ws.send(data)
-      : this.ws.send(data, { binary : isBuffer(data) })
-  else
-    this.stream.emit('error', 'Not connected')
-}
-
-WebsocketStream.prototype.end = function(data) {
-  if (data !== undefined) this.stream.queue(data)
-  if (this._open) this.ws.close()
-  this._end = true
-}
-
-}).call(this,require("q+64fw"))
-},{"isbuffer":6,"q+64fw":89,"through":7,"ws":8}],6:[function(require,module,exports){
-var Buffer = require('buffer').Buffer;
-
-module.exports = isBuffer;
-
-function isBuffer (o) {
-  return Buffer.isBuffer(o)
-    || /\[object (.+Array|Array.+)\]/.test(Object.prototype.toString.call(o));
-}
-
-},{"buffer":83}],7:[function(require,module,exports){
-(function (process){
-var Stream = require('stream')
-
-// through
-//
-// a stream that does nothing but re-emit the input.
-// useful for aggregating a series of changing but not ending streams into one stream)
-
-exports = module.exports = through
-through.through = through
-
-//create a readable writable stream.
-
-function through (write, end, opts) {
-  write = write || function (data) { this.queue(data) }
-  end = end || function () { this.queue(null) }
-
-  var ended = false, destroyed = false, buffer = [], _ended = false
-  var stream = new Stream()
-  stream.readable = stream.writable = true
-  stream.paused = false
-
-//  stream.autoPause   = !(opts && opts.autoPause   === false)
-  stream.autoDestroy = !(opts && opts.autoDestroy === false)
-
-  stream.write = function (data) {
-    write.call(this, data)
-    return !stream.paused
-  }
-
-  function drain() {
-    while(buffer.length && !stream.paused) {
-      var data = buffer.shift()
-      if(null === data)
-        return stream.emit('end')
-      else
-        stream.emit('data', data)
-    }
-  }
-
-  stream.queue = stream.push = function (data) {
-//    console.error(ended)
-    if(_ended) return stream
-    if(data == null) _ended = true
-    buffer.push(data)
-    drain()
-    return stream
-  }
-
-  //this will be registered as the first 'end' listener
-  //must call destroy next tick, to make sure we're after any
-  //stream piped from here.
-  //this is only a problem if end is not emitted synchronously.
-  //a nicer way to do this is to make sure this is the last listener for 'end'
-
-  stream.on('end', function () {
-    stream.readable = false
-    if(!stream.writable && stream.autoDestroy)
-      process.nextTick(function () {
-        stream.destroy()
-      })
-  })
-
-  function _end () {
-    stream.writable = false
-    end.call(stream)
-    if(!stream.readable && stream.autoDestroy)
-      stream.destroy()
-  }
-
-  stream.end = function (data) {
-    if(ended) return
-    ended = true
-    if(arguments.length) stream.write(data)
-    _end() // will emit or queue
-    return stream
-  }
-
-  stream.destroy = function () {
-    if(destroyed) return
-    destroyed = true
-    ended = true
-    buffer.length = 0
-    stream.writable = stream.readable = false
-    stream.emit('close')
-    return stream
-  }
-
-  stream.pause = function () {
-    if(stream.paused) return
-    stream.paused = true
-    return stream
-  }
-
-  stream.resume = function () {
-    if(stream.paused) {
-      stream.paused = false
-      stream.emit('resume')
-    }
-    drain()
-    //may have become paused again,
-    //as drain emits 'data'.
-    if(!stream.paused)
-      stream.emit('drain')
-    return stream
-  }
-  return stream
-}
-
-
-}).call(this,require("q+64fw"))
-},{"q+64fw":89,"stream":103}],8:[function(require,module,exports){
-
-/**
- * Module dependencies.
- */
-
-var global = (function() { return this; })();
-
-/**
- * WebSocket constructor.
- */
-
-var WebSocket = global.WebSocket || global.MozWebSocket;
-
-/**
- * Module exports.
- */
-
-module.exports = WebSocket ? ws : null;
-
-/**
- * WebSocket constructor.
- *
- * The third `opts` options object gets ignored in web browsers, since it's
- * non-standard, and throws a TypeError if passed to the constructor.
- * See: https://github.com/einaros/ws/issues/227
- *
- * @param {String} uri
- * @param {Array} protocols (optional)
- * @param {Object) opts (optional)
- * @api public
- */
-
-function ws(uri, protocols, opts) {
-  var instance;
-  if (protocols) {
-    instance = new WebSocket(uri, protocols);
-  } else {
-    instance = new WebSocket(uri);
-  }
-  return instance;
-}
-
-if (WebSocket) ws.prototype = WebSocket.prototype;
-
-},{}],9:[function(require,module,exports){
+},{"mineflayer":2,"tellraw2dom":54}],2:[function(require,module,exports){
 (function (Buffer){
 var mc = require('minecraft-protocol')
   , EventEmitter = require('events').EventEmitter
@@ -2052,7 +186,7 @@ Bot.prototype.end = function() {
 };
 
 }).call(this,require("buffer").Buffer)
-},{"./lib/biome":10,"./lib/block":11,"./lib/chest":13,"./lib/dispenser":15,"./lib/enchantment_table":16,"./lib/entity":17,"./lib/enums/biomes":18,"./lib/enums/blocks":19,"./lib/enums/instruments":20,"./lib/enums/items":21,"./lib/enums/materials":22,"./lib/enums/recipes":23,"./lib/furnace":24,"./lib/item":25,"./lib/location":26,"./lib/painting":28,"./lib/plugins/bed":29,"./lib/plugins/block_actions":30,"./lib/plugins/blocks":31,"./lib/plugins/chat":32,"./lib/plugins/digging":33,"./lib/plugins/entities":34,"./lib/plugins/experience":35,"./lib/plugins/game":36,"./lib/plugins/health":37,"./lib/plugins/inventory":38,"./lib/plugins/kick":39,"./lib/plugins/physics":40,"./lib/plugins/rain":41,"./lib/plugins/settings":42,"./lib/plugins/spawn_point":43,"./lib/plugins/time":44,"./lib/recipe":45,"./lib/windows":46,"buffer":83,"events":86,"minecraft-protocol":48,"path":88,"util":105,"vec3":56,"websocket-stream":57}],10:[function(require,module,exports){
+},{"./lib/biome":3,"./lib/block":4,"./lib/chest":6,"./lib/dispenser":8,"./lib/enchantment_table":9,"./lib/entity":10,"./lib/enums/biomes":11,"./lib/enums/blocks":12,"./lib/enums/instruments":13,"./lib/enums/items":14,"./lib/enums/materials":15,"./lib/enums/recipes":16,"./lib/furnace":17,"./lib/item":18,"./lib/location":19,"./lib/painting":21,"./lib/plugins/bed":22,"./lib/plugins/block_actions":23,"./lib/plugins/blocks":24,"./lib/plugins/chat":25,"./lib/plugins/digging":26,"./lib/plugins/entities":27,"./lib/plugins/experience":28,"./lib/plugins/game":29,"./lib/plugins/health":30,"./lib/plugins/inventory":31,"./lib/plugins/kick":32,"./lib/plugins/physics":33,"./lib/plugins/rain":34,"./lib/plugins/settings":35,"./lib/plugins/spawn_point":36,"./lib/plugins/time":37,"./lib/recipe":38,"./lib/windows":39,"buffer":72,"events":75,"minecraft-protocol":41,"path":77,"util":94,"vec3":49,"websocket-stream":50}],3:[function(require,module,exports){
 var biomes = require('./enums/biomes')
 
 module.exports = Biome;
@@ -2076,7 +210,7 @@ function Biome(id) {
 }
 
 
-},{"./enums/biomes":18}],11:[function(require,module,exports){
+},{"./enums/biomes":11}],4:[function(require,module,exports){
 var Biome = require('./biome')
   , blocks = require('./enums/blocks')
 
@@ -2110,7 +244,7 @@ function Block(type, biomeId) {
 }
 
 
-},{"./biome":10,"./enums/blocks":19}],12:[function(require,module,exports){
+},{"./biome":3,"./enums/blocks":12}],5:[function(require,module,exports){
 var util = require('util');
 
 /**
@@ -2303,7 +437,7 @@ ChatMessage.prototype.toString = function() {
 
 module.exports = ChatMessage;
 
-},{"util":105}],13:[function(require,module,exports){
+},{"util":94}],6:[function(require,module,exports){
 var EventEmitter = require('events').EventEmitter
   , util = require('util')
   , assert = require('assert')
@@ -2342,7 +476,7 @@ Chest.prototype.items = function() {
   return this.window.chestItems();
 };
 
-},{"assert":67,"events":86,"util":105}],14:[function(require,module,exports){
+},{"assert":56,"events":75,"util":94}],7:[function(require,module,exports){
 var math = require('./math')
   , euclideanMod = math.euclideanMod
   , PI = Math.PI
@@ -2393,7 +527,7 @@ function fromNotchianPitch(pitch) {
   return euclideanMod(toRadians(-pitch) + PI, PI_2) - PI;
 }
 
-},{"./math":27}],15:[function(require,module,exports){
+},{"./math":20}],8:[function(require,module,exports){
 var EventEmitter = require('events').EventEmitter
   , util = require('util')
   , assert = require('assert')
@@ -2432,7 +566,7 @@ Dispenser.prototype.items = function() {
   return this.window.dispenserItems();
 };
 
-},{"assert":67,"events":86,"util":105}],16:[function(require,module,exports){
+},{"assert":56,"events":75,"util":94}],9:[function(require,module,exports){
 var EventEmitter = require('events').EventEmitter
   , util = require('util')
   , assert = require('assert')
@@ -2469,7 +603,7 @@ EnchantmentTable.prototype.putTargetItem = function() {
   assert.ok(false, "override");
 };
 
-},{"assert":67,"events":86,"util":105}],17:[function(require,module,exports){
+},{"assert":56,"events":75,"util":94}],10:[function(require,module,exports){
 var Vec3 = require('vec3').Vec3;
 
 module.exports = Entity;
@@ -2496,7 +630,7 @@ Entity.prototype.setEquipment = function(index, item) {
 };
 
 
-},{"vec3":56}],18:[function(require,module,exports){
+},{"vec3":49}],11:[function(require,module,exports){
 module.exports={
   "0": {
     "id": 0,
@@ -2751,7 +885,7 @@ module.exports={
     "temperature": 1.2
   }
 }
-},{}],19:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 module.exports={
   "0": {
     "id": 0,
@@ -4630,7 +2764,7 @@ module.exports={
   }
 }
 
-},{}],20:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 module.exports={
   "0": {
     "id": 0,
@@ -4654,7 +2788,7 @@ module.exports={
   }
 }
 
-},{}],21:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 module.exports={
   "256": {
     "id": 256,
@@ -5618,7 +3752,7 @@ module.exports={
   }
 }
 
-},{}],22:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 module.exports={
   "rock": {
     "257": 6,
@@ -5680,7 +3814,7 @@ module.exports={
     "359": 4.8
   }
 }
-},{}],23:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 module.exports={
   "5": [
     {
@@ -8547,7 +6681,7 @@ module.exports={
   ]
 }
 
-},{}],24:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 var EventEmitter = require('events').EventEmitter
   , util = require('util')
   , assert = require('assert')
@@ -8598,7 +6732,7 @@ Furnace.prototype.outputItem = function() {
   return this.window.slots[2];
 }
 
-},{"assert":67,"events":86,"util":105}],25:[function(require,module,exports){
+},{"assert":56,"events":75,"util":94}],18:[function(require,module,exports){
 (function (Buffer){
 var items = require('./enums/items')
   , blocks = require('./enums/blocks')
@@ -8636,7 +6770,7 @@ Item.equal = function(item1, item2) {
 };
 
 }).call(this,require("buffer").Buffer)
-},{"./enums/blocks":19,"./enums/items":21,"assert":67,"buffer":83}],26:[function(require,module,exports){
+},{"./enums/blocks":12,"./enums/items":14,"assert":56,"buffer":72}],19:[function(require,module,exports){
 var Vec3 = require('vec3').Vec3;
 var CHUNK_SIZE = new Vec3(16, 16, 16)
 
@@ -8654,7 +6788,7 @@ function Location(absoluteVector) {
   this.chunkYIndex = Math.floor(absoluteVector.y / 16);
 }
 
-},{"vec3":56}],27:[function(require,module,exports){
+},{"vec3":49}],20:[function(require,module,exports){
 exports.clamp = function clamp(min, x, max) {
   return x < min ? min : x > max ? max : x;
 };
@@ -8668,7 +6802,7 @@ exports.euclideanMod = function euclideanMod(numerator, denominator) {
   return result < 0 ? result + denominator : result;
 };
 
-},{}],28:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 var Vec3 = require('vec3').Vec3;
 
 module.exports = Painting;
@@ -8680,7 +6814,7 @@ function Painting(id, pos, name, direction) {
   this.direction = direction;
 }
 
-},{"vec3":56}],29:[function(require,module,exports){
+},{"vec3":49}],22:[function(require,module,exports){
 var assert = require('assert');
 
 module.exports = inject;
@@ -8728,7 +6862,7 @@ function inject(bot) {
   bot.sleep = sleep;
 }
 
-},{"assert":67}],30:[function(require,module,exports){
+},{"assert":56}],23:[function(require,module,exports){
 var instruments = require('../enums/instruments')
   , Vec3 = require('vec3').Vec3
 
@@ -8749,7 +6883,7 @@ function inject(bot) {
   });
 }
 
-},{"../enums/instruments":20,"vec3":56}],31:[function(require,module,exports){
+},{"../enums/instruments":13,"vec3":49}],24:[function(require,module,exports){
 (function (Buffer){
 var vec3 = require('vec3')
   , Vec3 = vec3.Vec3
@@ -8847,7 +6981,7 @@ function inject(bot) {
     }
 
     assert.strictEqual(offset, args.data.length);
-    bot.emit("chunkColumnLoad", columnCorner);
+    bot.emit("chunkColumnLoad", columnCorner, column);
   }
 
   function blockAt(absolutePoint) {
@@ -9094,7 +7228,7 @@ function Column() {
 
 
 }).call(this,require("buffer").Buffer)
-},{"../block":11,"../location":26,"../painting":28,"assert":67,"buffer":83,"vec3":56,"zlib":82}],32:[function(require,module,exports){
+},{"../block":4,"../location":19,"../painting":21,"assert":56,"buffer":72,"vec3":49,"zlib":71}],25:[function(require,module,exports){
 var assert = require('assert')
   , quoteMeta = require('quotemeta')
   , ChatMessage = require('../chat_message')
@@ -9219,7 +7353,7 @@ function inject(bot) {
   };
 }
 
-},{"../chat_message":12,"assert":67,"quotemeta":55}],33:[function(require,module,exports){
+},{"../chat_message":5,"assert":56,"quotemeta":48}],26:[function(require,module,exports){
 var assert = require('assert');
 var toolMultipliers = require('../enums/materials');
 
@@ -9345,7 +7479,7 @@ function noop(err) {
   if (err) throw err;
 }
 
-},{"../enums/materials":22,"assert":67}],34:[function(require,module,exports){
+},{"../enums/materials":15,"assert":56}],27:[function(require,module,exports){
 var Vec3 = require('vec3').Vec3
   , _ = require('lodash')
   , Entity = require('../entity')
@@ -9764,7 +7898,7 @@ function parseMetadata(metadata) {
   return o;
 }
 
-},{"../conversions":14,"../entity":17,"lodash":47,"vec3":56}],35:[function(require,module,exports){
+},{"../conversions":7,"../entity":10,"lodash":40,"vec3":49}],28:[function(require,module,exports){
 module.exports = inject;
 
 function inject(bot) {
@@ -9781,7 +7915,7 @@ function inject(bot) {
   });
 }
 
-},{}],36:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 (function (Buffer){
 module.exports = inject;
 
@@ -9857,7 +7991,7 @@ function autoRespawn(bot) {
 
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":83}],37:[function(require,module,exports){
+},{"buffer":72}],30:[function(require,module,exports){
 module.exports = inject;
 
 function inject(bot, options) {
@@ -9884,7 +8018,7 @@ function inject(bot, options) {
   });
 }
 
-},{}],38:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 (function (process){
 var Item = require('../item')
   , assert = require('assert')
@@ -10937,7 +9071,7 @@ function vectorToDirection(v) {
 }
 
 }).call(this,require("q+64fw"))
-},{"../chest":13,"../dispenser":15,"../enchantment_table":16,"../furnace":24,"../item":25,"../recipe":45,"../windows":46,"assert":67,"q+64fw":89}],39:[function(require,module,exports){
+},{"../chest":6,"../dispenser":8,"../enchantment_table":9,"../furnace":17,"../item":18,"../recipe":38,"../windows":39,"assert":56,"q+64fw":78}],32:[function(require,module,exports){
 module.exports = inject;
 
 function inject(bot) {
@@ -10950,7 +9084,7 @@ function inject(bot) {
   };
 }
 
-},{}],40:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 var Vec3 = require('vec3').Vec3
   , assert = require('assert')
   , math = require('../math')
@@ -11304,7 +9438,7 @@ function inject(bot) {
   bot.on('end', cleanup);
 }
 
-},{"../conversions":14,"../math":27,"assert":67,"vec3":56}],41:[function(require,module,exports){
+},{"../conversions":7,"../math":20,"assert":56,"vec3":49}],34:[function(require,module,exports){
 module.exports = inject;
 
 function inject(bot) {
@@ -11320,7 +9454,7 @@ function inject(bot) {
   });
 }
 
-},{}],42:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 var assert = require('assert');
 
 module.exports = inject;
@@ -11379,7 +9513,7 @@ function extend(obj, src) {
   return obj;
 }
 
-},{"assert":67}],43:[function(require,module,exports){
+},{"assert":56}],36:[function(require,module,exports){
 var Vec3 = require('vec3').Vec3;
 
 module.exports = inject;
@@ -11392,7 +9526,7 @@ function inject(bot) {
   });
 }
 
-},{"vec3":56}],44:[function(require,module,exports){
+},{"vec3":49}],37:[function(require,module,exports){
 module.exports = inject;
 
 function inject(bot) {
@@ -11412,7 +9546,7 @@ function longToNumber(arr) {
   return arr[1] + 4294967296 * arr[0];
 }
 
-},{}],45:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 var recipes = require('./enums/recipes');
 
 module.exports = Recipe;
@@ -11535,7 +9669,7 @@ function reformatIngredients(ingredients) {
   return out;
 }
 
-},{"./enums/recipes":23}],46:[function(require,module,exports){
+},{"./enums/recipes":16}],39:[function(require,module,exports){
 var util = require('util')
   , assert = require('assert')
   , Item = require('./item')
@@ -11909,7 +10043,7 @@ util.inherits(BrewingStandWindow, Window);
 
 BrewingStandWindow.prototype.inventorySlotStart = 5;
 
-},{"./item":25,"assert":67,"util":105}],47:[function(require,module,exports){
+},{"./item":18,"assert":56,"util":94}],40:[function(require,module,exports){
 (function (global){
 /**
  * @license
@@ -18698,26 +16832,1875 @@ BrewingStandWindow.prototype.inventorySlotStart = 5;
 }.call(this));
 
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{}],41:[function(require,module,exports){
+(function (Buffer){
+'use strict';
+
+var Client = require('./lib/client')
+    , protocol = require('./lib/protocol')
+    , assert = require('assert')
+    , states = protocol.states;
+
+module.exports = {
+  protocol: require('./lib/protocol'),
+  createClient: createClient
+};
+
+// websocket version of index.js createClient()
+function createClient(options) {
+  assert.ok(options, "options is required");
+  var port = options.port || 24444;
+  var host = options.host || 'localhost';
+  var protocol = options.protocol || 'ws';
+  var path = options.path || 'server';
+  var url = options.url || (options.protocol + '://' + options.host + ':' + options.port + '/' + options.path);
+
+  assert.ok(options.username, "username is required");
+  var keepAlive = options.keepAlive == null ? true : options.keepAlive;
+
+
+  var client = new Client(false);
+  client.on('connect', onConnect);
+  if (keepAlive) client.on([states.PLAY, 0x00], onKeepAlive);
+
+  client.username = options.username;
+  client.connectWS(url);
+
+  return client;
+
+  function onConnect() {
+    client.socket.write(new Buffer(client.username));
+    client.state = states.PLAY;
+  }
+
+  function onKeepAlive(packet) {
+    client.write(0x00, {
+      keepAliveId: packet.keepAliveId
+    });
+  }
+}
+
+
+}).call(this,require("buffer").Buffer)
+},{"./lib/client":42,"./lib/protocol":43,"assert":56,"buffer":72}],42:[function(require,module,exports){
+(function (Buffer){
+var net = require('net')
+  , EventEmitter = require('events').EventEmitter
+  , util = require('util')
+  , websocket_stream = require('websocket-stream')
+  , protocol = require('./protocol')
+  , dns = require('dns')
+  , createPacketBuffer = protocol.createPacketBuffer
+  , parsePacket = protocol.parsePacket
+  , states = protocol.states
+  , debug = protocol.debug
+;
+
+module.exports = Client;
+
+function Client(isServer) {
+  EventEmitter.call(this);
+
+  this._state = states.HANDSHAKING;
+  Object.defineProperty(this, "state", {
+    get: function() {
+      return this._state;
+    },
+    set: function(newProperty) {
+      var oldProperty = this._state;
+      this._state = newProperty;
+      this.emit('state', newProperty, oldProperty);
+    }
+  });
+  this.isServer = !!isServer;
+  this.socket = null;
+  this.encryptionEnabled = false;
+  this.cipher = null;
+  this.decipher = null;
+  this.packetsToParse = {};
+  this.on('newListener', function(event, listener) {
+    var direction = this.isServer ? 'toServer' : 'toClient';
+    if (protocol.packetStates[direction].hasOwnProperty(event) || event === "packet") {
+      if (typeof this.packetsToParse[event] === "undefined") this.packetsToParse[event] = 1;
+      else this.packetsToParse[event] += 1;
+    }
+  });
+  this.on('removeListener', function(event, listener) {
+    var direction = this.isServer ? 'toServer' : 'toClient';
+    if (protocol.packetStates[direction].hasOwnProperty(event) || event === "packet") {
+      this.packetsToParse[event] -= 1;
+    }
+  });
+}
+
+util.inherits(Client, EventEmitter);
+
+// Transform weird "packet" types into string representing their type. Should be mostly retro-compatible
+Client.prototype.on = function(type, func) {
+    var direction = this.isServer ? 'toServer' : 'toClient';
+    if (Array.isArray(type)) {
+        arguments[0] = protocol.packetNames[type[0]][direction][type[1]];
+    } else if (typeof type === "number") {
+        arguments[0] = protocol.packetNames[this.state][direction][type];
+    }
+    EventEmitter.prototype.on.apply(this, arguments);
+};
+
+Client.prototype.onRaw = function(type, func) {
+    var arg = "raw.";
+    if (Array.isArray(type)) {
+        arg += protocol.packetNames[type[0]][direction][type[1]];
+    } else if (typeof type === "number") {
+        arg += protocol.packetNames[this.state][direction][type];
+    } else {
+        arg += type;
+    }
+    arguments[0] = arg;
+    EventEmitter.prototype.on.apply(this, arguments);
+};
+
+Client.prototype.setSocket = function(socket) {
+  var self = this;
+  self.socket = socket;
+  var incomingBuffer = new Buffer(0);
+  self.socket.on('data', function(data) {
+    if (self.encryptionEnabled) data = new Buffer(self.decipher.update(data), 'binary');
+    if (!Buffer.isBuffer(data)) data = new Buffer(data);
+    incomingBuffer = Buffer.concat([incomingBuffer, data]);
+    var parsed, packet;
+    while (true) {
+      parsed = parsePacket(incomingBuffer, self.state, self.isServer, self.packetsToParse);
+      if (! parsed) break;
+      if (parsed.error) {
+          this.emit('error', parsed.error);
+          this.end("ProtocolError");
+          return;
+      }
+      packet = parsed.results;
+      incomingBuffer = incomingBuffer.slice(parsed.size);
+
+      var packetName = protocol.packetNames[self.state][self.isServer ? 'toServer' : 'toClient'][packet.id];
+      self.emit(packetName, packet);
+      self.emit('packet', packet);
+      self.emit('raw.' + packetName, parsed.buffer);
+      self.emit('raw', parsed.buffer);
+    }
+  });
+
+  self.socket.on('connect', function() {
+    self.emit('connect');
+  });
+
+  self.socket.on('error', onError);
+  self.socket.on('close', endSocket);
+  self.socket.on('end', endSocket);
+  self.socket.on('timeout', endSocket);
+
+  function onError(err) {
+    self.emit('error', err);
+    endSocket();
+  }
+
+  var ended = false;
+  function endSocket() {
+    if (ended) return;
+    ended = true;
+    self.socket.removeListener('close', endSocket);
+    self.socket.removeListener('end', endSocket);
+    self.socket.removeListener('timeout', endSocket);
+    self.emit('end', self._endReason);
+  }
+};
+
+Client.prototype.connectWS = function(url) {
+  var ws = websocket_stream(url, {type: Uint8Array});
+  this.setSocket(ws);
+};
+
+Client.prototype.connect = function(port, host) {
+  var self = this;
+  if (port == 25565) {
+      dns.resolveSrv("_minecraft._tcp." + host, function(err, addresses) {
+      if (addresses) {
+        self.setSocket(net.connect(addresses[0].port, addresses[0].name));
+      } else {
+        self.setSocket(net.connect(port, host));
+      }
+    });
+  } else {
+    self.setSocket(net.connect(port, host));
+  }
+};
+
+Client.prototype.end = function(reason) {
+  this._endReason = reason;
+  this.socket.end();
+};
+
+Client.prototype.write = function(packetId, params) {
+  if (Array.isArray(packetId)) {
+     if (packetId[0] !== this.state)
+      return false;
+    packetId = packetId[1];
+  }
+  
+  var buffer = createPacketBuffer(packetId, this.state, params, this.isServer);
+  debug("writing packetId " + packetId + " (0x" + packetId.toString(16) + ")");
+  debug(params);
+  var out = this.encryptionEnabled ? new Buffer(this.cipher.update(buffer), 'binary') : buffer;
+  this.socket.write(out);
+  return true;
+};
+
+Client.prototype.writeRaw = function(buffer, shouldEncrypt) {
+    if (shouldEncrypt === null) {
+        shouldEncrypt = true;
+    }
+    var out = (shouldEncrypt && this.encryptionEnabled) ? new Buffer(this.cipher.update(buffer), 'binary') : buffer;
+    this.socket.write(out);
+};
+}).call(this,require("buffer").Buffer)
+},{"./protocol":43,"buffer":72,"dns":55,"events":75,"net":55,"util":94,"websocket-stream":44}],43:[function(require,module,exports){
+(function (process,Buffer){
+var assert = require('assert');
+var util = require('util');
+
+var STRING_MAX_LENGTH = 240;
+var SRV_STRING_MAX_LENGTH = 32767;
+
+// This is really just for the client.
+var states = {
+  "HANDSHAKING": "handshaking",
+  "STATUS": "status",
+  "LOGIN": "login",
+  "PLAY": "play"
+}
+
+var packets = {
+  handshaking: {
+    toClient: {},
+    toServer: { 
+      set_protocol:          {id: 0x00, fields: [
+        { name: "protocolVersion", type: "varint" },
+        { name: "serverHost", type: "string" },
+        { name: "serverPort", type: "ushort" },
+        { name: "nextState", type: "varint" }
+      ]}
+    },
+  },
+
+// TODO : protocollib names aren't the best around here
+  status: {
+    toClient: {
+      server_info:    {id: 0x00, fields: [
+        { name: "response", type: "ustring" }
+      ]},
+      ping:        {id: 0x01, fields: [
+        { name: "time", type: "long" }
+      ]}
+    },
+    toServer: {
+      ping_start:     {id: 0x00, fields: []},
+      ping:        {id: 0x01, fields: [
+        { name: "time", type: "long" }
+      ]}
+    }
+  },
+
+  login: {
+    toClient: {
+      disconnect:   {id: 0x00, fields: [
+        { name: "reason", type: "string" }
+      ]},
+      encryption_begin: {id: 0x01, fields: [
+        { name: "serverId", type: "string" },
+        { name: "publicKeyLength", type: "count", typeArgs: { type: "short", countFor: "publicKey" } },
+        { name: "publicKey", type: "buffer", typeArgs: { count: "publicKeyLength" } },
+        { name: "verifyTokenLength", type: "count", typeArgs: { type: "short", countFor: "verifyToken" } },
+        { name: "verifyToken", type: "buffer", typeArgs: { count: "verifyTokenLength" } },
+      ]},
+      success:      {id: 0x02, fields: [
+        { name: "uuid", type: "string" },
+        { name: "username", type: "string" }
+      ]}
+    },
+    toServer: {
+      login_start:        {id: 0x00, fields: [
+        { name: "username", type: "string" }
+      ]},
+      encryption_begin: {id: 0x01, fields: [
+        { name: "sharedSecretLength", type: "count", typeArgs: { type: "short", countFor: "sharedSecret" } },
+        { name: "sharedSecret", type: "buffer", typeArgs: { count: "sharedSecretLength" } },
+        { name: "verifyTokenLength", type: "count", typeArgs: { type: "short", countFor: "verifyToken" } },
+        { name: "verifyToken", type: "buffer", typeArgs: { count: "verifyTokenLength" } },
+      ]}
+    }
+  },
+
+  play: {
+    toClient: {
+      keep_alive:         {id: 0x00, fields: [
+        { name: "keepAliveId", type: "int" },
+      ]},
+      login:          {id: 0x01, fields: [
+        { name: "entityId", type: "int" },
+        { name: "gameMode", type: "ubyte" },
+        { name: "dimension", type: "byte" },
+        { name: "difficulty", type: "ubyte" },
+        { name: "maxPlayers", type: "ubyte" },
+        { name: "levelType", type: "string" },
+      ]},
+      chat:               {id: 0x02, fields: [
+        { name: "message", type: "ustring" },
+      ]},
+      update_time:        {id: 0x03, fields: [
+        { name: "age", type: "long" },
+        { name: "time", type: "long" },
+      ]},
+      entity_equipment:   {id: 0x04, fields: [
+        { name: "entityId", type: "int" },
+        { name: "slot", type: "short" },
+        { name: "item", type: "slot" }
+      ]},
+      spawn_position:     {id: 0x05, fields: [
+        { name: "x", type: "int" },
+        { name: "y", type: "int" },
+        { name: "z", type: "int" }
+      ]},
+      update_health:      {id: 0x06, fields: [
+        { name: "health", type: "float" },
+        { name: "food", type: "short" },
+        { name: "foodSaturation", type: "float" }
+      ]},
+      respawn:            {id: 0x07, fields: [
+        { name: "dimension", type: "int" },
+        { name: "difficulty", type: "ubyte" },
+        { name: "gamemode", type: "ubyte" },
+        { name: "levelType", type: "string" }
+      ]},
+      position:    {id: 0x08, fields: [
+        { name: "x", type: "double" },
+        { name: "y", type: "double" },
+        { name: "z", type: "double" },
+        { name: "yaw", type: "float" },
+        { name: "pitch", type: "float" },
+        { name: "onGround", type: "bool" }
+      ]},
+      held_item_slot:   {id: 0x09, fields: [
+        { name: "slot", type: "byte" }
+      ]},
+      bed:            {id: 0x0a, fields: [
+        { name: "entityId", type: "int" },
+        { name: "x", type: "int" },
+        { name: "y", type: "ubyte" },
+        { name: "z", type: "int" }
+      ]},
+      animation:          {id: 0x0b, fields: [
+        { name: "entityId", type: "varint" },
+        { name: "animation", type: "byte" }
+      ]},
+      named_entity_spawn:       {id: 0x0c, fields: [
+        { name: "entityId", type: "varint" },
+        { name: "playerUUID", type: "string" },
+        { name: "playerName", type: "string" },
+        { name: "dataCount", type: "count", typeArgs: { type: "varint", countFor: "data" }},
+        { name: "data", type: "array", typeArgs: { count: "dataCount", 
+          type: "container", typeArgs: { fields: [
+            { name: "name", type: "string" },
+            { name: "value", type: "string" },
+            { name: "signature", type: "string" }
+        ]}}},
+        { name: "x", type: "int" },
+        { name: "y", type: "int" },
+        { name: "z", type: "int" },
+        { name: "yaw", type: "byte" },
+        { name: "pitch", type: "byte" },
+        { name: "currentItem", type: "short" },
+        { name: "metadata", type: "entityMetadata" }
+      ]},
+      collect:       {id: 0x0d, fields: [
+        { name: "collectedEntityId", type: "int" },
+        { name: "collectorEntityId", type: "int" }
+      ]},
+      spawn_entity:       {id: 0x0e, fields: [
+        { name: "entityId", type: "varint" },
+        { name: "type", type: "byte" },
+        { name: "x", type: "int" },
+        { name: "y", type: "int" },
+        { name: "z", type: "int" },
+        { name: "pitch", type: "byte" },
+        { name: "yaw", type: "byte" },
+        { name: "objectData", type: "container", typeArgs: { fields: [
+          { name: "intField", type: "int" },
+          { name: "velocityX", type: "short", condition: function(field_values) {
+            return field_values['this']['intField'] != 0;
+          }},
+          { name: "velocityY", type: "short", condition: function(field_values) {
+            return field_values['this']['intField'] != 0;
+          }},
+          { name: "velocityZ", type: "short", condition: function(field_values) {
+            return field_values['this']['intField'] != 0;
+          }}
+        ]}} 
+      ]},
+      spawn_entity_living:          {id: 0x0f, fields: [
+        { name: "entityId", type: "varint" },
+        { name: "type", type: "ubyte" },
+        { name: "x", type: "int" },
+        { name: "y", type: "int" },
+        { name: "z", type: "int" },
+        { name: "pitch", type: "byte" },
+        { name: "headPitch", type: "byte" },
+        { name: "yaw", type: "byte" },
+        { name: "velocityX", type: "short" },
+        { name: "velocityY", type: "short" },
+        { name: "velocityZ", type: "short" },
+        { name: "metadata", type: "entityMetadata" },
+      ]},
+      spawn_entity_painting:     {id: 0x10, fields: [
+        { name: "entityId", type: "varint" },
+        { name: "title", type: "string" },
+        { name: "x", type: "int" },
+        { name: "y", type: "int" },
+        { name: "z", type: "int" },
+        { name: "direction", type: "int" }
+      ]},
+      spawn_entity_experience_orb: {id: 0x11, fields: [
+        { name: "entityId", type: "varint" },
+        { name: "x", type: "int" },
+        { name: "y", type: "int" },
+        { name: "z", type: "int" },
+        { name: "count", type: "short" }
+      ]},
+      entity_velocity:    {id: 0x12, fields: [
+        { name: "entityId", type: "int" },
+        { name: "velocityX", type: "short" },
+        { name: "velocityY", type: "short" },
+        { name: "velocityZ", type: "short" }
+      ]},
+      entity_destroy:   {id: 0x13, fields: [
+        { name: "count", type: "count", typeArgs: { type: "byte", countFor: "entityIds" } },
+        { name: "entityIds", type: "array", typeArgs: { type: "int", count: "count" } }
+      ]},
+      entity:             {id: 0x14, fields: [
+        { name: "entityId", type: "int" } 
+      ]},
+      rel_entity_move: {id: 0x15, fields: [
+        { name: "entityId", type: "int" },
+        { name: "dX", type: "byte" },
+        { name: "dY", type: "byte" },
+        { name: "dZ", type: "byte" }
+      ]},
+      entity_look:        {id: 0x16, fields: [
+        { name: "entityId", type: "int" },
+        { name: "yaw", type: "byte" },
+        { name: "pitch", type: "byte" }
+      ]},
+      entity_move_look: {id: 0x17, fields: [
+        { name: "entityId", type: "int" },
+        { name: "dX", type: "byte" },
+        { name: "dY", type: "byte" },
+        { name: "dZ", type: "byte" },
+        { name: "yaw", type: "byte" },
+        { name: "pitch", type: "byte" }
+      ]},
+      entity_teleport:    {id: 0x18, fields: [
+        { name: "entityId", type: "int" },
+        { name: "x", type: "int" },
+        { name: "y", type: "int" },
+        { name: "z", type: "int" },
+        { name: "yaw", type: "byte" },
+        { name: "pitch", type: "byte" }
+      ]},
+      entity_head_rotation:   {id: 0x19, fields: [
+        { name: "entityId", type: "int" },
+        { name: "headYaw", type: "byte" },
+      ]},
+      entity_status:      {id: 0x1a, fields: [
+        { name: "entityId", type: "int" },
+        { name: "entityStatus", type: "byte" }
+      ]},
+      attach_entity:      {id: 0x1b, fields: [
+        { name: "entityId", type: "int" },
+        { name: "vehicleId", type: "int" },
+        { name: "leash", type: "bool" }
+      ]},
+      entity_metadata:    {id: 0x1c, fields: [
+        { name: "entityId", type: "int" },
+        { name: "metadata", type: "entityMetadata" }
+      ]},
+      entity_effect:      {id: 0x1d, fields: [
+        { name: "entityId", type: "int" },
+        { name: "effectId", type: "byte" },
+        { name: "amplifier", type: "byte" },
+        { name: "duration", type: "short" }
+      ]},
+      remove_entity_effect: {id: 0x1e, fields: [
+        { name: "entityId", type: "int" },
+        { name: "effectId", type: "byte" }
+      ]},
+      experience:     {id: 0x1f, fields: [
+        { name: "experienceBar", type: "float" },
+        { name: "level", type: "short" },
+        { name: "totalExperience", type: "short" }
+      ]},
+      update_attributes:  {id: 0x20, fields: [
+        { name: "entityId", type: "int" },
+        { name: "count", type: "count", typeArgs: { type: "int", countFor: "properties" } },
+        { name: "properties", type: "array", typeArgs: { count: "count", 
+          type: "container", typeArgs: { fields: [
+            { name: "key", type: "string" },
+            { name: "value", type: "double" },
+            { name: "listLength", type: "count", typeArgs: { type: "short", countFor: "this.modifiers" } },
+            { name: "modifiers", type: "array", typeArgs: { count: "this.listLength", 
+              type: "container", typeArgs: { fields: [
+                { name: "UUID", type: "UUID" },
+                { name: "amount", type: "double" },
+                { name: "operation", type: "byte" }
+              ]}}}
+          ]}
+        }}
+      ]},
+      map_chunk:         {id: 0x21, fields: [
+        { name: "x", type: "int" },
+        { name: "z", type: "int" },
+        { name: "groundUp", type: "bool" },
+        { name: "bitMap", type: "ushort" },
+        { name: "addBitMap", type: "ushort" },
+        { name: "compressedChunkDataLength", type: "count", typeArgs: { type: "int", countFor: "compressedChunkData" } },
+        { name: "compressedChunkData", type: "buffer", typeArgs: { count: "compressedChunkDataLength" } },
+      ]},
+      multi_block_change: {id: 0x22, fields: [
+        { name: "chunkX", type: "int" },
+        { name: "chunkZ", type: "int" },
+        { name: "recordCount", type: "short" },
+        { name: "dataLength", type: "count", typeArgs: { type: "int", countFor: "data" } },
+        { name: "data", type: "buffer", typeArgs: { count: "dataLength" } },
+      ]},
+      block_change:       {id: 0x23, fields: [
+        { name: "x", type: "int" },
+        { name: "y", type: "ubyte" },
+        { name: "z", type: "int" },
+        { name: "type", type: "varint" },
+        { name: "metadata", type: "ubyte" }
+      ]},
+      block_action:       {id: 0x24, fields: [
+        { name: "x", type: "int" },
+        { name: "y", type: "short" },
+        { name: "z", type: "int" },
+        { name: "byte1", type: "ubyte" },
+        { name: "byte2", type: "ubyte" },
+        { name: "blockId", type: "varint" }
+      ]},
+      block_break_animation:   {id: 0x25, fields: [
+        { name: "entityId", type: "varint" },
+        { name: "x", type: "int" },
+        { name: "y", type: "int" },
+        { name: "z", type: "int" },
+        { name: "destroyStage", type: "byte" }
+      ]},
+      map_chunk_bulk:     {id: 0x26, fields: [
+        { name: "chunkColumnCount", type: "count", typeArgs: { type: "short", countFor: "meta" } },
+        { name: "dataLength", type: "count", typeArgs: { type: "int", countFor: "compressedChunkData" } },
+        { name: "skyLightSent", type: "bool" },
+        { name: "compressedChunkData", type: "buffer", typeArgs: { count: "dataLength" } },
+        { name: "meta", type: "array", typeArgs: { count: "chunkColumnCount", 
+          type: "container", typeArgs: { fields: [
+            { name: "x", type: "int" },
+            { name: "z", type: "int" },
+            { name: "bitMap", type: "ushort" },
+            { name: "addBitMap", type: "ushort" }
+        ] } } }
+      ]},
+      explosion:          {id: 0x27, fields: [
+        { name: "x", type: "float" },
+        { name: "y", type: "float" },
+        { name: "z", type: "float" },
+        { name: "radius", type: "float" },
+        { name: "count", type: "count", typeArgs: { type: "int", countFor: "affectedBlockOffsets" } },
+        { name: "affectedBlockOffsets", type: "array", typeArgs: { count: "count", type: "container", typeArgs: {
+          fields: [
+            { name: "x", type: "byte" },
+            { name: "y", type: "byte" },
+            { name: "z", type: "byte" }
+          ]
+        }}},
+        { name: "playerMotionX", type: "float" },
+        { name: "playerMotionY", type: "float" },
+        { name: "playerMotionZ", type: "float" }
+      ]},
+      world_event:             {id: 0x28, fields: [ // TODO : kinda wtf naming there
+        { name: "effectId", type: "int" },
+        { name: "x", type: "int" },
+        { name: "y", type: "byte" },
+        { name: "z", type: "int" },
+        { name: "data", type: "int" },
+        { name: "global", type: "bool" }
+      ]},
+      named_sound_effect:       {id: 0x29, fields: [
+        { name: "soundName", type: "string" },
+        { name: "x", type: "int" },
+        { name: "y", type: "int" },
+        { name: "z", type: "int" },
+        { name: "volume", type: "float" },
+        { name: "pitch", type: "ubyte" }
+      ]},
+      world_particles:           {id: 0x2a, fields: [
+        { name: "particleName", type: "string" },
+        { name: "x", type: "float" },
+        { name: "y", type: "float" },
+        { name: "z", type: "float" },
+        { name: "offsetX", type: "float" },
+        { name: "offsetY", type: "float" },
+        { name: "offsetZ", type: "float" },
+        { name: "particleSpeed", type: "float" },
+        { name: "particles", type: "int" }
+      ]},
+      game_state_change:  {id: 0x2b, fields: [
+        { name: "reason", type: "ubyte" },
+        { name: "gameMode", type: "float" }
+      ]},
+      spawn_entity_weather:{id: 0x2c, fields: [
+        { name: "entityId", type: "varint" },
+        { name: "type", type: "byte" },
+        { name: "x", type: "int" },
+        { name: "y", type: "int" },
+        { name: "z", type: "int" }
+      ]},
+      open_window:        {id: 0x2d, fields: [
+        { name: "windowId", type: "ubyte" },
+        { name: "inventoryType", type: "ubyte" },
+        { name: "windowTitle", type: "string" },
+        { name: "slotCount", type: "ubyte" },
+        { name: "useProvidedTitle", type: "bool" },
+        { name: "entityId", type: "int", condition: function(field_values) {
+          return field_values['inventoryType'] == 11;
+        } }
+      ]},
+      close_window:       {id: 0x2e, fields: [
+        { name: "windowId", type: "ubyte" }
+      ]},
+      set_slot:           {id: 0x2f, fields: [
+        { name: "windowId", type: "ubyte" },
+        { name: "slot", type: "short" },
+        { name: "item", type: "slot" }
+      ]},
+      window_items:       {id: 0x30, fields: [
+        { name: "windowId", type: "ubyte" },
+        { name: "count", type: "count", typeArgs: { type: "short", countFor: "items" } },
+        { name: "items", type: "array", typeArgs: { type: "slot", count: "count" } }
+      ]},
+      craft_progress_bar:    {id: 0x31, fields: [
+        { name: "windowId", type: "ubyte" },
+        { name: "property", type: "short" },
+        { name: "value", type: "short" }
+      ]},
+      transaction:{id: 0x32, fields: [
+        { name: "windowId", type: "ubyte" },
+        { name: "action", type: "short" },
+        { name: "accepted", type: "bool" }
+      ]},
+      update_sign:        {id: 0x33, fields: [
+        { name: "x", type: "int" },
+        { name: "y", type: "short" },
+        { name: "z", type: "int" },
+        { name: "text1", type: "string" },
+        { name: "text2", type: "string" },
+        { name: "text3", type: "string" },
+        { name: "text4", type: "string" }
+      ]},
+      map:               {id: 0x34, fields: [
+        { name: "itemDamage", type: "varint" },
+        { name: "dataLength", type: "count", typeArgs: { type: "short", countFor: "data" } },
+        { name: "data", type: "buffer", typeArgs: { count: "dataLength" } },
+      ]},
+      tile_entity_data:{id: 0x35, fields: [
+        { name: "x", type: "int" },
+        { name: "y", type: "short" },
+        { name: "z", type: "int" },
+        { name: "action", type: "ubyte" },
+        { name: "nbtDataLength", type: "count", typeArgs: { type: "short", countFor: "nbtData" } },
+        { name: "nbtData", type: "buffer", typeArgs: { count: "nbtDataLength" } },
+      ]},
+      open_sign_entity:   {id: 0x36, fields: [
+        { name: "x", type: "int" },
+        { name: "y", type: "int" },
+        { name: "z", type: "int" }
+      ]},
+      statistics:         {id: 0x37, fields: [
+        { name: "count", type: "count", typeArgs: { type: "varint", countFor: "entries" } },
+        { name: "entries", type: "array", typeArgs: { count: "count", 
+          type: "container", typeArgs: { fields: [
+            { name: "name", type: "string" },
+            { name: "value", type: "varint" }
+          ]}
+        }}
+      ]},
+      player_info:   {id: 0x38, fields: [
+        { name: "playerName", type: "string" },
+        { name: "online", type: "bool" },
+        { name: "ping", type: "short" }
+      ]},
+      abilities:   {id: 0x39, fields: [
+        { name: "flags", type: "byte" },
+        { name: "flyingSpeed", type: "float" },
+        { name: "walkingSpeed", type: "float" }
+      ]},
+      tab_complete:       {id: 0x3a, fields: [
+        { name: "count", type: "count", typeArgs: { type: "varint", countFor: "matches" } },
+        { name: "matches", type: "array", typeArgs: { type: "string", count: "count" } }
+      ]},
+      scoreboard_objective: {id: 0x3b, fields: [
+        { name: "name", type: "string" },
+        { name: "displayText", type: "string" },
+        { name: "action", type: "byte" }
+      ]},
+      scoreboard_score:       {id: 0x3c, fields: [
+        { name: "itemName", type: "string" },
+        { name: "remove", type: "bool" },
+        { name: "scoreName", type: "string", condition: function(field_values) {
+          return !field_values['remove']
+        } },
+        { name: "value", type: "int", condition: function(field_values) {
+          return !field_values['remove']
+        } }
+      ]},
+      scoreboard_display_objective: {id: 0x3d, fields: [
+        { name: "position", type: "byte" },
+        { name: "name", type: "string" }
+      ]},
+      scoreboard_team:              {id: 0x3e, fields: [
+        { name: "team", type: "string" },
+        { name: "mode", type: "byte" },
+        { name: "name", type: "string", condition: function(field_values) {
+            return field_values['mode'] == 0 || field_values['mode'] == 2;
+        } },
+        { name: "prefix", type: "string", condition: function(field_values) {
+          return field_values['mode'] == 0 || field_values['mode'] == 2;
+        } },
+        { name: "suffix", type: "string", condition: function(field_values) {
+          return field_values['mode'] == 0 || field_values['mode'] == 2;
+        } },
+        { name: "friendlyFire", type: "byte", condition: function(field_values) {
+          return field_values['mode'] == 0 || field_values['mode'] == 2;
+        } },
+        { name: "playerCount", type: "count", condition: function(field_values) {
+          return field_values['mode'] == 0 || field_values['mode'] == 3 || field_values['mode'] == 4;
+        }, typeArgs: { type: "short", countFor: "players" } },
+        { name: "players", type: "array", condition: function(field_values) {
+          return field_values['mode'] == 0 || field_values['mode'] == 3 || field_values['mode'] == 4;
+        }, typeArgs: { type: "string", count: "playerCount" } }
+      ]},
+      custom_payload:     {id: 0x3f, fields: [
+        { name: "channel", type: "string" },
+        { name: "dataCount", type: 'count', typeArgs: { type: "short", countFor: "data" } },
+        { name: "data", type: "buffer", typeArgs: { count: "dataCount" } }
+      ]},
+      kick_disconnect:         {id: 0x40, fields: [
+        { name: "reason", type: "string" }
+      ]}
+    },
+    toServer: {
+      keep_alive:         {id: 0x00, fields: [
+        { name: "keepAliveId", type: "int" }
+      ]},
+      chat:       {id: 0x01, fields: [
+        { name: "message", type: "string" }
+      ]},
+      use_entity:         {id: 0x02, fields: [
+        { name: "target", type: "int" },
+        { name: "mouse", type: "byte" }
+      ]},
+      flying:             {id: 0x03, fields: [
+        { name: "onGround", type: "bool" }
+      ]},
+      position:    {id: 0x04, fields: [
+        { name: "x", type: "double" },
+        { name: "stance", type: "double" },
+        { name: "y", type: "double" },
+        { name: "z", type: "double" },
+        { name: "onGround", type: "bool" }
+      ]},
+      look:        {id: 0x05, fields: [
+        { name: "yaw", type: "float" },
+        { name: "pitch", type: "float" },
+        { name: "onGround", type: "bool" }
+      ]},
+      position_look: {id: 0x06, fields: [
+        { name: "x", type: "double" },
+        { name: "stance", type: "double" },
+        { name: "y", type: "double" },
+        { name: "z", type: "double" },
+        { name: "yaw", type: "float" },
+        { name: "pitch", type: "float" },
+        { name: "onGround", type: "bool" }
+      ]},
+      block_dig:     {id: 0x07, fields: [
+        { name: "status", type: "byte" },
+        { name: "x", type: "int" },
+        { name: "y", type: "ubyte" },
+        { name: "z", type: "int" },
+        { name: "face", type: "byte" }
+      ]},
+      block_place: {id: 0x08, fields: [
+        { name: "x", type: "int" },
+        { name: "y", type: "ubyte" },
+        { name: "z", type: "int" },
+        { name: "direction", type: "byte" },
+        { name: "heldItem", type: "slot" },
+        { name: "cursorX", type: "byte" },
+        { name: "cursorY", type: "byte" },
+        { name: "cursorZ", type: "byte" }
+      ]},
+      held_item_slot:   {id: 0x09, fields: [
+        { name: "slotId", type: "short" }
+      ]},
+      arm_animation:          {id: 0x0a, fields: [
+        { name: "entityId", type: "int" },
+        { name: "animation", type: "byte" }
+      ]},
+      entity_action:      {id: 0x0b, fields: [
+        { name: "entityId", type: "int" },
+        { name: "actionId", type: "byte" },
+        { name: "jumpBoost", type: "int" }
+      ]},
+      steer_vehicle:      {id: 0x0c, fields: [
+        { name: "sideways", type: "float" },
+        { name: "forward", type: "float" },
+        { name: "jump", type: "bool" },
+        { name: "unmount", type: "bool" }
+      ]},
+      close_window:       {id: 0x0d, fields: [
+        { name: "windowId", type: "byte" }
+      ]},
+      window_click:       {id: 0x0e, fields: [
+        { name: "windowId", type: "byte" },
+        { name: "slot", type: "short" },
+        { name: "mouseButton", type: "byte" },
+        { name: "action", type: "short" },
+        { name: "mode", type: "byte" },
+        { name: "item", type: "slot" }
+      ]},
+      transaction: {id: 0x0f, fields: [
+        { name: "windowId", type: "byte" },
+        { name: "action", type: "short" },
+        { name: "accepted", type: "bool" }
+      ]},
+      set_creative_slot: {id: 0x10, fields: [
+        { name: "slot", type: "short" },
+        { name: "item", type: "slot" }
+      ]},
+      enchant_item:       {id: 0x11, fields: [
+        { name: "windowId", type: "byte" },
+        { name: "enchantment", type: "byte" }
+      ]},
+      update_sign:        {id: 0x12, fields: [
+        { name: "x", type: "int" },
+        { name: "y", type: "short" },
+        { name: "z", type: "int" },
+        { name: "text1", type: "string" },
+        { name: "text2", type: "string" },
+        { name: "text3", type: "string" },
+        { name: "text4", type: "string" }
+      ]},
+      abilities:   {id: 0x13, fields: [
+        { name: "flags", type: "byte" },
+        { name: "flyingSpeed", type: "float" },
+        { name: "walkingSpeed", type: "float" }
+      ]},
+      tab_complete:       {id: 0x14, fields: [
+        { name: "text", type: "string" }
+      ]},
+      settings:    {id: 0x15, fields: [
+        { name: "locale", type: "string" },
+        { name: "viewDistance", type: "byte" },
+        { name: "chatFlags", type: "byte" },
+        { name: "chatColors", type: "bool" },
+        { name: "difficulty", type: "byte" },
+        { name: "showCape", type: "bool" }
+      ]},
+      client_command:      {id: 0x16, fields: [
+        { name: "payload", type: "byte" }
+      ]},
+      custom_payload:     {id: 0x17, fields: [
+        { name: "channel", type: "string" },
+        { name: "dataLength", type: "count", typeArgs: { type: "short", countFor: "data" } },
+        { name: "data", type: "buffer", typeArgs: { count: "dataLength" } },
+      ]}
+    }
+  }
+};
+
+var packetFields = {};
+var packetNames = {};
+var packetIds = {};
+var packetStates = {toClient: {}, toServer: {}};
+(function() {
+  for (var stateName in states) {
+    var state = states[stateName];
+
+    packetFields[state] = {toClient: [], toServer: []};
+    packetNames[state] = {toClient: [], toServer: []};
+    packetIds[state] = {toClient: [], toServer: []};
+
+    ['toClient', 'toServer'].forEach(function(direction) {
+      for (var name in packets[state][direction]) {
+        var info = packets[state][direction][name];
+        var id = info.id;
+        var fields = info.fields;
+
+        assert(id !== undefined, 'missing id for packet '+name);
+        assert(fields !== undefined, 'missing fields for packet '+name);
+        assert(!packetNames[state][direction].hasOwnProperty(id), 'duplicate packet id '+id+' for '+name);
+        assert(!packetIds[state][direction].hasOwnProperty(name), 'duplicate packet name '+name+' for '+id);
+        assert(!packetFields[state][direction].hasOwnProperty(id), 'duplicate packet id '+id+' for '+name);
+        assert(!packetStates[direction].hasOwnProperty(name), 'duplicate packet name '+name+' for '+id+', must be unique across all states');
+
+        packetNames[state][direction][id] = name;
+        packetIds[state][direction][name] = id;
+        packetFields[state][direction][id] = fields;
+        packetStates[direction][name] = state;
+      }
+    });
+  }
+})();
+
+
+
+var types = {
+  'byte': [readByte, writeByte, 1],
+  'ubyte': [readUByte, writeUByte, 1],
+  'short': [readShort, writeShort, 2],
+  'ushort': [readUShort, writeUShort, 2],
+  'int': [readInt, writeInt, 4],
+  'long': [readLong, writeLong, 8],
+  'varint': [readVarInt, writeVarInt, sizeOfVarInt],
+  'float': [readFloat, writeFloat, 4],
+  'double': [readDouble, writeDouble, 8],
+  'bool': [readBool, writeBool, 1],
+  'string': [readString, writeString, sizeOfString],
+  'ustring': [readString, writeString, sizeOfUString], // TODO : remove ustring
+  'UUID': [readUUID, writeUUID, 16],
+  'container': [readContainer, writeContainer, sizeOfContainer],
+  'array': [readArray, writeArray, sizeOfArray],
+  'buffer': [readBuffer, writeBuffer, sizeOfBuffer],
+  'count': [readCount, writeCount, sizeOfCount],
+  // TODO : remove type-specific, replace with generic containers and arrays.
+  'slot': [readSlot, writeSlot, sizeOfSlot],
+  'entityMetadata': [readEntityMetadata, writeEntityMetadata, sizeOfEntityMetadata],
+};
+
+var debug;
+if (process.env.NODE_DEBUG && /(minecraft-protocol|mc-proto)/.test(process.env.NODE_DEBUG)) {
+  var pid = process.pid;
+  debug = function(x) {
+    // if console is not set up yet, then skip this.
+    if (!console.error)
+      return;
+    console.error('MC-PROTO: %d', pid,
+                  util.format.apply(util, arguments).slice(0, 500));
+  };
+} else {
+  debug = function() { };
+}
+
+var entityMetadataTypes = {
+  0: { type: 'byte' },
+  1: { type: 'short' },
+  2: { type: 'int' },
+  3: { type: 'float' },
+  4: { type: 'string' },
+  5: { type: 'slot' },
+  6: { type: 'container', typeArgs: { fields: [
+       { name: 'x', type: 'int' },
+       { name: 'y', type: 'int' },
+       { name: 'z', type: 'int' }
+  ]}}
+};
+
+// maps string type name to number
+var entityMetadataTypeBytes = {};
+for (var n in entityMetadataTypes) {
+  if (!entityMetadataTypes.hasOwnProperty(n)) continue;
+
+  entityMetadataTypeBytes[entityMetadataTypes[n].type] = n;
+}
+
+function sizeOfEntityMetadata(value) {
+  var size = 1 + value.length;
+  var item;
+  for (var i = 0; i < value.length; ++i) {
+    item = value[i];
+    size += sizeOf(item.value, entityMetadataTypes[entityMetadataTypeBytes[item.type]], {});
+  }
+  return size;
+}
+
+function writeEntityMetadata(value, buffer, offset) {
+  value.forEach(function(item) {
+    var type = entityMetadataTypeBytes[item.type];
+    var headerByte = (type << 5) | item.key;
+    buffer.writeUInt8(headerByte, offset);
+    offset += 1;
+    offset = write(item.value, buffer, offset, entityMetadataTypes[type], {});
+  });
+  buffer.writeUInt8(0x7f, offset);
+  return offset + 1;
+}
+
+function writeUUID(value, buffer, offset) {
+  buffer.writeInt32BE(value[0], offset);
+  buffer.writeInt32BE(value[1], offset + 4);
+  buffer.writeInt32BE(value[2], offset + 8);
+  buffer.writeInt32BE(value[3], offset + 12);
+  return offset + 16;
+}
+
+function readEntityMetadata(buffer, offset) {
+  var cursor = offset;
+  var metadata = [];
+  var item, key, type, results, reader, typeName, dataType;
+  while (true) {
+    if (cursor + 1 > buffer.length) return null;
+    item = buffer.readUInt8(cursor);
+    cursor += 1;
+    if (item === 0x7f) {
+      return {
+        value: metadata,
+        size: cursor - offset,
+      };
+    }
+    key = item & 0x1f;
+    type = item >> 5;
+    dataType = entityMetadataTypes[type];
+    debug("Reading entity metadata type " + dataType + " (" + ( typeName || "unknown" ) + ")");
+    if (!dataType) {
+      return {
+        error: new Error("unrecognized entity metadata type " + type)
+      }
+    }
+    results = read(buffer, cursor, dataType, {});
+    if (! results) return null;
+    metadata.push({
+      key: key,
+      value: results.value,
+      type: typeName,
+    });
+    cursor += results.size;
+  }
+}
+
+function readString (buffer, offset) {
+  var length = readVarInt(buffer, offset);
+  if (!!!length) return null;
+  var cursor = offset + length.size;
+  var stringLength = length.value;
+  var strEnd = cursor + stringLength;
+  if (strEnd > buffer.length) return null;
+  
+  var value = buffer.toString('utf8', cursor, strEnd);
+  cursor = strEnd;
+  
+  return {
+    value: value,
+    size: cursor - offset,
+  };
+}
+
+function readUUID(buffer, offset) {
+  return {
+    value: [
+      buffer.readInt32BE(offset),
+      buffer.readInt32BE(offset + 4),
+      buffer.readInt32BE(offset + 8),
+      buffer.readInt32BE(offset + 12),
+    ],
+    size: 16,
+  };
+}
+
+function readShort(buffer, offset) {
+  if (offset + 2 > buffer.length) return null;
+  var value = buffer.readInt16BE(offset);
+  return {
+    value: value,
+    size: 2,
+  };
+}
+
+function readUShort(buffer, offset) {
+  if (offset + 2 > buffer.length) return null;
+  var value = buffer.readUInt16BE(offset);
+  return {
+    value: value,
+    size: 2,
+  };
+}
+
+function readInt(buffer, offset) {
+  if (offset + 4 > buffer.length) return null;
+  var value = buffer.readInt32BE(offset);
+  return {
+    value: value,
+    size: 4,
+  };
+}
+
+function readFloat(buffer, offset) {
+  if (offset + 4 > buffer.length) return null;
+  var value = buffer.readFloatBE(offset);
+  return {
+    value: value,
+    size: 4,
+  };
+}
+
+function readDouble(buffer, offset) {
+  if (offset + 8 > buffer.length) return null;
+  var value = buffer.readDoubleBE(offset);
+  return {
+    value: value,
+    size: 8,
+  };
+}
+
+function readLong(buffer, offset) {
+  if (offset + 8 > buffer.length) return null;
+  return {
+    value: [buffer.readInt32BE(offset), buffer.readInt32BE(offset + 4)],
+    size: 8,
+  };
+}
+
+function readByte(buffer, offset) {
+  if (offset + 1 > buffer.length) return null;
+  var value = buffer.readInt8(offset);
+  return {
+    value: value,
+    size: 1,
+  };
+}
+
+function readUByte(buffer, offset) {
+  if (offset + 1 > buffer.length) return null;
+  var value = buffer.readUInt8(offset);
+  return {
+    value: value,
+    size: 1,
+  };
+}
+
+function readBool(buffer, offset) {
+  if (offset + 1 > buffer.length) return null;
+  var value = buffer.readInt8(offset);
+  return {
+    value: !!value,
+    size: 1,
+  };
+}
+
+function readSlot(buffer, offset) {
+  var results = readShort(buffer, offset);
+  if (! results) return null;
+  var blockId = results.value;
+  var cursor = offset + results.size;
+
+  if (blockId === -1) {
+    return {
+      value: { id: blockId },
+      size: cursor - offset,
+    };
+  }
+
+  var cursorEnd = cursor + 5;
+  if (cursorEnd > buffer.length) return null;
+  var itemCount = buffer.readInt8(cursor);
+  var itemDamage = buffer.readInt16BE(cursor + 1);
+  var nbtDataSize = buffer.readInt16BE(cursor + 3);
+  if (nbtDataSize === -1) nbtDataSize = 0;
+  var nbtDataEnd = cursorEnd + nbtDataSize;
+  if (nbtDataEnd > buffer.length) return null;
+  var nbtData = buffer.slice(cursorEnd, nbtDataEnd);
+
+  return {
+    value: {
+      id: blockId,
+      itemCount: itemCount,
+      itemDamage: itemDamage,
+      nbtData: nbtData,
+    },
+    size: nbtDataEnd - offset,
+  };
+}
+
+function sizeOfSlot(value) {
+  return value.id === -1 ? 2 : 7 + value.nbtData.length;
+}
+
+function writeSlot(value, buffer, offset) {
+  buffer.writeInt16BE(value.id, offset);
+  if (value.id === -1) return offset + 2;
+  buffer.writeInt8(value.itemCount, offset + 2);
+  buffer.writeInt16BE(value.itemDamage, offset + 3);
+  var nbtDataSize = value.nbtData.length;
+  if (nbtDataSize === 0) nbtDataSize = -1; // I don't know wtf mojang smokes
+  buffer.writeInt16BE(nbtDataSize, offset + 5);
+  value.nbtData.copy(buffer, offset + 7);
+  return offset + 7 + value.nbtData.length;
+}
+
+function sizeOfString(value) {
+  var length = Buffer.byteLength(value, 'utf8');
+  assert.ok(length < STRING_MAX_LENGTH, "string greater than max length");
+  return sizeOfVarInt(length) + length;
+}
+
+function sizeOfUString(value) {
+  var length = Buffer.byteLength(value, 'utf8');
+  assert.ok(length < SRV_STRING_MAX_LENGTH, "string greater than max length");
+  return sizeOfVarInt(length) + length;
+}
+
+function writeString(value, buffer, offset) {
+  var length = Buffer.byteLength(value, 'utf8');
+  offset = writeVarInt(length, buffer, offset);
+  buffer.write(value, offset, length, 'utf8');
+  return offset + length;
+}
+
+function writeByte(value, buffer, offset) {
+  buffer.writeInt8(value, offset);
+  return offset + 1;
+}
+
+function writeBool(value, buffer, offset) {
+  buffer.writeInt8(+value, offset);
+  return offset + 1;
+}
+
+function writeUByte(value, buffer, offset) {
+  buffer.writeUInt8(value, offset);
+  return offset + 1;
+}
+
+function writeFloat(value, buffer, offset) {
+  buffer.writeFloatBE(value, offset);
+  return offset + 4;
+}
+
+function writeDouble(value, buffer, offset) {
+  buffer.writeDoubleBE(value, offset);
+  return offset + 8;
+}
+
+function writeShort(value, buffer, offset) {
+  buffer.writeInt16BE(value, offset);
+  return offset + 2;
+}
+
+function writeUShort(value, buffer, offset) {
+  buffer.writeUInt16BE(value, offset);
+  return offset + 2;
+}
+
+function writeInt(value, buffer, offset) {
+  buffer.writeInt32BE(value, offset);
+  return offset + 4;
+}
+
+function writeLong(value, buffer, offset) {
+  buffer.writeInt32BE(value[0], offset);
+  buffer.writeInt32BE(value[1], offset + 4);
+  return offset + 8;
+}
+
+function readVarInt(buffer, offset) {
+  var result = 0;
+  var shift = 0;
+  var cursor = offset;
+    
+  while (true) {
+    if (cursor + 1 > buffer.length) return null;
+    var b = buffer.readUInt8(cursor);
+    result |= ((b & 0x7f) << shift); // Add the bits to our number, except MSB
+    cursor++;
+    if (!(b & 0x80)) { // If the MSB is not set, we return the number
+      return {
+        value: result,
+        size: cursor - offset
+      };
+    }
+    shift += 7; // we only have 7 bits, MSB being the return-trigger
+    assert.ok(shift < 64, "varint is too big"); // Make sure our shift don't overflow.
+  }
+}
+
+function sizeOfVarInt(value) {
+  var cursor = 0;
+  while (value & ~0x7F) {
+    value >>>= 7;
+    cursor++;
+  }
+  return cursor + 1;
+}
+
+function writeVarInt(value, buffer, offset) {
+  var cursor = 0;
+  while (value & ~0x7F) {
+    buffer.writeUInt8((value & 0xFF) | 0x80, offset + cursor);
+    cursor++;
+    value >>>= 7;
+  }
+  buffer.writeUInt8(value, offset + cursor);
+  return offset + cursor + 1;
+}
+
+function readContainer(buffer, offset, typeArgs, rootNode) {
+    var results = {
+        value: {},
+        size: 0
+    };
+    // BLEIGH. Huge hack because I have no way of knowing my current name.
+    // TODO : either pass fieldInfo instead of typeArgs as argument (bleigh), or send name as argument (verybleigh).
+    rootNode.this = results.value;
+    for (var index in typeArgs.fields) {
+        var readResults = read(buffer, offset, typeArgs.fields[index], rootNode);
+        results.size += readResults.size;
+        offset += readResults.size;
+        results.value[typeArgs.fields[index].name] = readResults.value;
+    }
+    delete rootNode.this;
+    return results;
+}
+
+function writeContainer(value, buffer, offset, typeArgs, rootNode) {
+    rootNode.this = value;
+    for (var index in typeArgs.fields) {
+        offset = write(value[typeArgs.fields[index].name], buffer, offset, typeArgs.fields[index], rootNode);
+    }
+    delete rootNode.this;
+    return offset;
+}
+
+function sizeOfContainer(value, typeArgs, rootNode) {
+    var size = 0;
+    rootNode.this = value;
+    for (var index in typeArgs.fields) {
+        size += sizeOf(value[typeArgs.fields[index].name], typeArgs.fields[index], rootNode);
+    }
+    delete rootNode.this;
+    return size;
+}
+
+function readBuffer(buffer, offset, typeArgs, rootNode) {    
+    var count = getField(typeArgs.count, rootNode);
+    return {
+        value: buffer.slice(offset, offset + count),
+        size: count
+    };
+}
+
+function writeBuffer(value, buffer, offset) {
+    value.copy(buffer, offset);
+    return offset + value.length;
+}
+
+function sizeOfBuffer(value) {
+    return value.length;
+}
+
+function readArray(buffer, offset, typeArgs, rootNode) {
+    var results = {
+        value: [],
+        size: 0
+    }
+    var count = getField(typeArgs.count, rootNode);
+    for (var i = 0; i < count; i++) {
+        var readResults = read(buffer, offset, { type: typeArgs.type, typeArgs: typeArgs.typeArgs }, rootNode);
+        results.size += readResults.size;
+        offset += readResults.size;
+        results.value.push(readResults.value);
+    }
+    return results;
+}
+
+function writeArray(value, buffer, offset, typeArgs, rootNode) {
+    for (var index in value) {
+        offset = write(value[index], buffer, offset, { type: typeArgs.type, typeArgs: typeArgs.typeArgs }, rootNode);
+    }
+    return offset;
+}
+
+function sizeOfArray(value, typeArgs, rootNode) {
+    var size = 0;
+    for (var index in value) {
+        size += sizeOf(value[index], { type: typeArgs.type, typeArgs: typeArgs.typeArgs }, rootNode);
+    }
+    return size;
+}
+
+function getField(countField, rootNode) {
+    var countFieldArr = countField.split(".");
+    var count = rootNode;
+    for (var index in countFieldArr) {
+        count = count[countFieldArr[index]];
+    }
+    return count;
+}
+
+function readCount(buffer, offset, typeArgs, rootNode) {
+    return read(buffer, offset, { type: typeArgs.type }, rootNode);
+}
+
+function writeCount(value, buffer, offset, typeArgs, rootNode) {
+    // Actually gets the required field, and writes its length. Value is unused.
+    // TODO : a bit hackityhack.
+    return write(getField(typeArgs.countFor, rootNode).length, buffer, offset, { type: typeArgs.type }, rootNode);
+}
+
+function sizeOfCount(value, typeArgs, rootNode) {
+    // TODO : should I use value or getField().length ?
+    /*console.log(rootNode);
+    console.log(typeArgs);*/
+    return sizeOf(getField(typeArgs.countFor, rootNode).length, { type: typeArgs.type }, rootNode);
+}
+
+function read(buffer, cursor, fieldInfo, rootNodes) {
+  if (fieldInfo.condition && !fieldInfo.condition(rootNodes)) {
+    return null;
+  }
+  var type = types[fieldInfo.type];
+  if (!type) {
+    return {
+      error: new Error("missing data type: " + fieldInfo.type)
+    };
+  }
+  var readResults = type[0](buffer, cursor, fieldInfo.typeArgs, rootNodes);
+  if (readResults.error) return { error: readResults.error };
+  return readResults;
+}
+
+function write(value, buffer, offset, fieldInfo, rootNode) {
+  if (fieldInfo.condition && !fieldInfo.condition(rootNode)) {
+    return null;
+  }
+  var type = types[fieldInfo.type];
+  if (!type) {
+    return {
+      error: new Error("missing data type: " + fieldInfo.type)
+    };
+  }
+  return type[1](value, buffer, offset, fieldInfo.typeArgs, rootNode);
+}
+
+function sizeOf(value, fieldInfo, rootNode) {
+  if (fieldInfo.condition && !fieldInfo.condition(rootNode)) {
+    return 0;
+  }
+  var type = types[fieldInfo.type];
+  if (!type) {
+    throw new Error("missing data type: " + fieldInfo.type);
+  }
+  if (typeof type[2] === 'function') {
+    return type[2](value, fieldInfo.typeArgs, rootNode);
+  } else {
+    return type[2];
+  }
+}
+
+function get(packetId, state, toServer) {
+  var direction = toServer ? "toServer" : "toClient";
+  var packetInfo = packetFields[state][direction][packetId];
+  if (!packetInfo) {
+    return null;
+  }
+  return packetInfo;
+}
+
+function createPacketBuffer(packetId, state, params, isServer) {
+  var length = 0;
+  if (typeof packetId === 'string' && typeof state !== 'string' && !params) {
+    // simplified two-argument usage, createPacketBuffer(name, params)
+    params = state;
+    state = packetStates[!isServer ? 'toServer' : 'toClient'][packetId];
+  }
+  if (typeof packetId === 'string') packetId = packetIds[state][!isServer ? 'toServer' : 'toClient'][packetId];
+  assert.notEqual(packetId, undefined);
+
+  var packet = get(packetId, state, !isServer);
+  assert.notEqual(packet, null);
+  packet.forEach(function(fieldInfo) {
+    length += sizeOf(params[fieldInfo.name], fieldInfo, params);
+  });
+  length += sizeOfVarInt(packetId);
+  var size = length + sizeOfVarInt(length);
+  var buffer = new Buffer(size);
+  var offset = writeVarInt(length, buffer, 0);
+  offset = writeVarInt(packetId, buffer, offset);
+  packet.forEach(function(fieldInfo) {
+    var value = params[fieldInfo.name];
+    if(typeof value === "undefined") value = 0; // TODO : Why ?
+    offset = write(value, buffer, offset, fieldInfo, params);
+  });
+  return buffer;
+}
+
+function parsePacket(buffer, state, isServer, packetsToParse) {
+  if (state == null) state == states.PLAY;
+  var cursor = 0;
+  var lengthField = readVarInt(buffer, 0);
+  if (!!!lengthField) return null;
+  var length = lengthField.value;
+  cursor += lengthField.size;
+  if (length + lengthField.size > buffer.length) return null;
+  var buffer = buffer.slice(0, length + cursor); // fail early if too much is read.
+  
+  var packetIdField = readVarInt(buffer, cursor);
+  var packetId = packetIdField.value;
+  cursor += packetIdField.size;
+  
+  var results = { id: packetId };
+  // Only parse the packet if there is a need for it, AKA if there is a listener attached to it
+  var name = packetNames[state][isServer ? "toServer" : "toClient"][packetId];
+  var shouldParse = (!packetsToParse.hasOwnProperty(name) || packetsToParse[name] <= 0)
+                    && (!packetsToParse.hasOwnProperty("packet") || packetsToParse["packet"] <= 0);
+  if (shouldParse) {
+    return {
+        size: length + lengthField.size,
+        buffer: buffer,
+        results: results
+    };
+  }
+  
+  var packetInfo = get(packetId, state, isServer);
+  if (packetInfo === null) {
+    return {
+      error: new Error("Unrecognized packetId: " + packetId + " (0x" + packetId.toString(16) + ")"),
+      size: length + lengthField.size,
+      buffer: buffer,
+      results: results
+    };
+  } else {
+    debug("read packetId " + packetId + " (0x" + packetId.toString(16) + ")");
+  }
+  
+  var i, fieldInfo, readResults;
+  for (i = 0; i < packetInfo.length; ++i) {
+    fieldInfo = packetInfo[i];
+    readResults = read(buffer, cursor, fieldInfo, results);
+    /* A deserializer cannot return null anymore. Besides, read() returns
+     * null when the condition is not fulfilled.
+     if (!!!readResults) {
+        var error = new Error("A deserializer returned null");
+        error.packetId = packetId;
+        error.fieldInfo = fieldInfo.name;
+        return {
+            size: length + lengthField.size,
+            error: error,
+            results: results
+        };
+    }*/
+    if (readResults === null) continue;
+    if (readResults.error) {
+      return readResults;
+    }
+    results[fieldInfo.name] = readResults.value;
+    cursor += readResults.size;
+  }
+  debug(results);
+  return {
+    size: length + lengthField.size,
+    results: results,
+    buffer: buffer
+  };
+}
+
+module.exports = {
+  version: 5,
+  minecraftVersion: '1.7.6',
+  sessionVersion: 13,
+  parsePacket: parsePacket,
+  createPacketBuffer: createPacketBuffer,
+  STRING_MAX_LENGTH: STRING_MAX_LENGTH,
+  packetIds: packetIds,
+  packetNames: packetNames,
+  packetFields: packetFields,
+  packetStates: packetStates,
+  states: states,
+  get: get,
+  debug: debug,
+};
+
+}).call(this,require("q+64fw"),require("buffer").Buffer)
+},{"assert":56,"buffer":72,"q+64fw":78,"util":94}],44:[function(require,module,exports){
+(function (process){
+var through = require('through')
+var isBuffer = require('isbuffer')
+var WebSocketPoly = require('ws')
+
+function WebsocketStream(server, options) {
+  if (!(this instanceof WebsocketStream)) return new WebsocketStream(server, options)
+
+  this.stream = through(this.write.bind(this), this.end.bind(this))
+
+  this.stream.websocketStream = this
+  this.options = options || {}
+  this._buffer = []
+ 
+  if (typeof server === "object") {
+    this.ws = server
+    this.ws.on('message', this.onMessage.bind(this))
+    this.ws.on('error', this.onError.bind(this))
+    this.ws.on('close', this.onClose.bind(this))
+    this.ws.on('open', this.onOpen.bind(this))
+    if (this.ws.readyState === 1) this._open = true
+  } else {
+    var opts = (process.title === 'browser') ? this.options.protocol : this.options
+    this.ws = new WebSocketPoly(server, opts)
+    this.ws.binaryType = this.options.binaryType || 'arraybuffer'
+    this.ws.onmessage = this.onMessage.bind(this)
+    this.ws.onerror = this.onError.bind(this)
+    this.ws.onclose = this.onClose.bind(this)
+    this.ws.onopen = this.onOpen.bind(this)
+  }
+  
+  return this.stream
+}
+
+module.exports = WebsocketStream
+module.exports.WebsocketStream = WebsocketStream
+
+WebsocketStream.prototype.onMessage = function(e) {
+  var data = e
+  if (typeof data.data !== 'undefined') data = data.data
+
+  // type must be a Typed Array (ArrayBufferView)
+  var type = this.options.type
+  if (type && data instanceof ArrayBuffer) data = new type(data)
+  
+  this.stream.queue(data)
+}
+
+WebsocketStream.prototype.onError = function(err) {
+  this.stream.emit('error', err)
+}
+
+WebsocketStream.prototype.onClose = function(err) {
+  if (this._destroy) return
+  this.stream.emit('end')
+  this.stream.emit('close')
+}
+
+WebsocketStream.prototype.onOpen = function(err) {
+  if (this._destroy) return
+  this._open = true
+  for (var i = 0; i < this._buffer.length; i++) {
+    this._write(this._buffer[i])
+  }
+  this._buffer = undefined
+  this.stream.emit('open')
+  this.stream.emit('connect')
+  if (this._end) this.ws.close()
+}
+
+WebsocketStream.prototype.write = function(data) {
+  if (!this._open) {
+    this._buffer.push(data)
+  } else {
+    this._write(data)
+  }
+}
+
+WebsocketStream.prototype._write = function(data) {
+  if (this.ws.readyState == 1)
+    // we are connected
+    typeof WebSocket != 'undefined' && this.ws instanceof WebSocket
+      ? this.ws.send(data)
+      : this.ws.send(data, { binary : isBuffer(data) })
+  else
+    this.stream.emit('error', 'Not connected')
+}
+
+WebsocketStream.prototype.end = function(data) {
+  if (data !== undefined) this.stream.queue(data)
+  if (this._open) this.ws.close()
+  this._end = true
+}
+
+}).call(this,require("q+64fw"))
+},{"isbuffer":45,"q+64fw":78,"through":46,"ws":47}],45:[function(require,module,exports){
+var Buffer = require('buffer').Buffer;
+
+module.exports = isBuffer;
+
+function isBuffer (o) {
+  return Buffer.isBuffer(o)
+    || /\[object (.+Array|Array.+)\]/.test(Object.prototype.toString.call(o));
+}
+
+},{"buffer":72}],46:[function(require,module,exports){
+(function (process){
+var Stream = require('stream')
+
+// through
+//
+// a stream that does nothing but re-emit the input.
+// useful for aggregating a series of changing but not ending streams into one stream)
+
+exports = module.exports = through
+through.through = through
+
+//create a readable writable stream.
+
+function through (write, end, opts) {
+  write = write || function (data) { this.queue(data) }
+  end = end || function () { this.queue(null) }
+
+  var ended = false, destroyed = false, buffer = [], _ended = false
+  var stream = new Stream()
+  stream.readable = stream.writable = true
+  stream.paused = false
+
+//  stream.autoPause   = !(opts && opts.autoPause   === false)
+  stream.autoDestroy = !(opts && opts.autoDestroy === false)
+
+  stream.write = function (data) {
+    write.call(this, data)
+    return !stream.paused
+  }
+
+  function drain() {
+    while(buffer.length && !stream.paused) {
+      var data = buffer.shift()
+      if(null === data)
+        return stream.emit('end')
+      else
+        stream.emit('data', data)
+    }
+  }
+
+  stream.queue = stream.push = function (data) {
+//    console.error(ended)
+    if(_ended) return stream
+    if(data == null) _ended = true
+    buffer.push(data)
+    drain()
+    return stream
+  }
+
+  //this will be registered as the first 'end' listener
+  //must call destroy next tick, to make sure we're after any
+  //stream piped from here.
+  //this is only a problem if end is not emitted synchronously.
+  //a nicer way to do this is to make sure this is the last listener for 'end'
+
+  stream.on('end', function () {
+    stream.readable = false
+    if(!stream.writable && stream.autoDestroy)
+      process.nextTick(function () {
+        stream.destroy()
+      })
+  })
+
+  function _end () {
+    stream.writable = false
+    end.call(stream)
+    if(!stream.readable && stream.autoDestroy)
+      stream.destroy()
+  }
+
+  stream.end = function (data) {
+    if(ended) return
+    ended = true
+    if(arguments.length) stream.write(data)
+    _end() // will emit or queue
+    return stream
+  }
+
+  stream.destroy = function () {
+    if(destroyed) return
+    destroyed = true
+    ended = true
+    buffer.length = 0
+    stream.writable = stream.readable = false
+    stream.emit('close')
+    return stream
+  }
+
+  stream.pause = function () {
+    if(stream.paused) return
+    stream.paused = true
+    return stream
+  }
+
+  stream.resume = function () {
+    if(stream.paused) {
+      stream.paused = false
+      stream.emit('resume')
+    }
+    drain()
+    //may have become paused again,
+    //as drain emits 'data'.
+    if(!stream.paused)
+      stream.emit('drain')
+    return stream
+  }
+  return stream
+}
+
+
+}).call(this,require("q+64fw"))
+},{"q+64fw":78,"stream":92}],47:[function(require,module,exports){
+
+/**
+ * Module dependencies.
+ */
+
+var global = (function() { return this; })();
+
+/**
+ * WebSocket constructor.
+ */
+
+var WebSocket = global.WebSocket || global.MozWebSocket;
+
+/**
+ * Module exports.
+ */
+
+module.exports = WebSocket ? ws : null;
+
+/**
+ * WebSocket constructor.
+ *
+ * The third `opts` options object gets ignored in web browsers, since it's
+ * non-standard, and throws a TypeError if passed to the constructor.
+ * See: https://github.com/einaros/ws/issues/227
+ *
+ * @param {String} uri
+ * @param {Array} protocols (optional)
+ * @param {Object) opts (optional)
+ * @api public
+ */
+
+function ws(uri, protocols, opts) {
+  var instance;
+  if (protocols) {
+    instance = new WebSocket(uri, protocols);
+  } else {
+    instance = new WebSocket(uri);
+  }
+  return instance;
+}
+
+if (WebSocket) ws.prototype = WebSocket.prototype;
+
 },{}],48:[function(require,module,exports){
-module.exports=require(2)
-},{"./lib/client":49,"./lib/protocol":50,"assert":67,"buffer":83}],49:[function(require,module,exports){
-module.exports=require(3)
-},{"./protocol":50,"buffer":83,"dns":66,"events":86,"net":66,"util":105,"websocket-stream":51}],50:[function(require,module,exports){
-module.exports=require(4)
-},{"assert":67,"buffer":83,"q+64fw":89,"util":105}],51:[function(require,module,exports){
-module.exports=require(5)
-},{"isbuffer":52,"q+64fw":89,"through":53,"ws":54}],52:[function(require,module,exports){
-module.exports=require(6)
-},{"buffer":83}],53:[function(require,module,exports){
-module.exports=require(7)
-},{"q+64fw":89,"stream":103}],54:[function(require,module,exports){
-module.exports=require(8)
-},{}],55:[function(require,module,exports){
 module.exports = function (str) {
     return String(str).replace(/(\W)/g, '\\$1');
 };
 
-},{}],56:[function(require,module,exports){
+},{}],49:[function(require,module,exports){
 module.exports = v;
 v.Vec3 = Vec3;
 
@@ -18845,15 +18828,15 @@ function euclideanMod(numerator, denominator) {
   return result < 0 ? result + denominator : result;
 }
 
-},{}],57:[function(require,module,exports){
-module.exports=require(5)
-},{"isbuffer":58,"q+64fw":89,"through":59,"ws":60}],58:[function(require,module,exports){
-module.exports=require(6)
-},{"buffer":83}],59:[function(require,module,exports){
-module.exports=require(7)
-},{"q+64fw":89,"stream":103}],60:[function(require,module,exports){
-module.exports=require(8)
-},{}],61:[function(require,module,exports){
+},{}],50:[function(require,module,exports){
+module.exports=require(44)
+},{"isbuffer":51,"q+64fw":78,"through":52,"ws":53}],51:[function(require,module,exports){
+module.exports=require(45)
+},{"buffer":72}],52:[function(require,module,exports){
+module.exports=require(46)
+},{"q+64fw":78,"stream":92}],53:[function(require,module,exports){
+module.exports=require(47)
+},{}],54:[function(require,module,exports){
 'use strict';
 
 var colormc2html = {
@@ -18976,108 +18959,9 @@ module.exports = parseRaw;
 
 
 
-},{}],62:[function(require,module,exports){
-var through = require('through')
-var isBuffer = require('isbuffer')
-var WebSocketPoly = require('ws')
+},{}],55:[function(require,module,exports){
 
-function WebsocketStream(server, options) {
-  if (!(this instanceof WebsocketStream)) return new WebsocketStream(server, options)
-
-  this.stream = through(this.write.bind(this), this.end.bind(this))
-
-  this.stream.websocketStream = this
-  this.options = options || {}
-  this._buffer = []
- 
-  if (typeof server === "object") {
-    this.ws = server
-    this.ws.on('message', this.onMessage.bind(this))
-    this.ws.on('error', this.onError.bind(this))
-    this.ws.on('close', this.onClose.bind(this))
-    this.ws.on('open', this.onOpen.bind(this))
-    if (this.ws.readyState === 1) this._open = true
-  } else {
-    this.ws = new WebSocketPoly(server, this.options.protocol)
-    this.ws.binaryType = this.options.binaryType || 'arraybuffer'
-    this.ws.onmessage = this.onMessage.bind(this)
-    this.ws.onerror = this.onError.bind(this)
-    this.ws.onclose = this.onClose.bind(this)
-    this.ws.onopen = this.onOpen.bind(this)
-  }
-  
-  return this.stream
-}
-
-module.exports = WebsocketStream
-module.exports.WebsocketStream = WebsocketStream
-
-WebsocketStream.prototype.onMessage = function(e) {
-  var data = e
-  if (data.data) data = data.data
-  
-  // type must be a Typed Array (ArrayBufferView)
-  var type = this.options.type
-  if (type && data instanceof ArrayBuffer) data = new type(data)
-  
-  this.stream.queue(data)
-}
-
-WebsocketStream.prototype.onError = function(err) {
-  this.stream.emit('error', err)
-}
-
-WebsocketStream.prototype.onClose = function(err) {
-  if (this._destroy) return
-  this.stream.emit('end')
-  this.stream.emit('close')
-}
-
-WebsocketStream.prototype.onOpen = function(err) {
-  if (this._destroy) return
-  this._open = true
-  for (var i = 0; i < this._buffer.length; i++) {
-    this._write(this._buffer[i])
-  }
-  this._buffer = undefined
-  this.stream.emit('open')
-  this.stream.emit('connect')
-  if (this._end) this.ws.close()
-}
-
-WebsocketStream.prototype.write = function(data) {
-  if (!this._open) {
-    this._buffer.push(data)
-  } else {
-    this._write(data)
-  }
-}
-
-WebsocketStream.prototype._write = function(data) {
-  if (this.ws.readyState == 1)
-    // we are connected
-    typeof WebSocket != 'undefined' && this.ws instanceof WebSocket
-      ? this.ws.send(data)
-      : this.ws.send(data, { binary : isBuffer(data) })
-  else
-    this.stream.emit('error', 'Not connected')
-}
-
-WebsocketStream.prototype.end = function(data) {
-  if (data !== undefined) this.stream.queue(data)
-  if (this._open) this.ws.close()
-  this._end = true
-}
-
-},{"isbuffer":63,"through":64,"ws":65}],63:[function(require,module,exports){
-module.exports=require(6)
-},{"buffer":83}],64:[function(require,module,exports){
-module.exports=require(7)
-},{"q+64fw":89,"stream":103}],65:[function(require,module,exports){
-module.exports=require(8)
-},{}],66:[function(require,module,exports){
-
-},{}],67:[function(require,module,exports){
+},{}],56:[function(require,module,exports){
 // http://wiki.commonjs.org/wiki/Unit_Testing/1.0
 //
 // THIS IS NOT TESTED NOR LIKELY TO WORK OUTSIDE V8!
@@ -19439,14 +19323,14 @@ var objectKeys = Object.keys || function (obj) {
   return keys;
 };
 
-},{"util/":69}],68:[function(require,module,exports){
+},{"util/":58}],57:[function(require,module,exports){
 module.exports = function isBuffer(arg) {
   return arg && typeof arg === 'object'
     && typeof arg.copy === 'function'
     && typeof arg.fill === 'function'
     && typeof arg.readUInt8 === 'function';
 }
-},{}],69:[function(require,module,exports){
+},{}],58:[function(require,module,exports){
 (function (process,global){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -20036,7 +19920,7 @@ function hasOwnProperty(obj, prop) {
 }
 
 }).call(this,require("q+64fw"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./support/isBuffer":68,"inherits":87,"q+64fw":89}],70:[function(require,module,exports){
+},{"./support/isBuffer":57,"inherits":76,"q+64fw":78}],59:[function(require,module,exports){
 'use strict';
 
 
@@ -20139,7 +20023,7 @@ exports.setTyped = function (on) {
 };
 
 exports.setTyped(TYPED_OK);
-},{}],71:[function(require,module,exports){
+},{}],60:[function(require,module,exports){
 'use strict';
 
 // Note: adler32 takes 12% for level 0 and 2% for level 6.
@@ -20172,7 +20056,7 @@ function adler32(adler, buf, len, pos) {
 
 
 module.exports = adler32;
-},{}],72:[function(require,module,exports){
+},{}],61:[function(require,module,exports){
 module.exports = {
 
   /* Allowed flush values; see deflate() and inflate() below for details */
@@ -20220,7 +20104,7 @@ module.exports = {
   Z_DEFLATED:               8
   //Z_NULL:                 null // Use -1 or null inline, depending on var type
 };
-},{}],73:[function(require,module,exports){
+},{}],62:[function(require,module,exports){
 'use strict';
 
 // Note: we can't get significant speed boost here.
@@ -20262,7 +20146,7 @@ function crc32(crc, buf, len, pos) {
 
 
 module.exports = crc32;
-},{}],74:[function(require,module,exports){
+},{}],63:[function(require,module,exports){
 'use strict';
 
 var utils   = require('../utils/common');
@@ -22028,7 +21912,7 @@ exports.deflatePending = deflatePending;
 exports.deflatePrime = deflatePrime;
 exports.deflateTune = deflateTune;
 */
-},{"../utils/common":70,"./adler32":71,"./crc32":73,"./messages":78,"./trees":79}],75:[function(require,module,exports){
+},{"../utils/common":59,"./adler32":60,"./crc32":62,"./messages":67,"./trees":68}],64:[function(require,module,exports){
 'use strict';
 
 // See state defs from inflate.js
@@ -22355,7 +22239,7 @@ module.exports = function inflate_fast(strm, start) {
   return;
 };
 
-},{}],76:[function(require,module,exports){
+},{}],65:[function(require,module,exports){
 'use strict';
 
 
@@ -23859,7 +23743,7 @@ exports.inflateSync = inflateSync;
 exports.inflateSyncPoint = inflateSyncPoint;
 exports.inflateUndermine = inflateUndermine;
 */
-},{"../utils/common":70,"./adler32":71,"./crc32":73,"./inffast":75,"./inftrees":77}],77:[function(require,module,exports){
+},{"../utils/common":59,"./adler32":60,"./crc32":62,"./inffast":64,"./inftrees":66}],66:[function(require,module,exports){
 'use strict';
 
 
@@ -24186,7 +24070,7 @@ module.exports = function inflate_table(type, lens, lens_index, codes, table, ta
   opts.bits = root;
   return 0;
 };
-},{"../utils/common":70}],78:[function(require,module,exports){
+},{"../utils/common":59}],67:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -24200,7 +24084,7 @@ module.exports = {
   '-5':   'buffer error',        /* Z_BUF_ERROR     (-5) */
   '-6':   'incompatible version' /* Z_VERSION_ERROR (-6) */
 };
-},{}],79:[function(require,module,exports){
+},{}],68:[function(require,module,exports){
 'use strict';
 
 
@@ -25400,7 +25284,7 @@ exports._tr_stored_block = _tr_stored_block;
 exports._tr_flush_block  = _tr_flush_block;
 exports._tr_tally = _tr_tally;
 exports._tr_align = _tr_align;
-},{"../utils/common":70}],80:[function(require,module,exports){
+},{"../utils/common":59}],69:[function(require,module,exports){
 'use strict';
 
 
@@ -25430,7 +25314,7 @@ function ZStream() {
 }
 
 module.exports = ZStream;
-},{}],81:[function(require,module,exports){
+},{}],70:[function(require,module,exports){
 (function (process,Buffer){
 var msg = require('pako/lib/zlib/messages');
 var zstream = require('pako/lib/zlib/zstream');
@@ -25670,7 +25554,7 @@ Zlib.prototype._error = function(status) {
 exports.Zlib = Zlib;
 
 }).call(this,require("q+64fw"),require("buffer").Buffer)
-},{"buffer":83,"pako/lib/zlib/constants":72,"pako/lib/zlib/deflate.js":74,"pako/lib/zlib/inflate.js":76,"pako/lib/zlib/messages":78,"pako/lib/zlib/zstream":80,"q+64fw":89}],82:[function(require,module,exports){
+},{"buffer":72,"pako/lib/zlib/constants":61,"pako/lib/zlib/deflate.js":63,"pako/lib/zlib/inflate.js":65,"pako/lib/zlib/messages":67,"pako/lib/zlib/zstream":69,"q+64fw":78}],71:[function(require,module,exports){
 (function (process,Buffer){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -26284,7 +26168,7 @@ util.inherits(InflateRaw, Zlib);
 util.inherits(Unzip, Zlib);
 
 }).call(this,require("q+64fw"),require("buffer").Buffer)
-},{"./binding":81,"_stream_transform":101,"assert":67,"buffer":83,"q+64fw":89,"util":105}],83:[function(require,module,exports){
+},{"./binding":70,"_stream_transform":90,"assert":56,"buffer":72,"q+64fw":78,"util":94}],72:[function(require,module,exports){
 /*!
  * The buffer module from node.js, for the browser.
  *
@@ -27434,7 +27318,7 @@ function assert (test, message) {
   if (!test) throw new Error(message || 'Failed assertion')
 }
 
-},{"base64-js":84,"ieee754":85}],84:[function(require,module,exports){
+},{"base64-js":73,"ieee754":74}],73:[function(require,module,exports){
 var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 
 ;(function (exports) {
@@ -27557,7 +27441,7 @@ var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 	module.exports.fromByteArray = uint8ToBase64
 }())
 
-},{}],85:[function(require,module,exports){
+},{}],74:[function(require,module,exports){
 exports.read = function(buffer, offset, isLE, mLen, nBytes) {
   var e, m,
       eLen = nBytes * 8 - mLen - 1,
@@ -27643,7 +27527,7 @@ exports.write = function(buffer, value, offset, isLE, mLen, nBytes) {
   buffer[offset + i - d] |= s * 128;
 };
 
-},{}],86:[function(require,module,exports){
+},{}],75:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -27948,7 +27832,7 @@ function isUndefined(arg) {
   return arg === void 0;
 }
 
-},{}],87:[function(require,module,exports){
+},{}],76:[function(require,module,exports){
 if (typeof Object.create === 'function') {
   // implementation from standard node.js 'util' module
   module.exports = function inherits(ctor, superCtor) {
@@ -27973,7 +27857,7 @@ if (typeof Object.create === 'function') {
   }
 }
 
-},{}],88:[function(require,module,exports){
+},{}],77:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -28201,7 +28085,7 @@ var substr = 'ab'.substr(-1) === 'b'
 ;
 
 }).call(this,require("q+64fw"))
-},{"q+64fw":89}],89:[function(require,module,exports){
+},{"q+64fw":78}],78:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -28266,10 +28150,10 @@ process.chdir = function (dir) {
     throw new Error('process.chdir is not supported');
 };
 
-},{}],90:[function(require,module,exports){
+},{}],79:[function(require,module,exports){
 module.exports = require("./lib/_stream_duplex.js")
 
-},{"./lib/_stream_duplex.js":91}],91:[function(require,module,exports){
+},{"./lib/_stream_duplex.js":80}],80:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -28362,7 +28246,7 @@ function forEach (xs, f) {
 }
 
 }).call(this,require("q+64fw"))
-},{"./_stream_readable":93,"./_stream_writable":95,"core-util-is":96,"inherits":87,"q+64fw":89}],92:[function(require,module,exports){
+},{"./_stream_readable":82,"./_stream_writable":84,"core-util-is":85,"inherits":76,"q+64fw":78}],81:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -28410,7 +28294,7 @@ PassThrough.prototype._transform = function(chunk, encoding, cb) {
   cb(null, chunk);
 };
 
-},{"./_stream_transform":94,"core-util-is":96,"inherits":87}],93:[function(require,module,exports){
+},{"./_stream_transform":83,"core-util-is":85,"inherits":76}],82:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -29373,7 +29257,7 @@ function indexOf (xs, x) {
 }
 
 }).call(this,require("q+64fw"))
-},{"buffer":83,"core-util-is":96,"events":86,"inherits":87,"isarray":97,"q+64fw":89,"stream":103,"string_decoder/":98}],94:[function(require,module,exports){
+},{"buffer":72,"core-util-is":85,"events":75,"inherits":76,"isarray":86,"q+64fw":78,"stream":92,"string_decoder/":87}],83:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -29585,7 +29469,7 @@ function done(stream, er) {
   return stream.push(null);
 }
 
-},{"./_stream_duplex":91,"core-util-is":96,"inherits":87}],95:[function(require,module,exports){
+},{"./_stream_duplex":80,"core-util-is":85,"inherits":76}],84:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -29976,7 +29860,7 @@ function endWritable(stream, state, cb) {
 }
 
 }).call(this,require("q+64fw"))
-},{"./_stream_duplex":91,"buffer":83,"core-util-is":96,"inherits":87,"q+64fw":89,"stream":103}],96:[function(require,module,exports){
+},{"./_stream_duplex":80,"buffer":72,"core-util-is":85,"inherits":76,"q+64fw":78,"stream":92}],85:[function(require,module,exports){
 (function (Buffer){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -30086,12 +29970,12 @@ function objectToString(o) {
   return Object.prototype.toString.call(o);
 }
 }).call(this,require("buffer").Buffer)
-},{"buffer":83}],97:[function(require,module,exports){
+},{"buffer":72}],86:[function(require,module,exports){
 module.exports = Array.isArray || function (arr) {
   return Object.prototype.toString.call(arr) == '[object Array]';
 };
 
-},{}],98:[function(require,module,exports){
+},{}],87:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -30293,10 +30177,10 @@ function base64DetectIncompleteChar(buffer) {
   return incomplete;
 }
 
-},{"buffer":83}],99:[function(require,module,exports){
+},{"buffer":72}],88:[function(require,module,exports){
 module.exports = require("./lib/_stream_passthrough.js")
 
-},{"./lib/_stream_passthrough.js":92}],100:[function(require,module,exports){
+},{"./lib/_stream_passthrough.js":81}],89:[function(require,module,exports){
 exports = module.exports = require('./lib/_stream_readable.js');
 exports.Readable = exports;
 exports.Writable = require('./lib/_stream_writable.js');
@@ -30304,13 +30188,13 @@ exports.Duplex = require('./lib/_stream_duplex.js');
 exports.Transform = require('./lib/_stream_transform.js');
 exports.PassThrough = require('./lib/_stream_passthrough.js');
 
-},{"./lib/_stream_duplex.js":91,"./lib/_stream_passthrough.js":92,"./lib/_stream_readable.js":93,"./lib/_stream_transform.js":94,"./lib/_stream_writable.js":95}],101:[function(require,module,exports){
+},{"./lib/_stream_duplex.js":80,"./lib/_stream_passthrough.js":81,"./lib/_stream_readable.js":82,"./lib/_stream_transform.js":83,"./lib/_stream_writable.js":84}],90:[function(require,module,exports){
 module.exports = require("./lib/_stream_transform.js")
 
-},{"./lib/_stream_transform.js":94}],102:[function(require,module,exports){
+},{"./lib/_stream_transform.js":83}],91:[function(require,module,exports){
 module.exports = require("./lib/_stream_writable.js")
 
-},{"./lib/_stream_writable.js":95}],103:[function(require,module,exports){
+},{"./lib/_stream_writable.js":84}],92:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -30439,8 +30323,8 @@ Stream.prototype.pipe = function(dest, options) {
   return dest;
 };
 
-},{"events":86,"inherits":87,"readable-stream/duplex.js":90,"readable-stream/passthrough.js":99,"readable-stream/readable.js":100,"readable-stream/transform.js":101,"readable-stream/writable.js":102}],104:[function(require,module,exports){
-module.exports=require(68)
-},{}],105:[function(require,module,exports){
-module.exports=require(69)
-},{"./support/isBuffer":104,"inherits":87,"q+64fw":89}]},{},[1])
+},{"events":75,"inherits":76,"readable-stream/duplex.js":79,"readable-stream/passthrough.js":88,"readable-stream/readable.js":89,"readable-stream/transform.js":90,"readable-stream/writable.js":91}],93:[function(require,module,exports){
+module.exports=require(57)
+},{}],94:[function(require,module,exports){
+module.exports=require(58)
+},{"./support/isBuffer":93,"inherits":76,"q+64fw":78}]},{},[1])
