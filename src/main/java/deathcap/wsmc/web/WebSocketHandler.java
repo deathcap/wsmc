@@ -107,6 +107,7 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<BinaryWebSocke
         int length = DefinedPacket.readVarInt(buf);
         byte bytes[] = new byte[length];
         buf.readBytes(bytes);
+        // TODO: parse varint length field, call PacketFilter
 
         final ByteBuf reply = Unpooled.wrappedBuffer(bytes).retain();
         System.out.println("stripped "+reply.readableBytes());
