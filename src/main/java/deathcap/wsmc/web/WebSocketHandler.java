@@ -21,6 +21,7 @@ import deathcap.wsmc.UserIdentityLinker;
 import deathcap.wsmc.WsmcPlugin;
 import deathcap.wsmc.mc.DefinedPacket;
 import deathcap.wsmc.mc.MinecraftThread;
+import deathcap.wsmc.mc.PacketFilter;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFuture;
@@ -47,13 +48,15 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<BinaryWebSocke
     private final String mcAddress;
     private final int mcPort;
     private final UserAuthenticator users;
+    private final PacketFilter filter;
 
-    public WebSocketHandler(WebThread webThread, String mcAddress, int mcPort, UserAuthenticator users) {
+    public WebSocketHandler(WebThread webThread, String mcAddress, int mcPort, UserAuthenticator users, PacketFilter filter) {
         super(false);
         this.webThread = webThread;
         this.mcAddress = mcAddress;
         this.mcPort = mcPort;
         this.users = users;
+        this.filter = filter;
     }
 
 
@@ -107,10 +110,17 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<BinaryWebSocke
         int length = DefinedPacket.readVarInt(buf);
         byte bytes[] = new byte[length];
         buf.readBytes(bytes);
-        // TODO: parse varint length field, call PacketFilter
+
+        // read packet id type for filtering
+        int id = DefinedPacket.readVarInt(Unpooled.copiedBuffer(bytes)); // TODO: avoid copying (but need to reply with id in buffer)
+
+        if (!this.filter.isAllowed(id)) {
+            System.out.println("FILTERED PACKET: "+id);
+            return;
+        }
 
         final ByteBuf reply = Unpooled.wrappedBuffer(bytes).retain();
-        System.out.println("stripped "+reply.readableBytes());
+        System.out.println("id "+id+" stripped "+reply.readableBytes());
 
         final MinecraftThread mc = minecraft;
         // forward MC to WS

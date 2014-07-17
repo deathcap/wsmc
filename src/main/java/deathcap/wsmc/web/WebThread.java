@@ -18,6 +18,7 @@ package deathcap.wsmc.web;
 
 import deathcap.wsmc.UserIdentityLinker;
 import deathcap.wsmc.WsmcPlugin;
+import deathcap.wsmc.mc.PacketFilter;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.EventLoopGroup;
@@ -34,13 +35,15 @@ public class WebThread extends Thread {
     public String mcAddress;
     public int mcPort;
     public UserIdentityLinker users;
+    public PacketFilter filter;
 
-    public WebThread(String wsAddress, int wsPort, String mcAddress, int mcPort, UserIdentityLinker users) {
+    public WebThread(String wsAddress, int wsPort, String mcAddress, int mcPort, UserIdentityLinker users, PacketFilter filter) {
         this.wsAddress = wsAddress;
         this.wsPort = wsPort;
         this.mcAddress = mcAddress;
         this.mcPort = mcPort;
         this.users = users;
+        this.filter = filter;
     }
 
     private final ChannelGroup channels = new DefaultChannelGroup("wsmc Connections",
@@ -54,7 +57,7 @@ public class WebThread extends Thread {
             ServerBootstrap bootstrap = new ServerBootstrap();
             bootstrap.group(bossGroup, workerGroup).
                     channel(NioServerSocketChannel.class).
-                    childHandler(new ServerHandler(this, this.mcAddress, this.mcPort, this.users));
+                    childHandler(new ServerHandler(this, this.mcAddress, this.mcPort, this.users, this.filter));
 
             Channel channel = bootstrap.bind(this.wsAddress, this.wsPort)
                 .sync()

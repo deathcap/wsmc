@@ -1,5 +1,6 @@
 package deathcap.wsmc;
 
+import deathcap.wsmc.mc.PacketFilter;
 import deathcap.wsmc.web.WebThread;
 
 public class Main {
@@ -11,7 +12,7 @@ public class Main {
         int mcPort = args.length > 3 ? Integer.parseInt(args[3]) : 25565;
 
         System.out.println("WS("+wsAddress+":"+wsPort+") <--> MC("+mcAddress+":"+mcPort+")");
-        WebThread webThread = new WebThread(wsAddress, wsPort, mcAddress, mcPort, null);
+        WebThread webThread = new WebThread(wsAddress, wsPort, mcAddress, mcPort, null, new PacketFilter());
         webThread.start();
     }
 }

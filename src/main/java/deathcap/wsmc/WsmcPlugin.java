@@ -1,5 +1,6 @@
 package deathcap.wsmc;
 
+import deathcap.wsmc.mc.PacketFilter;
 import deathcap.wsmc.web.WebThread;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -12,6 +13,7 @@ public class WsmcPlugin extends JavaPlugin implements Listener {
 
     private WebThread webThread;
     private UserIdentityLinker users;
+    private PacketFilter filter;
 
     @Override
     public void onEnable() {
@@ -42,12 +44,14 @@ public class WsmcPlugin extends JavaPlugin implements Listener {
         getServer().getPluginManager().registerEvents(users, this);
         getCommand("web").setExecutor(users);
 
+        filter = new PacketFilter(); // TODO: read from config
+
         webThread = new WebThread(
                 this.getConfig().getString("websocket.bind-address"),
                 this.getConfig().getInt("websocket.bind-port"),
                 this.getConfig().getString("minecraft.connect-address"),
                 this.getConfig().getInt("minecraft.connect-port"),
-                users);
+                users, filter);
         webThread.start();
     }
 
