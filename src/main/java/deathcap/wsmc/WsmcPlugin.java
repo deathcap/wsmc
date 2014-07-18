@@ -9,6 +9,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.Arrays;
+
 public class WsmcPlugin extends JavaPlugin implements Listener {
 
     private WebThread webThread;
@@ -29,6 +31,8 @@ public class WsmcPlugin extends JavaPlugin implements Listener {
         config.addDefault("minecraft.connect-port", 25565);
         config.addDefault("minecraft.announce-on-join", true);
         config.addDefault("minecraft.allow-anonymous", false);
+        config.addDefault("filter.whitelist", new Integer[] { }); // TODO: each direction
+        config.addDefault("filter.blacklist", new Integer[] { });
         saveConfig();
 
         String url = this.getConfig().getString("websocket.external-scheme")
@@ -44,7 +48,10 @@ public class WsmcPlugin extends JavaPlugin implements Listener {
         getServer().getPluginManager().registerEvents(users, this);
         getCommand("web").setExecutor(users);
 
-        filter = new PacketFilter(); // TODO: read from config
+        filter = new PacketFilter();
+        for (int id : this.getConfig().getIntegerList("filter.whitelist")) filter.addWhitelist(id);
+        for (int id : this.getConfig().getIntegerList("filter.blacklist")) filter.addBlacklist(id);
+
 
         webThread = new WebThread(
                 this.getConfig().getString("websocket.bind-address"),
