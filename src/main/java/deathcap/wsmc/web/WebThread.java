@@ -26,6 +26,7 @@ import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.util.ResourceLeakDetector;
 import io.netty.util.concurrent.GlobalEventExecutor;
 
 public class WebThread extends Thread {
@@ -44,6 +45,8 @@ public class WebThread extends Thread {
         this.mcPort = mcPort;
         this.users = users;
         this.filter = filter;
+
+        ResourceLeakDetector.setLevel(ResourceLeakDetector.Level.ADVANCED);
     }
 
     private final ChannelGroup channels = new DefaultChannelGroup("wsmc Connections",
