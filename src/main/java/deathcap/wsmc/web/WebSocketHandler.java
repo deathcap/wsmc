@@ -62,23 +62,23 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<BinaryWebSocke
 
     private void setupInitialConnection(final ChannelHandlerContext ctx, final BinaryWebSocketFrame msg) {
         // initial client connection
-        System.out.println("Received WS connection: "+ctx.channel().remoteAddress()+" --> "+ctx.channel().localAddress());
+        logger.info("Received WS connection: "+ctx.channel().remoteAddress()+" --> "+ctx.channel().localAddress());
 
         // current protocol: first websocket message is username
-        System.out.println("readableBytes = "+msg.content().readableBytes());
+        logger.info("readableBytes = "+msg.content().readableBytes());
         String clientCredential = msg.content().toString(CharsetUtil.UTF_8);
 
-        System.out.println("clientCredential = "+clientCredential); // TODO: username, key, auth
+        logger.info("clientCredential = "+clientCredential); // TODO: username, key, auth
 
         String username;
         if (users != null) {
             username = users.verifyLogin(clientCredential);
             if (username == null) {
-                System.out.println("refusing connection for "+clientCredential+" from "+ctx.channel().remoteAddress());
+                logger.info("refusing connection for "+clientCredential+" from "+ctx.channel().remoteAddress());
                 return;
             }
         } else {
-            System.out.println("command-line mode, allowing everyone");
+            logger.info("command-line mode, allowing everyone");
             username = clientCredential;
         }
 
@@ -104,7 +104,7 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<BinaryWebSocke
 
         final ByteBuf buf = msg.content();
 
-        System.out.println("ws received "+buf.readableBytes()+" bytes");
+        logger.info("ws received "+buf.readableBytes()+" bytes");
 
         // strip length header since Varint21LengthFieldPrepender re-adds it TODO: refactor
         int length = DefinedPacket.readVarInt(buf);
@@ -115,12 +115,12 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<BinaryWebSocke
         int id = DefinedPacket.readVarInt(Unpooled.copiedBuffer(bytes)); // TODO: avoid copying (but need to reply with id in buffer)
 
         if (!this.filter.isAllowed(id)) {
-            System.out.println("FILTERED PACKET: "+id);
+            logger.info("FILTERED PACKET: "+id);
             return;
         }
 
         final ByteBuf reply = Unpooled.wrappedBuffer(bytes).retain();
-        System.out.println("id "+id+" stripped "+reply.readableBytes());
+        logger.info("id "+id+" stripped "+reply.readableBytes());
 
         final MinecraftThread mc = minecraft;
         // forward MC to WS
@@ -132,7 +132,7 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<BinaryWebSocke
                 public void operationComplete(ChannelFuture channelFuture) throws Exception {
                     try {
                         assert f == channelFuture;
-                        System.out.println("forwarded WS -> MC, "+reply.readableBytes()+" bytes");
+                        logger.info("forwarded WS -> MC, "+reply.readableBytes()+" bytes");
                         reply.release();
                     } catch (RejectedExecutionException ex) {
                         // TODO
