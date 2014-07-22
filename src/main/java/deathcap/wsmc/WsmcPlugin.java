@@ -22,6 +22,7 @@ public class WsmcPlugin extends JavaPlugin implements Listener {
 
         final FileConfiguration config = getConfig();
         config.options().copyDefaults(true);
+        config.addDefault("verbose", new Boolean(true));
         config.addDefault("websocket.bind-address", "0.0.0.0");
         config.addDefault("websocket.bind-port", 24444);
         config.addDefault("websocket.external-scheme", "http");
@@ -58,7 +59,9 @@ public class WsmcPlugin extends JavaPlugin implements Listener {
                 this.getConfig().getInt("websocket.bind-port"),
                 this.getConfig().getString("minecraft.connect-address"),
                 this.getConfig().getInt("minecraft.connect-port"),
-                users, filter);
+                users, filter,
+                this.getConfig().getBoolean("verbose")
+                );
         webThread.start();
     }
 

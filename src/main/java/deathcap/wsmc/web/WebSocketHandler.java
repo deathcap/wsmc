@@ -49,14 +49,16 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<BinaryWebSocke
     private final int mcPort;
     private final UserAuthenticator users;
     private final PacketFilter filter;
+    private final boolean verbose;
 
-    public WebSocketHandler(WebThread webThread, String mcAddress, int mcPort, UserAuthenticator users, PacketFilter filter) {
+    public WebSocketHandler(WebThread webThread, String mcAddress, int mcPort, UserAuthenticator users, PacketFilter filter, boolean verbose) {
         super(false);
         this.webThread = webThread;
         this.mcAddress = mcAddress;
         this.mcPort = mcPort;
         this.users = users;
         this.filter = filter;
+        this.verbose = verbose;
     }
 
 
@@ -104,7 +106,7 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<BinaryWebSocke
 
         final ByteBuf buf = msg.content();
 
-        logger.info("ws received "+buf.readableBytes()+" bytes");
+        if (verbose) logger.info("ws received "+buf.readableBytes()+" bytes");
 
         // strip length header since Varint21LengthFieldPrepender re-adds it TODO: refactor
         int length = DefinedPacket.readVarInt(buf);
@@ -120,7 +122,7 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<BinaryWebSocke
         }
 
         final ByteBuf reply = Unpooled.wrappedBuffer(bytes).retain();
-        logger.info("id "+id+" stripped "+reply.readableBytes());
+        if (verbose) logger.info("id "+id+" stripped "+reply.readableBytes());
 
         final MinecraftThread mc = minecraft;
         // forward MC to WS
@@ -132,7 +134,7 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<BinaryWebSocke
                 public void operationComplete(ChannelFuture channelFuture) throws Exception {
                     try {
                         assert f == channelFuture;
-                        logger.info("forwarded WS -> MC, "+reply.readableBytes()+" bytes");
+                        if (verbose) logger.info("forwarded WS -> MC, "+reply.readableBytes()+" bytes");
                         reply.release();
                     } catch (RejectedExecutionException ex) {
                         // TODO

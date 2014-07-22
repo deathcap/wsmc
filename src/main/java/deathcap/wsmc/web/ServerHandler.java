@@ -32,13 +32,15 @@ public class ServerHandler extends ChannelInitializer<SocketChannel> {
     private final int mcPort;
     private final UserIdentityLinker users;
     private final PacketFilter filter;
+    private final boolean verbose;
 
-    public ServerHandler(WebThread webThread, String mcAddress, int mcPort, UserIdentityLinker users, PacketFilter filter) {
+    public ServerHandler(WebThread webThread, String mcAddress, int mcPort, UserIdentityLinker users, PacketFilter filter, boolean verbose) {
         this.webThread = webThread;
         this.mcAddress = mcAddress;
         this.mcPort = mcPort;
         this.users = users;
         this.filter = filter;
+        this.verbose = verbose;
     }
 
     @Override
@@ -48,6 +50,6 @@ public class ServerHandler extends ChannelInitializer<SocketChannel> {
         pipeline.addLast("aggregator", new HttpObjectAggregator(65536));
         pipeline.addLast("handler", new HTTPHandler(this.webThread.wsPort));
         pipeline.addLast("websocket", new WebSocketServerProtocolHandler("/server"));
-        pipeline.addLast("websocket-handler", new WebSocketHandler(webThread, this.mcAddress, this.mcPort, this.users, this.filter));
+        pipeline.addLast("websocket-handler", new WebSocketHandler(webThread, this.mcAddress, this.mcPort, this.users, this.filter, this.verbose));
     }
 }

@@ -37,14 +37,16 @@ public class WebThread extends Thread {
     public int mcPort;
     public UserIdentityLinker users;
     public PacketFilter filter;
+    public boolean verbose;
 
-    public WebThread(String wsAddress, int wsPort, String mcAddress, int mcPort, UserIdentityLinker users, PacketFilter filter) {
+    public WebThread(String wsAddress, int wsPort, String mcAddress, int mcPort, UserIdentityLinker users, PacketFilter filter, boolean verbose) {
         this.wsAddress = wsAddress;
         this.wsPort = wsPort;
         this.mcAddress = mcAddress;
         this.mcPort = mcPort;
         this.users = users;
         this.filter = filter;
+        this.verbose = verbose;
 
         ResourceLeakDetector.setLevel(ResourceLeakDetector.Level.ADVANCED);
     }
@@ -60,7 +62,7 @@ public class WebThread extends Thread {
             ServerBootstrap bootstrap = new ServerBootstrap();
             bootstrap.group(bossGroup, workerGroup).
                     channel(NioServerSocketChannel.class).
-                    childHandler(new ServerHandler(this, this.mcAddress, this.mcPort, this.users, this.filter));
+                    childHandler(new ServerHandler(this, this.mcAddress, this.mcPort, this.users, this.filter, this.verbose));
 
             Channel channel = bootstrap.bind(this.wsAddress, this.wsPort)
                 .sync()
