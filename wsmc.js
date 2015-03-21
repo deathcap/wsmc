@@ -31,7 +31,7 @@ wss.on('connection', function(new_websocket_connection) {
   var ws = websocket_stream(new_websocket_connection);
   var loggingIn = true;
 
-  ws.write('OK', {binary: true});
+  //ws.write('OK', {binary: true});
 
   var mc = minecraft_protocol.createClient({
     host: argv.mchost,
@@ -60,7 +60,10 @@ wss.on('connection', function(new_websocket_connection) {
     writeVarInt(length, lengthField, 0);
     console.log('lengthField=',lengthField);
     var lengthPrefixedBuffer = Buffer.concat([lengthField, buffer]);
+    console.log('writing to ws');
+    hex(lengthPrefixedBuffer);
     ws.write(lengthPrefixedBuffer);
+    //ws.write(buffer);
   });
 
   mc.on('connect', function() {
