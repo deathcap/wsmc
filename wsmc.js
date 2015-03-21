@@ -49,6 +49,8 @@ wss.on('connection', function(new_websocket_connection) {
   });
 
   mc.on('raw', function(buffer) {
+    console.log('mc received '+buffer.length+' bytes');
+    console.log(buffer.toString('hex'));
     ws.write(buffer);
   });
 
