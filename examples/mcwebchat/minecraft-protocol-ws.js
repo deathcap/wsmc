@@ -46,7 +46,7 @@ function createClient(options) {
 }
 
 Client.prototype.connectWS = function(url) {
-  var ws = websocket_stream(url, {type: Uint8Array});
+  var ws = websocket_stream(url);
   this.setSocket(ws);
 };
 
