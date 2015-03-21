@@ -41,7 +41,7 @@ wss.on('connection', function(new_websocket_connection) {
 
   ws.on('close', function() {
     console.log('WebSocket disconnected, closing MC');
-    mc.socket.end();
+    if (mc.socket) mc.socket.end();
   });
 
   ws.on('error', function(err) {
