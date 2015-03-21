@@ -1,4 +1,4 @@
-var mineflayer = require('mineflayer');
+var mineflayer = require('./mineflayer-ws');
 var tellraw2dom = require('tellraw2dom');
 
 var outputNode = document.getElementById('output');
@@ -38,7 +38,7 @@ bot.on('message', function(message) {
 bot.on('error', function(exception) {
   console.log(exception);
   if (exception.currentTarget)
-    log('WebSocket error connecting to ' + exception.currentTarget.URL);
+    log('WebSocket error connecting to ' + exception.currentTarget.url);
   else
     log('WebSocket error: ' + exception);
 });

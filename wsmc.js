@@ -1,6 +1,10 @@
 'use strict';
 
 var minecraft_protocol = require('minecraft-protocol');
+var readVarInt = minecraft_protocol.protocol.types.varint[0];
+var writeVarInt = minecraft_protocol.protocol.types.varint[1];
+var sizeOfVarInt = minecraft_protocol.protocol.types.varint[2];
+var hex = require('hex');
 var WebSocketServer = (require('ws')).Server;
 var websocket_stream = require('websocket-stream');
 var argv = (require('optimist'))
@@ -10,6 +14,8 @@ var argv = (require('optimist'))
   .default('mcport', 25565)
   .default('prefix', 'webuser-')
   .argv;
+
+var PACKET_DEBUG = false;
 
 console.log('WS('+argv.wshost+':'+argv.wsport+') <--> MC('+argv.mchost+':'+argv.mcport+')');
 
@@ -28,7 +34,7 @@ wss.on('connection', function(new_websocket_connection) {
   var ws = websocket_stream(new_websocket_connection);
   var loggingIn = true;
 
-  ws.write('OK', {binary: true});
+  //ws.write('OK', {binary: true});
 
   var mc = minecraft_protocol.createClient({
     host: argv.mchost,
@@ -40,7 +46,7 @@ wss.on('connection', function(new_websocket_connection) {
 
   ws.on('close', function() {
     console.log('WebSocket disconnected, closing MC');
-    mc.socket.end();
+    if (mc.socket) mc.socket.end();
   });
 
   ws.on('error', function(err) {
@@ -49,7 +55,35 @@ wss.on('connection', function(new_websocket_connection) {
   });
 
   mc.on('raw', function(buffer) {
-    ws.write(buffer);
+    if (PACKET_DEBUG) {
+      console.log('mc received '+buffer.length+' bytes');
+      hex(buffer);
+    }
+
+    // skip 'login' state packets TODO: clean this up
+    if (buffer[0] === 0x02 && buffer[1] === 0x24) {
+      // ugly hack to skip packet 0x02 which is either login.success or play.chat depending on state
+      console.log('skipping login success packet');
+      return;
+    }
+    if (buffer[0] === 0x03 && buffer.length === 3) {
+      // 0x03 either login.set_compression or play.time_update depending on state (varint/long+long)
+      console.log('skipping set_compression packet');
+      return;
+    }
+
+    // Prepend varint length prefix
+    var length = buffer.length;
+    var lengthField = new Buffer(sizeOfVarInt(length));
+    writeVarInt(length, lengthField, 0);
+    var lengthPrefixedBuffer = Buffer.concat([lengthField, buffer]);
+    if (PACKET_DEBUG) {
+      console.log('lengthField=',lengthField);
+      console.log('writing to ws');
+      hex(lengthPrefixedBuffer);
+    }
+    ws.write(lengthPrefixedBuffer);
+    //ws.write(buffer);
   });
 
   mc.on('connect', function() {
@@ -60,13 +94,17 @@ wss.on('connection', function(new_websocket_connection) {
     console.log('Received error from MC:',err);
   });
 
-  mc.once(['login', 'success'], function(p) {
-    // after login completes, stop parsing packet payloads and forward as-is to client
-    //mc.shouldParsePayload = false; // removed
+  //mc.once(['login', 'success'], function(p) {
+  mc.once('success', function(p) { // note: part of login phase
+    // after login completes
+    // TODO: fix updating
   });
 
   ws.on('data', function(raw) {
-    console.log('websocket received '+raw.length+' bytes');
+    if (PACKET_DEBUG) {
+      console.log('websocket received '+raw.length+' bytes');
+      hex(raw);
+    }
 
     if (loggingIn) {
       // first packet username
@@ -78,7 +116,12 @@ wss.on('connection', function(new_websocket_connection) {
     //console.log "websocket received '+raw.length+' bytes: '+JSON.stringify(raw));
 
     try {
-      mc.writeRaw(raw);
+      // strip length prefix then writeRaw(), let it add length, compression, etc.
+      // TODO: remove vestigal MC length from WS protocol
+      var lengthFieldSize = readVarInt(raw, 0).size;
+      var rawWithoutLength = raw.slice(lengthFieldSize);
+
+      mc.writeRaw(rawWithoutLength);
     } catch (e) {
       console.log('error in mc.writeRaw:',e);
       mc.socket.end();

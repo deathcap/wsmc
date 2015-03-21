@@ -9,13 +9,14 @@
   },
   "keywords": [],
   "dependencies": {
-    "ws": "^0.4.31",
-    "minecraft-protocol": "git://github.com/deathcap/node-minecraft-protocol.git#e7be6eef4e5f7db8a4a87626f5e253f995624310",
+    "hex": "^0.1.0",
+    "minecraft-protocol": "^0.13.0",
     "optimist": "^0.6.1",
-    "websocket-stream": "^0.5.1"
+    "websocket-stream": "^0.5.1",
+    "ws": "^0.4.31"
   },
   "scripts": {
-    "start": "node wsmc.js"
+    "start": "NODE_DEBUG=mc-proto node wsmc.js"
   },
   "license": "MIT"
 }
