@@ -1,6 +1,7 @@
 'use strict';
 
 var minecraft_protocol = require('minecraft-protocol');
+var readVarInt = minecraft_protocol.protocol.types.varint[0];
 var writeVarInt = minecraft_protocol.protocol.types.varint[1];
 var sizeOfVarInt = minecraft_protocol.protocol.types.varint[2];
 var hex = require('hex');
@@ -107,7 +108,12 @@ wss.on('connection', function(new_websocket_connection) {
     //console.log "websocket received '+raw.length+' bytes: '+JSON.stringify(raw));
 
     try {
-      mc.writeRaw(raw);
+      // strip length prefix then writeRaw(), let it add length, compression, etc.
+      // TODO: remove vestigal MC length from WS protocol
+      var lengthFieldSize = readVarInt(raw, 0).size;
+      var rawWithoutLength = raw.slice(lengthFieldSize);
+
+      mc.writeRaw(rawWithoutLength);
     } catch (e) {
       console.log('error in mc.writeRaw:',e);
       mc.socket.end();
