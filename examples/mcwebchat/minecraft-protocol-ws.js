@@ -1,5 +1,7 @@
 'use strict';
 
+process.env.NODE_DEBUG = 'mc-proto'; // for node-minecraft-protocol console packet debugging
+
 var websocket_stream = require('websocket-stream');
 var Client = require('minecraft-protocol/lib/client')
     , protocol = require('minecraft-protocol/lib/protocol')
