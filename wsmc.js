@@ -30,6 +30,7 @@ var wss = new WebSocketServer({
 wss.on('connection', function(new_websocket_connection) {
   var ws = websocket_stream(new_websocket_connection);
   var loggingIn = true;
+  var forwardPackets = false;
 
   //ws.write('OK', {binary: true});
 
@@ -54,6 +55,13 @@ wss.on('connection', function(new_websocket_connection) {
   mc.on('raw', function(buffer) {
     console.log('mc received '+buffer.length+' bytes');
     hex(buffer);
+
+    if (!forwardPackets) {
+      // only send the WS packets in 'play' phase, not 'login'
+      console.log('(skipping)');
+      return;
+    }
+
     // Prepend varint length prefix
     var length = buffer.length;
     var lengthField = new Buffer(sizeOfVarInt(length));
@@ -76,8 +84,10 @@ wss.on('connection', function(new_websocket_connection) {
 
   //mc.once(['login', 'success'], function(p) {
   mc.once('success', function(p) { // note: part of login phase
-    // after login completes, stop parsing packet payloads and forward as-is to client
-    //mc.shouldParsePayload = false; // removed
+    // after login completes, forward raw packets to client
+    process.nextTick(function() { // but not this packet (0x02 is both login.success or play.chat, depending on state)
+      forwardPackets = true;
+    });
   });
 
   ws.on('data', function(raw) {
