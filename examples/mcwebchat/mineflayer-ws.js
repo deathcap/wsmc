@@ -103,6 +103,10 @@ Bot.prototype.connect = function(options) {
   var self = this;
   self.client = mc.createClient(options);
   self.username = self.client.username;
+  self.client.on('raw', function(raw) {
+    console.log('received raw',raw);
+    console.log(raw.toString());
+  });
   self.client.on('session', function() {
     self.username = self.client.username;
   });
