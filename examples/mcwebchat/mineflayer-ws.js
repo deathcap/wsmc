@@ -1,6 +1,6 @@
 'use strict';
 
-var mc = require('minecraft-protocol')
+var mc = require('./minecraft-protocol-ws')
   , EventEmitter = require('events').EventEmitter
   , util = require('util')
   , path = require('path')
