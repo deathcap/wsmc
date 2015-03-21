@@ -9,22 +9,16 @@
   },
   "keywords": [],
   "dependencies": {
-    "envify": "^3.4.0",
     "minecraft-protocol": "^0.13.0",
     "mineflayer": "git://github.com/andrewrk/mineflayer.git#master",
     "tellraw2dom": "^0.0.4",
     "websocket-stream": "^1.4.0"
   },
-  "browserify": {
-    "transform": [
-      "envify"
-    ]
-  },
   "devDependencies": {
     "beefy": "^2.0.2"
   },
   "scripts": {
-    "start": "NODE_DEBUG=mc-proto beefy mcwebchat.js:bundle.js -- -t envify"
+    "start": "beefy mcwebchat.js:bundle.js"
   },
   "license": "MIT"
 }
