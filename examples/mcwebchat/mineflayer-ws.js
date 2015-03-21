@@ -71,38 +71,6 @@ function Bot() {
 }
 util.inherits(Bot, EventEmitter);
 
-// decode packet over WebSocket - always in play state
-var decodePacket = function(data) {
-  if (!(data instanceof Uint8Array)) {
-    return undefined;
-  }
-
-  // convert typed array to NodeJS buffer for minecraft-protocol's API
-  // TODO: is this conversion fast? backed by ArrayBuffer in Browserify 3, see https://npmjs.org/package/native-buffer-browserify
-  //  but is this the right way to "convert" from an ArrayBuffer to a Buffer, without copying?
-  data._isBuffer = true;
-  //var length = String.fromCharCode(data.length); // XXX
-  //var buffer = new Buffer(length + data);
-  var buffer = new Buffer(data);
-
-  var state = minecraft_protocol.protocol.states.PLAY;
-  var isServer = false;
-  var shouldParsePayload = {packet: 1}; // somehow this is needed to parse the fields TODO: figure out how this is supposed to work
-
-  var result = minecraft_protocol.protocol.parsePacket(buffer, state, isServer, shouldParsePayload);
-  if (!result || result.error) {
-    console.log('protocol parse error',result);
-    log('protocol parse error: ' + JSON.stringify(result));
-    return;
-  }
-  var payload = result.results;
-  var id = result.results.id;
-  var name = minecraft_protocol.protocol.packetNames[state].toClient[id];
-  //console.log('parsed',name,result);
-
-  return {name:name, id:id, payload:payload};
-};
-
 Bot.prototype.connect = function(options) {
   var self = this;
   self.client = mc.createClient(options);
