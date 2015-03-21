@@ -15,7 +15,7 @@
     "websocket-stream": "^0.5.1"
   },
   "scripts": {
-    "start": "node wsmc.js"
+    "start": "NODE_DEBUG=mc-proto node wsmc.js"
   },
   "license": "MIT"
 }
