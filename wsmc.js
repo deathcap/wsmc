@@ -1,6 +1,8 @@
 'use strict';
 
 var minecraft_protocol = require('minecraft-protocol');
+var writeVarInt = minecraft_protocol.protocol.types.varint[1];
+var sizeOfVarInt = minecraft_protocol.protocol.types.varint[2];
 var hex = require('hex');
 var WebSocketServer = (require('ws')).Server;
 var websocket_stream = require('websocket-stream');
@@ -52,7 +54,13 @@ wss.on('connection', function(new_websocket_connection) {
   mc.on('raw', function(buffer) {
     console.log('mc received '+buffer.length+' bytes');
     hex(buffer);
-    ws.write(buffer);
+    // Prepend varint length prefix
+    var length = buffer.length;
+    var lengthField = new Buffer(sizeOfVarInt(length));
+    writeVarInt(length, lengthField, 0);
+    console.log('lengthField=',lengthField);
+    var lengthPrefixedBuffer = Buffer.concat([lengthField, buffer]);
+    ws.write(lengthPrefixedBuffer);
   });
 
   mc.on('connect', function() {
