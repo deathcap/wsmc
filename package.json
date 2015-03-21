@@ -9,10 +9,11 @@
   },
   "keywords": [],
   "dependencies": {
-    "ws": "^0.4.31",
+    "hex": "^0.1.0",
     "minecraft-protocol": "^0.13.0",
     "optimist": "^0.6.1",
-    "websocket-stream": "^0.5.1"
+    "websocket-stream": "^0.5.1",
+    "ws": "^0.4.31"
   },
   "scripts": {
     "start": "NODE_DEBUG=mc-proto node wsmc.js"

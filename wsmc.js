@@ -1,6 +1,7 @@
 'use strict';
 
 var minecraft_protocol = require('minecraft-protocol');
+var hex = require('hex');
 var WebSocketServer = (require('ws')).Server;
 var websocket_stream = require('websocket-stream');
 var argv = (require('optimist'))
@@ -50,7 +51,7 @@ wss.on('connection', function(new_websocket_connection) {
 
   mc.on('raw', function(buffer) {
     console.log('mc received '+buffer.length+' bytes');
-    console.log(buffer.toString('hex'));
+    hex(buffer);
     ws.write(buffer);
   });
 
@@ -69,6 +70,7 @@ wss.on('connection', function(new_websocket_connection) {
 
   ws.on('data', function(raw) {
     console.log('websocket received '+raw.length+' bytes');
+    hex(raw);
 
     if (loggingIn) {
       // first packet username
