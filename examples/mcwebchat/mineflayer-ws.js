@@ -1,6 +1,7 @@
 'use strict';
 
 var mc = require('./minecraft-protocol-ws')
+  , hex = require('./hex-browserify')
   , EventEmitter = require('events').EventEmitter
   , util = require('util')
   , path = require('path')
@@ -104,8 +105,8 @@ Bot.prototype.connect = function(options) {
   self.client = mc.createClient(options);
   self.username = self.client.username;
   self.client.on('raw', function(raw) {
-    console.log('received raw',raw);
-    console.log(raw.toString());
+    console.log('received ',raw.length+' raw bytes');
+    hex(raw);
   });
   self.client.on('session', function() {
     self.username = self.client.username;
