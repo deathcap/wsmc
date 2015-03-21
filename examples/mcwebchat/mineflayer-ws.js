@@ -24,7 +24,10 @@ var mc = require('./minecraft-protocol-ws')
       spawn_point: require('mineflayer/lib/plugins/spawn_point'),
       time: require('mineflayer/lib/plugins/time')
     };
-global.hex = hex;
+
+var PACKET_DEBUG = false;
+
+if (PACKET_DEBUG) global.hex = hex;
 module.exports = {
   //vec3: require('vec3'), // not really needed
   createBot: createBot,
@@ -105,8 +108,10 @@ Bot.prototype.connect = function(options) {
   self.client = mc.createClient(options);
   self.username = self.client.username;
   self.client.on('raw', function(raw) {
-    console.log('received ',raw.length+' raw bytes');
-    hex(raw);
+    if (PACKET_DEBUG) {
+      console.log('received ',raw.length+' raw bytes');
+      hex(raw);
+    }
   });
   self.client.on('session', function() {
     self.username = self.client.username;

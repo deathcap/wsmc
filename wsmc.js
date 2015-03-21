@@ -15,6 +15,8 @@ var argv = (require('optimist'))
   .default('prefix', 'webuser-')
   .argv;
 
+var PACKET_DEBUG = false;
+
 console.log('WS('+argv.wshost+':'+argv.wsport+') <--> MC('+argv.mchost+':'+argv.mcport+')');
 
 var states = minecraft_protocol.protocol.states;
@@ -53,8 +55,10 @@ wss.on('connection', function(new_websocket_connection) {
   });
 
   mc.on('raw', function(buffer) {
-    console.log('mc received '+buffer.length+' bytes');
-    hex(buffer);
+    if (PACKET_DEBUG) {
+      console.log('mc received '+buffer.length+' bytes');
+      hex(buffer);
+    }
 
     // skip 'login' state packets TODO: clean this up
     if (buffer[0] === 0x02 && buffer[1] === 0x24) {
@@ -72,10 +76,12 @@ wss.on('connection', function(new_websocket_connection) {
     var length = buffer.length;
     var lengthField = new Buffer(sizeOfVarInt(length));
     writeVarInt(length, lengthField, 0);
-    console.log('lengthField=',lengthField);
     var lengthPrefixedBuffer = Buffer.concat([lengthField, buffer]);
-    console.log('writing to ws');
-    hex(lengthPrefixedBuffer);
+    if (PACKET_DEBUG) {
+      console.log('lengthField=',lengthField);
+      console.log('writing to ws');
+      hex(lengthPrefixedBuffer);
+    }
     ws.write(lengthPrefixedBuffer);
     //ws.write(buffer);
   });
@@ -95,8 +101,10 @@ wss.on('connection', function(new_websocket_connection) {
   });
 
   ws.on('data', function(raw) {
-    console.log('websocket received '+raw.length+' bytes');
-    hex(raw);
+    if (PACKET_DEBUG) {
+      console.log('websocket received '+raw.length+' bytes');
+      hex(raw);
+    }
 
     if (loggingIn) {
       // first packet username

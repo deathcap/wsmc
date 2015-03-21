@@ -1,6 +1,6 @@
 'use strict';
 
-process.env.NODE_DEBUG = 'mc-proto'; // for node-minecraft-protocol console packet debugging
+//process.env.NODE_DEBUG = 'mc-proto'; // for node-minecraft-protocol console packet debugging TODO: envify
 
 var websocket_stream = require('websocket-stream');
 var Client = require('minecraft-protocol/lib/client')
