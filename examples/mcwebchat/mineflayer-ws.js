@@ -24,7 +24,7 @@ var mc = require('./minecraft-protocol-ws')
       spawn_point: require('mineflayer/lib/plugins/spawn_point'),
       time: require('mineflayer/lib/plugins/time')
     };
-
+global.hex = hex;
 module.exports = {
   //vec3: require('vec3'), // not really needed
   createBot: createBot,
