@@ -30,7 +30,6 @@ var wss = new WebSocketServer({
 wss.on('connection', function(new_websocket_connection) {
   var ws = websocket_stream(new_websocket_connection);
   var loggingIn = true;
-  var forwardPackets = false;
 
   //ws.write('OK', {binary: true});
 
@@ -56,9 +55,15 @@ wss.on('connection', function(new_websocket_connection) {
     console.log('mc received '+buffer.length+' bytes');
     hex(buffer);
 
-    if (!forwardPackets) {
-      // only send the WS packets in 'play' phase, not 'login'
-      console.log('(skipping)');
+    // skip 'login' state packets TODO: clean this up
+    if (buffer[0] === 0x02 && buffer[1] === 0x24) {
+      // ugly hack to skip packet 0x02 which is either login.success or play.chat depending on state
+      console.log('skipping login success packet');
+      return;
+    }
+    if (buffer[0] === 0x03 && buffer.length === 3) {
+      // 0x03 either login.set_compression or play.time_update depending on state (varint/long+long)
+      console.log('skipping set_compression packet');
       return;
     }
 
@@ -84,10 +89,8 @@ wss.on('connection', function(new_websocket_connection) {
 
   //mc.once(['login', 'success'], function(p) {
   mc.once('success', function(p) { // note: part of login phase
-    // after login completes, forward raw packets to client
-    process.nextTick(function() { // but not this packet (0x02 is both login.success or play.chat, depending on state)
-      forwardPackets = true;
-    });
+    // after login completes
+    // TODO: fix updating
   });
 
   ws.on('data', function(raw) {
