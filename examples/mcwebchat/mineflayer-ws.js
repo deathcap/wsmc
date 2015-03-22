@@ -25,7 +25,7 @@ var mc = require('./minecraft-protocol-ws')
       time: require('mineflayer/lib/plugins/time')
     };
 
-var PACKET_DEBUG = true;
+var PACKET_DEBUG = false;
 
 if (PACKET_DEBUG) global.hex = hex;
 module.exports = {

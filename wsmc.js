@@ -15,7 +15,7 @@ var argv = (require('optimist'))
   .default('prefix', 'webuser-')
   .argv;
 
-var PACKET_DEBUG = true;
+var PACKET_DEBUG = false;
 
 console.log('WS('+argv.wshost+':'+argv.wsport+') <--> MC('+argv.mchost+':'+argv.mcport+')');
 
