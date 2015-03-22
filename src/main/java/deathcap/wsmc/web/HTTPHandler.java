@@ -36,9 +36,9 @@ import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
-import static io.netty.handler.codec.http.HttpHeaders.Names.CONTENT_TYPE;
-import static io.netty.handler.codec.http.HttpHeaders.isKeepAlive;
-import static io.netty.handler.codec.http.HttpHeaders.setContentLength;
+import static io.netty.handler.codec.http.HttpHeaderNames.CONTENT_TYPE;
+import static io.netty.handler.codec.http.HttpHeaderUtil.isKeepAlive;
+import static io.netty.handler.codec.http.HttpHeaderUtil.setContentLength;
 import static io.netty.handler.codec.http.HttpMethod.*;
 import static io.netty.handler.codec.http.HttpResponseStatus.*;
 import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
@@ -63,7 +63,7 @@ public class HTTPHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
     }
 
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, FullHttpRequest msg) // messageReceived
+    protected void messageReceived(ChannelHandlerContext ctx, FullHttpRequest msg) // channelRead0
             throws Exception {
         httpRequest(ctx, msg);
     }
@@ -78,11 +78,12 @@ public class HTTPHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
     }
 
     public void httpRequest(ChannelHandlerContext context, FullHttpRequest request) throws IOException {
-        if (!request.getDecoderResult().isSuccess()) {
+        if (!request.decoderResult().isSuccess()) {
             sendHttpResponse(context, request, new DefaultFullHttpResponse(HTTP_1_1, BAD_REQUEST));
             return;
         }
-        if (request.getUri().equals("/server")) {
+        if (request.uri().equals("/server")) {
+            /*
             WebSocketServerHandshakerFactory wsFactory = new WebSocketServerHandshakerFactory(
                     getWebSocketLocation(request), null, true);
             handshaker = wsFactory.newHandshaker(request);
@@ -91,29 +92,30 @@ public class HTTPHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
             } else {
                 handshaker.handshake(context.channel(), request);
             }
+            */
 
             context.fireChannelRead(request);
             return;
         }
 
-        if ((request.getMethod() == OPTIONS || request.getMethod() == HEAD)
-                && request.getUri().equals("/chunk")) {
+        if ((request.method() == OPTIONS || request.method() == HEAD)
+                && request.uri().equals("/chunk")) {
             FullHttpResponse response = new DefaultFullHttpResponse(HTTP_1_1, OK);
             response.headers().add("Access-Control-Allow-Origin", "*");
             response.headers().add("Access-Control-Allow-Methods", "POST");
-            if (request.getMethod() == OPTIONS) {
+            if (request.method() == OPTIONS) {
                 response.headers().add("Access-Control-Allow-Headers", "origin, content-type, accept");
             }
             sendHttpResponse(context, request, response);
         }
 
-        if (request.getMethod() != GET) {
+        if (request.method() != GET) {
             sendHttpResponse(context, request, new DefaultFullHttpResponse(HTTP_1_1, FORBIDDEN));
             return;
         }
 
         // TODO: send browserified page
-        if (request.getUri().equals("/")) {
+        if (request.uri().equals("/")) {
             request.setUri("/index.html");
         }
 
@@ -129,7 +131,7 @@ public class HTTPHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
         */
         stream = this.getClass().getClassLoader()
                 .getResourceAsStream("www" +
-                        request.getUri());
+                        request.uri());
         if (stream == null) {
             sendHttpResponse(context, request, new DefaultFullHttpResponse(HTTP_1_1, NOT_FOUND));
             return;
@@ -140,7 +142,7 @@ public class HTTPHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
         out.close();
 
         ByteBuf buffer = out.buffer();
-        if (request.getUri().equals("/index.html")) {
+        if (request.uri().equals("/index.html")) {
             String page = buffer.toString(CharsetUtil.UTF_8);
             page = page.replaceAll("%SERVERPORT%", Integer.toString(this.port));
             buffer.release();
@@ -148,11 +150,11 @@ public class HTTPHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
         }
 
         FullHttpResponse response = new DefaultFullHttpResponse(HTTP_1_1, OK, buffer);
-        if (request.getUri().startsWith("/resources/")) {
+        if (request.uri().startsWith("/resources/")) {
             response.headers().add("Access-Control-Allow-Origin", "*");
         }
 
-        String ext = request.getUri().substring(request.getUri().lastIndexOf('.') + 1);
+        String ext = request.uri().substring(request.uri().lastIndexOf('.') + 1);
         String type = mimeTypes.containsKey(ext) ? mimeTypes.get(ext) : "text/plain";
         if (type.startsWith("text/")) {
             type += "; charset=UTF-8";
@@ -164,21 +166,21 @@ public class HTTPHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
     }
 
     public void sendHttpResponse(ChannelHandlerContext context, FullHttpRequest request, FullHttpResponse response) {
-        if (response.getStatus().code() != 200) {
-            ByteBuf buf = Unpooled.copiedBuffer(response.getStatus().toString(), CharsetUtil.UTF_8);
+        if (response.status().code() != 200) {
+            ByteBuf buf = Unpooled.copiedBuffer(response.status().toString(), CharsetUtil.UTF_8);
             response.content().writeBytes(buf);
             buf.release();
         }
         setContentLength(response, response.content().readableBytes());
 
         ChannelFuture future = context.channel().writeAndFlush(response);
-        if (!isKeepAlive(request) || response.getStatus().code() != 200) {
+        if (!isKeepAlive(request) || response.status().code() != 200) {
             future.addListener(ChannelFutureListener.CLOSE);
         }
     }
 
     private static String getWebSocketLocation(FullHttpRequest req) {
-        String location = req.headers().get(io.netty.handler.codec.http.HttpHeaders.Names.HOST) + "/server";
+        String location = req.headers().get(io.netty.handler.codec.http.HttpHeaderNames.HOST) + "/server";
         /*
         if (WebSocketServer.SSL) {
             return "wss://" + location;

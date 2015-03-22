@@ -38,7 +38,7 @@ import java.util.Map;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.logging.Logger;
 
-public class WebSocketHandler extends SimpleChannelInboundHandler<Object> {
+public class WebSocketHandler extends SimpleChannelInboundHandler<BinaryWebSocketFrame> {
 
     private final static Logger logger = Logger.getLogger(WebSocketHandler.class.getName());
 
@@ -92,9 +92,7 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<Object> {
     }
 
     @Override
-    protected void channelRead0(final ChannelHandlerContext ctx, Object obj) throws Exception { // messageReceived
-        System.out.println("WebSocketHandler channelRead0: "+obj);
-        final BinaryWebSocketFrame msg = (BinaryWebSocketFrame)obj;
+    protected void messageReceived(final ChannelHandlerContext ctx, BinaryWebSocketFrame msg) throws Exception { // channelRead
         if (firstMessage) {
             firstMessage = false;
             this.webThread.getChannelGroup().add(ctx.channel());
