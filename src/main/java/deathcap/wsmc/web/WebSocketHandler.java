@@ -19,7 +19,7 @@ package deathcap.wsmc.web;
 import deathcap.wsmc.UserAuthenticator;
 import deathcap.wsmc.UserIdentityLinker;
 import deathcap.wsmc.WsmcPlugin;
-import net.md_5.bungee.protocol.DefinedPacket;
+import deathcap.wsmc.mc.DefinedPacket;
 import deathcap.wsmc.mc.MinecraftThread;
 import deathcap.wsmc.mc.PacketFilter;
 import io.netty.buffer.ByteBuf;
@@ -92,7 +92,7 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<BinaryWebSocke
     }
 
     @Override
-    protected void channelRead0(final ChannelHandlerContext ctx, final BinaryWebSocketFrame msg) throws Exception { // messageReceived
+    protected void messageReceived(final ChannelHandlerContext ctx, final BinaryWebSocketFrame msg) throws Exception {
         if (firstMessage) {
             firstMessage = false;
             this.webThread.getChannelGroup().add(ctx.channel());

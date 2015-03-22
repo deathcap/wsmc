@@ -2,8 +2,6 @@ package deathcap.wsmc.mc;
 
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.socket.SocketChannel;
-import net.md_5.bungee.protocol.Varint21FrameDecoder;
-import net.md_5.bungee.protocol.Varint21LengthFieldPrepender;
 
 public class ClientHandler extends ChannelInitializer<SocketChannel> {
 

@@ -33,19 +33,13 @@
     <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-all</artifactId>
-      <version>4.0.24.Final</version>
+      <version>5.0.0.Alpha1</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
       <version>17.0</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>net.md-5</groupId>
-      <artifactId>bungeecord-protocol</artifactId>
-      <version>1.8-SNAPSHOT</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
