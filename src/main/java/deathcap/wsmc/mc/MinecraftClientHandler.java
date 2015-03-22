@@ -34,6 +34,9 @@ public class MinecraftClientHandler extends ChannelHandlerAdapter {
         ByteBuf m = (ByteBuf) msg;
 
         try {
+
+            ByteBuf original = Unpooled.copiedBuffer(m); // copy to not affect proxying original message below
+
             if (this.compressionThreshold >= -1) {
                 // http://wiki.vg/Protocol#With_compression "The format of a packet changes slighty to include the size of the uncompressed packet."
                 int uncompressedDataLength = DefinedPacket.readVarInt(m);
@@ -62,22 +65,26 @@ public class MinecraftClientHandler extends ChannelHandlerAdapter {
                 } else if (opcode == LOGIN_SUCCESS_OPCODE) {
                     System.out.println("Login success");
                     this.minecraft.loggingIn = false;
+                    // pass through to WS
                 } else if (opcode == LOGIN_SET_COMPRESSION) {
                     this.compressionThreshold = DefinedPacket.readVarInt(m);
                     System.out.println("Compression threshold set to "+this.compressionThreshold);
+                    this.minecraft.loggingIn = false;
+                    // pass through to WS
                 } else {
                     System.out.println("?? unrecognized login opcode: "+opcode);
                     ctx.close();
                 }
-            } else {
+            }
+
+            if (!this.minecraft.loggingIn) {
                 // otherwise proxy through to WS
 
-
-                ByteBuf out = Unpooled.buffer(m.readableBytes());
-                System.out.println("m = "+m+"="+HexDumper.hexByteBuf(m));
+                ByteBuf out = Unpooled.buffer(original.readableBytes());
+                System.out.println("m = "+original+"="+HexDumper.hexByteBuf(original));
                 // prepend length
                 Varint21LengthFieldPrepender2 prepender = new Varint21LengthFieldPrepender2();
-                prepender.encode(null, m, out);
+                prepender.encode(null, original, out);
                 minecraft.websocket.writeAndFlush(new BinaryWebSocketFrame(out));
                 System.out.println("mc -> ws: "+HexDumper.hexByteBuf(out));
                 //minecraft.websocket.writeAndFlush(new BinaryWebSocketFrame(m.retain()));
