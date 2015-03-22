@@ -59,7 +59,7 @@ public class HTTPHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
     }
 
     @Override
-    protected void messageReceived(ChannelHandlerContext ctx, FullHttpRequest msg)
+    protected void channelRead0(ChannelHandlerContext ctx, FullHttpRequest msg) // messageReceived
             throws Exception {
         httpRequest(ctx, msg);
     }

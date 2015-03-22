@@ -92,7 +92,7 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<BinaryWebSocke
     }
 
     @Override
-    protected void messageReceived(final ChannelHandlerContext ctx, final BinaryWebSocketFrame msg) throws Exception {
+    protected void channelRead0(final ChannelHandlerContext ctx, final BinaryWebSocketFrame msg) throws Exception { // messageReceived
         if (firstMessage) {
             firstMessage = false;
             this.webThread.getChannelGroup().add(ctx.channel());
