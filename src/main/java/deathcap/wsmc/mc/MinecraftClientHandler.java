@@ -61,14 +61,18 @@ public class MinecraftClientHandler extends ChannelHandlerAdapter {
             } else {
                 // otherwise proxy through to WS
 
-                int opcode = DefinedPacket.readVarInt(m);
 
                 if (this.compressionThreshold != -1) {
                     // http://wiki.vg/Protocol#With_compression "The format of a packet changes slighty to include the size of the uncompressed packet."
                     int dataLength = DefinedPacket.readVarInt(m);
+                    System.out.println("read dataLength="+dataLength);
+                    if (dataLength != 0) {
+                        System.out.println("TODO: support compressed packets, "+dataLength); // decompress?
+                        //System.exit(-1);
+                    }
                 }
 
-                ByteBuf out = Unpooled.buffer(m.readableBytes() + 2);
+                ByteBuf out = Unpooled.buffer(m.readableBytes());
                 System.out.println("m = "+m+"="+HexDumper.hexByteBuf(m));
                 // prepend length
                 Varint21LengthFieldPrepender2 prepender = new Varint21LengthFieldPrepender2();
