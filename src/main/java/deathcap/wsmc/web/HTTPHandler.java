@@ -26,6 +26,8 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.DefaultFullHttpResponse;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.FullHttpResponse;
+import io.netty.handler.codec.http.websocketx.WebSocketServerHandshaker;
+import io.netty.handler.codec.http.websocketx.WebSocketServerHandshakerFactory;
 import io.netty.util.CharsetUtil;
 
 import java.io.IOException;
@@ -54,6 +56,8 @@ public class HTTPHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
 
     private final int port;
 
+    private WebSocketServerHandshaker handshaker;
+
     public HTTPHandler(int port) {
         this.port = port;
     }
@@ -79,6 +83,15 @@ public class HTTPHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
             return;
         }
         if (request.getUri().equals("/server")) {
+            WebSocketServerHandshakerFactory wsFactory = new WebSocketServerHandshakerFactory(
+                    getWebSocketLocation(request), null, true);
+            handshaker = wsFactory.newHandshaker(request);
+            if (handshaker == null) {
+                WebSocketServerHandshakerFactory.sendUnsupportedVersionResponse(context.channel());
+            } else {
+                handshaker.handshake(context.channel(), request);
+            }
+
             context.fireChannelRead(request);
             return;
         }
@@ -162,5 +175,16 @@ public class HTTPHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
         if (!isKeepAlive(request) || response.getStatus().code() != 200) {
             future.addListener(ChannelFutureListener.CLOSE);
         }
+    }
+
+    private static String getWebSocketLocation(FullHttpRequest req) {
+        String location = req.headers().get(io.netty.handler.codec.http.HttpHeaders.Names.HOST) + "/server";
+        /*
+        if (WebSocketServer.SSL) {
+            return "wss://" + location;
+        } else {
+        */
+            return "ws://" + location;
+        //}
     }
 }
