@@ -54,21 +54,14 @@ wss.on('connection', function(new_websocket_connection) {
     mc.socket.end();
   });
 
-  mc.on('raw', function(buffer) {
+  mc.on('raw', function(buffer, state) {
     if (PACKET_DEBUG) {
       console.log('mc received '+buffer.length+' bytes');
       hex(buffer);
     }
 
-    // skip 'login' state packets TODO: clean this up
-    if (buffer[0] === 0x02 && buffer[1] === 0x24) {
-      // ugly hack to skip packet 0x02 which is either login.success or play.chat depending on state
-      console.log('skipping login success packet');
-      return;
-    }
-    if (buffer[0] === 0x03 && buffer.length === 3) {
-      // 0x03 either login.set_compression or play.time_update depending on state (varint/long+long)
-      console.log('skipping set_compression packet');
+    if (state !== 'play') {
+      console.log('Skipping non-play packet: ',buffer);
       return;
     }
 
