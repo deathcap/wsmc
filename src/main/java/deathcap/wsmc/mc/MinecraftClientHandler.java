@@ -9,13 +9,14 @@ import io.netty.util.ReferenceCountUtil;
 public class MinecraftClientHandler extends ChannelHandlerAdapter {
 
     public static final int HANDSHAKE_OPCODE = 0;
-    public static final int MC_PROTOCOL_VERSION = 5; // 1.7.9
+    public static final int MC_PROTOCOL_VERSION = ProtocolConstants.MINECRAFT_1_8; // TODO: support other versions?
     public static final int NEXT_STATE_LOGIN = 2;
 
     // http://wiki.vg/Protocol#Clientbound_3
     public static final int LOGIN_DISCONNECT_OPCODE = 0;
     public static final int LOGIN_ENCRYPTION_REQUEST_OPCODE  = 1;
     public static final int LOGIN_SUCCESS_OPCODE = 2;
+    public static final int LOGIN_SET_COMPRESSION = 3;
 
     public static final int LOGIN_OPCODE = 0;
 
@@ -47,6 +48,9 @@ public class MinecraftClientHandler extends ChannelHandlerAdapter {
                     ctx.close();
                 } else if (opcode == LOGIN_SUCCESS_OPCODE) {
                     System.out.println("Login success");
+                } else if (opcode == LOGIN_SET_COMPRESSION) {
+                   int threshold = DefinedPacket.readVarInt(m);
+                    System.out.println("Compression threshold set to "+threshold);
                 } else {
                     System.out.println("?? unrecognized opcode: "+opcode);
                     ctx.close();
