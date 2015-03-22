@@ -23,6 +23,7 @@ public class MinecraftClientHandler extends ChannelHandlerAdapter {
 
     public final MinecraftThread minecraft;
     public ChannelHandlerContext ctx;
+    public int compressionThreshold = -1;
 
     public MinecraftClientHandler(MinecraftThread minecraft) {
         this.minecraft = minecraft;
@@ -50,8 +51,8 @@ public class MinecraftClientHandler extends ChannelHandlerAdapter {
                 } else if (opcode == LOGIN_SUCCESS_OPCODE) {
                     System.out.println("Login success");
                 } else if (opcode == LOGIN_SET_COMPRESSION) {
-                   int threshold = DefinedPacket.readVarInt(m);
-                    System.out.println("Compression threshold set to "+threshold);
+                    this.compressionThreshold = DefinedPacket.readVarInt(m);
+                    System.out.println("Compression threshold set to "+this.compressionThreshold);
                 } else {
                     System.out.println("?? unrecognized opcode: "+opcode);
                     ctx.close();
@@ -59,7 +60,16 @@ public class MinecraftClientHandler extends ChannelHandlerAdapter {
                 this.minecraft.loggingIn = false;
             } else {
                 // otherwise proxy through to WS
+
+                int opcode = DefinedPacket.readVarInt(m);
+
+                if (this.compressionThreshold != -1) {
+                    // http://wiki.vg/Protocol#With_compression "The format of a packet changes slighty to include the size of the uncompressed packet."
+                    int dataLength = DefinedPacket.readVarInt(m);
+                }
+
                 ByteBuf out = Unpooled.buffer(m.readableBytes() + 2);
+                System.out.println("m = "+m+"="+HexDumper.hexByteBuf(m));
                 // prepend length
                 Varint21LengthFieldPrepender2 prepender = new Varint21LengthFieldPrepender2();
                 prepender.encode(null, m, out);
