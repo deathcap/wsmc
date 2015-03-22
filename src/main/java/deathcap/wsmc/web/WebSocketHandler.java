@@ -16,6 +16,7 @@
 
 package deathcap.wsmc.web;
 
+import deathcap.wsmc.HexDumper;
 import deathcap.wsmc.UserAuthenticator;
 import deathcap.wsmc.UserIdentityLinker;
 import deathcap.wsmc.WsmcPlugin;
@@ -91,22 +92,6 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<BinaryWebSocke
         minecraft.start();
     }
 
-    // for debugging
-    // based on http://nerdronix.blogspot.com/2013/06/eclipse-detail-formatter-to-view.html
-    public static String hexByteBuf(ByteBuf buf) {
-        byte[] bytes = new byte[buf.readableBytes()];
-        buf.getBytes(0,bytes,0,buf.readableBytes());
-        char[] hexArray = {'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
-        char[] hexChars = new char[bytes.length * 3];
-        int v;
-        for ( int j = 0; j < bytes.length; j++ ) {
-            v = bytes[j] & 0xFF;
-            hexChars[j * 3] = hexArray[v >>> 4];
-            hexChars[j * 3 + 1] = hexArray[v & 0x0F];
-            hexChars[j * 3 + 2] = ' ';
-        }
-        return new String(hexChars);
-    }
 
     @Override
     protected void messageReceived(final ChannelHandlerContext ctx, BinaryWebSocketFrame msg) throws Exception { // channelRead
@@ -123,7 +108,7 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<BinaryWebSocke
 
         final ByteBuf buf = msg.content();
 
-        if (verbose) logger.info("ws received "+buf.readableBytes()+" bytes: " + hexByteBuf(buf));
+        if (verbose) logger.info("ws received "+buf.readableBytes()+" bytes: " + HexDumper.hexByteBuf(buf));
 
         // strip length header since Varint21LengthFieldPrepender re-adds it TODO: refactor
         int length = DefinedPacket.readVarInt(buf);
@@ -139,7 +124,7 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<BinaryWebSocke
         }
 
         final ByteBuf reply = Unpooled.wrappedBuffer(bytes).retain();
-        if (verbose) logger.info("id "+id+" stripped "+reply.readableBytes()+" reply="+hexByteBuf(reply));
+        if (verbose) logger.info("id "+id+" stripped "+reply.readableBytes()+" reply="+HexDumper.hexByteBuf(reply));
 
         final MinecraftThread mc = minecraft;
         // forward MC to WS

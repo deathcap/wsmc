@@ -1,5 +1,6 @@
 package deathcap.wsmc.mc;
 
+import deathcap.wsmc.HexDumper;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.*;
@@ -63,6 +64,7 @@ public class MinecraftClientHandler extends ChannelHandlerAdapter {
                 Varint21LengthFieldPrepender2 prepender = new Varint21LengthFieldPrepender2();
                 prepender.encode(null, m, out);
                 minecraft.websocket.writeAndFlush(new BinaryWebSocketFrame(out));
+                System.out.println("mc -> ws: "+HexDumper.hexByteBuf(out));
                 //minecraft.websocket.writeAndFlush(new BinaryWebSocketFrame(m.retain()));
             }
         } finally {
