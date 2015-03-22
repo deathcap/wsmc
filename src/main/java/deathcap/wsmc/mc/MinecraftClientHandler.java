@@ -23,7 +23,7 @@ public class MinecraftClientHandler extends ChannelHandlerAdapter {
 
     public final MinecraftThread minecraft;
     public ChannelHandlerContext ctx;
-    public int compressionThreshold = -1;
+    public int compressionThreshold = -2; // -2 = no uncompressed data length field, -1 = no compression, > = compression
 
     public MinecraftClientHandler(MinecraftThread minecraft) {
         this.minecraft = minecraft;
@@ -34,7 +34,7 @@ public class MinecraftClientHandler extends ChannelHandlerAdapter {
         ByteBuf m = (ByteBuf) msg;
 
         try {
-            if (this.compressionThreshold != -1) {
+            if (this.compressionThreshold >= -1) {
                 // http://wiki.vg/Protocol#With_compression "The format of a packet changes slighty to include the size of the uncompressed packet."
                 int uncompressedDataLength = DefinedPacket.readVarInt(m);
                 System.out.println("read dataLength="+uncompressedDataLength);
