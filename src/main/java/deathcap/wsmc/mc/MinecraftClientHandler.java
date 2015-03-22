@@ -34,13 +34,12 @@ public class MinecraftClientHandler extends ChannelHandlerAdapter {
         ByteBuf m = (ByteBuf) msg;
 
         try {
-
             if (this.compressionThreshold != -1) {
                 // http://wiki.vg/Protocol#With_compression "The format of a packet changes slighty to include the size of the uncompressed packet."
-                int dataLength = DefinedPacket.readVarInt(m);
-                System.out.println("read dataLength="+dataLength);
-                if (dataLength != 0) {
-                    System.out.println("TODO: support compressed packets, "+dataLength); // decompress?
+                int uncompressedDataLength = DefinedPacket.readVarInt(m);
+                System.out.println("read dataLength="+uncompressedDataLength);
+                if (uncompressedDataLength != 0) {
+                    System.out.println("TODO: support compressed packets, "+uncompressedDataLength); // decompress?
                     //System.exit(-1);
                 }
             }

@@ -123,7 +123,12 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<BinaryWebSocke
             return;
         }
 
-        final ByteBuf reply = Unpooled.wrappedBuffer(bytes).retain();
+        // uncompressedDataLength - currently 0 for no compression TODO: support compression if >compressionThreshold
+        // TODO: only if set compression
+        byte headerBytes[] = { 0x00 };
+        //DefinedPacket.writeVarInt();
+
+        final ByteBuf reply = Unpooled.wrappedBuffer(headerBytes, bytes).retain();
         if (verbose) logger.info("id "+id+" stripped "+reply.readableBytes()+" reply="+HexDumper.hexByteBuf(reply));
 
         final MinecraftThread mc = minecraft;
