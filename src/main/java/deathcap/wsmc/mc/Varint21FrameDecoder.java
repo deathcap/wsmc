@@ -59,7 +59,7 @@ public class Varint21FrameDecoder extends ByteToMessageDecoder
             buf[i] = in.readByte();
             if ( buf[i] >= 0 )
             {
-                int length = DefinedPacket.readVarInt(Unpooled.wrappedBuffer(buf));
+                int length = DefinedPacket.readVarInt( Unpooled.wrappedBuffer( buf ) );
 
                 if ( in.readableBytes() < length )
                 {
@@ -67,7 +67,11 @@ public class Varint21FrameDecoder extends ByteToMessageDecoder
                     return;
                 } else
                 {
-                    out.add( in.readBytes( length ) );
+                    // TODO: Really should be a slice!
+                    ByteBuf dst = ctx.alloc().directBuffer( length );
+                    in.readBytes( dst );
+
+                    out.add( dst );
                     return;
                 }
             }

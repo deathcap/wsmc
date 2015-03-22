@@ -32,9 +32,9 @@ POSSIBILITY OF SUCH DAMAGE.
 package deathcap.wsmc.mc;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
+import io.netty.channel.ChannelHandler;
 
 @ChannelHandler.Sharable
 public class Varint21LengthFieldPrepender extends MessageToByteEncoder<ByteBuf>
@@ -44,12 +44,10 @@ public class Varint21LengthFieldPrepender extends MessageToByteEncoder<ByteBuf>
     protected void encode(ChannelHandlerContext ctx, ByteBuf msg, ByteBuf out) throws Exception
     {
         int bodyLen = msg.readableBytes();
-
         int headerLen = varintSize( bodyLen );
         out.ensureWritable( headerLen + bodyLen );
 
-        DefinedPacket.writeVarInt(bodyLen, out);
-
+        DefinedPacket.writeVarInt( bodyLen, out );
         out.writeBytes( msg );
     }
 
