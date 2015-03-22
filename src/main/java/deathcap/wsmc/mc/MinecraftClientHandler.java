@@ -1,5 +1,6 @@
 package deathcap.wsmc.mc;
 
+import deathcap.wsmc.HexDumper;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.*;
@@ -9,18 +10,20 @@ import io.netty.util.ReferenceCountUtil;
 public class MinecraftClientHandler extends ChannelHandlerAdapter {
 
     public static final int HANDSHAKE_OPCODE = 0;
-    public static final int MC_PROTOCOL_VERSION = 5; // 1.7.9
+    public static final int MC_PROTOCOL_VERSION = ProtocolConstants.MINECRAFT_1_8; // TODO: support other versions?
     public static final int NEXT_STATE_LOGIN = 2;
 
     // http://wiki.vg/Protocol#Clientbound_3
     public static final int LOGIN_DISCONNECT_OPCODE = 0;
     public static final int LOGIN_ENCRYPTION_REQUEST_OPCODE  = 1;
     public static final int LOGIN_SUCCESS_OPCODE = 2;
+    public static final int LOGIN_SET_COMPRESSION = 3;
 
     public static final int LOGIN_OPCODE = 0;
 
     public final MinecraftThread minecraft;
     public ChannelHandlerContext ctx;
+    public int compressionThreshold = -2; // -2 = no uncompressed data length field, -1 = no compression, > = compression
 
     public MinecraftClientHandler(MinecraftThread minecraft) {
         this.minecraft = minecraft;
@@ -31,9 +34,23 @@ public class MinecraftClientHandler extends ChannelHandlerAdapter {
         ByteBuf m = (ByteBuf) msg;
 
         try {
+
+            ByteBuf original = Unpooled.copiedBuffer(m); // copy to not affect proxying original message below
+
+            if (this.compressionThreshold >= -1) {
+                // http://wiki.vg/Protocol#With_compression "The format of a packet changes slighty to include the size of the uncompressed packet."
+                int uncompressedDataLength = DefinedPacket.readVarInt(m);
+                System.out.println("read dataLength="+uncompressedDataLength);
+                if (uncompressedDataLength != 0) {
+                    System.out.println("TODO: support compressed packets, "+uncompressedDataLength); // decompress?
+                    //System.exit(-1);
+                }
+            }
+
             if (this.minecraft.loggingIn) {
                 int opcode = DefinedPacket.readVarInt(m);
                 System.out.println("opcode = " + opcode);
+                System.out.println(HexDumper.hexByteBuf(m));
                 // we handle the login sequence
                 if (opcode == LOGIN_DISCONNECT_OPCODE) {
                     String reason = DefinedPacket.readString(m);
@@ -47,18 +64,29 @@ public class MinecraftClientHandler extends ChannelHandlerAdapter {
                     ctx.close();
                 } else if (opcode == LOGIN_SUCCESS_OPCODE) {
                     System.out.println("Login success");
+                    this.minecraft.loggingIn = false;
+                    // pass through to WS
+                } else if (opcode == LOGIN_SET_COMPRESSION) {
+                    this.compressionThreshold = DefinedPacket.readVarInt(m);
+                    System.out.println("Compression threshold set to "+this.compressionThreshold);
+                    this.minecraft.loggingIn = false;
+                    // pass through to WS
                 } else {
-                    System.out.println("?? unrecognized opcode: "+opcode);
+                    System.out.println("?? unrecognized login opcode: "+opcode);
                     ctx.close();
                 }
-                this.minecraft.loggingIn = false;
-            } else {
+            }
+
+            if (!this.minecraft.loggingIn) {
                 // otherwise proxy through to WS
-                ByteBuf out = Unpooled.buffer(m.readableBytes() + 2);
+
+                ByteBuf out = Unpooled.buffer(original.readableBytes());
+                System.out.println("m = "+original+"="+HexDumper.hexByteBuf(original));
                 // prepend length
-                Varint21LengthFieldPrepender prepender = new Varint21LengthFieldPrepender();
-                prepender.encode(null, m, out);
+                Varint21LengthFieldPrepender2 prepender = new Varint21LengthFieldPrepender2();
+                prepender.encode(null, original, out);
                 minecraft.websocket.writeAndFlush(new BinaryWebSocketFrame(out));
+                System.out.println("mc -> ws: "+HexDumper.hexByteBuf(out));
                 //minecraft.websocket.writeAndFlush(new BinaryWebSocketFrame(m.retain()));
             }
         } finally {

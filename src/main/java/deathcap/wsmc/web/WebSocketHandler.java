@@ -16,6 +16,7 @@
 
 package deathcap.wsmc.web;
 
+import deathcap.wsmc.HexDumper;
 import deathcap.wsmc.UserAuthenticator;
 import deathcap.wsmc.UserIdentityLinker;
 import deathcap.wsmc.WsmcPlugin;
@@ -91,8 +92,9 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<BinaryWebSocke
         minecraft.start();
     }
 
+
     @Override
-    protected void messageReceived(final ChannelHandlerContext ctx, final BinaryWebSocketFrame msg) throws Exception {
+    protected void messageReceived(final ChannelHandlerContext ctx, BinaryWebSocketFrame msg) throws Exception { // channelRead
         if (firstMessage) {
             firstMessage = false;
             this.webThread.getChannelGroup().add(ctx.channel());
@@ -106,7 +108,7 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<BinaryWebSocke
 
         final ByteBuf buf = msg.content();
 
-        if (verbose) logger.info("ws received "+buf.readableBytes()+" bytes");
+        if (verbose) logger.info("ws received "+buf.readableBytes()+" bytes: " + HexDumper.hexByteBuf(buf));
 
         // strip length header since Varint21LengthFieldPrepender re-adds it TODO: refactor
         int length = DefinedPacket.readVarInt(buf);
@@ -122,7 +124,7 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<BinaryWebSocke
         }
 
         final ByteBuf reply = Unpooled.wrappedBuffer(bytes).retain();
-        if (verbose) logger.info("id "+id+" stripped "+reply.readableBytes());
+        if (verbose) logger.info("id "+id+" stripped "+reply.readableBytes()+" reply="+HexDumper.hexByteBuf(reply));
 
         final MinecraftThread mc = minecraft;
         // forward MC to WS

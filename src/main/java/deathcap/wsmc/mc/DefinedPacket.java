@@ -217,7 +217,6 @@ public abstract class DefinedPacket
         return new UUID( input.readLong(), input.readLong() );
     }
 
-    /*
     public void read(ByteBuf buf)
     {
         throw new UnsupportedOperationException( "Packet must implement read method" );
@@ -238,7 +237,7 @@ public abstract class DefinedPacket
         write( buf );
     }
 
-    public abstract void handle(AbstractPacketHandler handler) throws Exception;
+    //public abstract void handle(AbstractPacketHandler handler) throws Exception;
 
     @Override
     public abstract boolean equals(Object obj);
@@ -248,5 +247,4 @@ public abstract class DefinedPacket
 
     @Override
     public abstract String toString();
-    */
 }

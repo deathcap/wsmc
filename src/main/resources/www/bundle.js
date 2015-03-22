@@ -165,6 +165,9 @@ function createClient(options) {
 
   var client = new Client(false);
   client.on('connect', onConnect);
+  client.once([states.LOGIN, 0x02], onLogin);
+  client.once('compress', onCompressionRequest);
+  client.once('set_compression', onCompressionRequest);
   if (keepAlive) client.on([states.PLAY, 0x00], onKeepAlive);
 
   client.username = options.username;
@@ -174,7 +177,22 @@ function createClient(options) {
 
   function onConnect() {
     client.socket.write(new Buffer(client.username));
+    // wsmc uses slightly abbreviated protocol; skip the HANDSHAKING phase, go
+    // directly to LOGIN, to receive login success and set compression packets
+    client.state = states.LOGIN;
+  }
+
+  function onLogin(packet) {
+    console.log('onLogin',packet);
+    // successful login, transition to play phase
     client.state = states.PLAY;
+    client.uuid = packet.uuid;
+    client.username = packet.username;
+  }
+
+  function onCompressionRequest(packet) {
+    console.log('onCompressionRequest', packet);
+    client.compressionThreshold = packet.threshold;
   }
 
   function onKeepAlive(packet) {
@@ -220,7 +238,7 @@ var mc = require('./minecraft-protocol-ws')
       time: require('mineflayer/lib/plugins/time')
     };
 
-var PACKET_DEBUG = false;
+var PACKET_DEBUG = true;
 
 if (PACKET_DEBUG) global.hex = hex;
 module.exports = {

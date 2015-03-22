@@ -30,6 +30,8 @@ var wss = new WebSocketServer({
   host: argv.wshost,
   port: argv.wsport});
 
+var EMPTY_BUFFER = new Buffer(0);
+
 wss.on('connection', function(new_websocket_connection) {
   var ws = websocket_stream(new_websocket_connection);
   var loggingIn = true;
@@ -54,25 +56,57 @@ wss.on('connection', function(new_websocket_connection) {
     mc.socket.end();
   });
 
+  var compressionThreshold = -2;
+
+  mc.on('set_compression', function(packet) {
+    console.log('set_compression', packet);
+    compressionThreshold = packet.threshold;
+  });
+  mc.on('compress', function(packet) {
+    console.log('compress', packet);
+    compressionThreshold = packet.threshold;
+  });
+
+
   mc.on('raw', function(buffer, state) {
     if (PACKET_DEBUG) {
       console.log('mc received '+buffer.length+' bytes');
       hex(buffer);
     }
 
-    if (state !== 'play') {
-      console.log('Skipping non-play packet: ',buffer);
+    if (state !== 'play' && state !== 'login') {
+      console.log('Skipping state '+state+' packet: ',buffer);
       return;
     }
 
-    // Prepend varint length prefix
+    // Packet header fields
+
     var length = buffer.length;
+
+    var isCompressPacket = state === 'login' && buffer[0] == 0x03;
+    // The 'compress' packet itself is not compressed, but the node-minecraft-protocol event handler
+    // for it is called before the 'raw' handler (us), so we have to specifically exclude it
+
+    var uncompressedDataLengthField;
+    if (compressionThreshold > -2 && !isCompressPacket) {
+      // After set_compression, includes 'uncompressed' length (0 for no compression)
+      // TODO: compress? or can we get really-raw maybe-compressed data? to avoid double uncomp/recomp
+      var uncompressedDataLength = 0;
+      uncompressedDataLengthField = new Buffer(sizeOfVarInt(uncompressedDataLength));
+      writeVarInt(uncompressedDataLength, uncompressedDataLengthField, 0);
+      length += uncompressedDataLengthField.length;
+    } else {
+      uncompressedDataLengthField = EMPTY_BUFFER;
+    }
+
+    // Prepend varint length prefix
     var lengthField = new Buffer(sizeOfVarInt(length));
     writeVarInt(length, lengthField, 0);
-    var lengthPrefixedBuffer = Buffer.concat([lengthField, buffer]);
+
+    var lengthPrefixedBuffer = Buffer.concat([lengthField, uncompressedDataLengthField, buffer]);
     if (PACKET_DEBUG) {
       console.log('lengthField=',lengthField);
-      console.log('writing to ws');
+      console.log('writing to ws '+lengthPrefixedBuffer.length+' bytes');
       hex(lengthPrefixedBuffer);
     }
     ws.write(lengthPrefixedBuffer);
@@ -112,8 +146,20 @@ wss.on('connection', function(new_websocket_connection) {
       // strip length prefix then writeRaw(), let it add length, compression, etc.
       // TODO: remove vestigal MC length from WS protocol
       var lengthFieldSize = readVarInt(raw, 0).size;
-      var rawWithoutLength = raw.slice(lengthFieldSize);
 
+      var uncompressedLengthFieldSize;
+      if (compressionThreshold > -2) {
+        uncompressedLengthFieldSize = readVarInt(raw, lengthFieldSize).size; // the compressed packet format uncompressed data length
+      } else {
+        uncompressedLengthFieldSize = 0;
+      }
+
+      var rawWithoutLength = raw.slice(lengthFieldSize + uncompressedLengthFieldSize);
+
+      if (PACKET_DEBUG) {
+        console.log('forwarding ws -> mc: '+rawWithoutLength.length+' bytes');
+        hex(rawWithoutLength);
+      }
       mc.writeRaw(rawWithoutLength);
     } catch (e) {
       console.log('error in mc.writeRaw:',e);

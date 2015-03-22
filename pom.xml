@@ -14,7 +14,8 @@
   <repositories>
     <repository>
       <id>spigot-repo</id>
-      <url>http://repo.md-5.net/content/repositories/snapshots/</url>
+      <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+      <!-- <url>http://repo.md-5.net/content/repositories/snapshots/</url> --> <!-- 1.7.9 and earlier-->
     </repository>
     <repository>
       <id>sonatype-oss</id>
@@ -44,7 +45,7 @@
     <dependency>
       <groupId>org.spigotmc</groupId>
       <artifactId>spigot-api</artifactId>
-      <version>1.7.9-R0.1-SNAPSHOT</version>
+      <version>1.8.3-R0.1-SNAPSHOT</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
