@@ -5,8 +5,10 @@ import io.netty.buffer.Unpooled;
 import io.netty.channel.*;
 import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
 import io.netty.util.ReferenceCountUtil;
+import net.md_5.bungee.protocol.DefinedPacket;
+import net.md_5.bungee.protocol.Varint21LengthFieldPrepender;
 
-public class MinecraftClientHandler extends ChannelHandlerAdapter {
+public class MinecraftClientHandler extends ChannelInboundHandlerAdapter {
 
     public static final int HANDSHAKE_OPCODE = 0;
     public static final int MC_PROTOCOL_VERSION = ProtocolConstants.MINECRAFT_1_8; // TODO: support other versions?
@@ -60,7 +62,7 @@ public class MinecraftClientHandler extends ChannelHandlerAdapter {
                 // otherwise proxy through to WS
                 ByteBuf out = Unpooled.buffer(m.readableBytes() + 2);
                 // prepend length
-                Varint21LengthFieldPrepender prepender = new Varint21LengthFieldPrepender();
+                Varint21LengthFieldPrepender2 prepender = new Varint21LengthFieldPrepender2();
                 prepender.encode(null, m, out);
                 minecraft.websocket.writeAndFlush(new BinaryWebSocketFrame(out));
                 //minecraft.websocket.writeAndFlush(new BinaryWebSocketFrame(m.retain()));
