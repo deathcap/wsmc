@@ -34,9 +34,21 @@ public class MinecraftClientHandler extends ChannelHandlerAdapter {
         ByteBuf m = (ByteBuf) msg;
 
         try {
+
+            if (this.compressionThreshold != -1) {
+                // http://wiki.vg/Protocol#With_compression "The format of a packet changes slighty to include the size of the uncompressed packet."
+                int dataLength = DefinedPacket.readVarInt(m);
+                System.out.println("read dataLength="+dataLength);
+                if (dataLength != 0) {
+                    System.out.println("TODO: support compressed packets, "+dataLength); // decompress?
+                    //System.exit(-1);
+                }
+            }
+
             if (this.minecraft.loggingIn) {
                 int opcode = DefinedPacket.readVarInt(m);
                 System.out.println("opcode = " + opcode);
+                System.out.println(HexDumper.hexByteBuf(m));
                 // we handle the login sequence
                 if (opcode == LOGIN_DISCONNECT_OPCODE) {
                     String reason = DefinedPacket.readString(m);
@@ -50,27 +62,17 @@ public class MinecraftClientHandler extends ChannelHandlerAdapter {
                     ctx.close();
                 } else if (opcode == LOGIN_SUCCESS_OPCODE) {
                     System.out.println("Login success");
+                    this.minecraft.loggingIn = false;
                 } else if (opcode == LOGIN_SET_COMPRESSION) {
                     this.compressionThreshold = DefinedPacket.readVarInt(m);
                     System.out.println("Compression threshold set to "+this.compressionThreshold);
                 } else {
-                    System.out.println("?? unrecognized opcode: "+opcode);
+                    System.out.println("?? unrecognized login opcode: "+opcode);
                     ctx.close();
                 }
-                this.minecraft.loggingIn = false;
             } else {
                 // otherwise proxy through to WS
 
-
-                if (this.compressionThreshold != -1) {
-                    // http://wiki.vg/Protocol#With_compression "The format of a packet changes slighty to include the size of the uncompressed packet."
-                    int dataLength = DefinedPacket.readVarInt(m);
-                    System.out.println("read dataLength="+dataLength);
-                    if (dataLength != 0) {
-                        System.out.println("TODO: support compressed packets, "+dataLength); // decompress?
-                        //System.exit(-1);
-                    }
-                }
 
                 ByteBuf out = Unpooled.buffer(m.readableBytes());
                 System.out.println("m = "+m+"="+HexDumper.hexByteBuf(m));
