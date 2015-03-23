@@ -1,4 +1,4 @@
-var mineflayer = require('./mineflayer-ws');
+var mineflayer = require('../../mineflayer-ws');
 var tellraw2dom = require('tellraw2dom');
 
 var outputNode = document.getElementById('output');
