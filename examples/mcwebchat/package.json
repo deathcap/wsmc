@@ -9,6 +9,7 @@
   },
   "keywords": [],
   "dependencies": {
+    "browser-hex": "^1.0.0",
     "minecraft-protocol": "0.13.0",
     "mineflayer": "git://github.com/andrewrk/mineflayer.git#master",
     "tellraw2dom": "^0.0.4",

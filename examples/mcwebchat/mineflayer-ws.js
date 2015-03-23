@@ -1,7 +1,7 @@
 'use strict';
 
 var mc = require('./minecraft-protocol-ws')
-  , hex = require('./hex-browserify')
+  , hex = require('browser-hex')
   , EventEmitter = require('events').EventEmitter
   , util = require('util')
   , path = require('path')
@@ -78,7 +78,7 @@ Bot.prototype.connect = function(options) {
   self.client.on('raw', function(raw) {
     if (PACKET_DEBUG) {
       console.log('received ',raw.length+' raw bytes');
-      hex(raw);
+      console.log(hex(raw));
     }
   });
   self.client.on('session', function() {
