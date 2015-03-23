@@ -3,13 +3,13 @@
 //process.env.NODE_DEBUG = 'mc-proto'; // for node-minecraft-protocol console packet debugging TODO: envify
 
 var websocket_stream = require('websocket-stream');
-var Client = require('minecraft-protocol/lib/client')
-    , protocol = require('minecraft-protocol/lib/protocol')
+var Client = require('minecraft-protocol').Client
+    , protocol = require('minecraft-protocol').protocol
     , assert = require('assert')
     , states = protocol.states;
 
 module.exports = {
-  protocol: require('minecraft-protocol/lib/protocol'),
+  protocol: require('minecraft-protocol').protocol,
   createClient: createClient
 };
 
