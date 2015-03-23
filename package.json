@@ -10,9 +10,11 @@
   "keywords": [],
   "dependencies": {
     "hex": "^0.1.0",
+    "browser-hex": "^1.0.0",
     "minecraft-protocol": "0.13.0",
+    "mineflayer": "git://github.com/andrewrk/mineflayer.git#master",
     "optimist": "^0.6.1",
-    "websocket-stream": "^0.5.1",
+    "websocket-stream": "^1.4.0",
     "ws": "^0.4.31"
   },
   "scripts": {
