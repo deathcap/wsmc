@@ -10,7 +10,7 @@
   "keywords": [],
   "dependencies": {
     "hex": "^0.1.0",
-    "minecraft-protocol": "0.13.0",
+    "minecraft-protocol": "git://github.com/deathcap/node-minecraft.protocol#webclient",
     "optimist": "^0.6.1",
     "websocket-stream": "^0.5.1",
     "ws": "^0.4.31"
