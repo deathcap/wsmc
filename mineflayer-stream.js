@@ -25,7 +25,7 @@ var mc = require('./minecraft-protocol-stream')
     }
   , mcData = require('minecraft-data');
 
-var PACKET_DEBUG = false;
+var PACKET_DEBUG = true;
 
 if (PACKET_DEBUG) global.hex = hex;
 module.exports = {
