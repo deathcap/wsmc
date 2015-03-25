@@ -16,7 +16,7 @@ module.exports = {
 function createClient(options) {
   assert.ok(options, "options is required");
   var stream = options.stream;
-  assert.ok(options, "stream is required");
+  assert.ok(stream, "stream is required");
 
   assert.ok(options.username, "username is required");
   var keepAlive = options.keepAlive == null ? true : options.keepAlive;
