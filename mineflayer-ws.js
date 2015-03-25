@@ -24,7 +24,8 @@ var mc = require('./minecraft-protocol-ws')
       spawn_point: require('mineflayer/lib/plugins/spawn_point'),
       time: require('mineflayer/lib/plugins/time')
     }
-  , mcData = require('minecraft-data');
+  , mcData = require('minecraft-data')
+  , websocket_stream = require('websocket-stream');
 
 var PACKET_DEBUG = false;
 
@@ -55,11 +56,14 @@ module.exports = {
 function createBot(options) {
   options = options || {};
   options.username = options.username || 'Player';
-  options.protocol = options.protocol || 'ws';
-  options.host = options.host || 'localhost';
-  options.port = options.port || 24444;
-  options.path = options.path || 'server';
-  options.url = options.url || (options.protocol + '://' + options.host + ':' + options.port + '/' + options.path);
+
+  var protocol = options.protocol || 'ws';
+  var host = options.host || 'localhost';
+  var port = options.port || 24444;
+  var path = options.path || 'server';
+  var url = options.url || (protocol + '://' + host + ':' + port + '/' + path);
+
+  options.stream = websocket_stream(url);
 
   var bot = new Bot();
   bot.connect(options);

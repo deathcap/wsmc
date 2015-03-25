@@ -2,7 +2,6 @@
 
 //process.env.NODE_DEBUG = 'mc-proto'; // for node-minecraft-protocol console packet debugging TODO: envify
 
-var websocket_stream = require('websocket-stream');
 var Client = require('minecraft-protocol/lib/client')
     , protocol = require('minecraft-protocol/lib/protocol')
     , assert = require('assert')
@@ -13,14 +12,11 @@ module.exports = {
   createClient: createClient
 };
 
-// websocket version of index.js createClient()
+// generic stream version of index.js createClient()
 function createClient(options) {
   assert.ok(options, "options is required");
-  var port = options.port || 24444;
-  var host = options.host || 'localhost';
-  var protocol = options.protocol || 'ws';
-  var path = options.path || 'server';
-  var url = options.url || (options.protocol + '://' + options.host + ':' + options.port + '/' + options.path);
+  var stream = options.stream;
+  assert.ok(options, "stream is required");
 
   assert.ok(options.username, "username is required");
   var keepAlive = options.keepAlive == null ? true : options.keepAlive;
@@ -34,7 +30,7 @@ function createClient(options) {
   if (keepAlive) client.on([states.PLAY, 0x00], onKeepAlive);
 
   client.username = options.username;
-  client.connectWS(url);
+  client.setSocket(stream);
 
   return client;
 
@@ -64,9 +60,3 @@ function createClient(options) {
     });
   }
 }
-
-Client.prototype.connectWS = function(url) {
-  var ws = websocket_stream(url);
-  this.setSocket(ws);
-};
-
