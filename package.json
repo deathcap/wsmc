@@ -9,8 +9,9 @@
   },
   "keywords": [],
   "dependencies": {
-    "hex": "^0.1.0",
     "browser-hex": "^1.0.0",
+    "hex": "^0.1.0",
+    "minecraft-data": "0.0.1",
     "minecraft-protocol": "0.13.0",
     "mineflayer": "git://github.com/andrewrk/mineflayer.git#master",
     "optimist": "^0.6.1",

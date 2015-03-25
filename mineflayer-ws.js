@@ -23,7 +23,8 @@ var mc = require('./minecraft-protocol-ws')
       settings: require('mineflayer/lib/plugins/settings'),
       spawn_point: require('mineflayer/lib/plugins/spawn_point'),
       time: require('mineflayer/lib/plugins/time')
-    };
+    }
+  , mcData = require('minecraft-data');
 
 var PACKET_DEBUG = false;
 
@@ -43,12 +44,12 @@ module.exports = {
   Furnace: require('mineflayer/lib/furnace'),
   Dispenser: require('mineflayer/lib/dispenser'),
   EnchantmentTable: require('mineflayer/lib/enchantment_table'),
-  blocks: require('mineflayer/lib/enums/blocks'),
-  biomes: require('mineflayer/lib/enums/biomes'),
-  items: require('mineflayer/lib/enums/items'),
-  recipes: require('mineflayer/lib/enums/recipes'),
-  instruments: require('mineflayer/lib/enums/instruments'),
-  materials: require('mineflayer/lib/enums/materials'),
+  blocks: mcData.blocks,
+  biomes: mcData.biomes,
+  items: mcData.items,
+  recipes: mcData.recipes,
+  instruments: mcData.instruments,
+  materials: mcData.materials,
 };
 
 function createBot(options) {
