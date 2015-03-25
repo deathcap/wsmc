@@ -1,6 +1,6 @@
 'use strict';
 
-var mc = require('./minecraft-protocol-ws')
+var mc = require('./minecraft-protocol-stream')
   , hex = require('browser-hex')
   , EventEmitter = require('events').EventEmitter
   , util = require('util')
