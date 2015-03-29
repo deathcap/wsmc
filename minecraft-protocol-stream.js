@@ -2,13 +2,13 @@
 
 //process.env.NODE_DEBUG = 'mc-proto'; // for node-minecraft-protocol console packet debugging TODO: envify
 
-var Client = require('minecraft-protocol/lib/client')
-    , protocol = require('minecraft-protocol/lib/protocol')
-    , assert = require('assert')
-    , states = protocol.states;
+var Client = require('minecraft-protocol').Client;
+var protocol = require('minecraft-protocol').protocol;
+var assert = require('assert');
+var states = protocol.states;
 
 module.exports = {
-  protocol: require('minecraft-protocol/lib/protocol'),
+  protocol: protocol,
   createClient: createClient
 };
 
