@@ -20,6 +20,7 @@ var mc = require('./minecraft-protocol-stream')
       physics: require('mineflayer/lib/plugins/physics'),
       rain: require('mineflayer/lib/plugins/rain'),
       settings: require('mineflayer/lib/plugins/settings'),
+      sound: require('mineflayer/lib/plugins/sound'),
       spawn_point: require('mineflayer/lib/plugins/spawn_point'),
       time: require('mineflayer/lib/plugins/time')
     }
