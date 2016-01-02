@@ -1,9 +1,9 @@
 'use strict';
 
 var minecraft_protocol = require('minecraft-protocol');
-var readVarInt = minecraft_protocol.protocol.types.varint[0];
-var writeVarInt = minecraft_protocol.protocol.types.varint[1];
-var sizeOfVarInt = minecraft_protocol.protocol.types.varint[2];
+var readVarInt = minecraft_protocol.types.varint[0];
+var writeVarInt = minecraft_protocol.types.varint[1];
+var sizeOfVarInt = minecraft_protocol.types.varint[2];
 var hex = require('hex');
 var WebSocketServer = (require('ws')).Server;
 var websocket_stream = require('websocket-stream');
@@ -19,9 +19,9 @@ var PACKET_DEBUG = false;
 
 console.log('WS('+argv.wshost+':'+argv.wsport+') <--> MC('+argv.mchost+':'+argv.mcport+')');
 
-var states = minecraft_protocol.protocol.states;
-var ids = minecraft_protocol.protocol.packetIds.play.toClient;
-var sids = minecraft_protocol.protocol.packetIds.play.toServer;
+var states = minecraft_protocol.states;
+var ids = minecraft_protocol.packetIds.play.toClient;
+var sids = minecraft_protocol.packetIds.play.toServer;
 
 
 var userIndex = 1;

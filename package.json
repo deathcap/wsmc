@@ -12,8 +12,8 @@
     "browser-hex": "^1.0.0",
     "hex": "^0.1.0",
     "minecraft-data": "0.0.1",
-    "minecraft-protocol": "git://github.com/prismarinejs/node-minecraft-protocol.git#master",
-    "mineflayer": "git://github.com/andrewrk/mineflayer.git#master",
+    "minecraft-protocol": "~0.15.0",
+    "mineflayer": "^1.5.3",
     "optimist": "^0.6.1",
     "websocket-stream": "^1.4.0",
     "ws": "^0.4.31"
