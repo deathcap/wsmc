@@ -16,7 +16,8 @@
     "mineflayer": "^1.5.3",
     "optimist": "^0.6.1",
     "websocket-stream": "^1.4.0",
-    "ws": "^0.4.31"
+    "ws": "^0.4.31",
+    "protodef": "^0.2.5"
   },
   "scripts": {
     "start": "NODE_DEBUG=mc-proto node wsmc.js"

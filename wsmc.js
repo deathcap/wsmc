@@ -1,9 +1,10 @@
 'use strict';
 
 var minecraft_protocol = require('minecraft-protocol');
-var readVarInt = minecraft_protocol.types.varint[0];
-var writeVarInt = minecraft_protocol.types.varint[1];
-var sizeOfVarInt = minecraft_protocol.types.varint[2];
+var protodef = require('protodef');
+var readVarInt = protodef.types.varint.readVarInt;
+var writeVarInt = protodef.types.varint.writeVarInt;
+var sizeOfVarInt = protodef.types.varint.sizeOfVarInt;
 var hex = require('hex');
 var WebSocketServer = (require('ws')).Server;
 var websocket_stream = require('websocket-stream');
