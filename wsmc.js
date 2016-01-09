@@ -1,7 +1,8 @@
 'use strict';
 
+var mcversion = require('./mcversion.js');
 var minecraft_protocol = require('minecraft-protocol');
-var minecraft_data = require('minecraft-data')('1.8');
+var minecraft_data = require('minecraft-data')(mcversion);
 var protodef = require('protodef');
 var readVarInt = protodef.types.varint.readVarInt;
 var writeVarInt = protodef.types.varint.writeVarInt;
