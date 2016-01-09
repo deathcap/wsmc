@@ -1,6 +1,7 @@
 'use strict';
 
 var minecraft_protocol = require('minecraft-protocol');
+var minecraft_data = require('minecraft-data')('1.8');
 var protodef = require('protodef');
 var readVarInt = protodef.types.varint.readVarInt;
 var writeVarInt = protodef.types.varint.writeVarInt;
@@ -20,9 +21,8 @@ var PACKET_DEBUG = false;
 
 console.log('WS('+argv.wshost+':'+argv.wsport+') <--> MC('+argv.mchost+':'+argv.mcport+')');
 
-var states = minecraft_protocol.states;
-var ids = minecraft_protocol.packetIds.play.toClient;
-var sids = minecraft_protocol.packetIds.play.toServer;
+var ids = minecraft_data.protocol.states.play.toClient;
+var sids = minecraft_data.protocol.states.play.toServer;
 
 
 var userIndex = 1;
