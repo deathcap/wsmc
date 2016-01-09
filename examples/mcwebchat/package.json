@@ -12,10 +12,12 @@
     "tellraw2dom": "^0.0.4"
   },
   "devDependencies": {
+    "brfs": "^1.4.2",
+    "browserify": "^13.0.0",
     "wzrd": "^1.3.1"
   },
   "scripts": {
-    "start": "wzrd mcwebchat.js:bundle.js"
+    "start": "wzrd mcwebchat.js:bundle.js -- --global-transform brfs"
   },
   "license": "MIT"
 }
