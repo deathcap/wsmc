@@ -27,10 +27,10 @@ function createClient(options) {
 
   var client = new Client(false, version.majorVersion);
   client.on('connect', onConnect);
-  client.once([states.LOGIN, 0x02], onLogin);
+  client.once('success', onLogin);
   client.once('compress', onCompressionRequest);
   client.once('set_compression', onCompressionRequest);
-  if (keepAlive) client.on([states.PLAY, 0x00], onKeepAlive);
+  if (keepAlive) client.on('keep_alive', onKeepAlive);
 
   client.username = options.username;
   client.setSocket(stream);
