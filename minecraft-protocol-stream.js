@@ -21,8 +21,11 @@ function createClient(options) {
   assert.ok(options.username, "username is required");
   var keepAlive = options.keepAlive == null ? true : options.keepAlive;
 
+  var optVersion = options.version || require('./mcversion.js');
+  var mcData = require('minecraft-data')(optVersion);
+  var version = mcData.version;
 
-  var client = new Client(false);
+  var client = new Client(false, version.majorVersion);
   client.on('connect', onConnect);
   client.once([states.LOGIN, 0x02], onLogin);
   client.once('compress', onCompressionRequest);
