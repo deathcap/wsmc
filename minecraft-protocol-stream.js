@@ -5,9 +5,7 @@
 var Client = require('minecraft-protocol').Client;
 var protocol = require('minecraft-protocol');
 var assert = require('assert');
-var mcversion = require('./mcversion.js');
-var minecraft_data = require('minecraft-data')(mcversion);
-var states = minecraft_data.protocol.states;
+var states = protocol.states;
 
 module.exports = {
   protocol: protocol,
