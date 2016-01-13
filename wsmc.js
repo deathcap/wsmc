@@ -70,7 +70,8 @@ wss.on('connection', function(new_websocket_connection) {
   });
 
 
-  mc.on('raw', function(buffer, state) {
+  mc.on('raw', function(buffer, packet_state) {
+    var state = packet_state.state;
     if (PACKET_DEBUG) {
       console.log('mc received '+buffer.length+' bytes');
       hex(buffer);
@@ -78,6 +79,7 @@ wss.on('connection', function(new_websocket_connection) {
 
     if (state !== 'play' && state !== 'login') {
       console.log('Skipping state '+state+' packet: ',buffer);
+      console.log(state);
       return;
     }
 
