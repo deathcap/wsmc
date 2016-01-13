@@ -149,11 +149,26 @@ wss.on('connection', function(new_websocket_connection) {
     try {
       // strip length prefix then writeRaw(), let it add length, compression, etc.
       // TODO: remove vestigal MC length from WS protocol
-      var lengthFieldSize = readVarInt(raw, 0).size;
+      var lengthField = readVarInt(raw, 0);
+
+      if (!lengthField) {
+        console.log('Failed to parse varint length in raw buffer from ws:', raw);
+        mc.socket.end();
+        return;
+      }
+
+      var lengthFieldSize = lengthField.size;
 
       var uncompressedLengthFieldSize;
       if (compressionThreshold > -2) {
-        uncompressedLengthFieldSize = readVarInt(raw, lengthFieldSize).size; // the compressed packet format uncompressed data length
+        var uncompressedLengthField = readVarInt(raw, lengthFieldSize);
+        if (!uncompressedLengthField) {
+          console.log('Failed to parse varint uncompressed length in raw buffer from ws:', raw, 'offset', lengthFieldSize);
+          mc.socket.end();
+          return;
+        }
+
+        uncompressedLengthFieldSize = uncompressedLengthField.size; // the compressed packet format uncompressed data length
       } else {
         uncompressedLengthFieldSize = 0;
       }
