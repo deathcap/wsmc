@@ -15,9 +15,10 @@
     "minecraft-protocol": "~0.16.6",
     "mineflayer": "deathcap/mineflayer#update-browser",
     "optimist": "^0.6.1",
+    "protodef": "^0.2.5",
+    "through": "^2.3.8",
     "websocket-stream": "^1.4.0",
-    "ws": "^0.4.31",
-    "protodef": "^0.2.5"
+    "ws": "^0.4.31"
   },
   "scripts": {
     "start": "NODE_DEBUG=mc-proto node wsmc.js"

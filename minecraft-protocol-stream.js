@@ -2,6 +2,7 @@
 
 //process.env.NODE_DEBUG = 'mc-proto'; // for node-minecraft-protocol console packet debugging TODO: envify
 
+var EmptyTransformStream = require('through')();
 var Client = require('minecraft-protocol').Client;
 var protocol = require('minecraft-protocol');
 var assert = require('assert');
@@ -26,6 +27,15 @@ function createClient(options) {
   var version = mcData.version;
 
   var client = new Client(false, version.majorVersion);
+
+  // Options to opt-out of MC protocol packet framing (useful since WS is alreay framed)
+  if (options.noPacketFramer) {
+    client.framer = EmptyTransformStream;
+  }
+  if (options.noPacketSplitter) {
+    client.splitter = EmptyTransformStream;
+  }
+
   client.on('connect', onConnect);
   client.once('success', onLogin);
   client.once('compress', onCompressionRequest);
