@@ -80,13 +80,9 @@ public class MinecraftClientHandler extends ChannelHandlerAdapter {
             if (!this.minecraft.loggingIn) {
                 // otherwise proxy through to WS
 
-                ByteBuf out = Unpooled.buffer(original.readableBytes());
                 System.out.println("m = "+original+"="+HexDumper.hexByteBuf(original));
-                // prepend length
-                Varint21LengthFieldPrepender2 prepender = new Varint21LengthFieldPrepender2();
-                prepender.encode(null, original, out);
-                minecraft.websocket.writeAndFlush(new BinaryWebSocketFrame(out));
-                System.out.println("mc -> ws: "+HexDumper.hexByteBuf(out));
+                minecraft.websocket.writeAndFlush(new BinaryWebSocketFrame(original));
+                System.out.println("mc -> ws: "+HexDumper.hexByteBuf(original));
                 //minecraft.websocket.writeAndFlush(new BinaryWebSocketFrame(m.retain()));
             }
         } finally {
