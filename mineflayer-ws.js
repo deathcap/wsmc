@@ -12,6 +12,8 @@ function createBot(options) {
   var path = options.path || 'server';
   var url = options.url || (protocol + '://' + host + ':' + port + '/' + path);
 
+  options.noPacketFramer = true;
+  //options.noPacketSplitter = true;
   options.stream = websocket_stream(url);
 
   return mineflayer.createBot(options);
