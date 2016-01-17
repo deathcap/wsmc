@@ -146,44 +146,35 @@ wss.on('connection', function(new_websocket_connection) {
 
     //console.log "websocket received '+raw.length+' bytes: '+JSON.stringify(raw));
 
-    try {
-      // strip length prefix then writeRaw(), let it add length, compression, etc.
-      // TODO: remove vestigal MC length from WS protocol
-      var lengthField = readVarInt(raw, 0);
+    // strip length prefix then writeRaw(), let it add length, compression, etc.
+    // TODO: remove vestigal MC length from WS protocol
+    var lengthField = readVarInt(raw, 0);
 
-      if (!lengthField) {
-        console.log('Failed to parse varint length in raw buffer from ws:', raw);
-        mc.socket.end();
-        return;
-      }
-
-      var lengthFieldSize = lengthField.size;
-
-      var uncompressedLengthFieldSize;
-      if (compressionThreshold > -2) {
-        var uncompressedLengthField = readVarInt(raw, lengthFieldSize);
-        if (!uncompressedLengthField) {
-          console.log('Failed to parse varint uncompressed length in raw buffer from ws:', raw, 'offset', lengthFieldSize);
-          mc.socket.end();
-          return;
-        }
-
-        uncompressedLengthFieldSize = uncompressedLengthField.size; // the compressed packet format uncompressed data length
-      } else {
-        uncompressedLengthFieldSize = 0;
-      }
-
-      var rawWithoutLength = raw.slice(lengthFieldSize + uncompressedLengthFieldSize);
-
-      if (PACKET_DEBUG) {
-        console.log('forwarding ws -> mc: '+rawWithoutLength.length+' bytes');
-        hex(rawWithoutLength);
-      }
-      mc.writeRaw(rawWithoutLength);
-    } catch (e) {
-      console.log('error in mc.writeRaw:',e);
-      mc.socket.end();
+    if (!lengthField) {
+      throw new Error('Failed to parse varint length in raw buffer from ws:', raw);
     }
+
+    var lengthFieldSize = lengthField.size;
+
+    var uncompressedLengthFieldSize;
+    if (compressionThreshold > -2) {
+      var uncompressedLengthField = readVarInt(raw, lengthFieldSize);
+      if (!uncompressedLengthField) {
+        throw new Error('Failed to parse varint uncompressed length in raw buffer from ws:', raw, 'offset', lengthFieldSize);
+      }
+
+      uncompressedLengthFieldSize = uncompressedLengthField.size; // the compressed packet format uncompressed data length
+    } else {
+      uncompressedLengthFieldSize = 0;
+    }
+
+    var rawWithoutLength = raw.slice(lengthFieldSize + uncompressedLengthFieldSize);
+
+    if (PACKET_DEBUG) {
+      console.log('forwarding ws -> mc: '+rawWithoutLength.length+' bytes');
+      hex(rawWithoutLength);
+    }
+    mc.writeRaw(rawWithoutLength);
   });
 });
 
