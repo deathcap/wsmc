@@ -1,9 +1,12 @@
 'use strict';
 
+var mcversion = require('./mcversion.js');
 var minecraft_protocol = require('minecraft-protocol');
-var readVarInt = minecraft_protocol.protocol.types.varint[0];
-var writeVarInt = minecraft_protocol.protocol.types.varint[1];
-var sizeOfVarInt = minecraft_protocol.protocol.types.varint[2];
+var minecraft_data = require('minecraft-data')(mcversion);
+var protodef = require('protodef');
+var readVarInt = protodef.types.varint[0];
+var writeVarInt = protodef.types.varint[1];
+var sizeOfVarInt = protodef.types.varint[2];
 var hex = require('hex');
 var WebSocketServer = (require('ws')).Server;
 var websocket_stream = require('websocket-stream');
@@ -15,13 +18,12 @@ var argv = (require('optimist'))
   .default('prefix', 'webuser-')
   .argv;
 
-var PACKET_DEBUG = false;
+var PACKET_DEBUG = true;
 
 console.log('WS('+argv.wshost+':'+argv.wsport+') <--> MC('+argv.mchost+':'+argv.mcport+')');
 
-var states = minecraft_protocol.protocol.states;
-var ids = minecraft_protocol.protocol.packetIds.play.toClient;
-var sids = minecraft_protocol.protocol.packetIds.play.toServer;
+var ids = minecraft_data.protocol.states.play.toClient;
+var sids = minecraft_data.protocol.states.play.toServer;
 
 
 var userIndex = 1;
@@ -68,7 +70,8 @@ wss.on('connection', function(new_websocket_connection) {
   });
 
 
-  mc.on('raw', function(buffer, state) {
+  mc.on('raw', function(buffer, packet_state) {
+    var state = packet_state.state;
     if (PACKET_DEBUG) {
       console.log('mc received '+buffer.length+' bytes');
       hex(buffer);
@@ -76,6 +79,7 @@ wss.on('connection', function(new_websocket_connection) {
 
     if (state !== 'play' && state !== 'login') {
       console.log('Skipping state '+state+' packet: ',buffer);
+      console.log(state);
       return;
     }
 
@@ -142,29 +146,25 @@ wss.on('connection', function(new_websocket_connection) {
 
     //console.log "websocket received '+raw.length+' bytes: '+JSON.stringify(raw));
 
-    try {
-      // strip length prefix then writeRaw(), let it add length, compression, etc.
-      // TODO: remove vestigal MC length from WS protocol
-      var lengthFieldSize = readVarInt(raw, 0).size;
-
-      var uncompressedLengthFieldSize;
-      if (compressionThreshold > -2) {
-        uncompressedLengthFieldSize = readVarInt(raw, lengthFieldSize).size; // the compressed packet format uncompressed data length
-      } else {
-        uncompressedLengthFieldSize = 0;
+    var uncompressedLengthFieldSize;
+    if (compressionThreshold > -2) {
+      var uncompressedLengthField = readVarInt(raw, 0);
+      if (!uncompressedLengthField) {
+        throw new Error('Failed to parse varint uncompressed length in raw buffer from ws:', raw);
       }
 
-      var rawWithoutLength = raw.slice(lengthFieldSize + uncompressedLengthFieldSize);
-
-      if (PACKET_DEBUG) {
-        console.log('forwarding ws -> mc: '+rawWithoutLength.length+' bytes');
-        hex(rawWithoutLength);
-      }
-      mc.writeRaw(rawWithoutLength);
-    } catch (e) {
-      console.log('error in mc.writeRaw:',e);
-      mc.socket.end();
+      uncompressedLengthFieldSize = uncompressedLengthField.size; // the compressed packet format uncompressed data length
+    } else {
+      uncompressedLengthFieldSize = 0;
     }
+
+    var rawWithoutLength = raw.slice(uncompressedLengthFieldSize);
+
+    if (PACKET_DEBUG) {
+      console.log('forwarding ws -> mc: '+rawWithoutLength.length+' bytes');
+      hex(rawWithoutLength);
+    }
+    mc.writeRaw(rawWithoutLength);
   });
 });
 

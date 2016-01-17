@@ -11,10 +11,12 @@
   "dependencies": {
     "browser-hex": "^1.0.0",
     "hex": "^0.1.0",
-    "minecraft-data": "0.0.1",
-    "minecraft-protocol": "git://github.com/prismarinejs/node-minecraft-protocol.git#master",
-    "mineflayer": "git://github.com/andrewrk/mineflayer.git#master",
+    "minecraft-data": "~0.16.3",
+    "minecraft-protocol": "~0.16.6",
+    "mineflayer": "deathcap/mineflayer#update-browser",
     "optimist": "^0.6.1",
+    "protodef": "^0.2.5",
+    "through": "^2.3.8",
     "websocket-stream": "^1.4.0",
     "ws": "^0.4.31"
   },

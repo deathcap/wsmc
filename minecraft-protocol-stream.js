@@ -2,8 +2,9 @@
 
 //process.env.NODE_DEBUG = 'mc-proto'; // for node-minecraft-protocol console packet debugging TODO: envify
 
+var EmptyTransformStream = require('through')();
 var Client = require('minecraft-protocol').Client;
-var protocol = require('minecraft-protocol').protocol;
+var protocol = require('minecraft-protocol');
 var assert = require('assert');
 var states = protocol.states;
 
@@ -21,13 +22,25 @@ function createClient(options) {
   assert.ok(options.username, "username is required");
   var keepAlive = options.keepAlive == null ? true : options.keepAlive;
 
+  var optVersion = options.version || require('./mcversion.js');
+  var mcData = require('minecraft-data')(optVersion);
+  var version = mcData.version;
 
-  var client = new Client(false);
+  var client = new Client(false, version.majorVersion);
+
+  // Options to opt-out of MC protocol packet framing (useful since WS is alreay framed)
+  if (options.noPacketFramer) {
+    client.framer = EmptyTransformStream;
+  }
+  if (options.noPacketSplitter) {
+    client.splitter = EmptyTransformStream;
+  }
+
   client.on('connect', onConnect);
-  client.once([states.LOGIN, 0x02], onLogin);
+  client.once('success', onLogin);
   client.once('compress', onCompressionRequest);
   client.once('set_compression', onCompressionRequest);
-  if (keepAlive) client.on([states.PLAY, 0x00], onKeepAlive);
+  if (keepAlive) client.on('keep_alive', onKeepAlive);
 
   client.username = options.username;
   client.setSocket(stream);

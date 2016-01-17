@@ -38,18 +38,18 @@ if (PACKET_DEBUG) global.hex = hex;
 module.exports = {
   //vec3: require('vec3'), // not really needed
   createBot: createBot,
-  Block: require('mineflayer/lib/block'),
-  Location: require('mineflayer/lib/location'),
-  Biome: require('mineflayer/lib/biome'),
-  Entity: require('mineflayer/lib/entity'),
-  Painting: require('mineflayer/lib/painting'),
-  Item: require('mineflayer/lib/item'),
-  Recipe: require('mineflayer/lib/recipe'),
-  windows: require('mineflayer/lib/windows'),
-  Chest: require('mineflayer/lib/chest'),
-  Furnace: require('mineflayer/lib/furnace'),
-  Dispenser: require('mineflayer/lib/dispenser'),
-  EnchantmentTable: require('mineflayer/lib/enchantment_table'),
+  Block: require('mineflayer').Block,
+  Location: require('mineflayer').Location,
+  Biome: require('mineflayer').Biome,
+  Entity: require('mineflayer').Entity,
+  Painting: require('mineflayer').Painting,
+  Item: require('mineflayer').Item,
+  Recipe: require('mineflayer').Recipe,
+  windows: require('mineflayer').windows,
+  Chest: require('mineflayer').Chest,
+  Furnace: require('mineflayer').Furnace,
+  Dispenser: require('mineflayer').Dispenser,
+  EnchantmentTable: require('mineflayer').EnchantmentTable,
   blocks: mcData.blocks,
   biomes: mcData.biomes,
   items: mcData.items,
@@ -69,30 +69,30 @@ function createBot(options) {
 
 function Bot() {
   EventEmitter.call(this);
-  this.client = null;
+  this._client = null;
 }
 util.inherits(Bot, EventEmitter);
 
 Bot.prototype.connect = function(options) {
   var self = this;
-  self.client = mc.createClient(options);
-  self.username = self.client.username;
-  self.client.on('raw', function(raw) {
+  self._client = mc.createClient(options);
+  self.username = self._client.username;
+  self._client.on('raw', function(raw) {
     if (PACKET_DEBUG) {
       console.log('received ',raw.length+' raw bytes');
       console.log(hex(raw));
     }
   });
-  self.client.on('session', function() {
-    self.username = self.client.username;
+  self._client.on('session', function() {
+    self.username = self._client.username;
   });
-  self.client.on('connect', function() {
+  self._client.on('connect', function() {
     self.emit('connect');
   });
-  self.client.on('error', function(err) {
+  self._client.on('error', function(err) {
     self.emit('error', err);
   });
-  self.client.on('end', function() {
+  self._client.on('end', function() {
     self.emit('end');
   });
   for (var pluginName in plugins) {
