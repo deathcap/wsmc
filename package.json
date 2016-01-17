@@ -21,7 +21,8 @@
     "ws": "^0.4.31"
   },
   "scripts": {
-    "start": "NODE_DEBUG=mc-proto,wsmc node wsmc.js"
+    "start-debug": "NODE_DEBUG=mc-proto,wsmc node wsmc.js",
+    "start": "node wsmc.js"
   },
   "license": "MIT"
 }
