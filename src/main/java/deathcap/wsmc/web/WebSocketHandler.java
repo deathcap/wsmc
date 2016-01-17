@@ -110,9 +110,7 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<BinaryWebSocke
 
         if (verbose) logger.info("ws received "+buf.readableBytes()+" bytes: " + HexDumper.hexByteBuf(buf));
 
-        // strip length header since Varint21LengthFieldPrepender re-adds it TODO: refactor
-        int length = DefinedPacket.readVarInt(buf);
-        byte bytes[] = new byte[length];
+        byte bytes[] = new byte[buf.readableBytes()];
         buf.readBytes(bytes);
 
         // read packet id type for filtering
