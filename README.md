@@ -16,8 +16,8 @@ Install [Maven](https://maven.apache.org/) and build with:
 Load the plugin with with software implementing the [Bukkit API](https://github.com/Bukkit/Bukkit),
 simply copy the jar into the `plugins` directory. Tested with:
 
-* [Glowstone](https://github.com/SpaceManiac/Glowstone) - an open source server for Minecraft and Bukkit
-* [Spigot](https://github.com/SpigotMC/Spigot) - a modification to Minecraft implementing Bukkit
+* [Glowstone++](https://glowstoneplusplus.github.io) - an open source server for Minecraft and Bukkit
+* [Spigot](https://www.spigotmc.org) - a modification to Minecraft implementing Bukkit
 * [Junket](https://github.com/deathcap/Junket) - partial implementation of Bukkit (no server)
 
 Configure in `plugins/WSMC/plugin.yml`, default:
