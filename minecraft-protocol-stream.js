@@ -7,43 +7,17 @@ var Client = require('minecraft-protocol').Client;
 var protocol = require('minecraft-protocol');
 var assert = require('assert');
 var states = protocol.states;
+var createClientStream = require('minecraft-protocol').createClientStream;
 
 module.exports = {
   protocol: protocol,
   createClient: createClient
 };
 
-// generic stream version of index.js createClient()
 function createClient(options) {
-  assert.ok(options, "options is required");
-  var stream = options.stream;
-  assert.ok(stream, "stream is required");
-
-  assert.ok(options.username, "username is required");
-  var keepAlive = options.keepAlive == null ? true : options.keepAlive;
-
-  var optVersion = options.version || require('./mcversion.js');
-  var mcData = require('minecraft-data')(optVersion);
-  var version = mcData.version;
-
-  var client = new Client(false, version.majorVersion);
-
-  // Options to opt-out of MC protocol packet framing (useful since WS is alreay framed)
-  if (options.noPacketFramer) {
-    client.framer = EmptyTransformStream;
-  }
-  if (options.noPacketSplitter) {
-    client.splitter = EmptyTransformStream;
-  }
+  var client = createClientStream(options);
 
   client.on('connect', onConnect);
-  client.once('success', onLogin);
-  client.once('compress', onCompressionRequest);
-  client.once('set_compression', onCompressionRequest);
-  if (keepAlive) client.on('keep_alive', onKeepAlive);
-
-  client.username = options.username;
-  client.setSocket(stream);
 
   return client;
 
@@ -52,24 +26,5 @@ function createClient(options) {
     // wsmc uses slightly abbreviated protocol; skip the HANDSHAKING phase, go
     // directly to LOGIN, to receive login success and set compression packets
     client.state = states.LOGIN;
-  }
-
-  function onLogin(packet) {
-    console.log('onLogin',packet);
-    // successful login, transition to play phase
-    client.state = states.PLAY;
-    client.uuid = packet.uuid;
-    client.username = packet.username;
-  }
-
-  function onCompressionRequest(packet) {
-    console.log('onCompressionRequest', packet);
-    client.compressionThreshold = packet.threshold;
-  }
-
-  function onKeepAlive(packet) {
-    client.write('keep_alive', {
-      keepAliveId: packet.keepAliveId
-    });
   }
 }
