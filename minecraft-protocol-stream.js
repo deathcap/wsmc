@@ -15,7 +15,11 @@ module.exports = {
 };
 
 function createClient(options) {
+  assert.ok(options, "options is required");
+  assert.ok(options.stream, "stream is required");
+
   var client = createClientStream(options);
+  client.setSocket(options.stream);
 
   client.on('connect', onConnect);
 
