@@ -361,7 +361,7 @@ var objectKeys = Object.keys || function (obj) {
   return keys;
 };
 
-},{"util/":235}],3:[function(require,module,exports){
+},{"util/":236}],3:[function(require,module,exports){
 arguments[4][1][0].apply(exports,arguments)
 },{"dup":1}],4:[function(require,module,exports){
 'use strict';
@@ -6009,7 +6009,7 @@ Zlib.prototype._error = function(status) {
 exports.Zlib = Zlib;
 
 }).call(this,require('_process'),require("buffer").Buffer)
-},{"_process":218,"buffer":17,"pako/lib/zlib/constants":6,"pako/lib/zlib/deflate.js":8,"pako/lib/zlib/inflate.js":10,"pako/lib/zlib/messages":12,"pako/lib/zlib/zstream":14}],16:[function(require,module,exports){
+},{"_process":219,"buffer":17,"pako/lib/zlib/constants":6,"pako/lib/zlib/deflate.js":8,"pako/lib/zlib/inflate.js":10,"pako/lib/zlib/messages":12,"pako/lib/zlib/zstream":14}],16:[function(require,module,exports){
 (function (process,Buffer){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -6623,7 +6623,7 @@ util.inherits(InflateRaw, Zlib);
 util.inherits(Unzip, Zlib);
 
 }).call(this,require('_process'),require("buffer").Buffer)
-},{"./binding":15,"_process":218,"_stream_transform":230,"assert":2,"buffer":17,"util":235}],17:[function(require,module,exports){
+},{"./binding":15,"_process":219,"_stream_transform":231,"assert":2,"buffer":17,"util":236}],17:[function(require,module,exports){
 (function (global){
 /*!
  * The buffer module from node.js, for the browser.
@@ -9581,7 +9581,7 @@ CipherBase.prototype._toString = function (value, enc, final) {
 }
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":17,"inherits":214,"stream":232,"string_decoder":233}],39:[function(require,module,exports){
+},{"buffer":17,"inherits":214,"stream":233,"string_decoder":234}],39:[function(require,module,exports){
 (function (Buffer){
 var aes = require('./aes')
 var Transform = require('cipher-base')
@@ -9685,7 +9685,7 @@ exports['des-ede'] = {
 
 },{}],42:[function(require,module,exports){
 arguments[4][38][0].apply(exports,arguments)
-},{"buffer":17,"dup":38,"inherits":214,"stream":232,"string_decoder":233}],43:[function(require,module,exports){
+},{"buffer":17,"dup":38,"inherits":214,"stream":233,"string_decoder":234}],43:[function(require,module,exports){
 'use strict';
 
 exports.utils = require('./des/utils');
@@ -10632,7 +10632,7 @@ module.exports = {
 }
 
 }).call(this,require("buffer").Buffer)
-},{"./algos":51,"./sign":117,"./verify":118,"buffer":17,"create-hash":145,"inherits":214,"stream":232}],53:[function(require,module,exports){
+},{"./algos":51,"./sign":117,"./verify":118,"buffer":17,"create-hash":145,"inherits":214,"stream":233}],53:[function(require,module,exports){
 'use strict'
 exports['1.3.132.0.10'] = 'secp256k1'
 
@@ -20137,7 +20137,7 @@ Entity.prototype.encode = function encode(data, enc, /* internal */ reporter) {
   return this._getEncoder(enc).encode(data, reporter);
 };
 
-},{"../asn1":84,"inherits":214,"vm":236}],86:[function(require,module,exports){
+},{"../asn1":84,"inherits":214,"vm":237}],86:[function(require,module,exports){
 var inherits = require('inherits');
 var Reporter = require('../base').Reporter;
 var Buffer = require('buffer').Buffer;
@@ -21791,7 +21791,7 @@ arguments[4][36][0].apply(exports,arguments)
 arguments[4][37][0].apply(exports,arguments)
 },{"buffer":17,"dup":37}],114:[function(require,module,exports){
 arguments[4][38][0].apply(exports,arguments)
-},{"buffer":17,"dup":38,"inherits":214,"stream":232,"string_decoder":233}],115:[function(require,module,exports){
+},{"buffer":17,"dup":38,"inherits":214,"stream":233,"string_decoder":234}],115:[function(require,module,exports){
 arguments[4][39][0].apply(exports,arguments)
 },{"./aes":99,"buffer":17,"cipher-base":114,"dup":39,"inherits":214}],116:[function(require,module,exports){
 arguments[4][50][0].apply(exports,arguments)
@@ -22519,7 +22519,7 @@ module.exports = function md5(buf) {
 };
 },{"./helpers":146}],148:[function(require,module,exports){
 arguments[4][38][0].apply(exports,arguments)
-},{"buffer":17,"dup":38,"inherits":214,"stream":232,"string_decoder":233}],149:[function(require,module,exports){
+},{"buffer":17,"dup":38,"inherits":214,"stream":233,"string_decoder":234}],149:[function(require,module,exports){
 (function (Buffer){
 /*
 CryptoJS v3.1.2
@@ -23630,7 +23630,7 @@ module.exports = function createHmac(alg, key) {
 }
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":17,"create-hash/browser":145,"inherits":214,"stream":232}],159:[function(require,module,exports){
+},{"buffer":17,"create-hash/browser":145,"inherits":214,"stream":233}],159:[function(require,module,exports){
 (function (Buffer){
 var generatePrime = require('./lib/generatePrime');
 var primes = require('./lib/primes');
@@ -24233,7 +24233,7 @@ arguments[4][83][0].apply(exports,arguments)
 arguments[4][84][0].apply(exports,arguments)
 },{"./asn1/api":176,"./asn1/base":178,"./asn1/constants":182,"./asn1/decoders":184,"./asn1/encoders":187,"bn.js":169,"dup":84}],176:[function(require,module,exports){
 arguments[4][85][0].apply(exports,arguments)
-},{"../asn1":175,"dup":85,"inherits":214,"vm":236}],177:[function(require,module,exports){
+},{"../asn1":175,"dup":85,"inherits":214,"vm":237}],177:[function(require,module,exports){
 arguments[4][86][0].apply(exports,arguments)
 },{"../base":178,"buffer":17,"dup":86,"inherits":214}],178:[function(require,module,exports){
 arguments[4][87][0].apply(exports,arguments)
@@ -24291,7 +24291,7 @@ arguments[4][36][0].apply(exports,arguments)
 arguments[4][37][0].apply(exports,arguments)
 },{"buffer":17,"dup":37}],205:[function(require,module,exports){
 arguments[4][38][0].apply(exports,arguments)
-},{"buffer":17,"dup":38,"inherits":214,"stream":232,"string_decoder":233}],206:[function(require,module,exports){
+},{"buffer":17,"dup":38,"inherits":214,"stream":233,"string_decoder":234}],206:[function(require,module,exports){
 arguments[4][39][0].apply(exports,arguments)
 },{"./aes":190,"buffer":17,"cipher-base":205,"dup":39,"inherits":214}],207:[function(require,module,exports){
 arguments[4][50][0].apply(exports,arguments)
@@ -24558,7 +24558,7 @@ function oldBrowser() {
 }
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer)
-},{"_process":218,"buffer":17}],213:[function(require,module,exports){
+},{"_process":219,"buffer":17}],213:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -24908,6 +24908,53 @@ module.exports = Array.isArray || function (arr) {
 };
 
 },{}],217:[function(require,module,exports){
+exports.endianness = function () { return 'LE' };
+
+exports.hostname = function () {
+    if (typeof location !== 'undefined') {
+        return location.hostname
+    }
+    else return '';
+};
+
+exports.loadavg = function () { return [] };
+
+exports.uptime = function () { return 0 };
+
+exports.freemem = function () {
+    return Number.MAX_VALUE;
+};
+
+exports.totalmem = function () {
+    return Number.MAX_VALUE;
+};
+
+exports.cpus = function () { return [] };
+
+exports.type = function () { return 'Browser' };
+
+exports.release = function () {
+    if (typeof navigator !== 'undefined') {
+        return navigator.appVersion;
+    }
+    return '';
+};
+
+exports.networkInterfaces
+= exports.getNetworkInterfaces
+= function () { return {} };
+
+exports.arch = function () { return 'javascript' };
+
+exports.platform = function () { return 'browser' };
+
+exports.tmpdir = exports.tmpDir = function () {
+    return '/tmp';
+};
+
+exports.EOL = '\n';
+
+},{}],218:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -25135,7 +25182,7 @@ var substr = 'ab'.substr(-1) === 'b'
 ;
 
 }).call(this,require('_process'))
-},{"_process":218}],218:[function(require,module,exports){
+},{"_process":219}],219:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -25228,10 +25275,10 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],219:[function(require,module,exports){
+},{}],220:[function(require,module,exports){
 module.exports = require("./lib/_stream_duplex.js")
 
-},{"./lib/_stream_duplex.js":220}],220:[function(require,module,exports){
+},{"./lib/_stream_duplex.js":221}],221:[function(require,module,exports){
 // a duplex stream is just a stream that is both readable and writable.
 // Since JS doesn't have multiple prototypal inheritance, this class
 // prototypally inherits from Readable, and then parasitically from
@@ -25315,7 +25362,7 @@ function forEach (xs, f) {
   }
 }
 
-},{"./_stream_readable":222,"./_stream_writable":224,"core-util-is":225,"inherits":214,"process-nextick-args":226}],221:[function(require,module,exports){
+},{"./_stream_readable":223,"./_stream_writable":225,"core-util-is":226,"inherits":214,"process-nextick-args":227}],222:[function(require,module,exports){
 // a passthrough stream.
 // basically just the most minimal sort of Transform stream.
 // Every written chunk gets output as-is.
@@ -25344,7 +25391,7 @@ PassThrough.prototype._transform = function(chunk, encoding, cb) {
   cb(null, chunk);
 };
 
-},{"./_stream_transform":223,"core-util-is":225,"inherits":214}],222:[function(require,module,exports){
+},{"./_stream_transform":224,"core-util-is":226,"inherits":214}],223:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -26323,7 +26370,7 @@ function indexOf (xs, x) {
 }
 
 }).call(this,require('_process'))
-},{"./_stream_duplex":220,"_process":218,"buffer":17,"core-util-is":225,"events":213,"inherits":214,"isarray":216,"process-nextick-args":226,"string_decoder/":233,"util":3}],223:[function(require,module,exports){
+},{"./_stream_duplex":221,"_process":219,"buffer":17,"core-util-is":226,"events":213,"inherits":214,"isarray":216,"process-nextick-args":227,"string_decoder/":234,"util":3}],224:[function(require,module,exports){
 // a transform stream is a readable/writable stream where you do
 // something with the data.  Sometimes it's called a "filter",
 // but that's not a great name for it, since that implies a thing where
@@ -26522,7 +26569,7 @@ function done(stream, er) {
   return stream.push(null);
 }
 
-},{"./_stream_duplex":220,"core-util-is":225,"inherits":214}],224:[function(require,module,exports){
+},{"./_stream_duplex":221,"core-util-is":226,"inherits":214}],225:[function(require,module,exports){
 // A bit simpler than readable streams.
 // Implement an async ._write(chunk, encoding, cb), and it'll handle all
 // the drain event emission and buffering.
@@ -27053,7 +27100,7 @@ function endWritable(stream, state, cb) {
   state.ended = true;
 }
 
-},{"./_stream_duplex":220,"buffer":17,"core-util-is":225,"events":213,"inherits":214,"process-nextick-args":226,"util-deprecate":227}],225:[function(require,module,exports){
+},{"./_stream_duplex":221,"buffer":17,"core-util-is":226,"events":213,"inherits":214,"process-nextick-args":227,"util-deprecate":228}],226:[function(require,module,exports){
 (function (Buffer){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -27164,7 +27211,7 @@ function objectToString(o) {
 }
 
 }).call(this,{"isBuffer":require("../../../../insert-module-globals/node_modules/is-buffer/index.js")})
-},{"../../../../insert-module-globals/node_modules/is-buffer/index.js":215}],226:[function(require,module,exports){
+},{"../../../../insert-module-globals/node_modules/is-buffer/index.js":215}],227:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -27188,7 +27235,7 @@ function nextTick(fn) {
 }
 
 }).call(this,require('_process'))
-},{"_process":218}],227:[function(require,module,exports){
+},{"_process":219}],228:[function(require,module,exports){
 (function (global){
 
 /**
@@ -27259,10 +27306,10 @@ function config (name) {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],228:[function(require,module,exports){
+},{}],229:[function(require,module,exports){
 module.exports = require("./lib/_stream_passthrough.js")
 
-},{"./lib/_stream_passthrough.js":221}],229:[function(require,module,exports){
+},{"./lib/_stream_passthrough.js":222}],230:[function(require,module,exports){
 var Stream = (function (){
   try {
     return require('st' + 'ream'); // hack to fix a circular dependency issue when used with browserify
@@ -27276,13 +27323,13 @@ exports.Duplex = require('./lib/_stream_duplex.js');
 exports.Transform = require('./lib/_stream_transform.js');
 exports.PassThrough = require('./lib/_stream_passthrough.js');
 
-},{"./lib/_stream_duplex.js":220,"./lib/_stream_passthrough.js":221,"./lib/_stream_readable.js":222,"./lib/_stream_transform.js":223,"./lib/_stream_writable.js":224}],230:[function(require,module,exports){
+},{"./lib/_stream_duplex.js":221,"./lib/_stream_passthrough.js":222,"./lib/_stream_readable.js":223,"./lib/_stream_transform.js":224,"./lib/_stream_writable.js":225}],231:[function(require,module,exports){
 module.exports = require("./lib/_stream_transform.js")
 
-},{"./lib/_stream_transform.js":223}],231:[function(require,module,exports){
+},{"./lib/_stream_transform.js":224}],232:[function(require,module,exports){
 module.exports = require("./lib/_stream_writable.js")
 
-},{"./lib/_stream_writable.js":224}],232:[function(require,module,exports){
+},{"./lib/_stream_writable.js":225}],233:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -27411,7 +27458,7 @@ Stream.prototype.pipe = function(dest, options) {
   return dest;
 };
 
-},{"events":213,"inherits":214,"readable-stream/duplex.js":219,"readable-stream/passthrough.js":228,"readable-stream/readable.js":229,"readable-stream/transform.js":230,"readable-stream/writable.js":231}],233:[function(require,module,exports){
+},{"events":213,"inherits":214,"readable-stream/duplex.js":220,"readable-stream/passthrough.js":229,"readable-stream/readable.js":230,"readable-stream/transform.js":231,"readable-stream/writable.js":232}],234:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -27634,14 +27681,14 @@ function base64DetectIncompleteChar(buffer) {
   this.charLength = this.charReceived ? 3 : 0;
 }
 
-},{"buffer":17}],234:[function(require,module,exports){
+},{"buffer":17}],235:[function(require,module,exports){
 module.exports = function isBuffer(arg) {
   return arg && typeof arg === 'object'
     && typeof arg.copy === 'function'
     && typeof arg.fill === 'function'
     && typeof arg.readUInt8 === 'function';
 }
-},{}],235:[function(require,module,exports){
+},{}],236:[function(require,module,exports){
 (function (process,global){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -28231,7 +28278,7 @@ function hasOwnProperty(obj, prop) {
 }
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./support/isBuffer":234,"_process":218,"inherits":214}],236:[function(require,module,exports){
+},{"./support/isBuffer":235,"_process":219,"inherits":214}],237:[function(require,module,exports){
 var indexOf = require('indexof');
 
 var Object_keys = function (obj) {
@@ -28371,7 +28418,7 @@ exports.createContext = Script.createContext = function (context) {
     return copy;
 };
 
-},{"indexof":237}],237:[function(require,module,exports){
+},{"indexof":238}],238:[function(require,module,exports){
 
 var indexOf = [].indexOf;
 
@@ -28382,7 +28429,7 @@ module.exports = function(arr, obj){
   }
   return -1;
 };
-},{}],238:[function(require,module,exports){
+},{}],239:[function(require,module,exports){
 var mc = require('minecraft-protocol');
 var EventEmitter = require('events').EventEmitter;
 var util = require('util');
@@ -28393,6 +28440,7 @@ var plugins = {
   blocks: require('./lib/plugins/blocks'),
   chat: require('./lib/plugins/chat'),
   chest: require('./lib/plugins/chest'),
+  command_block: require('./lib/plugins/command_block'),
   craft: require('./lib/plugins/craft'),
   creative: require('./lib/plugins/creative'),
   digging: require('./lib/plugins/digging'),
@@ -28484,7 +28532,7 @@ Bot.prototype.end = function() {
   this._client.end();
 };
 
-},{"./lib/chest":240,"./lib/dispenser":242,"./lib/enchantment_table":243,"./lib/furnace":244,"./lib/location":245,"./lib/minecraft-data":247,"./lib/painting":248,"./lib/plugins/bed":249,"./lib/plugins/block_actions":250,"./lib/plugins/blocks":251,"./lib/plugins/chat":252,"./lib/plugins/chest":253,"./lib/plugins/craft":254,"./lib/plugins/creative":255,"./lib/plugins/digging":256,"./lib/plugins/dispenser":257,"./lib/plugins/enchantment_table":258,"./lib/plugins/entities":259,"./lib/plugins/experience":260,"./lib/plugins/furnace":261,"./lib/plugins/game":262,"./lib/plugins/health":263,"./lib/plugins/inventory":264,"./lib/plugins/kick":265,"./lib/plugins/physics":266,"./lib/plugins/rain":267,"./lib/plugins/scoreboard":268,"./lib/plugins/settings":269,"./lib/plugins/simple_inventory":270,"./lib/plugins/sound":271,"./lib/plugins/spawn_point":272,"./lib/plugins/time":273,"./lib/scoreboard":274,"./lib/version":275,"events":213,"minecraft-protocol":303,"path":217,"prismarine-biome":448,"prismarine-block":449,"prismarine-entity":450,"prismarine-item":451,"prismarine-recipe":452,"prismarine-windows":455,"util":235,"vec3":458}],239:[function(require,module,exports){
+},{"./lib/chest":241,"./lib/dispenser":243,"./lib/enchantment_table":244,"./lib/furnace":245,"./lib/location":246,"./lib/minecraft-data":248,"./lib/painting":249,"./lib/plugins/bed":250,"./lib/plugins/block_actions":251,"./lib/plugins/blocks":252,"./lib/plugins/chat":253,"./lib/plugins/chest":254,"./lib/plugins/command_block":255,"./lib/plugins/craft":256,"./lib/plugins/creative":257,"./lib/plugins/digging":258,"./lib/plugins/dispenser":259,"./lib/plugins/enchantment_table":260,"./lib/plugins/entities":261,"./lib/plugins/experience":262,"./lib/plugins/furnace":263,"./lib/plugins/game":264,"./lib/plugins/health":265,"./lib/plugins/inventory":266,"./lib/plugins/kick":267,"./lib/plugins/physics":268,"./lib/plugins/rain":269,"./lib/plugins/scoreboard":270,"./lib/plugins/settings":271,"./lib/plugins/simple_inventory":272,"./lib/plugins/sound":273,"./lib/plugins/spawn_point":274,"./lib/plugins/time":275,"./lib/scoreboard":276,"./lib/version":277,"events":213,"minecraft-protocol":305,"path":218,"prismarine-biome":450,"prismarine-block":451,"prismarine-entity":452,"prismarine-item":453,"prismarine-recipe":454,"prismarine-windows":457,"util":236,"vec3":525}],240:[function(require,module,exports){
 var mojangson = require('mojangson');
 
 module.exports = ChatMessage;
@@ -28681,7 +28729,7 @@ if(require.main === module) {
   testParseShowItemHoverEventValue();
 }
 
-},{"mojangson":447}],240:[function(require,module,exports){
+},{"mojangson":449}],241:[function(require,module,exports){
 var EventEmitter = require('events').EventEmitter;
 var util = require('util');
 var assert = require('assert');
@@ -28720,7 +28768,7 @@ Chest.prototype.items = function() {
   return this.window.chestItems();
 };
 
-},{"assert":2,"events":213,"util":235}],241:[function(require,module,exports){
+},{"assert":2,"events":213,"util":236}],242:[function(require,module,exports){
 var math = require('./math');
 var euclideanMod = math.euclideanMod;
 var PI = Math.PI;
@@ -28771,7 +28819,7 @@ function fromNotchianPitch(pitch) {
   return euclideanMod(toRadians(-pitch) + PI, PI_2) - PI;
 }
 
-},{"./math":246}],242:[function(require,module,exports){
+},{"./math":247}],243:[function(require,module,exports){
 var EventEmitter = require('events').EventEmitter;
 var util = require('util');
 var assert = require('assert');
@@ -28810,7 +28858,7 @@ Dispenser.prototype.items = function() {
   return this.window.dispenserItems();
 };
 
-},{"assert":2,"events":213,"util":235}],243:[function(require,module,exports){
+},{"assert":2,"events":213,"util":236}],244:[function(require,module,exports){
 var EventEmitter = require('events').EventEmitter;
 var util = require('util');
 var assert = require('assert');
@@ -28852,7 +28900,7 @@ EnchantmentTable.prototype.putLapis = function() {
   assert.ok(false, "override");
 };
 
-},{"assert":2,"events":213,"util":235}],244:[function(require,module,exports){
+},{"assert":2,"events":213,"util":236}],245:[function(require,module,exports){
 var EventEmitter = require('events').EventEmitter;
 var util = require('util');
 var assert = require('assert');
@@ -28903,7 +28951,7 @@ Furnace.prototype.outputItem = function() {
   return this.window.slots[2];
 };
 
-},{"assert":2,"events":213,"util":235}],245:[function(require,module,exports){
+},{"assert":2,"events":213,"util":236}],246:[function(require,module,exports){
 var Vec3 = require('vec3').Vec3;
 var CHUNK_SIZE = new Vec3(16, 16, 16);
 
@@ -28921,7 +28969,7 @@ function Location(absoluteVector) {
   this.chunkYIndex = Math.floor(absoluteVector.y / 16);
 }
 
-},{"vec3":458}],246:[function(require,module,exports){
+},{"vec3":525}],247:[function(require,module,exports){
 exports.clamp = function clamp(min, x, max) {
   return x < min ? min : x > max ? max : x;
 };
@@ -28935,13 +28983,13 @@ exports.euclideanMod = function euclideanMod(numerator, denominator) {
   return result < 0 ? result + denominator : result;
 };
 
-},{}],247:[function(require,module,exports){
+},{}],248:[function(require,module,exports){
 // provide access to a fixed minecraft data version
 
 var version=require("./version");
 var mcData = require('minecraft-data')(version);
 module.exports = mcData;
-},{"./version":275,"minecraft-data":277}],248:[function(require,module,exports){
+},{"./version":277,"minecraft-data":279}],249:[function(require,module,exports){
 var Vec3 = require('vec3').Vec3;
 
 module.exports = Painting;
@@ -28953,7 +29001,7 @@ function Painting(id, pos, name, direction) {
   this.direction = direction;
 }
 
-},{"vec3":458}],249:[function(require,module,exports){
+},{"vec3":525}],250:[function(require,module,exports){
 var assert = require('assert');
 
 module.exports = inject;
@@ -29012,7 +29060,7 @@ function inject(bot) {
   bot.sleep = sleep;
 }
 
-},{"assert":2}],250:[function(require,module,exports){
+},{"assert":2}],251:[function(require,module,exports){
 var instruments = require('../minecraft-data').instruments;
 var Vec3 = require('vec3').Vec3;
 
@@ -29047,7 +29095,7 @@ function inject(bot) {
   });
 }
 
-},{"../minecraft-data":247,"vec3":458}],251:[function(require,module,exports){
+},{"../minecraft-data":248,"vec3":525}],252:[function(require,module,exports){
 (function (Buffer){
 var vec3 = require('vec3');
 var Vec3 = vec3.Vec3;
@@ -29406,7 +29454,7 @@ function Column() {
 
 
 }).call(this,require("buffer").Buffer)
-},{"../chat_message":239,"../location":245,"../painting":248,"../version":275,"assert":2,"buffer":17,"prismarine-block":449,"vec3":458}],252:[function(require,module,exports){
+},{"../chat_message":240,"../location":246,"../painting":249,"../version":277,"assert":2,"buffer":17,"prismarine-block":451,"vec3":525}],253:[function(require,module,exports){
 var assert = require('assert');
 var quoteMeta = require('quotemeta');
 var ChatMessage = require('../chat_message');
@@ -29551,7 +29599,7 @@ function inject(bot) {
   };
 }
 
-},{"../chat_message":239,"assert":2,"quotemeta":457}],253:[function(require,module,exports){
+},{"../chat_message":240,"assert":2,"quotemeta":524}],254:[function(require,module,exports){
 var Chest = require('../chest');
 var assert = require('assert');
 var version=require("../version");
@@ -29598,7 +29646,110 @@ function inject(bot) {
 
   bot.openChest = openChest;
 }
-},{"../chest":240,"../version":275,"assert":2,"prismarine-windows":455}],254:[function(require,module,exports){
+},{"../chest":241,"../version":277,"assert":2,"prismarine-windows":457}],255:[function(require,module,exports){
+var ProtoDef = require("protodef").ProtoDef;
+
+module.exports = inject;
+
+function inject(bot) {
+
+  function setCommandBlock(pos, command, track_output) {
+
+    var proto = new ProtoDef();
+
+    proto.addType("string", ["pstring", {
+      countType: "varint"
+    }]);
+
+    proto.addType('MC|AdvCdm', [
+      "container",
+      [
+        {
+          "name": "mode",
+          "type": "byte"
+        },
+        {
+          "name": "x",
+          "type": [
+            "switch",
+            {
+              "compareTo": "mode",
+              "fields": {
+                "0": "int"
+              },
+              "default": "void"
+            }
+          ]
+        },
+        {
+          "name": "y",
+          "type": [
+            "switch",
+            {
+              "compareTo": "mode",
+              "fields": {
+                "0": "int"
+              },
+              "default": "void"
+            }
+          ]
+        },
+        {
+          "name": "z",
+          "type": [
+            "switch",
+            {
+              "compareTo": "mode",
+              "fields": {
+                "0": "int"
+              },
+              "default": "void"
+            }
+          ]
+        },
+        {
+          "name": "eid",
+          "type": [
+            "switch",
+            {
+              "compareTo": "mode",
+              "fields": {
+                "1": "int"
+              },
+              "default": "void"
+            }
+          ]
+        },
+        {
+          "name": "command",
+          "type": "string"
+        },
+        {
+          "name": "track_output",
+          "type": "bool"
+        }
+      ]
+    ]);
+
+
+    var buffer = proto.createPacketBuffer('MC|AdvCdm', {
+      mode: 0,
+      x: pos.x,
+      y: pos.y,
+      z: pos.z,
+      command: command,
+      track_output: track_output
+    });
+    bot._client.write('custom_payload', {
+      'channel': 'MC|AdvCdm',
+      'data': buffer
+    });
+  }
+
+  bot.setCommandBlock=setCommandBlock;
+}
+
+},{"protodef":467}],256:[function(require,module,exports){
 var version=require("../version");
 var Item = require("prismarine-item")(version);
 var Recipe = require('prismarine-recipe')(version).Recipe;
@@ -29888,7 +30039,7 @@ function inject(bot) {
 function noop(err) {
   if(err) throw err;
 }
-},{"../version":275,"assert":2,"prismarine-item":451,"prismarine-recipe":452,"prismarine-windows":455}],255:[function(require,module,exports){
+},{"../version":277,"assert":2,"prismarine-item":453,"prismarine-recipe":454,"prismarine-windows":457}],257:[function(require,module,exports){
 var assert = require("assert");
 var Vec3 = require('vec3').Vec3;
 var version=require("../version");
@@ -29956,7 +30107,7 @@ function vec_magnitude(vec) {
   return Math.sqrt(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z);
 }
 
-},{"../version":275,"assert":2,"prismarine-item":451,"vec3":458}],256:[function(require,module,exports){
+},{"../version":277,"assert":2,"prismarine-item":453,"vec3":525}],258:[function(require,module,exports){
 var assert = require('assert');
 
 module.exports = inject;
@@ -30057,7 +30208,7 @@ function noop(err) {
   if(err) throw err;
 }
 
-},{"assert":2}],257:[function(require,module,exports){
+},{"assert":2}],259:[function(require,module,exports){
 var version=require("../version");
 var windows = require('prismarine-windows')(version).windows;
 var assert = require('assert');
@@ -30104,7 +30255,7 @@ function inject(bot) {
 
   bot.openDispenser = openDispenser;
 }
-},{"../dispenser":242,"../version":275,"assert":2,"prismarine-windows":455}],258:[function(require,module,exports){
+},{"../dispenser":243,"../version":277,"assert":2,"prismarine-windows":457}],260:[function(require,module,exports){
 var EnchantmentTable = require('../enchantment_table');
 var assert = require('assert');
 var version=require("../version");
@@ -30193,7 +30344,7 @@ function inject(bot) {
 
   bot.openEnchantmentTable = openEnchantmentTable;
 }
-},{"../enchantment_table":243,"../version":275,"assert":2,"prismarine-windows":455}],259:[function(require,module,exports){
+},{"../enchantment_table":244,"../version":277,"assert":2,"prismarine-windows":457}],261:[function(require,module,exports){
 var Vec3 = require('vec3').Vec3;
 var _ = require('lodash');
 var Entity = require('prismarine-entity');
@@ -30621,7 +30772,7 @@ function parseMetadata(metadata) {
   return o;
 }
 
-},{"../conversions":241,"../minecraft-data":247,"../version":275,"lodash":276,"prismarine-entity":450,"prismarine-item":451,"vec3":458}],260:[function(require,module,exports){
+},{"../conversions":242,"../minecraft-data":248,"../version":277,"lodash":278,"prismarine-entity":452,"prismarine-item":453,"vec3":525}],262:[function(require,module,exports){
 module.exports = inject;
 
 function inject(bot) {
@@ -30638,7 +30789,7 @@ function inject(bot) {
   });
 }
 
-},{}],261:[function(require,module,exports){
+},{}],263:[function(require,module,exports){
 var Furnace = require('../furnace');
 var assert = require('assert');
 var version=require("../version");
@@ -30720,7 +30871,7 @@ function inject(bot) {
 
   bot.openFurnace = openFurnace;
 }
-},{"../furnace":244,"../version":275,"assert":2,"prismarine-windows":455}],262:[function(require,module,exports){
+},{"../furnace":245,"../version":277,"assert":2,"prismarine-windows":457}],264:[function(require,module,exports){
 (function (Buffer){
 module.exports = inject;
 
@@ -30796,7 +30947,7 @@ function autoRespawn(bot) {
 
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":17}],263:[function(require,module,exports){
+},{"buffer":17}],265:[function(require,module,exports){
 module.exports = inject;
 
 function inject(bot) {
@@ -30823,7 +30974,7 @@ function inject(bot) {
   });
 }
 
-},{}],264:[function(require,module,exports){
+},{}],266:[function(require,module,exports){
 var version=require("../version");
 var Item = require("prismarine-item")(version);
 var assert = require('assert');
@@ -31311,12 +31462,15 @@ function vectorToDirection(v) {
   assert.ok(false, "invalid direction vector " + v);
 }
 
-},{"../version":275,"assert":2,"prismarine-item":451,"prismarine-windows":455,"vec3":458}],265:[function(require,module,exports){
+},{"../version":277,"assert":2,"prismarine-item":453,"prismarine-windows":457,"vec3":525}],267:[function(require,module,exports){
 module.exports = inject;
 
 function inject(bot) {
   bot._client.on('kick_disconnect', function(packet) {
-    bot.emit('kicked', packet.reason);
+    bot.emit('kicked', packet.reason, true);
+  });
+  bot._client.on('disconnect', function(packet) {
+    bot.emit('kicked', packet.reason, false);
   });
   bot.quit = function(reason) {
     reason = reason || 'disconnect.quitting';
@@ -31324,7 +31478,7 @@ function inject(bot) {
   };
 }
 
-},{}],266:[function(require,module,exports){
+},{}],268:[function(require,module,exports){
 var Vec3 = require('vec3').Vec3;
 var assert = require('assert');
 var math = require('../math');
@@ -31698,7 +31852,7 @@ function inject(bot) {
   bot.on('end', cleanup);
 }
 
-},{"../conversions":241,"../math":246,"assert":2,"vec3":458}],267:[function(require,module,exports){
+},{"../conversions":242,"../math":247,"assert":2,"vec3":525}],269:[function(require,module,exports){
 module.exports = inject;
 
 function inject(bot) {
@@ -31714,7 +31868,7 @@ function inject(bot) {
   });
 }
 
-},{}],268:[function(require,module,exports){
+},{}],270:[function(require,module,exports){
 var ScoreBoard=require("../scoreboard");
 
 module.exports = inject;
@@ -31766,7 +31920,7 @@ function inject(bot) {
 
 }
 
-},{"../scoreboard":274}],269:[function(require,module,exports){
+},{"../scoreboard":276}],271:[function(require,module,exports){
 var assert = require('assert');
 
 module.exports = inject;
@@ -31824,7 +31978,7 @@ function extend(obj, src) {
   return obj;
 }
 
-},{"assert":2}],270:[function(require,module,exports){
+},{"assert":2}],272:[function(require,module,exports){
 (function (process){
 var assert = require('assert');
 var version=require("../version");
@@ -31991,7 +32145,7 @@ function inject(bot) {
 
 }
 }).call(this,require('_process'))
-},{"../version":275,"_process":218,"assert":2,"prismarine-windows":455}],271:[function(require,module,exports){
+},{"../version":277,"_process":219,"assert":2,"prismarine-windows":457}],273:[function(require,module,exports){
 var Vec3 = require('vec3').Vec3;
 
 module.exports = inject;
@@ -32008,7 +32162,7 @@ function inject(bot) {
   // TODO: world_particles sound effects
 }
 
-},{"vec3":458}],272:[function(require,module,exports){
+},{"vec3":525}],274:[function(require,module,exports){
 var Vec3 = require('vec3').Vec3;
 
 module.exports = inject;
@@ -32021,7 +32175,7 @@ function inject(bot) {
   });
 }
 
-},{"vec3":458}],273:[function(require,module,exports){
+},{"vec3":525}],275:[function(require,module,exports){
 module.exports = inject;
 
 function inject(bot) {
@@ -32041,7 +32195,7 @@ function longToNumber(arr) {
   return arr[1] + 4294967296 * arr[0];
 }
 
-},{}],274:[function(require,module,exports){
+},{}],276:[function(require,module,exports){
 module.exports = ScoreBoard;
 
 function ScoreBoard(name) {
@@ -32051,9 +32205,9 @@ function ScoreBoard(name) {
   this.position=null;
 }
 
-},{}],275:[function(require,module,exports){
+},{}],277:[function(require,module,exports){
 module.exports="1.8";
-},{}],276:[function(require,module,exports){
+},{}],278:[function(require,module,exports){
 (function (global){
 /**
  * @license
@@ -44408,7 +44562,7 @@ module.exports="1.8";
 }.call(this));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],277:[function(require,module,exports){
+},{}],279:[function(require,module,exports){
 var loader=require("./lib/loader");
 
 module.exports = function(version)
@@ -44449,7 +44603,7 @@ var data={
     version: require('./minecraft-data/data/1.9/version')
   }
 };
-},{"./lib/loader":280,"./minecraft-data/data/1.8/biomes":281,"./minecraft-data/data/1.8/blocks":282,"./minecraft-data/data/1.8/effects":283,"./minecraft-data/data/1.8/entities":284,"./minecraft-data/data/1.8/instruments":285,"./minecraft-data/data/1.8/items":286,"./minecraft-data/data/1.8/materials":287,"./minecraft-data/data/1.8/protocol":288,"./minecraft-data/data/1.8/recipes":289,"./minecraft-data/data/1.8/version":290,"./minecraft-data/data/1.8/windows":291,"./minecraft-data/data/1.9/biomes":292,"./minecraft-data/data/1.9/blocks":293,"./minecraft-data/data/1.9/effects":294,"./minecraft-data/data/1.9/entities":295,"./minecraft-data/data/1.9/instruments":296,"./minecraft-data/data/1.9/items":297,"./minecraft-data/data/1.9/materials":298,"./minecraft-data/data/1.9/protocol":299,"./minecraft-data/data/1.9/recipes":300,"./minecraft-data/data/1.9/version":301,"./minecraft-data/data/1.9/windows":302}],278:[function(require,module,exports){
+},{"./lib/loader":282,"./minecraft-data/data/1.8/biomes":283,"./minecraft-data/data/1.8/blocks":284,"./minecraft-data/data/1.8/effects":285,"./minecraft-data/data/1.8/entities":286,"./minecraft-data/data/1.8/instruments":287,"./minecraft-data/data/1.8/items":288,"./minecraft-data/data/1.8/materials":289,"./minecraft-data/data/1.8/protocol":290,"./minecraft-data/data/1.8/recipes":291,"./minecraft-data/data/1.8/version":292,"./minecraft-data/data/1.8/windows":293,"./minecraft-data/data/1.9/biomes":294,"./minecraft-data/data/1.9/blocks":295,"./minecraft-data/data/1.9/effects":296,"./minecraft-data/data/1.9/entities":297,"./minecraft-data/data/1.9/instruments":298,"./minecraft-data/data/1.9/items":299,"./minecraft-data/data/1.9/materials":300,"./minecraft-data/data/1.9/protocol":301,"./minecraft-data/data/1.9/recipes":302,"./minecraft-data/data/1.9/version":303,"./minecraft-data/data/1.9/windows":304}],280:[function(require,module,exports){
 module.exports={
   buildIndexFromObject:
     function(object,fieldToIndex) {
@@ -44466,7 +44620,7 @@ module.exports={
       },{});
     }
 };
-},{}],279:[function(require,module,exports){
+},{}],281:[function(require,module,exports){
 var indexer=require("./indexer.js");
 
 module.exports= function(mcData){
@@ -44491,7 +44645,7 @@ module.exports= function(mcData){
     effectsByName:indexer.buildIndexFromArray(mcData.effects,"name")
   };
 };
-},{"./indexer.js":278}],280:[function(require,module,exports){
+},{"./indexer.js":280}],282:[function(require,module,exports){
 var cache={}; // prevent reindexing when requiring multiple time the same version
 
 module.exports = function(mcVersion,getData)
@@ -44569,7 +44723,7 @@ function mcDataToNode(mcData) {
   };
 }
 
-},{"./indexes.js":279}],281:[function(require,module,exports){
+},{"./indexes.js":281}],283:[function(require,module,exports){
 module.exports=[
   {
     "id": 0,
@@ -44852,7 +45006,7 @@ module.exports=[
     "temperature": 2.0
   }
 ]
-},{}],282:[function(require,module,exports){
+},{}],284:[function(require,module,exports){
 module.exports=[
   {
     "id": 0,
@@ -49490,7 +49644,7 @@ module.exports=[
     ]
   }
 ]
-},{}],283:[function(require,module,exports){
+},{}],285:[function(require,module,exports){
 module.exports=[
   {
     "id": 1,
@@ -49632,7 +49786,7 @@ module.exports=[
   }
 ]
 
-},{}],284:[function(require,module,exports){
+},{}],286:[function(require,module,exports){
 module.exports=[
   {
     "id": 1,
@@ -50001,7 +50155,7 @@ module.exports=[
     "type": "Immobile"
   }
 ]
-},{}],285:[function(require,module,exports){
+},{}],287:[function(require,module,exports){
 module.exports=[
   {
     "id": 0,
@@ -50025,7 +50179,7 @@ module.exports=[
   }
 ]
 
-},{}],286:[function(require,module,exports){
+},{}],288:[function(require,module,exports){
 module.exports=[
   {
     "id": 256,
@@ -51334,7 +51488,7 @@ module.exports=[
     "name": "record_wait"
   }
 ]
-},{}],287:[function(require,module,exports){
+},{}],289:[function(require,module,exports){
 module.exports={
   "rock": {
     "257": 6,
@@ -51396,7 +51550,7 @@ module.exports={
     "359": 4.8
   }
 }
-},{}],288:[function(require,module,exports){
+},{}],290:[function(require,module,exports){
 module.exports={
   "types": {
     "varint": "native",
@@ -54279,7 +54433,7 @@ module.exports={
   }
 }
 
-},{}],289:[function(require,module,exports){
+},{}],291:[function(require,module,exports){
 module.exports={
   "1": [
     {
@@ -81151,13 +81305,13 @@ module.exports={
     }
   ]
 }
-},{}],290:[function(require,module,exports){
+},{}],292:[function(require,module,exports){
 module.exports={
   "version":47,
   "minecraftVersion":"1.8.8",
   "majorVersion":"1.8"
 }
-},{}],291:[function(require,module,exports){
+},{}],293:[function(require,module,exports){
 module.exports=[
   {
     "id": "",
@@ -81382,9 +81536,9 @@ module.exports=[
   }
 ]
 
-},{}],292:[function(require,module,exports){
-arguments[4][281][0].apply(exports,arguments)
-},{"dup":281}],293:[function(require,module,exports){
+},{}],294:[function(require,module,exports){
+arguments[4][283][0].apply(exports,arguments)
+},{"dup":283}],295:[function(require,module,exports){
 module.exports=[
   {
     "id": 0,
@@ -86342,7 +86496,7 @@ module.exports=[
     ]
   }
 ]
-},{}],294:[function(require,module,exports){
+},{}],296:[function(require,module,exports){
 module.exports=[
   {
     "id": 1,
@@ -86508,11 +86662,11 @@ module.exports=[
   }
 ]
 
-},{}],295:[function(require,module,exports){
-arguments[4][284][0].apply(exports,arguments)
-},{"dup":284}],296:[function(require,module,exports){
-arguments[4][285][0].apply(exports,arguments)
-},{"dup":285}],297:[function(require,module,exports){
+},{}],297:[function(require,module,exports){
+arguments[4][286][0].apply(exports,arguments)
+},{"dup":286}],298:[function(require,module,exports){
+arguments[4][287][0].apply(exports,arguments)
+},{"dup":287}],299:[function(require,module,exports){
 module.exports=[
   {
     "id": 256,
@@ -87923,9 +88077,9 @@ module.exports=[
     "name": "record_wait"
   }
 ]
-},{}],298:[function(require,module,exports){
-arguments[4][287][0].apply(exports,arguments)
-},{"dup":287}],299:[function(require,module,exports){
+},{}],300:[function(require,module,exports){
+arguments[4][289][0].apply(exports,arguments)
+},{"dup":289}],301:[function(require,module,exports){
 module.exports={
   "types": {
     "varint": "native",
@@ -90864,7 +91018,7 @@ module.exports={
   }
 }
 
-},{}],300:[function(require,module,exports){
+},{}],302:[function(require,module,exports){
 module.exports={
   "1": [
     {
@@ -118724,19 +118878,19 @@ module.exports={
     }
   ]
 }
-},{}],301:[function(require,module,exports){
+},{}],303:[function(require,module,exports){
 module.exports={
   "version":76,
   "minecraftVersion":"15w40b",
   "majorVersion":"1.9"
 }
 
-},{}],302:[function(require,module,exports){
-arguments[4][291][0].apply(exports,arguments)
-},{"dup":291}],303:[function(require,module,exports){
+},{}],304:[function(require,module,exports){
+arguments[4][293][0].apply(exports,arguments)
+},{"dup":293}],305:[function(require,module,exports){
 module.exports = require('./dist/browser.js');
 
-},{"./dist/browser.js":304}],304:[function(require,module,exports){
+},{"./dist/browser.js":306}],306:[function(require,module,exports){
 "use strict";
 
 module.exports = {
@@ -118745,7 +118899,7 @@ module.exports = {
 };
 
 
-},{"./client":305,"./version":312}],305:[function(require,module,exports){
+},{"./client":307,"./version":314}],307:[function(require,module,exports){
 'use strict';
 
 var _get = require('babel-runtime/helpers/get')['default'];
@@ -118988,7 +119142,7 @@ var Client = (function (_EventEmitter) {
 module.exports = Client;
 
 
-},{"./debug":307,"./states":308,"./transforms/compression":309,"./transforms/framing":310,"./transforms/serializer":311,"babel-runtime/helpers/class-call-check":320,"babel-runtime/helpers/create-class":321,"babel-runtime/helpers/get":322,"babel-runtime/helpers/inherits":323,"crypto":21,"events":213}],306:[function(require,module,exports){
+},{"./debug":309,"./states":310,"./transforms/compression":311,"./transforms/framing":312,"./transforms/serializer":313,"babel-runtime/helpers/class-call-check":322,"babel-runtime/helpers/create-class":323,"babel-runtime/helpers/get":324,"babel-runtime/helpers/inherits":325,"crypto":21,"events":213}],308:[function(require,module,exports){
 'use strict';
 
 var nbt = require('prismarine-nbt');
@@ -119104,7 +119258,7 @@ function sizeOfEntityMetadata(value, _ref3) {
 }
 
 
-},{"node-uuid":414,"prismarine-nbt":417}],307:[function(require,module,exports){
+},{"node-uuid":416,"prismarine-nbt":419}],309:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -119126,7 +119280,7 @@ module.exports = debug;
 
 
 }).call(this,require('_process'))
-},{"_process":218,"util":235}],308:[function(require,module,exports){
+},{"_process":219,"util":236}],310:[function(require,module,exports){
 "use strict";
 
 var states = {
@@ -119139,7 +119293,7 @@ var states = {
 module.exports = states;
 
 
-},{}],309:[function(require,module,exports){
+},{}],311:[function(require,module,exports){
 (function (Buffer){
 "use strict";
 
@@ -119251,7 +119405,7 @@ var Decompressor = (function (_Transform2) {
 
 
 }).call(this,require("buffer").Buffer)
-},{"babel-runtime/helpers/class-call-check":320,"babel-runtime/helpers/create-class":321,"babel-runtime/helpers/get":322,"babel-runtime/helpers/inherits":323,"babel-runtime/helpers/sliced-to-array":325,"buffer":17,"protodef":435,"readable-stream":445,"zlib":16}],310:[function(require,module,exports){
+},{"babel-runtime/helpers/class-call-check":322,"babel-runtime/helpers/create-class":323,"babel-runtime/helpers/get":324,"babel-runtime/helpers/inherits":325,"babel-runtime/helpers/sliced-to-array":327,"buffer":17,"protodef":437,"readable-stream":447,"zlib":16}],312:[function(require,module,exports){
 (function (Buffer){
 "use strict";
 
@@ -119346,7 +119500,7 @@ var Splitter = (function (_Transform2) {
 
 
 }).call(this,require("buffer").Buffer)
-},{"babel-runtime/helpers/class-call-check":320,"babel-runtime/helpers/create-class":321,"babel-runtime/helpers/get":322,"babel-runtime/helpers/inherits":323,"babel-runtime/helpers/sliced-to-array":325,"buffer":17,"protodef":435,"readable-stream":445}],311:[function(require,module,exports){
+},{"babel-runtime/helpers/class-call-check":322,"babel-runtime/helpers/create-class":323,"babel-runtime/helpers/get":324,"babel-runtime/helpers/inherits":325,"babel-runtime/helpers/sliced-to-array":327,"buffer":17,"protodef":437,"readable-stream":447}],313:[function(require,module,exports){
 "use strict";
 
 var _Object$keys = require("babel-runtime/core-js/object/keys")["default"];
@@ -119425,7 +119579,7 @@ module.exports = {
 };
 
 
-},{"../datatypes/minecraft":306,"../states":308,"babel-runtime/core-js/object/keys":318,"minecraft-data":388,"protodef":435}],312:[function(require,module,exports){
+},{"../datatypes/minecraft":308,"../states":310,"babel-runtime/core-js/object/keys":320,"minecraft-data":390,"protodef":437}],314:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -119434,21 +119588,21 @@ module.exports = {
 };
 
 
-},{}],313:[function(require,module,exports){
+},{}],315:[function(require,module,exports){
 module.exports = { "default": require("core-js/library/fn/get-iterator"), __esModule: true };
-},{"core-js/library/fn/get-iterator":326}],314:[function(require,module,exports){
+},{"core-js/library/fn/get-iterator":328}],316:[function(require,module,exports){
 module.exports = { "default": require("core-js/library/fn/is-iterable"), __esModule: true };
-},{"core-js/library/fn/is-iterable":327}],315:[function(require,module,exports){
+},{"core-js/library/fn/is-iterable":329}],317:[function(require,module,exports){
 module.exports = { "default": require("core-js/library/fn/object/create"), __esModule: true };
-},{"core-js/library/fn/object/create":328}],316:[function(require,module,exports){
+},{"core-js/library/fn/object/create":330}],318:[function(require,module,exports){
 module.exports = { "default": require("core-js/library/fn/object/define-property"), __esModule: true };
-},{"core-js/library/fn/object/define-property":329}],317:[function(require,module,exports){
+},{"core-js/library/fn/object/define-property":331}],319:[function(require,module,exports){
 module.exports = { "default": require("core-js/library/fn/object/get-own-property-descriptor"), __esModule: true };
-},{"core-js/library/fn/object/get-own-property-descriptor":330}],318:[function(require,module,exports){
+},{"core-js/library/fn/object/get-own-property-descriptor":332}],320:[function(require,module,exports){
 module.exports = { "default": require("core-js/library/fn/object/keys"), __esModule: true };
-},{"core-js/library/fn/object/keys":331}],319:[function(require,module,exports){
+},{"core-js/library/fn/object/keys":333}],321:[function(require,module,exports){
 module.exports = { "default": require("core-js/library/fn/object/set-prototype-of"), __esModule: true };
-},{"core-js/library/fn/object/set-prototype-of":332}],320:[function(require,module,exports){
+},{"core-js/library/fn/object/set-prototype-of":334}],322:[function(require,module,exports){
 "use strict";
 
 exports["default"] = function (instance, Constructor) {
@@ -119458,7 +119612,7 @@ exports["default"] = function (instance, Constructor) {
 };
 
 exports.__esModule = true;
-},{}],321:[function(require,module,exports){
+},{}],323:[function(require,module,exports){
 "use strict";
 
 var _Object$defineProperty = require("babel-runtime/core-js/object/define-property")["default"];
@@ -119483,7 +119637,7 @@ exports["default"] = (function () {
 })();
 
 exports.__esModule = true;
-},{"babel-runtime/core-js/object/define-property":316}],322:[function(require,module,exports){
+},{"babel-runtime/core-js/object/define-property":318}],324:[function(require,module,exports){
 "use strict";
 
 var _Object$getOwnPropertyDescriptor = require("babel-runtime/core-js/object/get-own-property-descriptor")["default"];
@@ -119528,7 +119682,7 @@ exports["default"] = function get(_x, _x2, _x3) {
 };
 
 exports.__esModule = true;
-},{"babel-runtime/core-js/object/get-own-property-descriptor":317}],323:[function(require,module,exports){
+},{"babel-runtime/core-js/object/get-own-property-descriptor":319}],325:[function(require,module,exports){
 "use strict";
 
 var _Object$create = require("babel-runtime/core-js/object/create")["default"];
@@ -119552,7 +119706,7 @@ exports["default"] = function (subClass, superClass) {
 };
 
 exports.__esModule = true;
-},{"babel-runtime/core-js/object/create":315,"babel-runtime/core-js/object/set-prototype-of":319}],324:[function(require,module,exports){
+},{"babel-runtime/core-js/object/create":317,"babel-runtime/core-js/object/set-prototype-of":321}],326:[function(require,module,exports){
 "use strict";
 
 exports["default"] = function (obj, keys) {
@@ -119568,7 +119722,7 @@ exports["default"] = function (obj, keys) {
 };
 
 exports.__esModule = true;
-},{}],325:[function(require,module,exports){
+},{}],327:[function(require,module,exports){
 "use strict";
 
 var _getIterator = require("babel-runtime/core-js/get-iterator")["default"];
@@ -119614,50 +119768,50 @@ exports["default"] = (function () {
 })();
 
 exports.__esModule = true;
-},{"babel-runtime/core-js/get-iterator":313,"babel-runtime/core-js/is-iterable":314}],326:[function(require,module,exports){
+},{"babel-runtime/core-js/get-iterator":315,"babel-runtime/core-js/is-iterable":316}],328:[function(require,module,exports){
 require('../modules/web.dom.iterable');
 require('../modules/es6.string.iterator');
 module.exports = require('../modules/core.get-iterator');
-},{"../modules/core.get-iterator":368,"../modules/es6.string.iterator":374,"../modules/web.dom.iterable":375}],327:[function(require,module,exports){
+},{"../modules/core.get-iterator":370,"../modules/es6.string.iterator":376,"../modules/web.dom.iterable":377}],329:[function(require,module,exports){
 require('../modules/web.dom.iterable');
 require('../modules/es6.string.iterator');
 module.exports = require('../modules/core.is-iterable');
-},{"../modules/core.is-iterable":369,"../modules/es6.string.iterator":374,"../modules/web.dom.iterable":375}],328:[function(require,module,exports){
+},{"../modules/core.is-iterable":371,"../modules/es6.string.iterator":376,"../modules/web.dom.iterable":377}],330:[function(require,module,exports){
 var $ = require('../../modules/$');
 module.exports = function create(P, D){
   return $.create(P, D);
 };
-},{"../../modules/$":353}],329:[function(require,module,exports){
+},{"../../modules/$":355}],331:[function(require,module,exports){
 var $ = require('../../modules/$');
 module.exports = function defineProperty(it, key, desc){
   return $.setDesc(it, key, desc);
 };
-},{"../../modules/$":353}],330:[function(require,module,exports){
+},{"../../modules/$":355}],332:[function(require,module,exports){
 var $ = require('../../modules/$');
 require('../../modules/es6.object.get-own-property-descriptor');
 module.exports = function getOwnPropertyDescriptor(it, key){
   return $.getDesc(it, key);
 };
-},{"../../modules/$":353,"../../modules/es6.object.get-own-property-descriptor":371}],331:[function(require,module,exports){
+},{"../../modules/$":355,"../../modules/es6.object.get-own-property-descriptor":373}],333:[function(require,module,exports){
 require('../../modules/es6.object.keys');
 module.exports = require('../../modules/$.core').Object.keys;
-},{"../../modules/$.core":338,"../../modules/es6.object.keys":372}],332:[function(require,module,exports){
+},{"../../modules/$.core":340,"../../modules/es6.object.keys":374}],334:[function(require,module,exports){
 require('../../modules/es6.object.set-prototype-of');
 module.exports = require('../../modules/$.core').Object.setPrototypeOf;
-},{"../../modules/$.core":338,"../../modules/es6.object.set-prototype-of":373}],333:[function(require,module,exports){
+},{"../../modules/$.core":340,"../../modules/es6.object.set-prototype-of":375}],335:[function(require,module,exports){
 module.exports = function(it){
   if(typeof it != 'function')throw TypeError(it + ' is not a function!');
   return it;
 };
-},{}],334:[function(require,module,exports){
+},{}],336:[function(require,module,exports){
 module.exports = function(){ /* empty */ };
-},{}],335:[function(require,module,exports){
+},{}],337:[function(require,module,exports){
 var isObject = require('./$.is-object');
 module.exports = function(it){
   if(!isObject(it))throw TypeError(it + ' is not an object!');
   return it;
 };
-},{"./$.is-object":348}],336:[function(require,module,exports){
+},{"./$.is-object":350}],338:[function(require,module,exports){
 // getting tag from 19.1.3.6 Object.prototype.toString()
 var cof = require('./$.cof')
   , TAG = require('./$.wks')('toStringTag')
@@ -119674,16 +119828,16 @@ module.exports = function(it){
     // ES3 arguments fallback
     : (B = cof(O)) == 'Object' && typeof O.callee == 'function' ? 'Arguments' : B;
 };
-},{"./$.cof":337,"./$.wks":366}],337:[function(require,module,exports){
+},{"./$.cof":339,"./$.wks":368}],339:[function(require,module,exports){
 var toString = {}.toString;
 
 module.exports = function(it){
   return toString.call(it).slice(8, -1);
 };
-},{}],338:[function(require,module,exports){
+},{}],340:[function(require,module,exports){
 var core = module.exports = {version: '1.2.6'};
 if(typeof __e == 'number')__e = core; // eslint-disable-line no-undef
-},{}],339:[function(require,module,exports){
+},{}],341:[function(require,module,exports){
 // optional / simple context binding
 var aFunction = require('./$.a-function');
 module.exports = function(fn, that, length){
@@ -119704,18 +119858,18 @@ module.exports = function(fn, that, length){
     return fn.apply(that, arguments);
   };
 };
-},{"./$.a-function":333}],340:[function(require,module,exports){
+},{"./$.a-function":335}],342:[function(require,module,exports){
 // 7.2.1 RequireObjectCoercible(argument)
 module.exports = function(it){
   if(it == undefined)throw TypeError("Can't call method on  " + it);
   return it;
 };
-},{}],341:[function(require,module,exports){
+},{}],343:[function(require,module,exports){
 // Thank's IE8 for his funny defineProperty
 module.exports = !require('./$.fails')(function(){
   return Object.defineProperty({}, 'a', {get: function(){ return 7; }}).a != 7;
 });
-},{"./$.fails":343}],342:[function(require,module,exports){
+},{"./$.fails":345}],344:[function(require,module,exports){
 var global    = require('./$.global')
   , core      = require('./$.core')
   , ctx       = require('./$.ctx')
@@ -119762,7 +119916,7 @@ $export.P = 8;  // proto
 $export.B = 16; // bind
 $export.W = 32; // wrap
 module.exports = $export;
-},{"./$.core":338,"./$.ctx":339,"./$.global":344}],343:[function(require,module,exports){
+},{"./$.core":340,"./$.ctx":341,"./$.global":346}],345:[function(require,module,exports){
 module.exports = function(exec){
   try {
     return !!exec();
@@ -119770,17 +119924,17 @@ module.exports = function(exec){
     return true;
   }
 };
-},{}],344:[function(require,module,exports){
+},{}],346:[function(require,module,exports){
 // https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
 var global = module.exports = typeof window != 'undefined' && window.Math == Math
   ? window : typeof self != 'undefined' && self.Math == Math ? self : Function('return this')();
 if(typeof __g == 'number')__g = global; // eslint-disable-line no-undef
-},{}],345:[function(require,module,exports){
+},{}],347:[function(require,module,exports){
 var hasOwnProperty = {}.hasOwnProperty;
 module.exports = function(it, key){
   return hasOwnProperty.call(it, key);
 };
-},{}],346:[function(require,module,exports){
+},{}],348:[function(require,module,exports){
 var $          = require('./$')
   , createDesc = require('./$.property-desc');
 module.exports = require('./$.descriptors') ? function(object, key, value){
@@ -119789,17 +119943,17 @@ module.exports = require('./$.descriptors') ? function(object, key, value){
   object[key] = value;
   return object;
 };
-},{"./$":353,"./$.descriptors":341,"./$.property-desc":356}],347:[function(require,module,exports){
+},{"./$":355,"./$.descriptors":343,"./$.property-desc":358}],349:[function(require,module,exports){
 // fallback for non-array-like ES3 and non-enumerable old V8 strings
 var cof = require('./$.cof');
 module.exports = Object('z').propertyIsEnumerable(0) ? Object : function(it){
   return cof(it) == 'String' ? it.split('') : Object(it);
 };
-},{"./$.cof":337}],348:[function(require,module,exports){
+},{"./$.cof":339}],350:[function(require,module,exports){
 module.exports = function(it){
   return typeof it === 'object' ? it !== null : typeof it === 'function';
 };
-},{}],349:[function(require,module,exports){
+},{}],351:[function(require,module,exports){
 'use strict';
 var $              = require('./$')
   , descriptor     = require('./$.property-desc')
@@ -119813,7 +119967,7 @@ module.exports = function(Constructor, NAME, next){
   Constructor.prototype = $.create(IteratorPrototype, {next: descriptor(1, next)});
   setToStringTag(Constructor, NAME + ' Iterator');
 };
-},{"./$":353,"./$.hide":346,"./$.property-desc":356,"./$.set-to-string-tag":359,"./$.wks":366}],350:[function(require,module,exports){
+},{"./$":355,"./$.hide":348,"./$.property-desc":358,"./$.set-to-string-tag":361,"./$.wks":368}],352:[function(require,module,exports){
 'use strict';
 var LIBRARY        = require('./$.library')
   , $export        = require('./$.export')
@@ -119880,13 +120034,13 @@ module.exports = function(Base, NAME, Constructor, next, DEFAULT, IS_SET, FORCED
   }
   return methods;
 };
-},{"./$":353,"./$.export":342,"./$.has":345,"./$.hide":346,"./$.iter-create":349,"./$.iterators":352,"./$.library":354,"./$.redefine":357,"./$.set-to-string-tag":359,"./$.wks":366}],351:[function(require,module,exports){
+},{"./$":355,"./$.export":344,"./$.has":347,"./$.hide":348,"./$.iter-create":351,"./$.iterators":354,"./$.library":356,"./$.redefine":359,"./$.set-to-string-tag":361,"./$.wks":368}],353:[function(require,module,exports){
 module.exports = function(done, value){
   return {value: value, done: !!done};
 };
-},{}],352:[function(require,module,exports){
+},{}],354:[function(require,module,exports){
 module.exports = {};
-},{}],353:[function(require,module,exports){
+},{}],355:[function(require,module,exports){
 var $Object = Object;
 module.exports = {
   create:     $Object.create,
@@ -119900,9 +120054,9 @@ module.exports = {
   getSymbols: $Object.getOwnPropertySymbols,
   each:       [].forEach
 };
-},{}],354:[function(require,module,exports){
+},{}],356:[function(require,module,exports){
 module.exports = true;
-},{}],355:[function(require,module,exports){
+},{}],357:[function(require,module,exports){
 // most Object methods by ES6 should accept primitives
 var $export = require('./$.export')
   , core    = require('./$.core')
@@ -119913,7 +120067,7 @@ module.exports = function(KEY, exec){
   exp[KEY] = exec(fn);
   $export($export.S + $export.F * fails(function(){ fn(1); }), 'Object', exp);
 };
-},{"./$.core":338,"./$.export":342,"./$.fails":343}],356:[function(require,module,exports){
+},{"./$.core":340,"./$.export":344,"./$.fails":345}],358:[function(require,module,exports){
 module.exports = function(bitmap, value){
   return {
     enumerable  : !(bitmap & 1),
@@ -119922,9 +120076,9 @@ module.exports = function(bitmap, value){
     value       : value
   };
 };
-},{}],357:[function(require,module,exports){
+},{}],359:[function(require,module,exports){
 module.exports = require('./$.hide');
-},{"./$.hide":346}],358:[function(require,module,exports){
+},{"./$.hide":348}],360:[function(require,module,exports){
 // Works with __proto__ only. Old v8 can't work with null proto objects.
 /* eslint-disable no-proto */
 var getDesc  = require('./$').getDesc
@@ -119951,7 +120105,7 @@ module.exports = {
     }({}, false) : undefined),
   check: check
 };
-},{"./$":353,"./$.an-object":335,"./$.ctx":339,"./$.is-object":348}],359:[function(require,module,exports){
+},{"./$":355,"./$.an-object":337,"./$.ctx":341,"./$.is-object":350}],361:[function(require,module,exports){
 var def = require('./$').setDesc
   , has = require('./$.has')
   , TAG = require('./$.wks')('toStringTag');
@@ -119959,14 +120113,14 @@ var def = require('./$').setDesc
 module.exports = function(it, tag, stat){
   if(it && !has(it = stat ? it : it.prototype, TAG))def(it, TAG, {configurable: true, value: tag});
 };
-},{"./$":353,"./$.has":345,"./$.wks":366}],360:[function(require,module,exports){
+},{"./$":355,"./$.has":347,"./$.wks":368}],362:[function(require,module,exports){
 var global = require('./$.global')
   , SHARED = '__core-js_shared__'
   , store  = global[SHARED] || (global[SHARED] = {});
 module.exports = function(key){
   return store[key] || (store[key] = {});
 };
-},{"./$.global":344}],361:[function(require,module,exports){
+},{"./$.global":346}],363:[function(require,module,exports){
 var toInteger = require('./$.to-integer')
   , defined   = require('./$.defined');
 // true  -> String#at
@@ -119984,33 +120138,33 @@ module.exports = function(TO_STRING){
       : TO_STRING ? s.slice(i, i + 2) : (a - 0xd800 << 10) + (b - 0xdc00) + 0x10000;
   };
 };
-},{"./$.defined":340,"./$.to-integer":362}],362:[function(require,module,exports){
+},{"./$.defined":342,"./$.to-integer":364}],364:[function(require,module,exports){
 // 7.1.4 ToInteger
 var ceil  = Math.ceil
   , floor = Math.floor;
 module.exports = function(it){
   return isNaN(it = +it) ? 0 : (it > 0 ? floor : ceil)(it);
 };
-},{}],363:[function(require,module,exports){
+},{}],365:[function(require,module,exports){
 // to indexed object, toObject with fallback for non-array-like ES3 strings
 var IObject = require('./$.iobject')
   , defined = require('./$.defined');
 module.exports = function(it){
   return IObject(defined(it));
 };
-},{"./$.defined":340,"./$.iobject":347}],364:[function(require,module,exports){
+},{"./$.defined":342,"./$.iobject":349}],366:[function(require,module,exports){
 // 7.1.13 ToObject(argument)
 var defined = require('./$.defined');
 module.exports = function(it){
   return Object(defined(it));
 };
-},{"./$.defined":340}],365:[function(require,module,exports){
+},{"./$.defined":342}],367:[function(require,module,exports){
 var id = 0
   , px = Math.random();
 module.exports = function(key){
   return 'Symbol('.concat(key === undefined ? '' : key, ')_', (++id + px).toString(36));
 };
-},{}],366:[function(require,module,exports){
+},{}],368:[function(require,module,exports){
 var store  = require('./$.shared')('wks')
   , uid    = require('./$.uid')
   , Symbol = require('./$.global').Symbol;
@@ -120018,7 +120172,7 @@ module.exports = function(name){
   return store[name] || (store[name] =
     Symbol && Symbol[name] || (Symbol || uid)('Symbol.' + name));
 };
-},{"./$.global":344,"./$.shared":360,"./$.uid":365}],367:[function(require,module,exports){
+},{"./$.global":346,"./$.shared":362,"./$.uid":367}],369:[function(require,module,exports){
 var classof   = require('./$.classof')
   , ITERATOR  = require('./$.wks')('iterator')
   , Iterators = require('./$.iterators');
@@ -120027,7 +120181,7 @@ module.exports = require('./$.core').getIteratorMethod = function(it){
     || it['@@iterator']
     || Iterators[classof(it)];
 };
-},{"./$.classof":336,"./$.core":338,"./$.iterators":352,"./$.wks":366}],368:[function(require,module,exports){
+},{"./$.classof":338,"./$.core":340,"./$.iterators":354,"./$.wks":368}],370:[function(require,module,exports){
 var anObject = require('./$.an-object')
   , get      = require('./core.get-iterator-method');
 module.exports = require('./$.core').getIterator = function(it){
@@ -120035,7 +120189,7 @@ module.exports = require('./$.core').getIterator = function(it){
   if(typeof iterFn != 'function')throw TypeError(it + ' is not iterable!');
   return anObject(iterFn.call(it));
 };
-},{"./$.an-object":335,"./$.core":338,"./core.get-iterator-method":367}],369:[function(require,module,exports){
+},{"./$.an-object":337,"./$.core":340,"./core.get-iterator-method":369}],371:[function(require,module,exports){
 var classof   = require('./$.classof')
   , ITERATOR  = require('./$.wks')('iterator')
   , Iterators = require('./$.iterators');
@@ -120045,7 +120199,7 @@ module.exports = require('./$.core').isIterable = function(it){
     || '@@iterator' in O
     || Iterators.hasOwnProperty(classof(O));
 };
-},{"./$.classof":336,"./$.core":338,"./$.iterators":352,"./$.wks":366}],370:[function(require,module,exports){
+},{"./$.classof":338,"./$.core":340,"./$.iterators":354,"./$.wks":368}],372:[function(require,module,exports){
 'use strict';
 var addToUnscopables = require('./$.add-to-unscopables')
   , step             = require('./$.iter-step')
@@ -120080,7 +120234,7 @@ Iterators.Arguments = Iterators.Array;
 addToUnscopables('keys');
 addToUnscopables('values');
 addToUnscopables('entries');
-},{"./$.add-to-unscopables":334,"./$.iter-define":350,"./$.iter-step":351,"./$.iterators":352,"./$.to-iobject":363}],371:[function(require,module,exports){
+},{"./$.add-to-unscopables":336,"./$.iter-define":352,"./$.iter-step":353,"./$.iterators":354,"./$.to-iobject":365}],373:[function(require,module,exports){
 // 19.1.2.6 Object.getOwnPropertyDescriptor(O, P)
 var toIObject = require('./$.to-iobject');
 
@@ -120089,7 +120243,7 @@ require('./$.object-sap')('getOwnPropertyDescriptor', function($getOwnPropertyDe
     return $getOwnPropertyDescriptor(toIObject(it), key);
   };
 });
-},{"./$.object-sap":355,"./$.to-iobject":363}],372:[function(require,module,exports){
+},{"./$.object-sap":357,"./$.to-iobject":365}],374:[function(require,module,exports){
 // 19.1.2.14 Object.keys(O)
 var toObject = require('./$.to-object');
 
@@ -120098,11 +120252,11 @@ require('./$.object-sap')('keys', function($keys){
     return $keys(toObject(it));
   };
 });
-},{"./$.object-sap":355,"./$.to-object":364}],373:[function(require,module,exports){
+},{"./$.object-sap":357,"./$.to-object":366}],375:[function(require,module,exports){
 // 19.1.3.19 Object.setPrototypeOf(O, proto)
 var $export = require('./$.export');
 $export($export.S, 'Object', {setPrototypeOf: require('./$.set-proto').set});
-},{"./$.export":342,"./$.set-proto":358}],374:[function(require,module,exports){
+},{"./$.export":344,"./$.set-proto":360}],376:[function(require,module,exports){
 'use strict';
 var $at  = require('./$.string-at')(true);
 
@@ -120120,11 +120274,11 @@ require('./$.iter-define')(String, 'String', function(iterated){
   this._i += point.length;
   return {value: point, done: false};
 });
-},{"./$.iter-define":350,"./$.string-at":361}],375:[function(require,module,exports){
+},{"./$.iter-define":352,"./$.string-at":363}],377:[function(require,module,exports){
 require('./es6.array.iterator');
 var Iterators = require('./$.iterators');
 Iterators.NodeList = Iterators.HTMLCollection = Iterators.Array;
-},{"./$.iterators":352,"./es6.array.iterator":370}],376:[function(require,module,exports){
+},{"./$.iterators":354,"./es6.array.iterator":372}],378:[function(require,module,exports){
 /**
  * lodash 3.1.2 (Custom Build) <https://lodash.com/>
  * Build: `lodash modern modularize exports="npm" -o ./`
@@ -120220,7 +120374,7 @@ var reduce = createReduce(arrayReduce, baseEach);
 
 module.exports = reduce;
 
-},{"lodash._basecallback":377,"lodash._baseeach":382,"lodash._basereduce":383,"lodash.isarray":384}],377:[function(require,module,exports){
+},{"lodash._basecallback":379,"lodash._baseeach":384,"lodash._basereduce":385,"lodash.isarray":386}],379:[function(require,module,exports){
 /**
  * lodash 3.3.1 (Custom Build) <https://lodash.com/>
  * Build: `lodash modern modularize exports="npm" -o ./`
@@ -120644,7 +120798,7 @@ function property(path) {
 
 module.exports = baseCallback;
 
-},{"lodash._baseisequal":378,"lodash._bindcallback":380,"lodash.isarray":384,"lodash.pairs":381}],378:[function(require,module,exports){
+},{"lodash._baseisequal":380,"lodash._bindcallback":382,"lodash.isarray":386,"lodash.pairs":383}],380:[function(require,module,exports){
 /**
  * lodash 3.0.7 (Custom Build) <https://lodash.com/>
  * Build: `lodash modern modularize exports="npm" -o ./`
@@ -120988,7 +121142,7 @@ function isObject(value) {
 
 module.exports = baseIsEqual;
 
-},{"lodash.isarray":384,"lodash.istypedarray":379,"lodash.keys":385}],379:[function(require,module,exports){
+},{"lodash.isarray":386,"lodash.istypedarray":381,"lodash.keys":387}],381:[function(require,module,exports){
 /**
  * lodash 3.0.2 (Custom Build) <https://lodash.com/>
  * Build: `lodash modern modularize exports="npm" -o ./`
@@ -121100,7 +121254,7 @@ function isTypedArray(value) {
 
 module.exports = isTypedArray;
 
-},{}],380:[function(require,module,exports){
+},{}],382:[function(require,module,exports){
 /**
  * lodash 3.0.1 (Custom Build) <https://lodash.com/>
  * Build: `lodash modern modularize exports="npm" -o ./`
@@ -121167,7 +121321,7 @@ function identity(value) {
 
 module.exports = bindCallback;
 
-},{}],381:[function(require,module,exports){
+},{}],383:[function(require,module,exports){
 /**
  * lodash 3.0.1 (Custom Build) <https://lodash.com/>
  * Build: `lodash modern modularize exports="npm" -o ./`
@@ -121247,7 +121401,7 @@ function pairs(object) {
 
 module.exports = pairs;
 
-},{"lodash.keys":385}],382:[function(require,module,exports){
+},{"lodash.keys":387}],384:[function(require,module,exports){
 /**
  * lodash 3.0.4 (Custom Build) <https://lodash.com/>
  * Build: `lodash modern modularize exports="npm" -o ./`
@@ -121430,7 +121584,7 @@ function isObject(value) {
 
 module.exports = baseEach;
 
-},{"lodash.keys":385}],383:[function(require,module,exports){
+},{"lodash.keys":387}],385:[function(require,module,exports){
 /**
  * lodash 3.0.1 (Custom Build) <https://lodash.com/>
  * Build: `lodash modern modularize exports="npm" -o ./`
@@ -121465,7 +121619,7 @@ function baseReduce(collection, iteratee, accumulator, initFromCollection, eachF
 
 module.exports = baseReduce;
 
-},{}],384:[function(require,module,exports){
+},{}],386:[function(require,module,exports){
 /**
  * lodash 3.0.4 (Custom Build) <https://lodash.com/>
  * Build: `lodash modern modularize exports="npm" -o ./`
@@ -121647,7 +121801,7 @@ function isNative(value) {
 
 module.exports = isArray;
 
-},{}],385:[function(require,module,exports){
+},{}],387:[function(require,module,exports){
 /**
  * lodash 3.1.2 (Custom Build) <https://lodash.com/>
  * Build: `lodash modern modularize exports="npm" -o ./`
@@ -121885,7 +122039,7 @@ function keysIn(object) {
 
 module.exports = keys;
 
-},{"lodash._getnative":386,"lodash.isarguments":387,"lodash.isarray":384}],386:[function(require,module,exports){
+},{"lodash._getnative":388,"lodash.isarguments":389,"lodash.isarray":386}],388:[function(require,module,exports){
 /**
  * lodash 3.9.1 (Custom Build) <https://lodash.com/>
  * Build: `lodash modern modularize exports="npm" -o ./`
@@ -122024,7 +122178,7 @@ function isNative(value) {
 
 module.exports = getNative;
 
-},{}],387:[function(require,module,exports){
+},{}],389:[function(require,module,exports){
 /**
  * lodash 3.0.4 (Custom Build) <https://lodash.com/>
  * Build: `lodash modern modularize exports="npm" -o ./`
@@ -122132,19 +122286,15 @@ function isArguments(value) {
 
 module.exports = isArguments;
 
-},{}],388:[function(require,module,exports){
-arguments[4][277][0].apply(exports,arguments)
-},{"./lib/loader":391,"./minecraft-data/data/1.8/biomes":392,"./minecraft-data/data/1.8/blocks":393,"./minecraft-data/data/1.8/effects":394,"./minecraft-data/data/1.8/entities":395,"./minecraft-data/data/1.8/instruments":396,"./minecraft-data/data/1.8/items":397,"./minecraft-data/data/1.8/materials":398,"./minecraft-data/data/1.8/protocol":399,"./minecraft-data/data/1.8/recipes":400,"./minecraft-data/data/1.8/version":401,"./minecraft-data/data/1.8/windows":402,"./minecraft-data/data/1.9/biomes":403,"./minecraft-data/data/1.9/blocks":404,"./minecraft-data/data/1.9/effects":405,"./minecraft-data/data/1.9/entities":406,"./minecraft-data/data/1.9/instruments":407,"./minecraft-data/data/1.9/items":408,"./minecraft-data/data/1.9/materials":409,"./minecraft-data/data/1.9/protocol":410,"./minecraft-data/data/1.9/recipes":411,"./minecraft-data/data/1.9/version":412,"./minecraft-data/data/1.9/windows":413,"dup":277}],389:[function(require,module,exports){
-arguments[4][278][0].apply(exports,arguments)
-},{"dup":278}],390:[function(require,module,exports){
+},{}],390:[function(require,module,exports){
 arguments[4][279][0].apply(exports,arguments)
-},{"./indexer.js":389,"dup":279}],391:[function(require,module,exports){
+},{"./lib/loader":393,"./minecraft-data/data/1.8/biomes":394,"./minecraft-data/data/1.8/blocks":395,"./minecraft-data/data/1.8/effects":396,"./minecraft-data/data/1.8/entities":397,"./minecraft-data/data/1.8/instruments":398,"./minecraft-data/data/1.8/items":399,"./minecraft-data/data/1.8/materials":400,"./minecraft-data/data/1.8/protocol":401,"./minecraft-data/data/1.8/recipes":402,"./minecraft-data/data/1.8/version":403,"./minecraft-data/data/1.8/windows":404,"./minecraft-data/data/1.9/biomes":405,"./minecraft-data/data/1.9/blocks":406,"./minecraft-data/data/1.9/effects":407,"./minecraft-data/data/1.9/entities":408,"./minecraft-data/data/1.9/instruments":409,"./minecraft-data/data/1.9/items":410,"./minecraft-data/data/1.9/materials":411,"./minecraft-data/data/1.9/protocol":412,"./minecraft-data/data/1.9/recipes":413,"./minecraft-data/data/1.9/version":414,"./minecraft-data/data/1.9/windows":415,"dup":279}],391:[function(require,module,exports){
 arguments[4][280][0].apply(exports,arguments)
-},{"./indexes.js":390,"dup":280}],392:[function(require,module,exports){
+},{"dup":280}],392:[function(require,module,exports){
 arguments[4][281][0].apply(exports,arguments)
-},{"dup":281}],393:[function(require,module,exports){
+},{"./indexer.js":391,"dup":281}],393:[function(require,module,exports){
 arguments[4][282][0].apply(exports,arguments)
-},{"dup":282}],394:[function(require,module,exports){
+},{"./indexes.js":392,"dup":282}],394:[function(require,module,exports){
 arguments[4][283][0].apply(exports,arguments)
 },{"dup":283}],395:[function(require,module,exports){
 arguments[4][284][0].apply(exports,arguments)
@@ -122163,28 +122313,32 @@ arguments[4][290][0].apply(exports,arguments)
 },{"dup":290}],402:[function(require,module,exports){
 arguments[4][291][0].apply(exports,arguments)
 },{"dup":291}],403:[function(require,module,exports){
-arguments[4][281][0].apply(exports,arguments)
-},{"dup":281}],404:[function(require,module,exports){
+arguments[4][292][0].apply(exports,arguments)
+},{"dup":292}],404:[function(require,module,exports){
 arguments[4][293][0].apply(exports,arguments)
 },{"dup":293}],405:[function(require,module,exports){
-arguments[4][294][0].apply(exports,arguments)
-},{"dup":294}],406:[function(require,module,exports){
-arguments[4][284][0].apply(exports,arguments)
-},{"dup":284}],407:[function(require,module,exports){
-arguments[4][285][0].apply(exports,arguments)
-},{"dup":285}],408:[function(require,module,exports){
-arguments[4][297][0].apply(exports,arguments)
-},{"dup":297}],409:[function(require,module,exports){
+arguments[4][283][0].apply(exports,arguments)
+},{"dup":283}],406:[function(require,module,exports){
+arguments[4][295][0].apply(exports,arguments)
+},{"dup":295}],407:[function(require,module,exports){
+arguments[4][296][0].apply(exports,arguments)
+},{"dup":296}],408:[function(require,module,exports){
+arguments[4][286][0].apply(exports,arguments)
+},{"dup":286}],409:[function(require,module,exports){
 arguments[4][287][0].apply(exports,arguments)
 },{"dup":287}],410:[function(require,module,exports){
 arguments[4][299][0].apply(exports,arguments)
 },{"dup":299}],411:[function(require,module,exports){
-arguments[4][300][0].apply(exports,arguments)
-},{"dup":300}],412:[function(require,module,exports){
+arguments[4][289][0].apply(exports,arguments)
+},{"dup":289}],412:[function(require,module,exports){
 arguments[4][301][0].apply(exports,arguments)
 },{"dup":301}],413:[function(require,module,exports){
-arguments[4][291][0].apply(exports,arguments)
-},{"dup":291}],414:[function(require,module,exports){
+arguments[4][302][0].apply(exports,arguments)
+},{"dup":302}],414:[function(require,module,exports){
+arguments[4][303][0].apply(exports,arguments)
+},{"dup":303}],415:[function(require,module,exports){
+arguments[4][293][0].apply(exports,arguments)
+},{"dup":293}],416:[function(require,module,exports){
 (function (Buffer){
 //     uuid.js
 //
@@ -122460,7 +122614,7 @@ arguments[4][291][0].apply(exports,arguments)
 })('undefined' !== typeof window ? window : null);
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":17,"crypto":21}],415:[function(require,module,exports){
+},{"buffer":17,"crypto":21}],417:[function(require,module,exports){
 module.exports= {
   'compound':[readCompound,writeCompound,sizeOfCompound]
 };
@@ -122517,7 +122671,7 @@ function sizeOfCompound(value,typeArgs,rootNode)
   },0);
   return 1+size;
 }
-},{}],416:[function(require,module,exports){
+},{}],418:[function(require,module,exports){
 module.exports={
   "container": "native",
   "byte": "native",
@@ -122622,7 +122776,7 @@ module.exports={
     ]
   ]
 }
-},{}],417:[function(require,module,exports){
+},{}],419:[function(require,module,exports){
 var zlib = require('zlib');
 
 var hasGzipHeader = function(data){
@@ -122666,7 +122820,7 @@ module.exports={
   parse:parse,
   proto:proto
 };
-},{"./compound":415,"./nbt.json":416,"protodef":426,"zlib":16}],418:[function(require,module,exports){
+},{"./compound":417,"./nbt.json":418,"protodef":428,"zlib":16}],420:[function(require,module,exports){
 'use strict';
 
 var _require = require('../utils');
@@ -122771,7 +122925,7 @@ function sizeOfOption(value, typeArgs, context) {
 }
 
 
-},{"../utils":425}],419:[function(require,module,exports){
+},{"../utils":427}],421:[function(require,module,exports){
 "use strict";
 
 var _Object$keys = require("babel-runtime/core-js/object/keys")["default"];
@@ -122825,7 +122979,7 @@ types["long"] = [readLong, writeLong, 8];
 module.exports = types;
 
 
-},{"babel-runtime/core-js/object/keys":318}],420:[function(require,module,exports){
+},{"babel-runtime/core-js/object/keys":320}],422:[function(require,module,exports){
 'use strict';
 
 var _Object$keys = require('babel-runtime/core-js/object/keys')['default'];
@@ -123004,7 +123158,7 @@ function sizeOfCount(value, typeArgs, rootNode) {
 }
 
 
-},{"../utils":425,"babel-runtime/core-js/object/keys":318}],421:[function(require,module,exports){
+},{"../utils":427,"babel-runtime/core-js/object/keys":320}],423:[function(require,module,exports){
 (function (Buffer){
 'use strict';
 
@@ -123293,7 +123447,7 @@ function sizeOfCString(value) {
 
 
 }).call(this,require("buffer").Buffer)
-},{"../utils":425,"assert":2,"babel-runtime/core-js/object/keys":318,"buffer":17}],422:[function(require,module,exports){
+},{"../utils":427,"assert":2,"babel-runtime/core-js/object/keys":320,"buffer":17}],424:[function(require,module,exports){
 "use strict";
 
 var ProtoDef = require("./protodef");
@@ -123308,7 +123462,7 @@ module.exports = {
 };
 
 
-},{"./protodef":423,"./serializer":424,"./utils":425}],423:[function(require,module,exports){
+},{"./protodef":425,"./serializer":426,"./utils":427}],425:[function(require,module,exports){
 (function (Buffer){
 'use strict';
 
@@ -123490,7 +123644,7 @@ module.exports = ProtoDef;
 
 
 }).call(this,require("buffer").Buffer)
-},{"./datatypes/conditional":418,"./datatypes/numeric":419,"./datatypes/structures":420,"./datatypes/utils":421,"./utils":425,"babel-runtime/core-js/object/keys":318,"babel-runtime/helpers/class-call-check":320,"babel-runtime/helpers/create-class":321,"buffer":17,"lodash.reduce":376}],424:[function(require,module,exports){
+},{"./datatypes/conditional":420,"./datatypes/numeric":421,"./datatypes/structures":422,"./datatypes/utils":423,"./utils":427,"babel-runtime/core-js/object/keys":320,"babel-runtime/helpers/class-call-check":322,"babel-runtime/helpers/create-class":323,"buffer":17,"lodash.reduce":378}],426:[function(require,module,exports){
 "use strict";
 
 var _get = require("babel-runtime/helpers/get")["default"];
@@ -123574,7 +123728,7 @@ module.exports = {
 };
 
 
-},{"babel-runtime/helpers/class-call-check":320,"babel-runtime/helpers/create-class":321,"babel-runtime/helpers/get":322,"babel-runtime/helpers/inherits":323,"readable-stream":445}],425:[function(require,module,exports){
+},{"babel-runtime/helpers/class-call-check":322,"babel-runtime/helpers/create-class":323,"babel-runtime/helpers/get":324,"babel-runtime/helpers/inherits":325,"readable-stream":447}],427:[function(require,module,exports){
 "use strict";
 
 module.exports = {
@@ -123614,10 +123768,10 @@ function tryCatch(tryfn, catchfn) {
 }
 
 
-},{}],426:[function(require,module,exports){
+},{}],428:[function(require,module,exports){
 module.exports = require('./dist/index.js');
 
-},{"./dist/index.js":422}],427:[function(require,module,exports){
+},{"./dist/index.js":424}],429:[function(require,module,exports){
 'use strict';
 
 var _objectWithoutProperties = require('babel-runtime/helpers/object-without-properties')['default'];
@@ -123710,9 +123864,9 @@ function sizeOfOption(value, typeArgs, context) {
 }
 
 
-},{"../utils":434,"babel-runtime/helpers/object-without-properties":324}],428:[function(require,module,exports){
-arguments[4][419][0].apply(exports,arguments)
-},{"babel-runtime/core-js/object/keys":318,"dup":419}],429:[function(require,module,exports){
+},{"../utils":436,"babel-runtime/helpers/object-without-properties":326}],430:[function(require,module,exports){
+arguments[4][421][0].apply(exports,arguments)
+},{"babel-runtime/core-js/object/keys":320,"dup":421}],431:[function(require,module,exports){
 'use strict';
 
 var _Object$keys = require('babel-runtime/core-js/object/keys')['default'];
@@ -123896,7 +124050,7 @@ function sizeOfCount(value, _ref9, rootNode) {
 }
 
 
-},{"../utils":434,"babel-runtime/core-js/object/keys":318}],430:[function(require,module,exports){
+},{"../utils":436,"babel-runtime/core-js/object/keys":320}],432:[function(require,module,exports){
 (function (Buffer){
 'use strict';
 
@@ -124220,9 +124374,9 @@ function sizeOfCString(value) {
 
 
 }).call(this,require("buffer").Buffer)
-},{"../utils":434,"assert":2,"babel-runtime/core-js/object/keys":318,"buffer":17}],431:[function(require,module,exports){
-arguments[4][422][0].apply(exports,arguments)
-},{"./protodef":432,"./serializer":433,"./utils":434,"dup":422}],432:[function(require,module,exports){
+},{"../utils":436,"assert":2,"babel-runtime/core-js/object/keys":320,"buffer":17}],433:[function(require,module,exports){
+arguments[4][424][0].apply(exports,arguments)
+},{"./protodef":434,"./serializer":435,"./utils":436,"dup":424}],434:[function(require,module,exports){
 (function (Buffer){
 'use strict';
 
@@ -124423,9 +124577,9 @@ module.exports = ProtoDef;
 
 
 }).call(this,require("buffer").Buffer)
-},{"./datatypes/conditional":427,"./datatypes/numeric":428,"./datatypes/structures":429,"./datatypes/utils":430,"./utils":434,"babel-runtime/core-js/object/keys":318,"babel-runtime/helpers/class-call-check":320,"babel-runtime/helpers/create-class":321,"buffer":17,"lodash.reduce":376}],433:[function(require,module,exports){
-arguments[4][424][0].apply(exports,arguments)
-},{"babel-runtime/helpers/class-call-check":320,"babel-runtime/helpers/create-class":321,"babel-runtime/helpers/get":322,"babel-runtime/helpers/inherits":323,"dup":424,"readable-stream":445}],434:[function(require,module,exports){
+},{"./datatypes/conditional":429,"./datatypes/numeric":430,"./datatypes/structures":431,"./datatypes/utils":432,"./utils":436,"babel-runtime/core-js/object/keys":320,"babel-runtime/helpers/class-call-check":322,"babel-runtime/helpers/create-class":323,"buffer":17,"lodash.reduce":378}],435:[function(require,module,exports){
+arguments[4][426][0].apply(exports,arguments)
+},{"babel-runtime/helpers/class-call-check":322,"babel-runtime/helpers/create-class":323,"babel-runtime/helpers/get":324,"babel-runtime/helpers/inherits":325,"dup":426,"readable-stream":447}],436:[function(require,module,exports){
 "use strict";
 
 module.exports = {
@@ -124471,9 +124625,9 @@ function tryDoc(tryfn, field) {
 }
 
 
-},{}],435:[function(require,module,exports){
-arguments[4][426][0].apply(exports,arguments)
-},{"./dist/index.js":431,"dup":426}],436:[function(require,module,exports){
+},{}],437:[function(require,module,exports){
+arguments[4][428][0].apply(exports,arguments)
+},{"./dist/index.js":433,"dup":428}],438:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -124566,7 +124720,7 @@ function forEach (xs, f) {
 }
 
 }).call(this,require('_process'))
-},{"./_stream_readable":438,"./_stream_writable":440,"_process":218,"core-util-is":441,"inherits":442}],437:[function(require,module,exports){
+},{"./_stream_readable":440,"./_stream_writable":442,"_process":219,"core-util-is":443,"inherits":444}],439:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -124614,7 +124768,7 @@ PassThrough.prototype._transform = function(chunk, encoding, cb) {
   cb(null, chunk);
 };
 
-},{"./_stream_transform":439,"core-util-is":441,"inherits":442}],438:[function(require,module,exports){
+},{"./_stream_transform":441,"core-util-is":443,"inherits":444}],440:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -125569,7 +125723,7 @@ function indexOf (xs, x) {
 }
 
 }).call(this,require('_process'))
-},{"./_stream_duplex":436,"_process":218,"buffer":17,"core-util-is":441,"events":213,"inherits":442,"isarray":443,"stream":232,"string_decoder/":444,"util":3}],439:[function(require,module,exports){
+},{"./_stream_duplex":438,"_process":219,"buffer":17,"core-util-is":443,"events":213,"inherits":444,"isarray":445,"stream":233,"string_decoder/":446,"util":3}],441:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -125780,7 +125934,7 @@ function done(stream, er) {
   return stream.push(null);
 }
 
-},{"./_stream_duplex":436,"core-util-is":441,"inherits":442}],440:[function(require,module,exports){
+},{"./_stream_duplex":438,"core-util-is":443,"inherits":444}],442:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -126261,7 +126415,7 @@ function endWritable(stream, state, cb) {
 }
 
 }).call(this,require('_process'))
-},{"./_stream_duplex":436,"_process":218,"buffer":17,"core-util-is":441,"inherits":442,"stream":232}],441:[function(require,module,exports){
+},{"./_stream_duplex":438,"_process":219,"buffer":17,"core-util-is":443,"inherits":444,"stream":233}],443:[function(require,module,exports){
 (function (Buffer){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -126372,13 +126526,13 @@ function objectToString(o) {
 }
 
 }).call(this,{"isBuffer":require("../../../../../../../../../../.nvm/versions/node/v4.2.4/lib/node_modules/browserify/node_modules/insert-module-globals/node_modules/is-buffer/index.js")})
-},{"../../../../../../../../../../.nvm/versions/node/v4.2.4/lib/node_modules/browserify/node_modules/insert-module-globals/node_modules/is-buffer/index.js":215}],442:[function(require,module,exports){
+},{"../../../../../../../../../../.nvm/versions/node/v4.2.4/lib/node_modules/browserify/node_modules/insert-module-globals/node_modules/is-buffer/index.js":215}],444:[function(require,module,exports){
 arguments[4][214][0].apply(exports,arguments)
-},{"dup":214}],443:[function(require,module,exports){
+},{"dup":214}],445:[function(require,module,exports){
 arguments[4][216][0].apply(exports,arguments)
-},{"dup":216}],444:[function(require,module,exports){
-arguments[4][233][0].apply(exports,arguments)
-},{"buffer":17,"dup":233}],445:[function(require,module,exports){
+},{"dup":216}],446:[function(require,module,exports){
+arguments[4][234][0].apply(exports,arguments)
+},{"buffer":17,"dup":234}],447:[function(require,module,exports){
 exports = module.exports = require('./lib/_stream_readable.js');
 exports.Stream = require('stream');
 exports.Readable = exports;
@@ -126387,7 +126541,7 @@ exports.Duplex = require('./lib/_stream_duplex.js');
 exports.Transform = require('./lib/_stream_transform.js');
 exports.PassThrough = require('./lib/_stream_passthrough.js');
 
-},{"./lib/_stream_duplex.js":436,"./lib/_stream_passthrough.js":437,"./lib/_stream_readable.js":438,"./lib/_stream_transform.js":439,"./lib/_stream_writable.js":440,"stream":232}],446:[function(require,module,exports){
+},{"./lib/_stream_duplex.js":438,"./lib/_stream_passthrough.js":439,"./lib/_stream_readable.js":440,"./lib/_stream_transform.js":441,"./lib/_stream_writable.js":442,"stream":233}],448:[function(require,module,exports){
 (function (process){
 /* parser generated by jison 0.4.15 */
 /*
@@ -127078,7 +127232,7 @@ if (typeof module !== 'undefined' && require.main === module) {
 }
 }
 }).call(this,require('_process'))
-},{"_process":218,"fs":1,"path":217}],447:[function(require,module,exports){
+},{"_process":219,"fs":1,"path":218}],449:[function(require,module,exports){
 var parser = require("./grammar").parser;
 
 module.exports={parse:function(text){
@@ -127091,7 +127245,7 @@ module.exports={parse:function(text){
   }
 }};
 
-},{"./grammar":446}],448:[function(require,module,exports){
+},{"./grammar":448}],450:[function(require,module,exports){
 module.exports = loader;
 
 function loader(mcVersion)
@@ -127120,7 +127274,7 @@ function Biome(id) {
   }
 }
 
-},{"minecraft-data":277}],449:[function(require,module,exports){
+},{"minecraft-data":279}],451:[function(require,module,exports){
 module.exports = loader;
 
 function loader(mcVersion)
@@ -127196,7 +127350,7 @@ Block.prototype.digTime = function(heldItemType,creative, inWater, notOnGround) 
   return time;
 };
 
-},{"minecraft-data":277,"prismarine-biome":448}],450:[function(require,module,exports){
+},{"minecraft-data":279,"prismarine-biome":450}],452:[function(require,module,exports){
 var Vec3 = require('vec3').Vec3;
 
 module.exports = Entity;
@@ -127223,7 +127377,7 @@ Entity.prototype.setEquipment = function(index, item) {
   this.heldItem = this.equipment[0];
 };
 
-},{"vec3":458}],451:[function(require,module,exports){
+},{"vec3":525}],453:[function(require,module,exports){
 (function (Buffer){
 module.exports = loader;
 
@@ -127289,7 +127443,7 @@ Item.fromNotch = function(item) {
 };
 
 }).call(this,require("buffer").Buffer)
-},{"assert":2,"buffer":17,"minecraft-data":277}],452:[function(require,module,exports){
+},{"assert":2,"buffer":17,"minecraft-data":279}],454:[function(require,module,exports){
 function loader(mcVersion)
 {
   return {
@@ -127299,7 +127453,7 @@ function loader(mcVersion)
 }
 
 module.exports=loader;
-},{"./lib/recipe":453,"./lib/recipe_item":454}],453:[function(require,module,exports){
+},{"./lib/recipe":455,"./lib/recipe_item":456}],455:[function(require,module,exports){
 var recipes ;
 var RecipeItem = require('./recipe_item');
 
@@ -127418,7 +127572,7 @@ function reformatIngredients(ingredients) {
   return out;
 }
 
-},{"./recipe_item":454,"minecraft-data":277}],454:[function(require,module,exports){
+},{"./recipe_item":456,"minecraft-data":279}],456:[function(require,module,exports){
 module.exports = RecipeItem;
 
 function RecipeItem(id, metadata, count) {
@@ -127443,7 +127597,7 @@ RecipeItem.fromEnum = function(itemFromRecipeEnum) {
 RecipeItem.clone = function(recipeItem) {
   return new RecipeItem(recipeItem.id, recipeItem.metadata, recipeItem.count);
 };
-},{}],455:[function(require,module,exports){
+},{}],457:[function(require,module,exports){
 function loader(mcVersion)
 {
   return {
@@ -127452,7 +127606,7 @@ function loader(mcVersion)
 }
 
 module.exports=loader;
-},{"./lib/windows":456}],456:[function(require,module,exports){
+},{"./lib/windows":458}],458:[function(require,module,exports){
 var util = require('util');
 var assert = require('assert');
 var EventEmitter = require("events").EventEmitter;
@@ -127870,12 +128024,531 @@ ContainerWindow.prototype.transactionRequiresConfirmation = function(click) {
   return false;
 };
 
-},{"assert":2,"events":213,"prismarine-item":451,"util":235}],457:[function(require,module,exports){
+},{"assert":2,"events":213,"prismarine-item":453,"util":236}],459:[function(require,module,exports){
+arguments[4][429][0].apply(exports,arguments)
+},{"../utils":466,"babel-runtime/helpers/object-without-properties":477,"dup":429}],460:[function(require,module,exports){
+arguments[4][421][0].apply(exports,arguments)
+},{"babel-runtime/core-js/object/keys":471,"dup":421}],461:[function(require,module,exports){
+arguments[4][431][0].apply(exports,arguments)
+},{"../utils":466,"babel-runtime/core-js/object/keys":471,"dup":431}],462:[function(require,module,exports){
+arguments[4][432][0].apply(exports,arguments)
+},{"../utils":466,"assert":2,"babel-runtime/core-js/object/keys":471,"buffer":17,"dup":432}],463:[function(require,module,exports){
+arguments[4][424][0].apply(exports,arguments)
+},{"./protodef":464,"./serializer":465,"./utils":466,"dup":424}],464:[function(require,module,exports){
+arguments[4][434][0].apply(exports,arguments)
+},{"./datatypes/conditional":459,"./datatypes/numeric":460,"./datatypes/structures":461,"./datatypes/utils":462,"./utils":466,"babel-runtime/core-js/object/keys":471,"babel-runtime/helpers/class-call-check":473,"babel-runtime/helpers/create-class":474,"buffer":17,"dup":434,"lodash.reduce":502}],465:[function(require,module,exports){
+arguments[4][426][0].apply(exports,arguments)
+},{"babel-runtime/helpers/class-call-check":473,"babel-runtime/helpers/create-class":474,"babel-runtime/helpers/get":475,"babel-runtime/helpers/inherits":476,"dup":426,"readable-stream":523}],466:[function(require,module,exports){
+arguments[4][436][0].apply(exports,arguments)
+},{"dup":436}],467:[function(require,module,exports){
+arguments[4][428][0].apply(exports,arguments)
+},{"./dist/index.js":463,"dup":428}],468:[function(require,module,exports){
+arguments[4][317][0].apply(exports,arguments)
+},{"core-js/library/fn/object/create":478,"dup":317}],469:[function(require,module,exports){
+arguments[4][318][0].apply(exports,arguments)
+},{"core-js/library/fn/object/define-property":479,"dup":318}],470:[function(require,module,exports){
+arguments[4][319][0].apply(exports,arguments)
+},{"core-js/library/fn/object/get-own-property-descriptor":480,"dup":319}],471:[function(require,module,exports){
+arguments[4][320][0].apply(exports,arguments)
+},{"core-js/library/fn/object/keys":481,"dup":320}],472:[function(require,module,exports){
+arguments[4][321][0].apply(exports,arguments)
+},{"core-js/library/fn/object/set-prototype-of":482,"dup":321}],473:[function(require,module,exports){
+arguments[4][322][0].apply(exports,arguments)
+},{"dup":322}],474:[function(require,module,exports){
+arguments[4][323][0].apply(exports,arguments)
+},{"babel-runtime/core-js/object/define-property":469,"dup":323}],475:[function(require,module,exports){
+arguments[4][324][0].apply(exports,arguments)
+},{"babel-runtime/core-js/object/get-own-property-descriptor":470,"dup":324}],476:[function(require,module,exports){
+arguments[4][325][0].apply(exports,arguments)
+},{"babel-runtime/core-js/object/create":468,"babel-runtime/core-js/object/set-prototype-of":472,"dup":325}],477:[function(require,module,exports){
+arguments[4][326][0].apply(exports,arguments)
+},{"dup":326}],478:[function(require,module,exports){
+arguments[4][330][0].apply(exports,arguments)
+},{"../../modules/$":494,"dup":330}],479:[function(require,module,exports){
+arguments[4][331][0].apply(exports,arguments)
+},{"../../modules/$":494,"dup":331}],480:[function(require,module,exports){
+arguments[4][332][0].apply(exports,arguments)
+},{"../../modules/$":494,"../../modules/es6.object.get-own-property-descriptor":499,"dup":332}],481:[function(require,module,exports){
+arguments[4][333][0].apply(exports,arguments)
+},{"../../modules/$.core":486,"../../modules/es6.object.keys":500,"dup":333}],482:[function(require,module,exports){
+arguments[4][334][0].apply(exports,arguments)
+},{"../../modules/$.core":486,"../../modules/es6.object.set-prototype-of":501,"dup":334}],483:[function(require,module,exports){
+arguments[4][335][0].apply(exports,arguments)
+},{"dup":335}],484:[function(require,module,exports){
+arguments[4][337][0].apply(exports,arguments)
+},{"./$.is-object":493,"dup":337}],485:[function(require,module,exports){
+arguments[4][339][0].apply(exports,arguments)
+},{"dup":339}],486:[function(require,module,exports){
+arguments[4][340][0].apply(exports,arguments)
+},{"dup":340}],487:[function(require,module,exports){
+arguments[4][341][0].apply(exports,arguments)
+},{"./$.a-function":483,"dup":341}],488:[function(require,module,exports){
+arguments[4][342][0].apply(exports,arguments)
+},{"dup":342}],489:[function(require,module,exports){
+arguments[4][344][0].apply(exports,arguments)
+},{"./$.core":486,"./$.ctx":487,"./$.global":491,"dup":344}],490:[function(require,module,exports){
+arguments[4][345][0].apply(exports,arguments)
+},{"dup":345}],491:[function(require,module,exports){
+arguments[4][346][0].apply(exports,arguments)
+},{"dup":346}],492:[function(require,module,exports){
+arguments[4][349][0].apply(exports,arguments)
+},{"./$.cof":485,"dup":349}],493:[function(require,module,exports){
+arguments[4][350][0].apply(exports,arguments)
+},{"dup":350}],494:[function(require,module,exports){
+arguments[4][355][0].apply(exports,arguments)
+},{"dup":355}],495:[function(require,module,exports){
+arguments[4][357][0].apply(exports,arguments)
+},{"./$.core":486,"./$.export":489,"./$.fails":490,"dup":357}],496:[function(require,module,exports){
+arguments[4][360][0].apply(exports,arguments)
+},{"./$":494,"./$.an-object":484,"./$.ctx":487,"./$.is-object":493,"dup":360}],497:[function(require,module,exports){
+arguments[4][365][0].apply(exports,arguments)
+},{"./$.defined":488,"./$.iobject":492,"dup":365}],498:[function(require,module,exports){
+arguments[4][366][0].apply(exports,arguments)
+},{"./$.defined":488,"dup":366}],499:[function(require,module,exports){
+arguments[4][373][0].apply(exports,arguments)
+},{"./$.object-sap":495,"./$.to-iobject":497,"dup":373}],500:[function(require,module,exports){
+arguments[4][374][0].apply(exports,arguments)
+},{"./$.object-sap":495,"./$.to-object":498,"dup":374}],501:[function(require,module,exports){
+arguments[4][375][0].apply(exports,arguments)
+},{"./$.export":489,"./$.set-proto":496,"dup":375}],502:[function(require,module,exports){
+arguments[4][378][0].apply(exports,arguments)
+},{"dup":378,"lodash._basecallback":503,"lodash._baseeach":508,"lodash._basereduce":509,"lodash.isarray":510}],503:[function(require,module,exports){
+arguments[4][379][0].apply(exports,arguments)
+},{"dup":379,"lodash._baseisequal":504,"lodash._bindcallback":506,"lodash.isarray":510,"lodash.pairs":507}],504:[function(require,module,exports){
+arguments[4][380][0].apply(exports,arguments)
+},{"dup":380,"lodash.isarray":510,"lodash.istypedarray":505,"lodash.keys":511}],505:[function(require,module,exports){
+(function (global){
+/**
+ * lodash 3.0.3 (Custom Build) <https://lodash.com/>
+ * Build: `lodash modularize exports="npm" -o ./`
+ * Copyright 2012-2016 The Dojo Foundation <http://dojofoundation.org/>
+ * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+ * Copyright 2009-2016 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ * Available under MIT license <https://lodash.com/license>
+ */
+
+/** Used as references for various `Number` constants. */
+var MAX_SAFE_INTEGER = 9007199254740991;
+
+/** `Object#toString` result references. */
+var argsTag = '[object Arguments]',
+    arrayTag = '[object Array]',
+    boolTag = '[object Boolean]',
+    dateTag = '[object Date]',
+    errorTag = '[object Error]',
+    funcTag = '[object Function]',
+    mapTag = '[object Map]',
+    numberTag = '[object Number]',
+    objectTag = '[object Object]',
+    regexpTag = '[object RegExp]',
+    setTag = '[object Set]',
+    stringTag = '[object String]',
+    weakMapTag = '[object WeakMap]';
+
+var arrayBufferTag = '[object ArrayBuffer]',
+    float32Tag = '[object Float32Array]',
+    float64Tag = '[object Float64Array]',
+    int8Tag = '[object Int8Array]',
+    int16Tag = '[object Int16Array]',
+    int32Tag = '[object Int32Array]',
+    uint8Tag = '[object Uint8Array]',
+    uint8ClampedTag = '[object Uint8ClampedArray]',
+    uint16Tag = '[object Uint16Array]',
+    uint32Tag = '[object Uint32Array]';
+
+/** Used to identify `toStringTag` values of typed arrays. */
+var typedArrayTags = {};
+typedArrayTags[float32Tag] = typedArrayTags[float64Tag] =
+typedArrayTags[int8Tag] = typedArrayTags[int16Tag] =
+typedArrayTags[int32Tag] = typedArrayTags[uint8Tag] =
+typedArrayTags[uint8ClampedTag] = typedArrayTags[uint16Tag] =
+typedArrayTags[uint32Tag] = true;
+typedArrayTags[argsTag] = typedArrayTags[arrayTag] =
+typedArrayTags[arrayBufferTag] = typedArrayTags[boolTag] =
+typedArrayTags[dateTag] = typedArrayTags[errorTag] =
+typedArrayTags[funcTag] = typedArrayTags[mapTag] =
+typedArrayTags[numberTag] = typedArrayTags[objectTag] =
+typedArrayTags[regexpTag] = typedArrayTags[setTag] =
+typedArrayTags[stringTag] = typedArrayTags[weakMapTag] = false;
+
+/** Used for built-in method references. */
+var objectProto = global.Object.prototype;
+
+/**
+ * Used to resolve the [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
+ * of values.
+ */
+var objectToString = objectProto.toString;
+
+/**
+ * Checks if `value` is a valid array-like length.
+ *
+ * **Note:** This function is loosely based on [`ToLength`](http://ecma-international.org/ecma-262/6.0/#sec-tolength).
+ *
+ * @static
+ * @memberOf _
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
+ * @example
+ *
+ * _.isLength(3);
+ * // => true
+ *
+ * _.isLength(Number.MIN_VALUE);
+ * // => false
+ *
+ * _.isLength(Infinity);
+ * // => false
+ *
+ * _.isLength('3');
+ * // => false
+ */
+function isLength(value) {
+  return typeof value == 'number' && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
+}
+
+/**
+ * Checks if `value` is object-like. A value is object-like if it's not `null`
+ * and has a `typeof` result of "object".
+ *
+ * @static
+ * @memberOf _
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+ * @example
+ *
+ * _.isObjectLike({});
+ * // => true
+ *
+ * _.isObjectLike([1, 2, 3]);
+ * // => true
+ *
+ * _.isObjectLike(_.noop);
+ * // => false
+ *
+ * _.isObjectLike(null);
+ * // => false
+ */
+function isObjectLike(value) {
+  return !!value && typeof value == 'object';
+}
+
+/**
+ * Checks if `value` is classified as a typed array.
+ *
+ * @static
+ * @memberOf _
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+ * @example
+ *
+ * _.isTypedArray(new Uint8Array);
+ * // => true
+ *
+ * _.isTypedArray([]);
+ * // => false
+ */
+function isTypedArray(value) {
+  return isObjectLike(value) && isLength(value.length) && !!typedArrayTags[objectToString.call(value)];
+}
+
+module.exports = isTypedArray;
+
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{}],506:[function(require,module,exports){
+arguments[4][382][0].apply(exports,arguments)
+},{"dup":382}],507:[function(require,module,exports){
+arguments[4][383][0].apply(exports,arguments)
+},{"dup":383,"lodash.keys":511}],508:[function(require,module,exports){
+arguments[4][384][0].apply(exports,arguments)
+},{"dup":384,"lodash.keys":511}],509:[function(require,module,exports){
+arguments[4][385][0].apply(exports,arguments)
+},{"dup":385}],510:[function(require,module,exports){
+arguments[4][386][0].apply(exports,arguments)
+},{"dup":386}],511:[function(require,module,exports){
+arguments[4][387][0].apply(exports,arguments)
+},{"dup":387,"lodash._getnative":512,"lodash.isarguments":513,"lodash.isarray":510}],512:[function(require,module,exports){
+arguments[4][388][0].apply(exports,arguments)
+},{"dup":388}],513:[function(require,module,exports){
+(function (global){
+/**
+ * lodash 3.0.5 (Custom Build) <https://lodash.com/>
+ * Build: `lodash modularize exports="npm" -o ./`
+ * Copyright 2012-2016 The Dojo Foundation <http://dojofoundation.org/>
+ * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+ * Copyright 2009-2016 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ * Available under MIT license <https://lodash.com/license>
+ */
+
+/** Used as references for various `Number` constants. */
+var MAX_SAFE_INTEGER = 9007199254740991;
+
+/** `Object#toString` result references. */
+var argsTag = '[object Arguments]',
+    funcTag = '[object Function]',
+    genTag = '[object GeneratorFunction]';
+
+/** Used for built-in method references. */
+var objectProto = global.Object.prototype;
+
+/** Used to check objects for own properties. */
+var hasOwnProperty = objectProto.hasOwnProperty;
+
+/**
+ * Used to resolve the [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
+ * of values.
+ */
+var objectToString = objectProto.toString;
+
+/** Built-in value references. */
+var propertyIsEnumerable = objectProto.propertyIsEnumerable;
+
+/**
+ * The base implementation of `_.property` without support for deep paths.
+ *
+ * @private
+ * @param {string} key The key of the property to get.
+ * @returns {Function} Returns the new function.
+ */
+function baseProperty(key) {
+  return function(object) {
+    return object == null ? undefined : object[key];
+  };
+}
+
+/**
+ * Gets the "length" property value of `object`.
+ *
+ * **Note:** This function is used to avoid a [JIT bug](https://bugs.webkit.org/show_bug.cgi?id=142792)
+ * that affects Safari on at least iOS 8.1-8.3 ARM64.
+ *
+ * @private
+ * @param {Object} object The object to query.
+ * @returns {*} Returns the "length" value.
+ */
+var getLength = baseProperty('length');
+
+/**
+ * Checks if `value` is likely an `arguments` object.
+ *
+ * @static
+ * @memberOf _
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+ * @example
+ *
+ * _.isArguments(function() { return arguments; }());
+ * // => true
+ *
+ * _.isArguments([1, 2, 3]);
+ * // => false
+ */
+function isArguments(value) {
+  // Safari 8.1 incorrectly makes `arguments.callee` enumerable in strict mode.
+  return isArrayLikeObject(value) && hasOwnProperty.call(value, 'callee') &&
+    (!propertyIsEnumerable.call(value, 'callee') || objectToString.call(value) == argsTag);
+}
+
+/**
+ * Checks if `value` is array-like. A value is considered array-like if it's
+ * not a function and has a `value.length` that's an integer greater than or
+ * equal to `0` and less than or equal to `Number.MAX_SAFE_INTEGER`.
+ *
+ * @static
+ * @memberOf _
+ * @type Function
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is array-like, else `false`.
+ * @example
+ *
+ * _.isArrayLike([1, 2, 3]);
+ * // => true
+ *
+ * _.isArrayLike(document.body.children);
+ * // => true
+ *
+ * _.isArrayLike('abc');
+ * // => true
+ *
+ * _.isArrayLike(_.noop);
+ * // => false
+ */
+function isArrayLike(value) {
+  return value != null &&
+    !(typeof value == 'function' && isFunction(value)) && isLength(getLength(value));
+}
+
+/**
+ * This method is like `_.isArrayLike` except that it also checks if `value`
+ * is an object.
+ *
+ * @static
+ * @memberOf _
+ * @type Function
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an array-like object, else `false`.
+ * @example
+ *
+ * _.isArrayLikeObject([1, 2, 3]);
+ * // => true
+ *
+ * _.isArrayLikeObject(document.body.children);
+ * // => true
+ *
+ * _.isArrayLikeObject('abc');
+ * // => false
+ *
+ * _.isArrayLikeObject(_.noop);
+ * // => false
+ */
+function isArrayLikeObject(value) {
+  return isObjectLike(value) && isArrayLike(value);
+}
+
+/**
+ * Checks if `value` is classified as a `Function` object.
+ *
+ * @static
+ * @memberOf _
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+ * @example
+ *
+ * _.isFunction(_);
+ * // => true
+ *
+ * _.isFunction(/abc/);
+ * // => false
+ */
+function isFunction(value) {
+  // The use of `Object#toString` avoids issues with the `typeof` operator
+  // in Safari 8 which returns 'object' for typed array constructors, and
+  // PhantomJS 1.9 which returns 'function' for `NodeList` instances.
+  var tag = isObject(value) ? objectToString.call(value) : '';
+  return tag == funcTag || tag == genTag;
+}
+
+/**
+ * Checks if `value` is a valid array-like length.
+ *
+ * **Note:** This function is loosely based on [`ToLength`](http://ecma-international.org/ecma-262/6.0/#sec-tolength).
+ *
+ * @static
+ * @memberOf _
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
+ * @example
+ *
+ * _.isLength(3);
+ * // => true
+ *
+ * _.isLength(Number.MIN_VALUE);
+ * // => false
+ *
+ * _.isLength(Infinity);
+ * // => false
+ *
+ * _.isLength('3');
+ * // => false
+ */
+function isLength(value) {
+  return typeof value == 'number' && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
+}
+
+/**
+ * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
+ * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+ *
+ * @static
+ * @memberOf _
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+ * @example
+ *
+ * _.isObject({});
+ * // => true
+ *
+ * _.isObject([1, 2, 3]);
+ * // => true
+ *
+ * _.isObject(_.noop);
+ * // => true
+ *
+ * _.isObject(null);
+ * // => false
+ */
+function isObject(value) {
+  // Avoid a V8 JIT bug in Chrome 19-20.
+  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
+  var type = typeof value;
+  return !!value && (type == 'object' || type == 'function');
+}
+
+/**
+ * Checks if `value` is object-like. A value is object-like if it's not `null`
+ * and has a `typeof` result of "object".
+ *
+ * @static
+ * @memberOf _
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+ * @example
+ *
+ * _.isObjectLike({});
+ * // => true
+ *
+ * _.isObjectLike([1, 2, 3]);
+ * // => true
+ *
+ * _.isObjectLike(_.noop);
+ * // => false
+ *
+ * _.isObjectLike(null);
+ * // => false
+ */
+function isObjectLike(value) {
+  return !!value && typeof value == 'object';
+}
+
+module.exports = isArguments;
+
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{}],514:[function(require,module,exports){
+arguments[4][438][0].apply(exports,arguments)
+},{"./_stream_readable":516,"./_stream_writable":518,"_process":219,"core-util-is":519,"dup":438,"inherits":520}],515:[function(require,module,exports){
+arguments[4][439][0].apply(exports,arguments)
+},{"./_stream_transform":517,"core-util-is":519,"dup":439,"inherits":520}],516:[function(require,module,exports){
+arguments[4][440][0].apply(exports,arguments)
+},{"./_stream_duplex":514,"_process":219,"buffer":17,"core-util-is":519,"dup":440,"events":213,"inherits":520,"isarray":521,"stream":233,"string_decoder/":522,"util":3}],517:[function(require,module,exports){
+arguments[4][441][0].apply(exports,arguments)
+},{"./_stream_duplex":514,"core-util-is":519,"dup":441,"inherits":520}],518:[function(require,module,exports){
+arguments[4][442][0].apply(exports,arguments)
+},{"./_stream_duplex":514,"_process":219,"buffer":17,"core-util-is":519,"dup":442,"inherits":520,"stream":233}],519:[function(require,module,exports){
+arguments[4][443][0].apply(exports,arguments)
+},{"../../../../../../../../../../.nvm/versions/node/v4.2.4/lib/node_modules/browserify/node_modules/insert-module-globals/node_modules/is-buffer/index.js":215,"dup":443}],520:[function(require,module,exports){
+arguments[4][214][0].apply(exports,arguments)
+},{"dup":214}],521:[function(require,module,exports){
+arguments[4][216][0].apply(exports,arguments)
+},{"dup":216}],522:[function(require,module,exports){
+arguments[4][234][0].apply(exports,arguments)
+},{"buffer":17,"dup":234}],523:[function(require,module,exports){
+arguments[4][447][0].apply(exports,arguments)
+},{"./lib/_stream_duplex.js":514,"./lib/_stream_passthrough.js":515,"./lib/_stream_readable.js":516,"./lib/_stream_transform.js":517,"./lib/_stream_writable.js":518,"dup":447,"stream":233}],524:[function(require,module,exports){
 module.exports = function (str) {
     return String(str).replace(/(\W)/g, '\\$1');
 };
 
-},{}],458:[function(require,module,exports){
+},{}],525:[function(require,module,exports){
 module.exports = v;
 v.Vec3 = Vec3;
 
@@ -128003,9 +128676,9 @@ function euclideanMod(numerator, denominator) {
   return result < 0 ? result + denominator : result;
 }
 
-},{}],459:[function(require,module,exports){
-arguments[4][303][0].apply(exports,arguments)
-},{"./dist/browser.js":460,"dup":303}],460:[function(require,module,exports){
+},{}],526:[function(require,module,exports){
+arguments[4][305][0].apply(exports,arguments)
+},{"./dist/browser.js":527,"dup":305}],527:[function(require,module,exports){
 'use strict';
 
 var Client = require('./client');
@@ -128022,52 +128695,480 @@ module.exports = {
 };
 
 
-},{"./client":461,"./server":464,"./states":465,"./transforms/serializer":468,"./version":469}],461:[function(require,module,exports){
-arguments[4][305][0].apply(exports,arguments)
-},{"./debug":463,"./states":465,"./transforms/compression":466,"./transforms/framing":467,"./transforms/serializer":468,"babel-runtime/helpers/class-call-check":477,"babel-runtime/helpers/create-class":478,"babel-runtime/helpers/get":479,"babel-runtime/helpers/inherits":480,"crypto":21,"dup":305,"events":213}],462:[function(require,module,exports){
-arguments[4][306][0].apply(exports,arguments)
-},{"dup":306,"node-uuid":571,"prismarine-nbt":574}],463:[function(require,module,exports){
-arguments[4][307][0].apply(exports,arguments)
-},{"_process":218,"dup":307,"util":235}],464:[function(require,module,exports){
+},{"./client":528,"./server":532,"./states":533,"./transforms/serializer":536,"./version":537}],528:[function(require,module,exports){
 'use strict';
 
-var _get = require('babel-runtime/helpers/get')['default'];
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _inherits = require('babel-runtime/helpers/inherits')['default'];
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var _createClass = require('babel-runtime/helpers/create-class')['default'];
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-var _classCallCheck = require('babel-runtime/helpers/class-call-check')['default'];
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var EventEmitter = require('events').EventEmitter;
+var debug = require('./debug');
+var compression = require('./transforms/compression');
+var framing = require('./transforms/framing');
+var crypto = require('crypto');
+var states = require("./states");
+
+var createSerializer = require("./transforms/serializer").createSerializer;
+var createDeserializer = require("./transforms/serializer").createDeserializer;
+
+var Client = function (_EventEmitter) {
+  _inherits(Client, _EventEmitter);
+
+  function Client(isServer, version) {
+    _classCallCheck(this, Client);
+
+    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Client).call(this));
+
+    _this.version = version;
+    _this.isServer = !!isServer;
+    _this.splitter = framing.createSplitter();
+    _this.setSerializer(states.HANDSHAKING);
+    _this.packetsToParse = {};
+    _this.serializer;
+    _this.compressor = null;
+    _this.framer = framing.createFramer();
+    _this.cipher = null;
+    _this.decipher = null;
+    _this.decompressor = null;
+    _this.deserializer;
+    _this.isServer;
+    _this.protocolState = states.HANDSHAKING;
+    _this.ended = true;
+    _this.latency = 0;
+
+    _this.on('newListener', function (event, listener) {
+      var direction = this.isServer ? 'toServer' : 'toClient';
+      if (typeof this.packetsToParse[event] === "undefined") this.packetsToParse[event] = 1;else this.packetsToParse[event] += 1;
+    });
+    _this.on('removeListener', function (event, listener) {
+      var direction = this.isServer ? 'toServer' : 'toClient';
+      this.packetsToParse[event] -= 1;
+    });
+    return _this;
+  }
+
+  _createClass(Client, [{
+    key: 'setSerializer',
+    value: function setSerializer(state) {
+      var _this2 = this;
+
+      this.serializer = createSerializer({ isServer: this.isServer, version: this.version, state: state });
+      this.deserializer = createDeserializer({ isServer: this.isServer, version: this.version, state: state, packetsToParse: this.packetsToParse });
+
+      this.splitter.recognizeLegacyPing = state === states.HANDSHAKING;
+
+      this.serializer.on('error', function (e) {
+        var parts = e.field.split(".");
+        parts.shift();
+        var serializerDirection = !_this2.isServer ? 'toServer' : 'toClient';
+        e.field = [_this2.protocolState, serializerDirection].concat(parts).join(".");
+        e.message = 'Serialization error for ' + e.field + ' : ' + e.message;
+        _this2.emit('error', e);
+      });
+
+      this.deserializer.on('error', function (e) {
+        var parts = e.field.split(".");
+        parts.shift();
+        var deserializerDirection = _this2.isServer ? 'toServer' : 'toClient';
+        e.field = [_this2.protocolState, deserializerDirection].concat(parts).join(".");
+        e.message = 'Deserialization error for ' + e.field + ' : ' + e.message;
+        _this2.emit('error', e);
+      });
+
+      this.deserializer.on('data', function (parsed) {
+        parsed.metadata.name = parsed.data.name;
+        parsed.data = parsed.data.params;
+        parsed.metadata.state = state;
+        debug("read packet " + state + "." + parsed.metadata.name);
+        debug(parsed.data);
+        _this2.emit('packet', parsed.data, parsed.metadata);
+        _this2.emit(parsed.metadata.name, parsed.data, parsed.metadata);
+        _this2.emit('raw.' + parsed.metadata.name, parsed.buffer, parsed.metadata);
+        _this2.emit('raw', parsed.buffer, parsed.metadata);
+      });
+    }
+  }, {
+    key: 'setSocket',
+    value: function setSocket(socket) {
+      var _this3 = this;
+
+      this.ended = false;
+
+      // TODO : A lot of other things needs to be done.
+      var endSocket = function endSocket() {
+        if (_this3.ended) return;
+        _this3.ended = true;
+        _this3.socket.removeListener('close', endSocket);
+        _this3.socket.removeListener('end', endSocket);
+        _this3.socket.removeListener('timeout', endSocket);
+        _this3.emit('end', _this3._endReason);
+      };
+
+      var onFatalError = function onFatalError(err) {
+        _this3.emit('error', err);
+        endSocket();
+      };
+
+      var onError = function onError(err) {
+        return _this3.emit('error', err);
+      };
+
+      this.socket = socket;
+
+      if (this.socket.setNoDelay) this.socket.setNoDelay(true);
+
+      this.socket.on('connect', function () {
+        return _this3.emit('connect');
+      });
+
+      this.socket.on('error', onFatalError);
+      this.socket.on('close', endSocket);
+      this.socket.on('end', endSocket);
+      this.socket.on('timeout', endSocket);
+      this.framer.on('error', onError);
+      this.splitter.on('error', onError);
+
+      this.socket.pipe(this.splitter).pipe(this.deserializer);
+      this.serializer.pipe(this.framer).pipe(this.socket);
+    }
+  }, {
+    key: 'end',
+    value: function end(reason) {
+      this._endReason = reason;
+      if (this.cipher) this.cipher.unpipe();
+      if (this.framer) this.framer.unpipe();
+      if (this.socket) this.socket.end();
+    }
+  }, {
+    key: 'setEncryption',
+    value: function setEncryption(sharedSecret) {
+      var _this4 = this;
+
+      if (this.cipher != null) throw new Error("Set encryption twice !");
+      this.cipher = crypto.createCipheriv('aes-128-cfb8', sharedSecret, sharedSecret);
+      this.cipher.on('error', function (err) {
+        return _this4.emit('error', err);
+      });
+      this.framer.unpipe(this.socket);
+      this.framer.pipe(this.cipher).pipe(this.socket);
+      this.decipher = crypto.createDecipheriv('aes-128-cfb8', sharedSecret, sharedSecret);
+      this.decipher.on('error', function (err) {
+        return _this4.emit('error', err);
+      });
+      this.socket.unpipe(this.splitter);
+      this.socket.pipe(this.decipher).pipe(this.splitter);
+    }
+  }, {
+    key: 'setCompressionThreshold',
+    value: function setCompressionThreshold(threshold) {
+      var _this5 = this;
+
+      if (this.compressor == null) {
+        this.compressor = compression.createCompressor(threshold);
+        this.compressor.on('error', function (err) {
+          return _this5.emit('error', err);
+        });
+        this.serializer.unpipe(this.framer);
+        this.serializer.pipe(this.compressor).pipe(this.framer);
+        this.decompressor = compression.createDecompressor(threshold);
+        this.decompressor.on('error', function (err) {
+          return _this5.emit('error', err);
+        });
+        this.splitter.unpipe(this.deserializer);
+        this.splitter.pipe(this.decompressor).pipe(this.deserializer);
+      } else {
+        this.decompressor.threshold = threshold;
+        this.compressor.threshold = threshold;
+      }
+    }
+  }, {
+    key: 'write',
+    value: function write(name, params) {
+      if (this.ended) return;
+      debug("writing packet " + this.state + "." + name);
+      debug(params);
+      this.serializer.write({ name: name, params: params });
+    }
+  }, {
+    key: 'writeRaw',
+    value: function writeRaw(buffer) {
+      if (this.ended) return;
+      if (this.compressor === null) this.framer.write(buffer);else this.compressor.write(buffer);
+    }
+
+    // TCP/IP-specific (not generic Stream) method for backwards-compatibility
+
+  }, {
+    key: 'connect',
+    value: function connect(port, host) {
+      var options = { port: port, host: host };
+      if (!this.options) this.options = options;
+      require('./client/tcp_dns')(this, options);
+      options.connect(this);
+    }
+  }, {
+    key: 'state',
+    get: function get() {
+      return this.protocolState;
+    },
+    set: function set(newProperty) {
+      var oldProperty = this.protocolState;
+      this.protocolState = newProperty;
+
+      if (!this.compressor) {
+        this.serializer.unpipe(this.framer);
+        this.splitter.unpipe(this.deserializer);
+      } else {
+        this.serializer.unpipe(this.compressor);
+        this.decompressor.unpipe(this.deserializer);
+      }
+
+      this.serializer.removeAllListeners();
+      this.deserializer.removeAllListeners();
+      this.setSerializer(this.protocolState);
+
+      if (!this.compressor) {
+        this.serializer.pipe(this.framer);
+        this.splitter.pipe(this.deserializer);
+      } else {
+        this.serializer.pipe(this.compressor);
+        this.decompressor.pipe(this.deserializer);
+      }
+
+      this.emit('state', newProperty, oldProperty);
+    }
+  }, {
+    key: 'compressionThreshold',
+    get: function get() {
+      return this.compressor == null ? -2 : this.compressor.compressionThreshold;
+    },
+    set: function set(threshold) {
+      this.setCompressionThreshold(threshold);
+    }
+  }]);
+
+  return Client;
+}(EventEmitter);
+
+module.exports = Client;
+
+
+},{"./client/tcp_dns":529,"./debug":531,"./states":533,"./transforms/compression":534,"./transforms/framing":535,"./transforms/serializer":536,"crypto":21,"events":213}],529:[function(require,module,exports){
+'use strict';
+
+var net = require('net');
+var dns = require('dns');
+
+module.exports = function (client, options) {
+  options.port = options.port || 25565;
+  options.host = options.host || 'localhost';
+
+  options.connect = function (client) {
+    if (options.stream) {
+      client.setSocket(options.stream);
+    } else if (options.port == 25565 && net.isIP(options.host) === 0) {
+      dns.resolveSrv("_minecraft._tcp." + options.host, function (err, addresses) {
+        if (addresses && addresses.length > 0) {
+          client.setSocket(net.connect(addresses[0].port, addresses[0].name));
+        } else {
+          client.setSocket(net.connect(options.port, options.host));
+        }
+      });
+    } else {
+      client.setSocket(net.connect(options.port, options.host));
+    }
+  };
+};
+
+
+},{"dns":1,"net":1}],530:[function(require,module,exports){
+'use strict';
+
+var nbt = require('prismarine-nbt');
+var UUID = require('uuid-1345');
+
+module.exports = {
+  'UUID': [readUUID, writeUUID, 16],
+  'nbt': [readNbt, writeNbt, sizeOfNbt],
+  'optionalNbt': [readOptionalNbt, writeOptionalNbt, sizeOfOptionalNbt],
+  'restBuffer': [readRestBuffer, writeRestBuffer, sizeOfRestBuffer],
+  'entityMetadataLoop': [readEntityMetadata, writeEntityMetadata, sizeOfEntityMetadata]
+};
+
+function readUUID(buffer, offset) {
+  return {
+    value: UUID.stringify(buffer.slice(offset, 16)),
+    size: 16
+  };
+}
+
+function writeUUID(value, buffer, offset) {
+  var buf = UUID.parse(value);
+  buf.copy(buffer, offset);
+  return offset + 16;
+}
+
+function readNbt(buffer, offset) {
+  return nbt.proto.read(buffer, offset, "nbt");
+}
+
+function writeNbt(value, buffer, offset) {
+  return nbt.proto.write(value, buffer, offset, "nbt");
+}
+
+function sizeOfNbt(value) {
+  return nbt.proto.sizeOf(value, "nbt");
+}
+
+function readOptionalNbt(buffer, offset) {
+  if (buffer.readInt8(offset) == 0) return { size: 1 };
+  return nbt.proto.read(buffer, offset, "nbt");
+}
+
+function writeOptionalNbt(value, buffer, offset) {
+  if (value == undefined) {
+    buffer.writeInt8(0, offset);
+    return offset + 1;
+  }
+  return nbt.proto.write(value, buffer, offset, "nbt");
+}
+
+function sizeOfOptionalNbt(value) {
+  if (value == undefined) return 1;
+  return nbt.proto.sizeOf(value, "nbt");
+}
+
+function readRestBuffer(buffer, offset) {
+  return {
+    value: buffer.slice(offset),
+    size: buffer.length - offset
+  };
+}
+
+function writeRestBuffer(value, buffer, offset) {
+  value.copy(buffer, offset);
+  return offset + value.length;
+}
+
+function sizeOfRestBuffer(value) {
+  return value.length;
+}
+
+function readEntityMetadata(buffer, offset, _ref) {
+  var type = _ref.type;
+  var endVal = _ref.endVal;
+
+  var cursor = offset;
+  var metadata = [];
+  var item = undefined;
+  while (true) {
+    item = buffer.readUInt8(cursor);
+    if (item === endVal) {
+      return {
+        value: metadata,
+        size: cursor + 1 - offset
+      };
+    }
+    var results = this.read(buffer, cursor, type, {});
+    metadata.push(results.value);
+    cursor += results.size;
+  }
+}
+
+function writeEntityMetadata(value, buffer, offset, _ref2) {
+  var type = _ref2.type;
+  var endVal = _ref2.endVal;
+
+  var self = this;
+  value.forEach(function (item) {
+    offset = self.write(item, buffer, offset, type, {});
+  });
+  buffer.writeUInt8(endVal, offset);
+  return offset + 1;
+}
+
+function sizeOfEntityMetadata(value, _ref3) {
+  var type = _ref3.type;
+
+  var size = 1;
+  for (var i = 0; i < value.length; ++i) {
+    size += this.sizeOf(value[i], type, {});
+  }
+  return size;
+}
+
+
+},{"prismarine-nbt":620,"uuid-1345":646}],531:[function(require,module,exports){
+(function (process){
+'use strict';
+
+var util = require('util');
+
+var debug = undefined;
+if (process.env.NODE_DEBUG && /(minecraft-protocol|mc-proto)/.test(process.env.NODE_DEBUG)) {
+  (function () {
+    var pid = process.pid;
+    debug = function debug(x) {
+      // if console is not set up yet, then skip this.
+      if (!console.error) return;
+      console.error('MC-PROTO: %d', pid, util.format.apply(util, arguments).slice(0, 500));
+    };
+  })();
+} else {
+  debug = function debug() {};
+}
+
+module.exports = debug;
+
+
+}).call(this,require('_process'))
+},{"_process":219,"util":236}],532:[function(require,module,exports){
+'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var net = require('net');
 var EventEmitter = require('events').EventEmitter;
 var Client = require('./client');
 var states = require("./states");
 
-var Server = (function (_EventEmitter) {
+var Server = function (_EventEmitter) {
   _inherits(Server, _EventEmitter);
 
   function Server(version) {
     _classCallCheck(this, Server);
 
-    _get(Object.getPrototypeOf(Server.prototype), 'constructor', this).call(this);
-    this.socketServer = null;
-    this.cipher = null;
-    this.decipher = null;
-    this.clients = {};
-    this.version = version;
+    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Server).call(this));
+
+    _this.version = version;
+    _this.socketServer = null;
+    _this.cipher = null;
+    _this.decipher = null;
+    _this.clients = {};
+    return _this;
   }
 
   _createClass(Server, [{
     key: 'listen',
     value: function listen(port, host) {
-      var _this = this;
+      var _this2 = this;
 
       var self = this;
       var nextId = 0;
       self.socketServer = net.createServer();
       self.socketServer.on('connection', function (socket) {
-        var client = new Client(true, _this.version);
+        var client = new Client(true, _this2.version);
         client._end = client.end;
         client.end = function end(endReason) {
           endReason = '{"text":"' + endReason + '"}';
@@ -128100,290 +129201,401 @@ var Server = (function (_EventEmitter) {
   }, {
     key: 'close',
     value: function close() {
-      var client;
-      for (var clientId in this.clients) {
-        if (!this.clients.hasOwnProperty(clientId)) continue;
+      var _this3 = this;
 
-        client = this.clients[clientId];
+      Object.keys(this.clients).forEach(function (clientId) {
+        var client = _this3.clients[clientId];
         client.end('ServerShutdown');
-      }
+      });
       this.socketServer.close();
     }
   }]);
 
   return Server;
-})(EventEmitter);
+}(EventEmitter);
 
 module.exports = Server;
 
 
-},{"./client":461,"./states":465,"babel-runtime/helpers/class-call-check":477,"babel-runtime/helpers/create-class":478,"babel-runtime/helpers/get":479,"babel-runtime/helpers/inherits":480,"events":213,"net":1}],465:[function(require,module,exports){
-arguments[4][308][0].apply(exports,arguments)
-},{"dup":308}],466:[function(require,module,exports){
-arguments[4][309][0].apply(exports,arguments)
-},{"babel-runtime/helpers/class-call-check":477,"babel-runtime/helpers/create-class":478,"babel-runtime/helpers/get":479,"babel-runtime/helpers/inherits":480,"babel-runtime/helpers/sliced-to-array":482,"buffer":17,"dup":309,"protodef":592,"readable-stream":602,"zlib":16}],467:[function(require,module,exports){
+},{"./client":528,"./states":533,"events":213,"net":1}],533:[function(require,module,exports){
 arguments[4][310][0].apply(exports,arguments)
-},{"babel-runtime/helpers/class-call-check":477,"babel-runtime/helpers/create-class":478,"babel-runtime/helpers/get":479,"babel-runtime/helpers/inherits":480,"babel-runtime/helpers/sliced-to-array":482,"buffer":17,"dup":310,"protodef":592,"readable-stream":602}],468:[function(require,module,exports){
-arguments[4][311][0].apply(exports,arguments)
-},{"../datatypes/minecraft":462,"../states":465,"babel-runtime/core-js/object/keys":475,"dup":311,"minecraft-data":545,"protodef":592}],469:[function(require,module,exports){
-arguments[4][312][0].apply(exports,arguments)
-},{"dup":312}],470:[function(require,module,exports){
-arguments[4][313][0].apply(exports,arguments)
-},{"core-js/library/fn/get-iterator":483,"dup":313}],471:[function(require,module,exports){
+},{"dup":310}],534:[function(require,module,exports){
+(function (Buffer){
+"use strict";
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _require$types$varint = _slicedToArray(require("protodef").types.varint, 3);
+
+var readVarInt = _require$types$varint[0];
+var writeVarInt = _require$types$varint[1];
+var sizeOfVarInt = _require$types$varint[2];
+
+var zlib = require("zlib");
+var Transform = require("readable-stream").Transform;
+
+module.exports.createCompressor = function (threshold) {
+  return new Compressor(threshold);
+};
+
+module.exports.createDecompressor = function (threshold) {
+  return new Decompressor(threshold);
+};
+
+var Compressor = function (_Transform) {
+  _inherits(Compressor, _Transform);
+
+  function Compressor() {
+    var compressionThreshold = arguments.length <= 0 || arguments[0] === undefined ? -1 : arguments[0];
+
+    _classCallCheck(this, Compressor);
+
+    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Compressor).call(this));
+
+    _this.compressionThreshold = compressionThreshold;
+    return _this;
+  }
+
+  _createClass(Compressor, [{
+    key: "_transform",
+    value: function _transform(chunk, enc, cb) {
+      var _this2 = this;
+
+      if (chunk.length >= this.compressionThreshold) {
+        zlib.deflate(chunk, function (err, newChunk) {
+          if (err) return cb(err);
+          var buf = new Buffer(sizeOfVarInt(chunk.length) + newChunk.length);
+          var offset = writeVarInt(chunk.length, buf, 0);
+          newChunk.copy(buf, offset);
+          _this2.push(buf);
+          return cb();
+        });
+      } else {
+        var buf = new Buffer(sizeOfVarInt(0) + chunk.length);
+        var offset = writeVarInt(0, buf, 0);
+        chunk.copy(buf, offset);
+        this.push(buf);
+        return cb();
+      }
+    }
+  }]);
+
+  return Compressor;
+}(Transform);
+
+var Decompressor = function (_Transform2) {
+  _inherits(Decompressor, _Transform2);
+
+  function Decompressor() {
+    var compressionThreshold = arguments.length <= 0 || arguments[0] === undefined ? -1 : arguments[0];
+
+    _classCallCheck(this, Decompressor);
+
+    var _this3 = _possibleConstructorReturn(this, Object.getPrototypeOf(Decompressor).call(this));
+
+    _this3.compressionThreshold = compressionThreshold;
+    return _this3;
+  }
+
+  _createClass(Decompressor, [{
+    key: "_transform",
+    value: function _transform(chunk, enc, cb) {
+      var _this4 = this;
+
+      var _readVarInt = readVarInt(chunk, 0);
+
+      var size = _readVarInt.size;
+      var value = _readVarInt.value;
+      var error = _readVarInt.error;
+
+      if (error) return cb(error);
+      if (value === 0) {
+        this.push(chunk.slice(size));
+        return cb();
+      } else {
+        zlib.inflate(chunk.slice(size), function (err, newBuf) {
+          if (err) return cb(err);
+          _this4.push(newBuf);
+          return cb();
+        });
+      }
+    }
+  }]);
+
+  return Decompressor;
+}(Transform);
+
+
+}).call(this,require("buffer").Buffer)
+},{"buffer":17,"protodef":638,"readable-stream":644,"zlib":16}],535:[function(require,module,exports){
+(function (Buffer){
+"use strict";
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _require$types$varint = _slicedToArray(require("protodef").types.varint, 3);
+
+var readVarInt = _require$types$varint[0];
+var writeVarInt = _require$types$varint[1];
+var sizeOfVarInt = _require$types$varint[2];
+
+var Transform = require("readable-stream").Transform;
+
+module.exports.createSplitter = function () {
+  return new Splitter();
+};
+
+module.exports.createFramer = function () {
+  return new Framer();
+};
+
+var Framer = function (_Transform) {
+  _inherits(Framer, _Transform);
+
+  function Framer() {
+    _classCallCheck(this, Framer);
+
+    return _possibleConstructorReturn(this, Object.getPrototypeOf(Framer).call(this));
+  }
+
+  _createClass(Framer, [{
+    key: "_transform",
+    value: function _transform(chunk, enc, cb) {
+      var varIntSize = sizeOfVarInt(chunk.length);
+      var buffer = new Buffer(varIntSize + chunk.length);
+      writeVarInt(chunk.length, buffer, 0);
+      chunk.copy(buffer, varIntSize);
+      this.push(buffer);
+      return cb();
+    }
+  }]);
+
+  return Framer;
+}(Transform);
+
+var LEGACY_PING_PACKET_ID = 0xfe;
+
+var Splitter = function (_Transform2) {
+  _inherits(Splitter, _Transform2);
+
+  function Splitter() {
+    _classCallCheck(this, Splitter);
+
+    var _this2 = _possibleConstructorReturn(this, Object.getPrototypeOf(Splitter).call(this));
+
+    _this2.buffer = new Buffer(0);
+    _this2.recognizeLegacyPing = false;
+    return _this2;
+  }
+
+  _createClass(Splitter, [{
+    key: "_transform",
+    value: function _transform(chunk, enc, cb) {
+      this.buffer = Buffer.concat([this.buffer, chunk]);
+
+      if (this.recognizeLegacyPing && this.buffer[0] === LEGACY_PING_PACKET_ID) {
+        // legacy_server_list_ping packet follows a different protocol format
+        // prefix the encoded varint packet id for the deserializer
+        var header = new Buffer(sizeOfVarInt(LEGACY_PING_PACKET_ID));
+        writeVarInt(LEGACY_PING_PACKET_ID, header, 0);
+        var payload = this.buffer.slice(1); // remove 0xfe packet id
+        if (payload.length === 0) payload = new Buffer('\0'); // TODO: update minecraft-data to recognize a lone 0xfe, https://github.com/PrismarineJS/minecraft-data/issues/95
+        this.push(Buffer.concat([header, payload]));
+        return cb();
+      }
+
+      var offset = 0;
+
+      var _ref = readVarInt(this.buffer, offset) || { error: "Not enough data" };
+
+      var value = _ref.value;
+      var size = _ref.size;
+      var error = _ref.error;
+
+      while (!error && this.buffer.length >= offset + size + value) {
+        this.push(this.buffer.slice(offset + size, offset + size + value));
+        offset += size + value;
+
+        var _ref2 = readVarInt(this.buffer, offset) || { error: "Not enough data" };
+
+        value = _ref2.value;
+        size = _ref2.size;
+        error = _ref2.error;
+      }
+      this.buffer = this.buffer.slice(offset);
+      return cb();
+    }
+  }]);
+
+  return Splitter;
+}(Transform);
+
+
+}).call(this,require("buffer").Buffer)
+},{"buffer":17,"protodef":638,"readable-stream":644}],536:[function(require,module,exports){
+"use strict";
+
+var ProtoDef = require("protodef").ProtoDef;
+var Serializer = require("protodef").Serializer;
+var Parser = require("protodef").Parser;
+
+var minecraft = require("../datatypes/minecraft");
+var states = require("../states");
+
+function createProtocol(types, packets) {
+  var proto = new ProtoDef();
+  proto.addType("string", ["pstring", {
+    countType: "varint"
+  }]);
+  proto.addTypes(minecraft);
+  proto.addTypes(types);
+
+  Object.keys(packets).forEach(function (name) {
+    proto.addType("packet_" + name, ["container", packets[name].fields]);
+  });
+
+  proto.addType("packet", ["container", [{ "name": "name", "type": ["mapper", { "type": "varint",
+      "mappings": Object.keys(packets).reduce(function (acc, name) {
+        acc[parseInt(packets[name].id)] = name;
+        return acc;
+      }, {})
+    }] }, { "name": "params", "type": ["switch", {
+      "compareTo": "name",
+      "fields": Object.keys(packets).reduce(function (acc, name) {
+        acc[name] = "packet_" + name;
+        return acc;
+      }, {})
+    }] }]]);
+  return proto;
+}
+
+function createSerializer() {
+  var _ref = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
+  var _ref$state = _ref.state;
+  var state = _ref$state === undefined ? states.HANDSHAKING : _ref$state;
+  var _ref$isServer = _ref.isServer;
+  var isServer = _ref$isServer === undefined ? false : _ref$isServer;
+  var version = _ref.version;
+
+  var mcData = require("minecraft-data")(version);
+  var direction = !isServer ? 'toServer' : 'toClient';
+  var packets = mcData.protocol.states[state][direction];
+  var proto = createProtocol(mcData.protocol.types, packets);
+  return new Serializer(proto, "packet");
+}
+
+function createDeserializer() {
+  var _ref2 = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
+  var _ref2$state = _ref2.state;
+  var state = _ref2$state === undefined ? states.HANDSHAKING : _ref2$state;
+  var _ref2$isServer = _ref2.isServer;
+  var isServer = _ref2$isServer === undefined ? false : _ref2$isServer;
+  var _ref2$packetsToParse = _ref2.packetsToParse;
+  var packetsToParse = _ref2$packetsToParse === undefined ? { "packet": true } : _ref2$packetsToParse;
+  var version = _ref2.version;
+
+  var mcData = require("minecraft-data")(version);
+  var direction = isServer ? "toServer" : "toClient";
+  var packets = mcData.protocol.states[state][direction];
+  var proto = createProtocol(mcData.protocol.types, packets);
+  return new Parser(proto, "packet");
+}
+
+module.exports = {
+  createSerializer: createSerializer,
+  createDeserializer: createDeserializer
+};
+
+
+},{"../datatypes/minecraft":530,"../states":533,"minecraft-data":591,"protodef":638}],537:[function(require,module,exports){
 arguments[4][314][0].apply(exports,arguments)
-},{"core-js/library/fn/is-iterable":484,"dup":314}],472:[function(require,module,exports){
-arguments[4][315][0].apply(exports,arguments)
-},{"core-js/library/fn/object/create":485,"dup":315}],473:[function(require,module,exports){
-arguments[4][316][0].apply(exports,arguments)
-},{"core-js/library/fn/object/define-property":486,"dup":316}],474:[function(require,module,exports){
+},{"dup":314}],538:[function(require,module,exports){
 arguments[4][317][0].apply(exports,arguments)
-},{"core-js/library/fn/object/get-own-property-descriptor":487,"dup":317}],475:[function(require,module,exports){
+},{"core-js/library/fn/object/create":548,"dup":317}],539:[function(require,module,exports){
 arguments[4][318][0].apply(exports,arguments)
-},{"core-js/library/fn/object/keys":488,"dup":318}],476:[function(require,module,exports){
+},{"core-js/library/fn/object/define-property":549,"dup":318}],540:[function(require,module,exports){
 arguments[4][319][0].apply(exports,arguments)
-},{"core-js/library/fn/object/set-prototype-of":489,"dup":319}],477:[function(require,module,exports){
+},{"core-js/library/fn/object/get-own-property-descriptor":550,"dup":319}],541:[function(require,module,exports){
 arguments[4][320][0].apply(exports,arguments)
-},{"dup":320}],478:[function(require,module,exports){
+},{"core-js/library/fn/object/keys":551,"dup":320}],542:[function(require,module,exports){
 arguments[4][321][0].apply(exports,arguments)
-},{"babel-runtime/core-js/object/define-property":473,"dup":321}],479:[function(require,module,exports){
+},{"core-js/library/fn/object/set-prototype-of":552,"dup":321}],543:[function(require,module,exports){
 arguments[4][322][0].apply(exports,arguments)
-},{"babel-runtime/core-js/object/get-own-property-descriptor":474,"dup":322}],480:[function(require,module,exports){
+},{"dup":322}],544:[function(require,module,exports){
 arguments[4][323][0].apply(exports,arguments)
-},{"babel-runtime/core-js/object/create":472,"babel-runtime/core-js/object/set-prototype-of":476,"dup":323}],481:[function(require,module,exports){
+},{"babel-runtime/core-js/object/define-property":539,"dup":323}],545:[function(require,module,exports){
 arguments[4][324][0].apply(exports,arguments)
-},{"dup":324}],482:[function(require,module,exports){
+},{"babel-runtime/core-js/object/get-own-property-descriptor":540,"dup":324}],546:[function(require,module,exports){
 arguments[4][325][0].apply(exports,arguments)
-},{"babel-runtime/core-js/get-iterator":470,"babel-runtime/core-js/is-iterable":471,"dup":325}],483:[function(require,module,exports){
+},{"babel-runtime/core-js/object/create":538,"babel-runtime/core-js/object/set-prototype-of":542,"dup":325}],547:[function(require,module,exports){
 arguments[4][326][0].apply(exports,arguments)
-},{"../modules/core.get-iterator":525,"../modules/es6.string.iterator":531,"../modules/web.dom.iterable":532,"dup":326}],484:[function(require,module,exports){
-arguments[4][327][0].apply(exports,arguments)
-},{"../modules/core.is-iterable":526,"../modules/es6.string.iterator":531,"../modules/web.dom.iterable":532,"dup":327}],485:[function(require,module,exports){
-arguments[4][328][0].apply(exports,arguments)
-},{"../../modules/$":510,"dup":328}],486:[function(require,module,exports){
-arguments[4][329][0].apply(exports,arguments)
-},{"../../modules/$":510,"dup":329}],487:[function(require,module,exports){
+},{"dup":326}],548:[function(require,module,exports){
 arguments[4][330][0].apply(exports,arguments)
-},{"../../modules/$":510,"../../modules/es6.object.get-own-property-descriptor":528,"dup":330}],488:[function(require,module,exports){
+},{"../../modules/$":564,"dup":330}],549:[function(require,module,exports){
 arguments[4][331][0].apply(exports,arguments)
-},{"../../modules/$.core":495,"../../modules/es6.object.keys":529,"dup":331}],489:[function(require,module,exports){
+},{"../../modules/$":564,"dup":331}],550:[function(require,module,exports){
 arguments[4][332][0].apply(exports,arguments)
-},{"../../modules/$.core":495,"../../modules/es6.object.set-prototype-of":530,"dup":332}],490:[function(require,module,exports){
+},{"../../modules/$":564,"../../modules/es6.object.get-own-property-descriptor":569,"dup":332}],551:[function(require,module,exports){
 arguments[4][333][0].apply(exports,arguments)
-},{"dup":333}],491:[function(require,module,exports){
+},{"../../modules/$.core":556,"../../modules/es6.object.keys":570,"dup":333}],552:[function(require,module,exports){
 arguments[4][334][0].apply(exports,arguments)
-},{"dup":334}],492:[function(require,module,exports){
+},{"../../modules/$.core":556,"../../modules/es6.object.set-prototype-of":571,"dup":334}],553:[function(require,module,exports){
 arguments[4][335][0].apply(exports,arguments)
-},{"./$.is-object":505,"dup":335}],493:[function(require,module,exports){
-arguments[4][336][0].apply(exports,arguments)
-},{"./$.cof":494,"./$.wks":523,"dup":336}],494:[function(require,module,exports){
+},{"dup":335}],554:[function(require,module,exports){
 arguments[4][337][0].apply(exports,arguments)
-},{"dup":337}],495:[function(require,module,exports){
-arguments[4][338][0].apply(exports,arguments)
-},{"dup":338}],496:[function(require,module,exports){
+},{"./$.is-object":563,"dup":337}],555:[function(require,module,exports){
 arguments[4][339][0].apply(exports,arguments)
-},{"./$.a-function":490,"dup":339}],497:[function(require,module,exports){
+},{"dup":339}],556:[function(require,module,exports){
 arguments[4][340][0].apply(exports,arguments)
-},{"dup":340}],498:[function(require,module,exports){
+},{"dup":340}],557:[function(require,module,exports){
 arguments[4][341][0].apply(exports,arguments)
-},{"./$.fails":500,"dup":341}],499:[function(require,module,exports){
+},{"./$.a-function":553,"dup":341}],558:[function(require,module,exports){
 arguments[4][342][0].apply(exports,arguments)
-},{"./$.core":495,"./$.ctx":496,"./$.global":501,"dup":342}],500:[function(require,module,exports){
-arguments[4][343][0].apply(exports,arguments)
-},{"dup":343}],501:[function(require,module,exports){
+},{"dup":342}],559:[function(require,module,exports){
 arguments[4][344][0].apply(exports,arguments)
-},{"dup":344}],502:[function(require,module,exports){
+},{"./$.core":556,"./$.ctx":557,"./$.global":561,"dup":344}],560:[function(require,module,exports){
 arguments[4][345][0].apply(exports,arguments)
-},{"dup":345}],503:[function(require,module,exports){
+},{"dup":345}],561:[function(require,module,exports){
 arguments[4][346][0].apply(exports,arguments)
-},{"./$":510,"./$.descriptors":498,"./$.property-desc":513,"dup":346}],504:[function(require,module,exports){
-arguments[4][347][0].apply(exports,arguments)
-},{"./$.cof":494,"dup":347}],505:[function(require,module,exports){
-arguments[4][348][0].apply(exports,arguments)
-},{"dup":348}],506:[function(require,module,exports){
+},{"dup":346}],562:[function(require,module,exports){
 arguments[4][349][0].apply(exports,arguments)
-},{"./$":510,"./$.hide":503,"./$.property-desc":513,"./$.set-to-string-tag":516,"./$.wks":523,"dup":349}],507:[function(require,module,exports){
+},{"./$.cof":555,"dup":349}],563:[function(require,module,exports){
 arguments[4][350][0].apply(exports,arguments)
-},{"./$":510,"./$.export":499,"./$.has":502,"./$.hide":503,"./$.iter-create":506,"./$.iterators":509,"./$.library":511,"./$.redefine":514,"./$.set-to-string-tag":516,"./$.wks":523,"dup":350}],508:[function(require,module,exports){
-arguments[4][351][0].apply(exports,arguments)
-},{"dup":351}],509:[function(require,module,exports){
-arguments[4][352][0].apply(exports,arguments)
-},{"dup":352}],510:[function(require,module,exports){
-arguments[4][353][0].apply(exports,arguments)
-},{"dup":353}],511:[function(require,module,exports){
-arguments[4][354][0].apply(exports,arguments)
-},{"dup":354}],512:[function(require,module,exports){
+},{"dup":350}],564:[function(require,module,exports){
 arguments[4][355][0].apply(exports,arguments)
-},{"./$.core":495,"./$.export":499,"./$.fails":500,"dup":355}],513:[function(require,module,exports){
-arguments[4][356][0].apply(exports,arguments)
-},{"dup":356}],514:[function(require,module,exports){
+},{"dup":355}],565:[function(require,module,exports){
 arguments[4][357][0].apply(exports,arguments)
-},{"./$.hide":503,"dup":357}],515:[function(require,module,exports){
-arguments[4][358][0].apply(exports,arguments)
-},{"./$":510,"./$.an-object":492,"./$.ctx":496,"./$.is-object":505,"dup":358}],516:[function(require,module,exports){
-arguments[4][359][0].apply(exports,arguments)
-},{"./$":510,"./$.has":502,"./$.wks":523,"dup":359}],517:[function(require,module,exports){
+},{"./$.core":556,"./$.export":559,"./$.fails":560,"dup":357}],566:[function(require,module,exports){
 arguments[4][360][0].apply(exports,arguments)
-},{"./$.global":501,"dup":360}],518:[function(require,module,exports){
-arguments[4][361][0].apply(exports,arguments)
-},{"./$.defined":497,"./$.to-integer":519,"dup":361}],519:[function(require,module,exports){
-arguments[4][362][0].apply(exports,arguments)
-},{"dup":362}],520:[function(require,module,exports){
-arguments[4][363][0].apply(exports,arguments)
-},{"./$.defined":497,"./$.iobject":504,"dup":363}],521:[function(require,module,exports){
-arguments[4][364][0].apply(exports,arguments)
-},{"./$.defined":497,"dup":364}],522:[function(require,module,exports){
+},{"./$":564,"./$.an-object":554,"./$.ctx":557,"./$.is-object":563,"dup":360}],567:[function(require,module,exports){
 arguments[4][365][0].apply(exports,arguments)
-},{"dup":365}],523:[function(require,module,exports){
+},{"./$.defined":558,"./$.iobject":562,"dup":365}],568:[function(require,module,exports){
 arguments[4][366][0].apply(exports,arguments)
-},{"./$.global":501,"./$.shared":517,"./$.uid":522,"dup":366}],524:[function(require,module,exports){
-arguments[4][367][0].apply(exports,arguments)
-},{"./$.classof":493,"./$.core":495,"./$.iterators":509,"./$.wks":523,"dup":367}],525:[function(require,module,exports){
-arguments[4][368][0].apply(exports,arguments)
-},{"./$.an-object":492,"./$.core":495,"./core.get-iterator-method":524,"dup":368}],526:[function(require,module,exports){
-arguments[4][369][0].apply(exports,arguments)
-},{"./$.classof":493,"./$.core":495,"./$.iterators":509,"./$.wks":523,"dup":369}],527:[function(require,module,exports){
-arguments[4][370][0].apply(exports,arguments)
-},{"./$.add-to-unscopables":491,"./$.iter-define":507,"./$.iter-step":508,"./$.iterators":509,"./$.to-iobject":520,"dup":370}],528:[function(require,module,exports){
-arguments[4][371][0].apply(exports,arguments)
-},{"./$.object-sap":512,"./$.to-iobject":520,"dup":371}],529:[function(require,module,exports){
-arguments[4][372][0].apply(exports,arguments)
-},{"./$.object-sap":512,"./$.to-object":521,"dup":372}],530:[function(require,module,exports){
+},{"./$.defined":558,"dup":366}],569:[function(require,module,exports){
 arguments[4][373][0].apply(exports,arguments)
-},{"./$.export":499,"./$.set-proto":515,"dup":373}],531:[function(require,module,exports){
+},{"./$.object-sap":565,"./$.to-iobject":567,"dup":373}],570:[function(require,module,exports){
 arguments[4][374][0].apply(exports,arguments)
-},{"./$.iter-define":507,"./$.string-at":518,"dup":374}],532:[function(require,module,exports){
+},{"./$.object-sap":565,"./$.to-object":568,"dup":374}],571:[function(require,module,exports){
 arguments[4][375][0].apply(exports,arguments)
-},{"./$.iterators":509,"./es6.array.iterator":527,"dup":375}],533:[function(require,module,exports){
-arguments[4][376][0].apply(exports,arguments)
-},{"dup":376,"lodash._basecallback":534,"lodash._baseeach":539,"lodash._basereduce":540,"lodash.isarray":541}],534:[function(require,module,exports){
-arguments[4][377][0].apply(exports,arguments)
-},{"dup":377,"lodash._baseisequal":535,"lodash._bindcallback":537,"lodash.isarray":541,"lodash.pairs":538}],535:[function(require,module,exports){
-arguments[4][378][0].apply(exports,arguments)
-},{"dup":378,"lodash.isarray":541,"lodash.istypedarray":536,"lodash.keys":542}],536:[function(require,module,exports){
-arguments[4][379][0].apply(exports,arguments)
-},{"dup":379}],537:[function(require,module,exports){
-arguments[4][380][0].apply(exports,arguments)
-},{"dup":380}],538:[function(require,module,exports){
-arguments[4][381][0].apply(exports,arguments)
-},{"dup":381,"lodash.keys":542}],539:[function(require,module,exports){
-arguments[4][382][0].apply(exports,arguments)
-},{"dup":382,"lodash.keys":542}],540:[function(require,module,exports){
-arguments[4][383][0].apply(exports,arguments)
-},{"dup":383}],541:[function(require,module,exports){
-arguments[4][384][0].apply(exports,arguments)
-},{"dup":384}],542:[function(require,module,exports){
-arguments[4][385][0].apply(exports,arguments)
-},{"dup":385,"lodash._getnative":543,"lodash.isarguments":544,"lodash.isarray":541}],543:[function(require,module,exports){
-arguments[4][386][0].apply(exports,arguments)
-},{"dup":386}],544:[function(require,module,exports){
-arguments[4][387][0].apply(exports,arguments)
-},{"dup":387}],545:[function(require,module,exports){
-arguments[4][277][0].apply(exports,arguments)
-},{"./lib/loader":548,"./minecraft-data/data/1.8/biomes":549,"./minecraft-data/data/1.8/blocks":550,"./minecraft-data/data/1.8/effects":551,"./minecraft-data/data/1.8/entities":552,"./minecraft-data/data/1.8/instruments":553,"./minecraft-data/data/1.8/items":554,"./minecraft-data/data/1.8/materials":555,"./minecraft-data/data/1.8/protocol":556,"./minecraft-data/data/1.8/recipes":557,"./minecraft-data/data/1.8/version":558,"./minecraft-data/data/1.8/windows":559,"./minecraft-data/data/1.9/biomes":560,"./minecraft-data/data/1.9/blocks":561,"./minecraft-data/data/1.9/effects":562,"./minecraft-data/data/1.9/entities":563,"./minecraft-data/data/1.9/instruments":564,"./minecraft-data/data/1.9/items":565,"./minecraft-data/data/1.9/materials":566,"./minecraft-data/data/1.9/protocol":567,"./minecraft-data/data/1.9/recipes":568,"./minecraft-data/data/1.9/version":569,"./minecraft-data/data/1.9/windows":570,"dup":277}],546:[function(require,module,exports){
-arguments[4][278][0].apply(exports,arguments)
-},{"dup":278}],547:[function(require,module,exports){
-arguments[4][279][0].apply(exports,arguments)
-},{"./indexer.js":546,"dup":279}],548:[function(require,module,exports){
-arguments[4][280][0].apply(exports,arguments)
-},{"./indexes.js":547,"dup":280}],549:[function(require,module,exports){
-arguments[4][281][0].apply(exports,arguments)
-},{"dup":281}],550:[function(require,module,exports){
-arguments[4][282][0].apply(exports,arguments)
-},{"dup":282}],551:[function(require,module,exports){
-arguments[4][283][0].apply(exports,arguments)
-},{"dup":283}],552:[function(require,module,exports){
-arguments[4][284][0].apply(exports,arguments)
-},{"dup":284}],553:[function(require,module,exports){
-arguments[4][285][0].apply(exports,arguments)
-},{"dup":285}],554:[function(require,module,exports){
-arguments[4][286][0].apply(exports,arguments)
-},{"dup":286}],555:[function(require,module,exports){
-arguments[4][287][0].apply(exports,arguments)
-},{"dup":287}],556:[function(require,module,exports){
-arguments[4][288][0].apply(exports,arguments)
-},{"dup":288}],557:[function(require,module,exports){
-arguments[4][289][0].apply(exports,arguments)
-},{"dup":289}],558:[function(require,module,exports){
-arguments[4][290][0].apply(exports,arguments)
-},{"dup":290}],559:[function(require,module,exports){
-arguments[4][291][0].apply(exports,arguments)
-},{"dup":291}],560:[function(require,module,exports){
-arguments[4][281][0].apply(exports,arguments)
-},{"dup":281}],561:[function(require,module,exports){
-arguments[4][293][0].apply(exports,arguments)
-},{"dup":293}],562:[function(require,module,exports){
-arguments[4][294][0].apply(exports,arguments)
-},{"dup":294}],563:[function(require,module,exports){
-arguments[4][284][0].apply(exports,arguments)
-},{"dup":284}],564:[function(require,module,exports){
-arguments[4][285][0].apply(exports,arguments)
-},{"dup":285}],565:[function(require,module,exports){
-arguments[4][297][0].apply(exports,arguments)
-},{"dup":297}],566:[function(require,module,exports){
-arguments[4][287][0].apply(exports,arguments)
-},{"dup":287}],567:[function(require,module,exports){
-arguments[4][299][0].apply(exports,arguments)
-},{"dup":299}],568:[function(require,module,exports){
-arguments[4][300][0].apply(exports,arguments)
-},{"dup":300}],569:[function(require,module,exports){
-arguments[4][301][0].apply(exports,arguments)
-},{"dup":301}],570:[function(require,module,exports){
-arguments[4][291][0].apply(exports,arguments)
-},{"dup":291}],571:[function(require,module,exports){
-arguments[4][414][0].apply(exports,arguments)
-},{"buffer":17,"crypto":21,"dup":414}],572:[function(require,module,exports){
-arguments[4][415][0].apply(exports,arguments)
-},{"dup":415}],573:[function(require,module,exports){
-arguments[4][416][0].apply(exports,arguments)
-},{"dup":416}],574:[function(require,module,exports){
-arguments[4][417][0].apply(exports,arguments)
-},{"./compound":572,"./nbt.json":573,"dup":417,"protodef":583,"zlib":16}],575:[function(require,module,exports){
-arguments[4][418][0].apply(exports,arguments)
-},{"../utils":582,"dup":418}],576:[function(require,module,exports){
-arguments[4][419][0].apply(exports,arguments)
-},{"babel-runtime/core-js/object/keys":475,"dup":419}],577:[function(require,module,exports){
-arguments[4][420][0].apply(exports,arguments)
-},{"../utils":582,"babel-runtime/core-js/object/keys":475,"dup":420}],578:[function(require,module,exports){
-arguments[4][421][0].apply(exports,arguments)
-},{"../utils":582,"assert":2,"babel-runtime/core-js/object/keys":475,"buffer":17,"dup":421}],579:[function(require,module,exports){
-arguments[4][422][0].apply(exports,arguments)
-},{"./protodef":580,"./serializer":581,"./utils":582,"dup":422}],580:[function(require,module,exports){
-arguments[4][423][0].apply(exports,arguments)
-},{"./datatypes/conditional":575,"./datatypes/numeric":576,"./datatypes/structures":577,"./datatypes/utils":578,"./utils":582,"babel-runtime/core-js/object/keys":475,"babel-runtime/helpers/class-call-check":477,"babel-runtime/helpers/create-class":478,"buffer":17,"dup":423,"lodash.reduce":533}],581:[function(require,module,exports){
-arguments[4][424][0].apply(exports,arguments)
-},{"babel-runtime/helpers/class-call-check":477,"babel-runtime/helpers/create-class":478,"babel-runtime/helpers/get":479,"babel-runtime/helpers/inherits":480,"dup":424,"readable-stream":602}],582:[function(require,module,exports){
-arguments[4][425][0].apply(exports,arguments)
-},{"dup":425}],583:[function(require,module,exports){
-arguments[4][426][0].apply(exports,arguments)
-},{"./dist/index.js":579,"dup":426}],584:[function(require,module,exports){
-arguments[4][427][0].apply(exports,arguments)
-},{"../utils":591,"babel-runtime/helpers/object-without-properties":481,"dup":427}],585:[function(require,module,exports){
-arguments[4][419][0].apply(exports,arguments)
-},{"babel-runtime/core-js/object/keys":475,"dup":419}],586:[function(require,module,exports){
-arguments[4][429][0].apply(exports,arguments)
-},{"../utils":591,"babel-runtime/core-js/object/keys":475,"dup":429}],587:[function(require,module,exports){
-arguments[4][430][0].apply(exports,arguments)
-},{"../utils":591,"assert":2,"babel-runtime/core-js/object/keys":475,"buffer":17,"dup":430}],588:[function(require,module,exports){
-arguments[4][422][0].apply(exports,arguments)
-},{"./protodef":589,"./serializer":590,"./utils":591,"dup":422}],589:[function(require,module,exports){
-arguments[4][432][0].apply(exports,arguments)
-},{"./datatypes/conditional":584,"./datatypes/numeric":585,"./datatypes/structures":586,"./datatypes/utils":587,"./utils":591,"babel-runtime/core-js/object/keys":475,"babel-runtime/helpers/class-call-check":477,"babel-runtime/helpers/create-class":478,"buffer":17,"dup":432,"lodash.reduce":533}],590:[function(require,module,exports){
-arguments[4][424][0].apply(exports,arguments)
-},{"babel-runtime/helpers/class-call-check":477,"babel-runtime/helpers/create-class":478,"babel-runtime/helpers/get":479,"babel-runtime/helpers/inherits":480,"dup":424,"readable-stream":602}],591:[function(require,module,exports){
-arguments[4][434][0].apply(exports,arguments)
-},{"dup":434}],592:[function(require,module,exports){
-arguments[4][426][0].apply(exports,arguments)
-},{"./dist/index.js":588,"dup":426}],593:[function(require,module,exports){
-arguments[4][436][0].apply(exports,arguments)
-},{"./_stream_readable":595,"./_stream_writable":597,"_process":218,"core-util-is":598,"dup":436,"inherits":599}],594:[function(require,module,exports){
-arguments[4][437][0].apply(exports,arguments)
-},{"./_stream_transform":596,"core-util-is":598,"dup":437,"inherits":599}],595:[function(require,module,exports){
-arguments[4][438][0].apply(exports,arguments)
-},{"./_stream_duplex":593,"_process":218,"buffer":17,"core-util-is":598,"dup":438,"events":213,"inherits":599,"isarray":600,"stream":232,"string_decoder/":601,"util":3}],596:[function(require,module,exports){
-arguments[4][439][0].apply(exports,arguments)
-},{"./_stream_duplex":593,"core-util-is":598,"dup":439,"inherits":599}],597:[function(require,module,exports){
-arguments[4][440][0].apply(exports,arguments)
-},{"./_stream_duplex":593,"_process":218,"buffer":17,"core-util-is":598,"dup":440,"inherits":599,"stream":232}],598:[function(require,module,exports){
+},{"./$.export":559,"./$.set-proto":566,"dup":375}],572:[function(require,module,exports){
 (function (Buffer){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -128493,16 +129705,6713 @@ function objectToString(o) {
   return Object.prototype.toString.call(o);
 }
 
-}).call(this,{"isBuffer":require("../../../../../../../../.nvm/versions/node/v4.2.4/lib/node_modules/browserify/node_modules/insert-module-globals/node_modules/is-buffer/index.js")})
-},{"../../../../../../../../.nvm/versions/node/v4.2.4/lib/node_modules/browserify/node_modules/insert-module-globals/node_modules/is-buffer/index.js":215}],599:[function(require,module,exports){
+}).call(this,{"isBuffer":require("../../../../../../.nvm/versions/node/v4.2.4/lib/node_modules/browserify/node_modules/insert-module-globals/node_modules/is-buffer/index.js")})
+},{"../../../../../../.nvm/versions/node/v4.2.4/lib/node_modules/browserify/node_modules/insert-module-globals/node_modules/is-buffer/index.js":215}],573:[function(require,module,exports){
 arguments[4][214][0].apply(exports,arguments)
-},{"dup":214}],600:[function(require,module,exports){
+},{"dup":214}],574:[function(require,module,exports){
 arguments[4][216][0].apply(exports,arguments)
-},{"dup":216}],601:[function(require,module,exports){
-arguments[4][233][0].apply(exports,arguments)
-},{"buffer":17,"dup":233}],602:[function(require,module,exports){
-arguments[4][445][0].apply(exports,arguments)
-},{"./lib/_stream_duplex.js":593,"./lib/_stream_passthrough.js":594,"./lib/_stream_readable.js":595,"./lib/_stream_transform.js":596,"./lib/_stream_writable.js":597,"dup":445,"stream":232}],603:[function(require,module,exports){
+},{"dup":216}],575:[function(require,module,exports){
+arguments[4][379][0].apply(exports,arguments)
+},{"dup":379,"lodash._baseisequal":577,"lodash._bindcallback":579,"lodash.isarray":582,"lodash.pairs":585}],576:[function(require,module,exports){
+arguments[4][384][0].apply(exports,arguments)
+},{"dup":384,"lodash.keys":584}],577:[function(require,module,exports){
+arguments[4][380][0].apply(exports,arguments)
+},{"dup":380,"lodash.isarray":582,"lodash.istypedarray":583,"lodash.keys":584}],578:[function(require,module,exports){
+/**
+ * lodash 3.0.2 (Custom Build) <https://lodash.com/>
+ * Build: `lodash modularize exports="npm" -o ./`
+ * Copyright 2012-2016 The Dojo Foundation <http://dojofoundation.org/>
+ * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+ * Copyright 2009-2016 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ * Available under MIT license <https://lodash.com/license>
+ */
+
+/**
+ * The base implementation of `_.reduce` and `_.reduceRight`, without support
+ * for iteratee shorthands, which iterates over `collection` using `eachFunc`.
+ *
+ * @private
+ * @param {Array|Object} collection The collection to iterate over.
+ * @param {Function} iteratee The function invoked per iteration.
+ * @param {*} accumulator The initial value.
+ * @param {boolean} initAccum Specify using the first or last element of `collection` as the initial value.
+ * @param {Function} eachFunc The function to iterate over `collection`.
+ * @returns {*} Returns the accumulated value.
+ */
+function baseReduce(collection, iteratee, accumulator, initAccum, eachFunc) {
+  eachFunc(collection, function(value, index, collection) {
+    accumulator = initAccum
+      ? (initAccum = false, value)
+      : iteratee(accumulator, value, index, collection);
+  });
+  return accumulator;
+}
+
+module.exports = baseReduce;
+
+},{}],579:[function(require,module,exports){
+arguments[4][382][0].apply(exports,arguments)
+},{"dup":382}],580:[function(require,module,exports){
+arguments[4][388][0].apply(exports,arguments)
+},{"dup":388}],581:[function(require,module,exports){
+arguments[4][513][0].apply(exports,arguments)
+},{"dup":513}],582:[function(require,module,exports){
+arguments[4][386][0].apply(exports,arguments)
+},{"dup":386}],583:[function(require,module,exports){
+arguments[4][505][0].apply(exports,arguments)
+},{"dup":505}],584:[function(require,module,exports){
+arguments[4][387][0].apply(exports,arguments)
+},{"dup":387,"lodash._getnative":580,"lodash.isarguments":581,"lodash.isarray":582}],585:[function(require,module,exports){
+arguments[4][383][0].apply(exports,arguments)
+},{"dup":383,"lodash.keys":584}],586:[function(require,module,exports){
+arguments[4][378][0].apply(exports,arguments)
+},{"dup":378,"lodash._basecallback":575,"lodash._baseeach":576,"lodash._basereduce":578,"lodash.isarray":582}],587:[function(require,module,exports){
+(function (global){
+var os = require('os');
+
+var lib = {};
+
+function parallel(tasks, done) {
+    var results = [];
+    var errs = [];
+    var length = 0;
+    var doneLength = 0;
+    function doneIt(ix, err, result) {
+        if (err) {
+            errs[ix] = err;
+        } else {
+            results[ix] = result;
+        }
+        doneLength += 1;
+        if (doneLength >= length) {
+            done(errs.length > 0 ? errs : errs, results);
+        }
+    }
+    Object.keys(tasks).forEach(function (key) {
+        length += 1;
+        var task = tasks[key];
+        (global.setImmediate || global.setTimeout)(function () {
+            task(doneIt.bind(null, key), 1);
+        });
+    });
+}
+
+lib.networkInterfaces = function () {
+    var ifaces = os.networkInterfaces();
+    var allAddresses = {};
+    Object.keys(ifaces).forEach(function (iface) {
+        addresses = {};
+        var hasAddresses = false;
+        ifaces[iface].forEach(function (address) {
+            if (!address.internal) {
+                addresses[(address.family || "").toLowerCase()] = address.address;
+                hasAddresses = true;
+                if (address.mac) {
+                    addresses.mac = address.mac;
+                }
+            }
+        });
+        if (hasAddresses) {
+            allAddresses[iface] = addresses;
+        }
+    });
+    return allAddresses;
+};
+
+var _getMacAddress;
+switch (os.platform()) {
+
+    case 'win32':
+        _getMacAddress = require('./lib/windows.js');
+        break;
+
+    case 'linux':
+        _getMacAddress = require('./lib/linux.js');
+        break;
+
+    case 'darwin':
+    case 'sunos':
+        _getMacAddress = require('./lib/unix.js');
+        break;
+        
+    default:
+        console.warn("node-macaddress: Unkown os.platform(), defaulting to `unix'.");
+        _getMacAddress = require('./lib/unix.js');
+        break;
+
+}
+
+lib.one = function (iface, callback) {
+    if (typeof iface === 'function') {
+        callback = iface;
+
+        var ifaces = lib.networkInterfaces();
+        var alleged = [ 'eth0', 'eth1', 'en0', 'en1' ];
+        iface = Object.keys(ifaces)[0];
+        for (var i = 0; i < alleged.length; i++) {
+            if (ifaces[alleged[i]]) {
+                iface = alleged[i];
+                break;
+            }
+        }
+        if (!ifaces[iface]) {
+            if (typeof callback === 'function') {
+                callback("no interfaces found", null);
+            }
+            return null;
+        }
+        if (ifaces[iface].mac) {
+            if (typeof callback === 'function') {
+                callback(null, ifaces[iface].mac);
+            }
+            return ifaces[iface].mac;
+        }
+    }
+    if (typeof callback === 'function') {
+        _getMacAddress(iface, callback);
+    }
+    return null;
+};
+
+lib.all = function (callback) {
+
+    var ifaces = lib.networkInterfaces();
+    var resolve = {};
+
+    Object.keys(ifaces).forEach(function (iface) {
+        if (!ifaces[iface].mac) {
+            resolve[iface] = _getMacAddress.bind(null, iface);
+        }
+    });
+
+    if (Object.keys(resolve).length === 0) {
+        if (typeof callback === 'function') {
+            callback(null, ifaces);
+        }
+        return ifaces;
+    }
+
+    parallel(resolve, function (err, result) {
+        Object.keys(result).forEach(function (iface) {
+            ifaces[iface].mac = result[iface];
+        });
+        if (typeof callback === 'function') {
+            callback(null, ifaces);
+        }
+    });
+    return null;
+};
+
+module.exports = lib;
+
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"./lib/linux.js":588,"./lib/unix.js":589,"./lib/windows.js":590,"os":217}],588:[function(require,module,exports){
+var exec = require('child_process').exec;
+
+module.exports = function (iface, callback) {
+    exec("cat /sys/class/net/" + iface + "/address", function (err, out) {
+        if (err) {
+            callback(err, null);
+            return;
+        }
+        callback(null, out.trim().toLowerCase());
+    });
+};
+
+},{"child_process":1}],589:[function(require,module,exports){
+var exec = require('child_process').exec;
+
+module.exports = function (iface, callback) {
+    exec("ifconfig " + iface, function (err, out) {
+        if (err) {
+            callback(err, null);
+            return;
+        }
+        var match = /[a-f0-9]{2}(:[a-f0-9]{2}){5}/.exec(out.toLowerCase());
+        if (!match) {
+            callback("did not find a mac address", null);
+            return;
+        }
+        callback(null, match[0].toLowerCase());
+    });
+};
+
+},{"child_process":1}],590:[function(require,module,exports){
+var exec = require('child_process').exec;
+
+var regexRegex = /[-\/\\^$*+?.()|[\]{}]/g;
+
+function escape(string) {
+    return string.replace(regexRegex, '\\$&');
+}
+
+module.exports = function (iface, callback) {
+    exec("ipconfig /all", function (err, out) {
+        if (err) {
+            callback(err, null);
+            return;
+        }
+        var match = new RegExp(escape(iface)).exec(out);
+        if (!match) {
+            callback("did not find interface in `ipconfig /all`", null);
+            return;
+        }
+        out = out.substring(match.index + iface.length);
+        match = /[A-Fa-f0-9]{2}(\-[A-Fa-f0-9]{2}){5}/.exec(out);
+        if (!match) {
+            callback("did not find a mac address", null);
+            return;
+        }
+        callback(null, match[0].toLowerCase().replace(/\-/g, ':'));
+    });
+};
+
+},{"child_process":1}],591:[function(require,module,exports){
+var mcDataToNode=require("./lib/loader");
+var indexer=require("./lib/indexer.js");
+var protocolVersions=require('./minecraft-data/data/common/protocolVersions');
+var versionsByMinecraftVersion=indexer.buildIndexFromArray(protocolVersions,"minecraftVersion");
+var preNettyVersionsByProtocolVersion=indexer.buildIndexFromArrayNonUnique(protocolVersions.filter(function(e){return !e.usesNetty}),"version");
+var postNettyVersionsByProtocolVersion=indexer.buildIndexFromArrayNonUnique(protocolVersions.filter(function(e){return e.usesNetty}),"version");
+
+var cache={}; // prevent reindexing when requiring multiple time the same version
+
+module.exports = function(mcVersion,preNetty)
+{
+  preNetty=preNetty || false;
+  var majorVersion=toMajor(mcVersion,preNetty);
+  if(majorVersion==null)
+    return null;
+  if(cache[majorVersion])
+    return cache[majorVersion];
+  var mcData=data[majorVersion];
+  if(mcData==null)
+    return null;
+  var nmcData=mcDataToNode(mcData);
+  cache[majorVersion]=nmcData;
+  return nmcData;
+};
+
+function toMajor(mcVersion,preNetty)
+{
+  if(data[mcVersion])
+    return mcVersion;
+  if(versionsByMinecraftVersion[mcVersion])
+    return versionsByMinecraftVersion[mcVersion].majorVersion;
+  if(preNetty && preNettyVersionsByProtocolVersion[mcVersion])
+    return preNettyVersionsByProtocolVersion[mcVersion][0].majorVersion;
+  if(!preNetty && postNettyVersionsByProtocolVersion[mcVersion])
+    return postNettyVersionsByProtocolVersion[mcVersion][0].majorVersion;
+}
+
+module.exports.versions=protocolVersions;
+module.exports.versionsByMinecraftVersion=versionsByMinecraftVersion;
+module.exports.preNettyVersionsByProtocolVersion=preNettyVersionsByProtocolVersion;
+module.exports.postNettyVersionsByProtocolVersion=postNettyVersionsByProtocolVersion;
+
+var data={
+  "1.8":{
+    blocks:require('./minecraft-data/data/1.8/blocks'),
+    biomes: require('./minecraft-data/data/1.8/biomes'),
+    effects: require('./minecraft-data/data/1.8/effects'),
+    items: require('./minecraft-data/data/1.8/items'),
+    recipes: require('./minecraft-data/data/1.8/recipes'),
+    instruments: require('./minecraft-data/data/1.8/instruments'),
+    materials: require('./minecraft-data/data/1.8/materials'),
+    entities: require('./minecraft-data/data/1.8/entities'),
+    protocol: require('./minecraft-data/data/1.8/protocol'),
+    windows: require('./minecraft-data/data/1.8/windows'),
+    version: require('./minecraft-data/data/1.8/version')
+  },
+  "1.9":{
+    blocks:require('./minecraft-data/data/1.9/blocks'),
+    biomes: require('./minecraft-data/data/1.9/biomes'),
+    effects: require('./minecraft-data/data/1.9/effects'),
+    items: require('./minecraft-data/data/1.9/items'),
+    recipes: require('./minecraft-data/data/1.9/recipes'),
+    instruments: require('./minecraft-data/data/1.9/instruments'),
+    materials: require('./minecraft-data/data/1.9/materials'),
+    entities: require('./minecraft-data/data/1.9/entities'),
+    protocol: require('./minecraft-data/data/1.9/protocol'),
+    windows: require('./minecraft-data/data/1.9/windows'),
+    version: require('./minecraft-data/data/1.9/version')
+  }
+};
+},{"./lib/indexer.js":592,"./lib/loader":594,"./minecraft-data/data/1.8/biomes":595,"./minecraft-data/data/1.8/blocks":596,"./minecraft-data/data/1.8/effects":597,"./minecraft-data/data/1.8/entities":598,"./minecraft-data/data/1.8/instruments":599,"./minecraft-data/data/1.8/items":600,"./minecraft-data/data/1.8/materials":601,"./minecraft-data/data/1.8/protocol":602,"./minecraft-data/data/1.8/recipes":603,"./minecraft-data/data/1.8/version":604,"./minecraft-data/data/1.8/windows":605,"./minecraft-data/data/1.9/biomes":606,"./minecraft-data/data/1.9/blocks":607,"./minecraft-data/data/1.9/effects":608,"./minecraft-data/data/1.9/entities":609,"./minecraft-data/data/1.9/instruments":610,"./minecraft-data/data/1.9/items":611,"./minecraft-data/data/1.9/materials":612,"./minecraft-data/data/1.9/protocol":613,"./minecraft-data/data/1.9/recipes":614,"./minecraft-data/data/1.9/version":615,"./minecraft-data/data/1.9/windows":616,"./minecraft-data/data/common/protocolVersions":617}],592:[function(require,module,exports){
+module.exports={
+  buildIndexFromObject:
+    function(object,fieldToIndex) {
+      return Object.keys(object).reduce(function(index,key){
+        index[object[key][fieldToIndex]]=object[key];
+        return index;
+      },{});
+    },
+  buildIndexFromArray:
+    function(array,fieldToIndex) {
+      return array.reduce(function(index,element){
+        index[element[fieldToIndex]]=element;
+        return index;
+      },{});
+    },
+  buildIndexFromArrayNonUnique:
+    function(array,fieldToIndex) {
+      return array.reduce(function(index,element){
+        if(!index[element[fieldToIndex]])
+          index[element[fieldToIndex]]=[];
+        index[element[fieldToIndex]].push(element);
+        return index;
+      },{});
+    }
+};
+},{}],593:[function(require,module,exports){
+var indexer=require("./indexer.js");
+
+module.exports= function(mcData){
+  return {
+    biomesById:indexer.buildIndexFromArray(mcData.biomes,"id"),
+
+    blocksById:indexer.buildIndexFromArray(mcData.blocks,"id"),
+    blocksByName:indexer.buildIndexFromArray(mcData.blocks,"name"),
+
+    entitiesByName:indexer.buildIndexFromArray(mcData.entities,"name"),
+    mobsById:indexer.buildIndexFromArray(mcData.entities.filter(function(e){return e.type=='mob'}),"id"),
+    objectsById:indexer.buildIndexFromArray(mcData.entities.filter(function(e){return e.type=='object'}),"id"),
+
+    instrumentsById:indexer.buildIndexFromArray(mcData.instruments,"id"),
+
+    itemsById:indexer.buildIndexFromArray(mcData.items,"id"),
+    itemsByName:indexer.buildIndexFromArray(mcData.items,"name"),
+
+    windowsById:indexer.buildIndexFromArray(mcData.windows,"id"),
+    windowsByName:indexer.buildIndexFromArray(mcData.windows,"name"),
+
+    effectsById:indexer.buildIndexFromArray(mcData.effects,"id"),
+    effectsByName:indexer.buildIndexFromArray(mcData.effects,"name")
+  };
+};
+},{"./indexer.js":592}],594:[function(require,module,exports){
+module.exports=mcDataToNode;
+
+function mcDataToNode(mcData) {
+  var indexes=require("./indexes.js")(mcData);
+  return {
+    blocks: indexes.blocksById,
+    blocksByName: indexes.blocksByName,
+    blocksArray: mcData.blocks,
+
+    biomes: indexes.biomesById,
+    biomesArray: mcData.biomes,
+
+    items: indexes.itemsById,
+    itemsByName: indexes.itemsByName,
+    itemsArray: mcData.items,
+
+    recipes: mcData.recipes,
+
+    instruments: indexes.instrumentsById,
+    instrumentsArray: mcData.instruments,
+
+    materials: mcData.materials,
+
+    mobs: indexes.mobsById,
+    objects: indexes.objectsById,
+    entitiesByName: indexes.entitiesByName,
+    entitiesArray: mcData.entities,
+
+    windows: indexes.windowsById,
+    windowsByName: indexes.windowsByName,
+    windowsArray: mcData.windows,
+
+    protocol: mcData.protocol,
+
+    version: mcData.version,
+
+    effects: indexes.effectsById,
+    effectsByName: indexes.effectsByName,
+    effectsArray: mcData.effects,
+
+    findItemOrBlockById: function (id) {
+      var item = indexes.itemsById[id];
+      if (item !== undefined) return item;
+      return indexes.blocksById[id];
+    },
+    findItemOrBlockByName: function (name) {
+      var item = indexes.itemsByName[name];
+      if (item !== undefined) return item;
+      return indexes.blocksByName[name];
+    }
+  };
+}
+
+},{"./indexes.js":593}],595:[function(require,module,exports){
+arguments[4][283][0].apply(exports,arguments)
+},{"dup":283}],596:[function(require,module,exports){
+arguments[4][284][0].apply(exports,arguments)
+},{"dup":284}],597:[function(require,module,exports){
+arguments[4][285][0].apply(exports,arguments)
+},{"dup":285}],598:[function(require,module,exports){
+module.exports=[
+  {
+    "id": 48,
+    "internalId": 48,
+    "name": "Mob",
+    "displayName": "Mob",
+    "type": "mob",
+    "width": null,
+    "height": null,
+    "category": "Generic"
+  },
+  {
+    "id": 49,
+    "internalId": 49,
+    "name": "Monster",
+    "displayName": "Monster",
+    "type": "mob",
+    "width": null,
+    "height": null,
+    "category": "Generic"
+  },
+  {
+    "id": 50,
+    "internalId": 50,
+    "name": "Creeper",
+    "displayName": "Creeper",
+    "type": "mob",
+    "width": 0.6,
+    "height": 1.8,
+    "category": "Hostile mobs"
+  },
+  {
+    "id": 51,
+    "internalId": 51,
+    "name": "Skeleton",
+    "displayName": "Skeleton",
+    "type": "mob",
+    "width": 0.6,
+    "height": 1.95,
+    "category": "Hostile mobs"
+  },
+  {
+    "id": 52,
+    "internalId": 52,
+    "name": "Spider",
+    "displayName": "Spider",
+    "type": "mob",
+    "width": 1.4,
+    "height": 0.9,
+    "category": "Hostile mobs"
+  },
+  {
+    "id": 53,
+    "internalId": 53,
+    "name": "Giant",
+    "displayName": "Giant",
+    "type": "mob",
+    "width": 3.5999999999999996,
+    "height": 10.8,
+    "category": "Hostile mobs"
+  },
+  {
+    "id": 54,
+    "internalId": 54,
+    "name": "Zombie",
+    "displayName": "Zombie",
+    "type": "mob",
+    "width": 0.6,
+    "height": 1.8,
+    "category": "Hostile mobs"
+  },
+  {
+    "id": 55,
+    "internalId": 55,
+    "name": "Slime",
+    "displayName": "Slime",
+    "type": "mob",
+    "width": 0.51000005,
+    "height": 0.51000005,
+    "category": "Hostile mobs"
+  },
+  {
+    "id": 56,
+    "internalId": 56,
+    "name": "Ghast",
+    "displayName": "Ghast",
+    "type": "mob",
+    "width": 4,
+    "height": 4,
+    "category": "Hostile mobs"
+  },
+  {
+    "id": 57,
+    "internalId": 57,
+    "name": "PigZombie",
+    "displayName": "Zombie Pigman",
+    "type": "mob",
+    "width": 0.6,
+    "height": 1.8,
+    "category": "Hostile mobs"
+  },
+  {
+    "id": 58,
+    "internalId": 58,
+    "name": "Enderman",
+    "displayName": "Enderman",
+    "type": "mob",
+    "width": 0.6,
+    "height": 2.9,
+    "category": "Hostile mobs"
+  },
+  {
+    "id": 59,
+    "internalId": 59,
+    "name": "CaveSpider",
+    "displayName": "Cave Spider",
+    "type": "mob",
+    "width": 0.7,
+    "height": 0.5,
+    "category": "Hostile mobs"
+  },
+  {
+    "id": 60,
+    "internalId": 60,
+    "name": "Silverfish",
+    "displayName": "Silverfish",
+    "type": "mob",
+    "width": 0.4,
+    "height": 0.3,
+    "category": "Hostile mobs"
+  },
+  {
+    "id": 61,
+    "internalId": 61,
+    "name": "Blaze",
+    "displayName": "Blaze",
+    "type": "mob",
+    "width": 0.6,
+    "height": 1.8,
+    "category": "Hostile mobs"
+  },
+  {
+    "id": 62,
+    "internalId": 62,
+    "name": "LavaSlime",
+    "displayName": "Magma Cube",
+    "type": "mob",
+    "width": 0.51000005,
+    "height": 0.51000005,
+    "category": "Hostile mobs"
+  },
+  {
+    "id": 63,
+    "internalId": 63,
+    "name": "EnderDragon",
+    "displayName": "Ender Dragon",
+    "type": "mob",
+    "width": 16,
+    "height": 8,
+    "category": "Hostile mobs"
+  },
+  {
+    "id": 64,
+    "internalId": 64,
+    "name": "WitherBoss",
+    "displayName": "Wither",
+    "type": "mob",
+    "width": 0.9,
+    "height": 3.5,
+    "category": "Hostile mobs"
+  },
+  {
+    "id": 65,
+    "internalId": 65,
+    "name": "Bat",
+    "displayName": "Bat",
+    "type": "mob",
+    "width": 0.5,
+    "height": 0.9,
+    "category": "Passive mobs"
+  },
+  {
+    "id": 66,
+    "internalId": 66,
+    "name": "Witch",
+    "displayName": "Witch",
+    "type": "mob",
+    "width": 0.6,
+    "height": 1.8,
+    "category": "Hostile mobs"
+  },
+  {
+    "id": 67,
+    "internalId": 67,
+    "name": "Endermite",
+    "displayName": "Endermite",
+    "type": "mob",
+    "width": 0.4,
+    "height": 0.3,
+    "category": "Hostile mobs"
+  },
+  {
+    "id": 68,
+    "internalId": 68,
+    "name": "Guardian",
+    "displayName": "Guardian",
+    "type": "mob",
+    "width": 0.85,
+    "height": 0.85,
+    "category": "Hostile mobs"
+  },
+  {
+    "id": 90,
+    "internalId": 90,
+    "name": "Pig",
+    "displayName": "Pig",
+    "type": "mob",
+    "width": 0.9,
+    "height": 0.9,
+    "category": "Passive mobs"
+  },
+  {
+    "id": 91,
+    "internalId": 91,
+    "name": "Sheep",
+    "displayName": "Sheep",
+    "type": "mob",
+    "width": 0.9,
+    "height": 1.3,
+    "category": "Passive mobs"
+  },
+  {
+    "id": 92,
+    "internalId": 92,
+    "name": "Cow",
+    "displayName": "Cow",
+    "type": "mob",
+    "width": 0.9,
+    "height": 1.3,
+    "category": "Passive mobs"
+  },
+  {
+    "id": 93,
+    "internalId": 93,
+    "name": "Chicken",
+    "displayName": "Chicken",
+    "type": "mob",
+    "width": 0.4,
+    "height": 0.7,
+    "category": "Passive mobs"
+  },
+  {
+    "id": 94,
+    "internalId": 94,
+    "name": "Squid",
+    "displayName": "Squid",
+    "type": "mob",
+    "width": 0.95,
+    "height": 0.95,
+    "category": "Passive mobs"
+  },
+  {
+    "id": 95,
+    "internalId": 95,
+    "name": "Wolf",
+    "displayName": "Wolf",
+    "type": "mob",
+    "width": 0.6,
+    "height": 0.8,
+    "category": "Passive mobs"
+  },
+  {
+    "id": 96,
+    "internalId": 96,
+    "name": "MushroomCow",
+    "displayName": "Mooshroom",
+    "type": "mob",
+    "width": 0.9,
+    "height": 1.3,
+    "category": "Passive mobs"
+  },
+  {
+    "id": 97,
+    "internalId": 97,
+    "name": "SnowMan",
+    "displayName": "Snow Golem",
+    "type": "mob",
+    "width": 0.7,
+    "height": 1.9,
+    "category": "Passive mobs"
+  },
+  {
+    "id": 98,
+    "internalId": 98,
+    "name": "Ozelot",
+    "displayName": "Ocelot",
+    "type": "mob",
+    "width": 0.6,
+    "height": 0.8,
+    "category": "Passive mobs"
+  },
+  {
+    "id": 99,
+    "internalId": 99,
+    "name": "VillagerGolem",
+    "displayName": "Iron Golem",
+    "type": "mob",
+    "width": 1.4,
+    "height": 2.9,
+    "category": "Passive mobs"
+  },
+  {
+    "id": 100,
+    "internalId": 100,
+    "name": "EntityHorse",
+    "displayName": "Horse",
+    "type": "mob",
+    "width": 1.4,
+    "height": 1.6,
+    "category": "Passive mobs"
+  },
+  {
+    "id": 101,
+    "internalId": 101,
+    "name": "Rabbit",
+    "displayName": "Rabbit",
+    "type": "mob",
+    "width": 0.6,
+    "height": 0.7,
+    "category": "Passive mobs"
+  },
+  {
+    "id": 120,
+    "internalId": 120,
+    "name": "Villager",
+    "displayName": "Villager",
+    "type": "mob",
+    "width": 0.6,
+    "height": 1.8,
+    "category": "NPCs"
+  },
+  {
+    "id": 1,
+    "internalId": 41,
+    "name": "Boat",
+    "displayName": "Boat",
+    "type": "object",
+    "width": 1.5,
+    "height": 0.6,
+    "category": "Vehicles"
+  },
+  {
+    "id": 2,
+    "internalId": 1,
+    "name": "Item",
+    "displayName": "Dropped item",
+    "type": "object",
+    "width": 0.25,
+    "height": 0.25,
+    "category": "Drops"
+  },
+  {
+    "id": 10,
+    "internalId": 42,
+    "name": "MinecartRideable",
+    "displayName": "Minecart",
+    "type": "object",
+    "width": 0.98,
+    "height": 0.7,
+    "category": "Vehicles"
+  },
+  {
+    "id": 11,
+    "internalId": 42,
+    "name": "MinecartRideable",
+    "displayName": "Minecart",
+    "type": "object",
+    "width": 0.98,
+    "height": 0.7,
+    "category": "Vehicles"
+  },
+  {
+    "id": 12,
+    "internalId": 42,
+    "name": "MinecartRideable",
+    "displayName": "Minecart",
+    "type": "object",
+    "width": 0.98,
+    "height": 0.7,
+    "category": "Vehicles"
+  },
+  {
+    "id": 50,
+    "internalId": 20,
+    "name": "PrimedTnt",
+    "displayName": "Primed TNT",
+    "type": "object",
+    "width": 0.98,
+    "height": 0.98,
+    "category": "Blocks"
+  },
+  {
+    "id": 51,
+    "internalId": 200,
+    "name": "EnderCrystal",
+    "displayName": "Ender Crystal",
+    "type": "object",
+    "width": 2,
+    "height": 2,
+    "category": "Immobile"
+  },
+  {
+    "id": 60,
+    "internalId": 10,
+    "name": "Arrow",
+    "displayName": "Shot arrow",
+    "type": "object",
+    "width": 0.5,
+    "height": 0.5,
+    "category": "Projectiles"
+  },
+  {
+    "id": 61,
+    "internalId": 11,
+    "name": "Snowball",
+    "displayName": "Thrown snowball",
+    "type": "object",
+    "width": 0.25,
+    "height": 0.25,
+    "category": "Projectiles"
+  },
+  {
+    "id": 62,
+    "internalId": 7,
+    "name": "ThrownEgg",
+    "displayName": "Thrown egg",
+    "type": "object",
+    "width": 0.25,
+    "height": 0.25,
+    "category": "Projectiles"
+  },
+  {
+    "id": 63,
+    "internalId": 12,
+    "name": "Fireball",
+    "displayName": "Ghast fireball",
+    "type": "object",
+    "width": 1,
+    "height": 1,
+    "category": "Projectiles"
+  },
+  {
+    "id": 64,
+    "internalId": 13,
+    "name": "SmallFireball",
+    "displayName": "Blaze fireball",
+    "type": "object",
+    "width": 0.3125,
+    "height": 0.3125,
+    "category": "Projectiles"
+  },
+  {
+    "id": 65,
+    "internalId": 14,
+    "name": "ThrownEnderpearl",
+    "displayName": "Thrown Ender Pearl",
+    "type": "object",
+    "width": 0.25,
+    "height": 0.25,
+    "category": "Projectiles"
+  },
+  {
+    "id": 66,
+    "internalId": 19,
+    "name": "WitherSkull",
+    "displayName": "Wither Skull",
+    "type": "object",
+    "width": 0.3125,
+    "height": 0.3125,
+    "category": "Projectiles"
+  },
+  {
+    "id": 70,
+    "internalId": 21,
+    "name": "FallingSand",
+    "displayName": "Falling block",
+    "type": "object",
+    "width": 0.98,
+    "height": 0.98,
+    "category": "Blocks"
+  },
+  {
+    "id": 71,
+    "internalId": 18,
+    "name": "ItemFrame",
+    "displayName": "Item Frame",
+    "type": "object",
+    "width": null,
+    "height": null,
+    "category": "Immobile"
+  },
+  {
+    "id": 72,
+    "internalId": 15,
+    "name": "EyeOfEnderSignal",
+    "displayName": "Thrown Eye of Ender",
+    "type": "object",
+    "width": 0.25,
+    "height": 0.25,
+    "category": "Projectiles"
+  },
+  {
+    "id": 73,
+    "internalId": 16,
+    "name": "ThrownPotion",
+    "displayName": "Thrown splash potion",
+    "type": "object",
+    "width": 0.25,
+    "height": 0.25,
+    "category": "Projectiles"
+  },
+  {
+    "id": 74,
+    "internalId": 21,
+    "name": "FallingSand",
+    "displayName": "Falling block",
+    "type": "object",
+    "width": 0.98,
+    "height": 0.98,
+    "category": "Blocks"
+  },
+  {
+    "id": 75,
+    "internalId": 17,
+    "name": "ThrownExpBottle",
+    "displayName": "Thrown Bottle o' Enchanting",
+    "type": "object",
+    "width": 0.25,
+    "height": 0.25,
+    "category": "Projectiles"
+  },
+  {
+    "id": 76,
+    "internalId": 22,
+    "name": "FireworksRocketEntity",
+    "displayName": "Firework Rocket",
+    "type": "object",
+    "width": 0.25,
+    "height": 0.25,
+    "category": "Projectiles"
+  },
+  {
+    "id": 77,
+    "internalId": 8,
+    "name": "LeashKnot",
+    "displayName": "Lead knot",
+    "type": "object",
+    "width": 0.5,
+    "height": 0.5,
+    "category": "Immobile"
+  },
+  {
+    "id": 78,
+    "internalId": 30,
+    "name": "ArmorStand",
+    "displayName": "Armor Stand",
+    "type": "object",
+    "width": 0.5,
+    "height": 2,
+    "category": "Immobile"
+  },
+  {
+    "id": 90,
+    "name": "Fishing Float",
+    "displayName": "Fishing Float",
+    "type": "object",
+    "width": 0.25,
+    "height": 0.25
+  }
+]
+},{}],599:[function(require,module,exports){
+arguments[4][287][0].apply(exports,arguments)
+},{"dup":287}],600:[function(require,module,exports){
+arguments[4][288][0].apply(exports,arguments)
+},{"dup":288}],601:[function(require,module,exports){
+arguments[4][289][0].apply(exports,arguments)
+},{"dup":289}],602:[function(require,module,exports){
+arguments[4][290][0].apply(exports,arguments)
+},{"dup":290}],603:[function(require,module,exports){
+arguments[4][291][0].apply(exports,arguments)
+},{"dup":291}],604:[function(require,module,exports){
+arguments[4][292][0].apply(exports,arguments)
+},{"dup":292}],605:[function(require,module,exports){
+module.exports=[
+  {
+    "id": "",
+    "name": "Player",
+    "slots": [
+      {
+        "name": "craft result",
+        "index": 0
+      },
+      {
+        "name": "craft grid",
+        "index": 1,
+        "size": 4
+      },
+      {
+        "name": "armor",
+        "index": 5,
+        "size": 4
+      },
+      {
+        "name": "helmet",
+        "index": 5
+      },
+      {
+        "name": "chestplate",
+        "index": 6
+      },
+      {
+        "name": "leggings",
+        "index": 7
+      },
+      {
+        "name": "boots",
+        "index": 8
+      }
+    ]
+  },
+  {
+    "id": "EntityHorse",
+    "name": "Horse",
+    "slots": [
+      {
+        "name": "saddle",
+        "index": 0
+      },
+      {
+        "name": "armor",
+        "index": 1
+      },
+      {
+        "name": "storage",
+        "index": 2,
+        "size": 15
+      }
+    ],
+    "openedWith": [
+      {
+        "type": "entity",
+        "id": 100
+      }
+    ]
+  },
+  {
+    "id": "minecraft:anvil",
+    "name": "Anvil",
+    "slots": [
+      {
+        "name": "tool",
+        "index": 0
+      },
+      {
+        "name": "combined",
+        "index": 1
+      },
+      {
+        "name": "result",
+        "index": 2
+      }
+    ],
+    "properties": [
+      "repair cost"
+    ]
+  },
+  {
+    "id": "minecraft:beacon",
+    "name": "Beacon",
+    "slots": [
+      {
+        "name": "input",
+        "index": 0
+      }
+    ],
+    "properties": [
+      "level",
+      "effect 1",
+      "effect 2"
+    ],
+    "openedWith": [
+      {
+        "type": "block",
+        "id": 138
+      }
+    ]
+  },
+  {
+    "id": "minecraft:brewing_stand",
+    "name": "Brewing Stand",
+    "slots": [
+      {
+        "name": "ingredient",
+        "index": 3
+      },
+      {
+        "name": "result",
+        "index": 0,
+        "size": 3
+      }
+    ],
+    "properties": [
+      "brew time"
+    ],
+    "openedWith": [
+      {
+        "type": "block",
+        "id": 117
+      }
+    ]
+  },
+  {
+    "id": "minecraft:chest",
+    "name": "Chest"
+  },
+  {
+    "id": "minecraft:container",
+    "name": "Container"
+  },
+  {
+    "id": "minecraft:crafting_table",
+    "name": "Workbench",
+    "slots": [
+      {
+        "name": "craft result",
+        "index": 0
+      },
+      {
+        "name": "craft grid",
+        "index": 1,
+        "size": 9
+      }
+    ]
+  },
+  {
+    "id": "minecraft:dispenser",
+    "name": "Dispenser"
+  },
+  {
+    "id": "minecraft:dropper",
+    "name": "Dropper"
+  },
+  {
+    "id": "minecraft:enchanting_table",
+    "name": "Enchantment Table",
+    "slots": [
+      {
+        "name": "enchanted",
+        "index": 0
+      },
+      {
+        "name": "lapis",
+        "index": 1
+      }
+    ],
+    "properties": [
+      "xp 1",
+      "xp 2",
+      "xp 3",
+      "seed",
+      "tooltip 1",
+      "tooltip 2",
+      "tooltip 3"
+    ]
+  },
+  {
+    "id": "minecraft:furnace",
+    "name": "Furnace",
+    "slots": [
+      {
+        "name": "smelted",
+        "index": 0
+      },
+      {
+        "name": "fuel",
+        "index": 1
+      },
+      {
+        "name": "result",
+        "index": 2
+      }
+    ],
+    "properties": [
+      "fuel",
+      "fuel max",
+      "progress",
+      "progress max"
+    ]
+  },
+  {
+    "id": "minecraft:hopper",
+    "name": "Hopper"
+  },
+  {
+    "id": "minecraft:villager",
+    "name": "NPC Trade",
+    "slots": [
+      {
+        "name": "give 1",
+        "index": 0
+      },
+      {
+        "name": "give 2",
+        "index": 1
+      },
+      {
+        "name": "take",
+        "index": 2
+      }
+    ]
+  }
+]
+
+},{}],606:[function(require,module,exports){
+arguments[4][283][0].apply(exports,arguments)
+},{"dup":283}],607:[function(require,module,exports){
+arguments[4][295][0].apply(exports,arguments)
+},{"dup":295}],608:[function(require,module,exports){
+arguments[4][296][0].apply(exports,arguments)
+},{"dup":296}],609:[function(require,module,exports){
+module.exports=[
+  {
+    "id": 48,
+    "internalId": 48,
+    "name": "Mob",
+    "displayName": "Mob",
+    "type": "mob",
+    "width": null,
+    "height": null,
+    "category": "Generic"
+  },
+  {
+    "id": 49,
+    "internalId": 49,
+    "name": "Monster",
+    "displayName": "Monster",
+    "type": "mob",
+    "width": null,
+    "height": null,
+    "category": "Generic"
+  },
+  {
+    "id": 50,
+    "internalId": 50,
+    "name": "Creeper",
+    "displayName": "Creeper",
+    "type": "mob",
+    "width": 0.6,
+    "height": 1.8,
+    "category": "Hostile mobs"
+  },
+  {
+    "id": 51,
+    "internalId": 51,
+    "name": "Skeleton",
+    "displayName": "Skeleton",
+    "type": "mob",
+    "width": 0.6,
+    "height": 1.95,
+    "category": "Hostile mobs"
+  },
+  {
+    "id": 52,
+    "internalId": 52,
+    "name": "Spider",
+    "displayName": "Spider",
+    "type": "mob",
+    "width": 1.4,
+    "height": 0.9,
+    "category": "Hostile mobs"
+  },
+  {
+    "id": 53,
+    "internalId": 53,
+    "name": "Giant",
+    "displayName": "Giant",
+    "type": "mob",
+    "width": 3.5999999999999996,
+    "height": 10.8,
+    "category": "Hostile mobs"
+  },
+  {
+    "id": 54,
+    "internalId": 54,
+    "name": "Zombie",
+    "displayName": "Zombie",
+    "type": "mob",
+    "width": 0.6,
+    "height": 1.8,
+    "category": "Hostile mobs"
+  },
+  {
+    "id": 55,
+    "internalId": 55,
+    "name": "Slime",
+    "displayName": "Slime",
+    "type": "mob",
+    "width": 0.51000005,
+    "height": 0.51000005,
+    "category": "Hostile mobs"
+  },
+  {
+    "id": 56,
+    "internalId": 56,
+    "name": "Ghast",
+    "displayName": "Ghast",
+    "type": "mob",
+    "width": 4,
+    "height": 4,
+    "category": "Hostile mobs"
+  },
+  {
+    "id": 57,
+    "internalId": 57,
+    "name": "PigZombie",
+    "displayName": "Zombie Pigman",
+    "type": "mob",
+    "width": 0.6,
+    "height": 1.8,
+    "category": "Hostile mobs"
+  },
+  {
+    "id": 58,
+    "internalId": 58,
+    "name": "Enderman",
+    "displayName": "Enderman",
+    "type": "mob",
+    "width": 0.6,
+    "height": 2.9,
+    "category": "Hostile mobs"
+  },
+  {
+    "id": 59,
+    "internalId": 59,
+    "name": "CaveSpider",
+    "displayName": "Cave Spider",
+    "type": "mob",
+    "width": 0.7,
+    "height": 0.5,
+    "category": "Hostile mobs"
+  },
+  {
+    "id": 60,
+    "internalId": 60,
+    "name": "Silverfish",
+    "displayName": "Silverfish",
+    "type": "mob",
+    "width": 0.4,
+    "height": 0.3,
+    "category": "Hostile mobs"
+  },
+  {
+    "id": 61,
+    "internalId": 61,
+    "name": "Blaze",
+    "displayName": "Blaze",
+    "type": "mob",
+    "width": 0.6,
+    "height": 1.8,
+    "category": "Hostile mobs"
+  },
+  {
+    "id": 62,
+    "internalId": 62,
+    "name": "LavaSlime",
+    "displayName": "Magma Cube",
+    "type": "mob",
+    "width": 0.51000005,
+    "height": 0.51000005,
+    "category": "Hostile mobs"
+  },
+  {
+    "id": 63,
+    "internalId": 63,
+    "name": "EnderDragon",
+    "displayName": "Ender Dragon",
+    "type": "mob",
+    "width": 16,
+    "height": 8,
+    "category": "Hostile mobs"
+  },
+  {
+    "id": 64,
+    "internalId": 64,
+    "name": "WitherBoss",
+    "displayName": "Wither",
+    "type": "mob",
+    "width": 0.9,
+    "height": 3.5,
+    "category": "Hostile mobs"
+  },
+  {
+    "id": 65,
+    "internalId": 65,
+    "name": "Bat",
+    "displayName": "Bat",
+    "type": "mob",
+    "width": 0.5,
+    "height": 0.9,
+    "category": "Passive mobs"
+  },
+  {
+    "id": 66,
+    "internalId": 66,
+    "name": "Witch",
+    "displayName": "Witch",
+    "type": "mob",
+    "width": 0.6,
+    "height": 1.8,
+    "category": "Hostile mobs"
+  },
+  {
+    "id": 67,
+    "internalId": 67,
+    "name": "Endermite",
+    "displayName": "Endermite",
+    "type": "mob",
+    "width": 0.4,
+    "height": 0.3,
+    "category": "Hostile mobs"
+  },
+  {
+    "id": 68,
+    "internalId": 68,
+    "name": "Guardian",
+    "displayName": "Guardian",
+    "type": "mob",
+    "width": 0.85,
+    "height": 0.85,
+    "category": "Hostile mobs"
+  },
+  {
+    "id": 69,
+    "internalId": 69,
+    "name": "Shulker",
+    "displayName": "Shulker",
+    "type": "mob",
+    "width": 1,
+    "height": 1,
+    "category": "Hostile mobs"
+  },
+  {
+    "id": 90,
+    "internalId": 90,
+    "name": "Pig",
+    "displayName": "Pig",
+    "type": "mob",
+    "width": 0.9,
+    "height": 0.9,
+    "category": "Passive mobs"
+  },
+  {
+    "id": 91,
+    "internalId": 91,
+    "name": "Sheep",
+    "displayName": "Sheep",
+    "type": "mob",
+    "width": 0.9,
+    "height": 1.3,
+    "category": "Passive mobs"
+  },
+  {
+    "id": 92,
+    "internalId": 92,
+    "name": "Cow",
+    "displayName": "Cow",
+    "type": "mob",
+    "width": 0.9,
+    "height": 1.3,
+    "category": "Passive mobs"
+  },
+  {
+    "id": 93,
+    "internalId": 93,
+    "name": "Chicken",
+    "displayName": "Chicken",
+    "type": "mob",
+    "width": 0.4,
+    "height": 0.7,
+    "category": "Passive mobs"
+  },
+  {
+    "id": 94,
+    "internalId": 94,
+    "name": "Squid",
+    "displayName": "Squid",
+    "type": "mob",
+    "width": 0.95,
+    "height": 0.95,
+    "category": "Passive mobs"
+  },
+  {
+    "id": 95,
+    "internalId": 95,
+    "name": "Wolf",
+    "displayName": "Wolf",
+    "type": "mob",
+    "width": 0.6,
+    "height": 0.8,
+    "category": "Passive mobs"
+  },
+  {
+    "id": 96,
+    "internalId": 96,
+    "name": "MushroomCow",
+    "displayName": "Mooshroom",
+    "type": "mob",
+    "width": 0.9,
+    "height": 1.3,
+    "category": "Passive mobs"
+  },
+  {
+    "id": 97,
+    "internalId": 97,
+    "name": "SnowMan",
+    "displayName": "Snow Golem",
+    "type": "mob",
+    "width": 0.7,
+    "height": 1.9,
+    "category": "Passive mobs"
+  },
+  {
+    "id": 98,
+    "internalId": 98,
+    "name": "Ozelot",
+    "displayName": "Ocelot",
+    "type": "mob",
+    "width": 0.6,
+    "height": 0.8,
+    "category": "Passive mobs"
+  },
+  {
+    "id": 99,
+    "internalId": 99,
+    "name": "VillagerGolem",
+    "displayName": "Iron Golem",
+    "type": "mob",
+    "width": 1.4,
+    "height": 2.9,
+    "category": "Passive mobs"
+  },
+  {
+    "id": 100,
+    "internalId": 100,
+    "name": "EntityHorse",
+    "displayName": "Horse",
+    "type": "mob",
+    "width": 1.4,
+    "height": 1.6,
+    "category": "Passive mobs"
+  },
+  {
+    "id": 101,
+    "internalId": 101,
+    "name": "Rabbit",
+    "displayName": "Rabbit",
+    "type": "mob",
+    "width": 0.6,
+    "height": 0.7,
+    "category": "Passive mobs"
+  },
+  {
+    "id": 120,
+    "internalId": 120,
+    "name": "Villager",
+    "displayName": "Villager",
+    "type": "mob",
+    "width": 0.6,
+    "height": 1.8,
+    "category": "NPCs"
+  },
+  {
+    "id": 1,
+    "internalId": 41,
+    "name": "Boat",
+    "displayName": "Boat",
+    "type": "object",
+    "width": 1.5,
+    "height": 0.6,
+    "category": "Vehicles"
+  },
+  {
+    "id": 2,
+    "internalId": 1,
+    "name": "Item",
+    "displayName": "Dropped item",
+    "type": "object",
+    "width": 0.25,
+    "height": 0.25,
+    "category": "Drops"
+  },
+  {
+    "id": 3,
+    "internalId": 2,
+    "name": "XPOrb",
+    "displayName": "Experience Orb",
+    "type": "object",
+    "width": null,
+    "height": null,
+    "category": "Drops"
+  },
+  {
+    "id": 10,
+    "internalId": 42,
+    "name": "MinecartRideable",
+    "displayName": "Minecart",
+    "type": "object",
+    "width": 0.98,
+    "height": 0.7,
+    "category": "Vehicles"
+  },
+  {
+    "id": 11,
+    "internalId": 42,
+    "name": "MinecartRideable",
+    "displayName": "Minecart",
+    "type": "object",
+    "width": 0.98,
+    "height": 0.7,
+    "category": "Vehicles"
+  },
+  {
+    "id": 12,
+    "internalId": 42,
+    "name": "MinecartRideable",
+    "displayName": "Minecart",
+    "type": "object",
+    "width": 0.98,
+    "height": 0.7,
+    "category": "Vehicles"
+  },
+  {
+    "id": 50,
+    "internalId": 20,
+    "name": "PrimedTnt",
+    "displayName": "Primed TNT",
+    "type": "object",
+    "width": 0.98,
+    "height": 0.98,
+    "category": "Blocks"
+  },
+  {
+    "id": 51,
+    "internalId": 200,
+    "name": "EnderCrystal",
+    "displayName": "Ender Crystal",
+    "type": "object",
+    "width": 2,
+    "height": 2,
+    "category": "Immobile"
+  },
+  {
+    "id": 60,
+    "internalId": 10,
+    "name": "Arrow",
+    "displayName": "Shot arrow",
+    "type": "object",
+    "width": 0.5,
+    "height": 0.5,
+    "category": "Projectiles"
+  },
+  {
+    "id": 61,
+    "internalId": 11,
+    "name": "Snowball",
+    "displayName": "Thrown snowball",
+    "type": "object",
+    "width": 0.25,
+    "height": 0.25,
+    "category": "Projectiles"
+  },
+  {
+    "id": 62,
+    "internalId": 7,
+    "name": "ThrownEgg",
+    "displayName": "Thrown egg",
+    "type": "object",
+    "width": 0.25,
+    "height": 0.25,
+    "category": "Projectiles"
+  },
+  {
+    "id": 63,
+    "internalId": 12,
+    "name": "Fireball",
+    "displayName": "Ghast fireball",
+    "type": "object",
+    "width": 1,
+    "height": 1,
+    "category": "Projectiles"
+  },
+  {
+    "id": 64,
+    "internalId": 13,
+    "name": "SmallFireball",
+    "displayName": "Blaze fireball",
+    "type": "object",
+    "width": 0.3125,
+    "height": 0.3125,
+    "category": "Projectiles"
+  },
+  {
+    "id": 65,
+    "internalId": 14,
+    "name": "ThrownEnderpearl",
+    "displayName": "Thrown Ender Pearl",
+    "type": "object",
+    "width": 0.25,
+    "height": 0.25,
+    "category": "Projectiles"
+  },
+  {
+    "id": 66,
+    "internalId": 19,
+    "name": "WitherSkull",
+    "displayName": "Wither Skull",
+    "type": "object",
+    "width": 0.3125,
+    "height": 0.3125,
+    "category": "Projectiles"
+  },
+  {
+    "id": 67,
+    "internalId": 69,
+    "name": "Shulker",
+    "displayName": "Shulker",
+    "type": "object",
+    "width": 0.3125,
+    "height": 0.3125,
+    "category": "Hostile mobs"
+  },
+  {
+    "id": 70,
+    "internalId": 21,
+    "name": "FallingSand",
+    "displayName": "Falling block",
+    "type": "object",
+    "width": 0.98,
+    "height": 0.98,
+    "category": "Blocks"
+  },
+  {
+    "id": 71,
+    "internalId": 18,
+    "name": "ItemFrame",
+    "displayName": "Item Frame",
+    "type": "object",
+    "width": null,
+    "height": null,
+    "category": "Immobile"
+  },
+  {
+    "id": 72,
+    "internalId": 15,
+    "name": "EyeOfEnderSignal",
+    "displayName": "Thrown Eye of Ender",
+    "type": "object",
+    "width": 0.25,
+    "height": 0.25,
+    "category": "Projectiles"
+  },
+  {
+    "id": 73,
+    "internalId": 16,
+    "name": "ThrownPotion",
+    "displayName": "Thrown splash potion",
+    "type": "object",
+    "width": 0.25,
+    "height": 0.25,
+    "category": "Projectiles"
+  },
+  {
+    "id": 74,
+    "internalId": 21,
+    "name": "FallingSand",
+    "displayName": "Falling block",
+    "type": "object",
+    "width": 0.98,
+    "height": 0.98,
+    "category": "Blocks"
+  },
+  {
+    "id": 75,
+    "internalId": 17,
+    "name": "ThrownExpBottle",
+    "displayName": "Thrown Bottle o' Enchanting",
+    "type": "object",
+    "width": 0.25,
+    "height": 0.25,
+    "category": "Projectiles"
+  },
+  {
+    "id": 76,
+    "internalId": 22,
+    "name": "FireworksRocketEntity",
+    "displayName": "Firework Rocket",
+    "type": "object",
+    "width": 0.25,
+    "height": 0.25,
+    "category": "Projectiles"
+  },
+  {
+    "id": 77,
+    "internalId": 8,
+    "name": "LeashKnot",
+    "displayName": "Lead knot",
+    "type": "object",
+    "width": 0.5,
+    "height": 0.5,
+    "category": "Immobile"
+  },
+  {
+    "id": 78,
+    "internalId": 30,
+    "name": "ArmorStand",
+    "displayName": "Armor Stand",
+    "type": "object",
+    "width": 0.5,
+    "height": 2,
+    "category": "Immobile"
+  },
+  {
+    "id": 90,
+    "name": "Fishing Float",
+    "displayName": "Fishing Float",
+    "type": "object",
+    "width": 0.25,
+    "height": 0.25
+  },
+  {
+    "id": 91,
+    "internalId": 10,
+    "name": "Arrow",
+    "displayName": "Shot arrow",
+    "type": "object",
+    "width": 0.5,
+    "height": 0.5,
+    "category": "Projectiles"
+  },
+  {
+    "id": 92,
+    "internalId": 10,
+    "name": "Arrow",
+    "displayName": "Shot arrow",
+    "type": "object",
+    "width": 0.5,
+    "height": 0.5,
+    "category": "Projectiles"
+  },
+  {
+    "id": 93,
+    "name": "Dragon Fireball",
+    "displayName": "Dragon Fireball",
+    "type": "object",
+    "width": 0.3125,
+    "height": 0.3125
+  }
+]
+},{}],610:[function(require,module,exports){
+arguments[4][287][0].apply(exports,arguments)
+},{"dup":287}],611:[function(require,module,exports){
+arguments[4][299][0].apply(exports,arguments)
+},{"dup":299}],612:[function(require,module,exports){
+arguments[4][289][0].apply(exports,arguments)
+},{"dup":289}],613:[function(require,module,exports){
+module.exports={
+  "types": {
+    "varint": "native",
+    "string": "native",
+    "ushort": "native",
+    "ubyte": "native",
+    "long": "native",
+    "buffer": "native",
+    "int": "native",
+    "byte": "native",
+    "bool": "native",
+    "short": "native",
+    "float": "native",
+    "double": "native",
+    "UUID": "native",
+    "option": "native",
+    "entityMetadataLoop": "native",
+    "bitfield": "native",
+    "container": "native",
+    "switch": "native",
+    "void": "native",
+    "array": "native",
+    "restBuffer": "native",
+    "nbt":"native",
+    "optionalNbt":"native",
+    "slot": ["container",[
+      {
+        "name":"blockId",
+        "type":"short"
+      },
+      {
+        "anon":true,
+        "type":["switch",
+          {
+            "compareTo":"blockId",
+            "fields": {
+              "-1": "void"
+            },
+            "default":[
+              "container",[
+                {
+                  "name":"itemCount",
+                  "type":"byte"
+                },
+                {
+                  "name":"itemDamage",
+                  "type":"short"
+                },
+                {
+                  "name":"nbtData",
+                  "type":"optionalNbt"
+                }
+              ]
+            ]
+          }
+        ]
+      }
+    ]],
+    "position": ["bitfield", [
+      { "name": "x", "size": 26, "signed": true },
+      { "name": "y", "size": 12, "signed": true },
+      { "name": "z", "size": 26, "signed": true }
+    ]],
+    "entityMetadataItem": [
+      "switch",
+      {
+        "compareTo": "$compareTo",
+        "fields": {
+          "0": "byte",
+          "1": "varint",
+          "2": "float",
+          "3": "string",
+          "4": "string",
+          "5": "slot",
+          "6": "bool",
+          "7": [
+            "container",
+            [
+              {
+                "name": "pitch",
+                "type": "float"
+              },
+              {
+                "name": "yaw",
+                "type": "float"
+              },
+              {
+                "name": "roll",
+                "type": "float"
+              }
+            ]
+          ],
+          "8": "position",
+          "9": [
+            "option",
+            "position"
+          ],
+          "10": "varint",
+          "11": [
+            "option",
+            "UUID"
+          ],
+          "12": "varint"
+        }
+      }
+    ],
+    "entityMetadata": ["entityMetadataLoop", {
+      "endVal": 255,
+      "type": ["container", [
+        { "anon": true, "type": ["container", [
+          { "name": "key", "type": "ubyte" },
+          { "name": "type", "type": "byte" }
+        ]]},
+        { "name": "value", "type": ["entityMetadataItem", { "compareTo": "type" }]}
+      ]]
+    }]
+  },
+  "states": {
+    "handshaking": {
+      "toClient": {},
+      "toServer": {
+        "set_protocol": {
+          "id": "0x00",
+          "fields": [
+            {
+              "name": "protocolVersion",
+              "type": "varint"
+            },
+            {
+              "name": "serverHost",
+              "type": "string"
+            },
+            {
+              "name": "serverPort",
+              "type": "ushort"
+            },
+            {
+              "name": "nextState",
+              "type": "varint"
+            }
+          ]
+        },
+        "legacy_server_list_ping": {
+          "id": "0xfe",
+          "fields": [
+            {
+              "name": "payload",
+              "type": "ubyte"
+            }
+          ]
+        }
+      }
+    },
+    "status": {
+      "toClient": {
+        "server_info": {
+          "id": "0x00",
+          "fields": [
+            {
+              "name": "response",
+              "type": "string"
+            }
+          ]
+        },
+        "ping": {
+          "id": "0x01",
+          "fields": [
+            {
+              "name": "time",
+              "type": "long"
+            }
+          ]
+        }
+      },
+      "toServer": {
+        "ping_start": {
+          "id": "0x00",
+          "fields": []
+        },
+        "ping": {
+          "id": "0x01",
+          "fields": [
+            {
+              "name": "time",
+              "type": "long"
+            }
+          ]
+        }
+      }
+    },
+    "login": {
+      "toClient": {
+        "disconnect": {
+          "id": "0x00",
+          "fields": [
+            {
+              "name": "reason",
+              "type": "string"
+            }
+          ]
+        },
+        "encryption_begin": {
+          "id": "0x01",
+          "fields": [
+            {
+              "name": "serverId",
+              "type": "string"
+            },
+            {
+              "name": "publicKey",
+              "type": [
+                "buffer",
+                {
+                  "countType": "varint"
+                }
+              ]
+            },
+            {
+              "name": "verifyToken",
+              "type": [
+                "buffer",
+                {
+                  "countType": "varint"
+                }
+              ]
+            }
+          ]
+        },
+        "success": {
+          "id": "0x02",
+          "fields": [
+            {
+              "name": "uuid",
+              "type": "string"
+            },
+            {
+              "name": "username",
+              "type": "string"
+            }
+          ]
+        },
+        "compress": {
+          "id": "0x03",
+          "fields": [
+            {
+              "name": "threshold",
+              "type": "varint"
+            }
+          ]
+        }
+      },
+      "toServer": {
+        "login_start": {
+          "id": "0x00",
+          "fields": [
+            {
+              "name": "username",
+              "type": "string"
+            }
+          ]
+        },
+        "encryption_begin": {
+          "id": "0x01",
+          "fields": [
+            {
+              "name": "sharedSecret",
+              "type": [
+                "buffer",
+                {
+                  "countType": "varint"
+                }
+              ]
+            },
+            {
+              "name": "verifyToken",
+              "type": [
+                "buffer",
+                {
+                  "countType": "varint"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "play": {
+      "toClient": {
+        "keep_alive": {
+          "id": "0x1f",
+          "fields": [
+            {
+              "name": "keepAliveId",
+              "type": "varint"
+            }
+          ]
+        },
+        "login": {
+          "id": "0x24",
+          "fields": [
+            {
+              "name": "entityId",
+              "type": "int"
+            },
+            {
+              "name": "gameMode",
+              "type": "ubyte"
+            },
+            {
+              "name": "dimension",
+              "type": "byte"
+            },
+            {
+              "name": "difficulty",
+              "type": "ubyte"
+            },
+            {
+              "name": "maxPlayers",
+              "type": "ubyte"
+            },
+            {
+              "name": "levelType",
+              "type": "string"
+            },
+            {
+              "name": "reducedDebugInfo",
+              "type": "bool"
+            }
+          ]
+        },
+        "chat": {
+          "id": "0x0f",
+          "fields": [
+            {
+              "name": "message",
+              "type": "string"
+            },
+            {
+              "name": "position",
+              "type": "byte"
+            }
+          ]
+        },
+        "update_time": {
+          "id": "0x43",
+          "fields": [
+            {
+              "name": "age",
+              "type": "long"
+            },
+            {
+              "name": "time",
+              "type": "long"
+            }
+          ]
+        },
+        "entity_equipment": {
+          "id": "0x3c",
+          "fields": [
+            {
+              "name": "entityId",
+              "type": "varint"
+            },
+            {
+              "name": "slot",
+              "type": "varint"
+            },
+            {
+              "name": "item",
+              "type": "slot"
+            }
+          ]
+        },
+        "spawn_position": {
+          "id": "0x42",
+          "fields": [
+            {
+              "name": "location",
+              "type": "position"
+            }
+          ]
+        },
+        "update_health": {
+          "id": "0x3e",
+          "fields": [
+            {
+              "name": "health",
+              "type": "float"
+            },
+            {
+              "name": "food",
+              "type": "varint"
+            },
+            {
+              "name": "foodSaturation",
+              "type": "float"
+            }
+          ]
+        },
+        "respawn": {
+          "id": "0x33",
+          "fields": [
+            {
+              "name": "dimension",
+              "type": "int"
+            },
+            {
+              "name": "difficulty",
+              "type": "ubyte"
+            },
+            {
+              "name": "gamemode",
+              "type": "ubyte"
+            },
+            {
+              "name": "levelType",
+              "type": "string"
+            }
+          ]
+        },
+        "position": {
+          "id": "0x2e",
+          "fields": [
+            {
+              "name": "x",
+              "type": "double"
+            },
+            {
+              "name": "y",
+              "type": "double"
+            },
+            {
+              "name": "z",
+              "type": "double"
+            },
+            {
+              "name": "yaw",
+              "type": "float"
+            },
+            {
+              "name": "pitch",
+              "type": "float"
+            },
+            {
+              "name": "flags",
+              "type": "byte"
+            }
+          ]
+        },
+        "held_item_slot": {
+          "id": "0x37",
+          "fields": [
+            {
+              "name": "slot",
+              "type": "byte"
+            }
+          ]
+        },
+        "bed": {
+          "id": "0x2f",
+          "fields": [
+            {
+              "name": "entityId",
+              "type": "varint"
+            },
+            {
+              "name": "location",
+              "type": "position"
+            }
+          ]
+        },
+        "animation": {
+          "id": "0x06",
+          "fields": [
+            {
+              "name": "entityId",
+              "type": "varint"
+            },
+            {
+              "name": "animation",
+              "type": "ubyte"
+            }
+          ]
+        },
+        "named_entity_spawn": {
+          "id": "0x05",
+          "fields": [
+            {
+              "name": "entityId",
+              "type": "varint"
+            },
+            {
+              "name": "playerUUID",
+              "type": "UUID"
+            },
+            {
+              "name": "x",
+              "type": "int"
+            },
+            {
+              "name": "y",
+              "type": "int"
+            },
+            {
+              "name": "z",
+              "type": "int"
+            },
+            {
+              "name": "yaw",
+              "type": "byte"
+            },
+            {
+              "name": "pitch",
+              "type": "byte"
+            },
+            {
+              "name": "metadata",
+              "type": "entityMetadata"
+            }
+          ]
+        },
+        "collect": {
+          "id": "0x47",
+          "fields": [
+            {
+              "name": "collectedEntityId",
+              "type": "varint"
+            },
+            {
+              "name": "collectorEntityId",
+              "type": "varint"
+            }
+          ]
+        },
+        "spawn_entity": {
+          "id": "0x00",
+          "fields": [
+            {
+              "name": "entityId",
+              "type": "varint"
+            },
+            {
+              "name": "entityUUID",
+              "type": "UUID"
+            },
+            {
+              "name": "type",
+              "type": "byte"
+            },
+            {
+              "name": "x",
+              "type": "int"
+            },
+            {
+              "name": "y",
+              "type": "int"
+            },
+            {
+              "name": "z",
+              "type": "int"
+            },
+            {
+              "name": "pitch",
+              "type": "byte"
+            },
+            {
+              "name": "yaw",
+              "type": "byte"
+            },
+            {
+              "name": "intField",
+              "type": "int"
+            },
+            {
+              "name": "velocityX",
+              "type": "short"
+            },
+            {
+              "name": "velocityY",
+              "type": "short"
+            },
+            {
+              "name": "velocityZ",
+              "type": "short"
+            }
+          ]
+        },
+        "spawn_entity_living": {
+          "id": "0x03",
+          "fields": [
+            {
+              "name": "entityId",
+              "type": "varint"
+            },
+            {
+              "name": "entityUUID",
+              "type": "UUID"
+            },
+            {
+              "name": "type",
+              "type": "ubyte"
+            },
+            {
+              "name": "x",
+              "type": "int"
+            },
+            {
+              "name": "y",
+              "type": "int"
+            },
+            {
+              "name": "z",
+              "type": "int"
+            },
+            {
+              "name": "yaw",
+              "type": "byte"
+            },
+            {
+              "name": "pitch",
+              "type": "byte"
+            },
+            {
+              "name": "headPitch",
+              "type": "byte"
+            },
+            {
+              "name": "velocityX",
+              "type": "short"
+            },
+            {
+              "name": "velocityY",
+              "type": "short"
+            },
+            {
+              "name": "velocityZ",
+              "type": "short"
+            },
+            {
+              "name": "metadata",
+              "type": "entityMetadata"
+            }
+          ]
+        },
+        "spawn_entity_painting": {
+          "id": "0x04",
+          "fields": [
+            {
+              "name": "entityId",
+              "type": "varint"
+            },
+            {
+              "name": "title",
+              "type": "string"
+            },
+            {
+              "name": "location",
+              "type": "position"
+            },
+            {
+              "name": "direction",
+              "type": "ubyte"
+            }
+          ]
+        },
+        "spawn_entity_experience_orb": {
+          "id": "0x01",
+          "fields": [
+            {
+              "name": "entityId",
+              "type": "varint"
+            },
+            {
+              "name": "x",
+              "type": "int"
+            },
+            {
+              "name": "y",
+              "type": "int"
+            },
+            {
+              "name": "z",
+              "type": "int"
+            },
+            {
+              "name": "count",
+              "type": "short"
+            }
+          ]
+        },
+        "entity_velocity": {
+          "id": "0x3b",
+          "fields": [
+            {
+              "name": "entityId",
+              "type": "varint"
+            },
+            {
+              "name": "velocityX",
+              "type": "short"
+            },
+            {
+              "name": "velocityY",
+              "type": "short"
+            },
+            {
+              "name": "velocityZ",
+              "type": "short"
+            }
+          ]
+        },
+        "entity_destroy": {
+          "id": "0x30",
+          "fields": [
+            {
+              "name": "entityIds",
+              "type": [
+                "array",
+                {
+                  "countType": "varint",
+                  "type": "varint"
+                }
+              ]
+            }
+          ]
+        },
+        "entity": {
+          "id": "0x29",
+          "fields": [
+            {
+              "name": "entityId",
+              "type": "varint"
+            }
+          ]
+        },
+        "rel_entity_move": {
+          "id": "0x26",
+          "fields": [
+            {
+              "name": "entityId",
+              "type": "varint"
+            },
+            {
+              "name": "dX",
+              "type": "byte"
+            },
+            {
+              "name": "dY",
+              "type": "byte"
+            },
+            {
+              "name": "dZ",
+              "type": "byte"
+            },
+            {
+              "name": "onGround",
+              "type": "bool"
+            }
+          ]
+        },
+        "entity_look": {
+          "id": "0x28",
+          "fields": [
+            {
+              "name": "entityId",
+              "type": "varint"
+            },
+            {
+              "name": "yaw",
+              "type": "byte"
+            },
+            {
+              "name": "pitch",
+              "type": "byte"
+            },
+            {
+              "name": "onGround",
+              "type": "bool"
+            }
+          ]
+        },
+        "entity_move_look": {
+          "id": "0x27",
+          "fields": [
+            {
+              "name": "entityId",
+              "type": "varint"
+            },
+            {
+              "name": "dX",
+              "type": "byte"
+            },
+            {
+              "name": "dY",
+              "type": "byte"
+            },
+            {
+              "name": "dZ",
+              "type": "byte"
+            },
+            {
+              "name": "yaw",
+              "type": "byte"
+            },
+            {
+              "name": "pitch",
+              "type": "byte"
+            },
+            {
+              "name": "onGround",
+              "type": "bool"
+            }
+          ]
+        },
+        "entity_teleport": {
+          "id": "0x48",
+          "fields": [
+            {
+              "name": "entityId",
+              "type": "varint"
+            },
+            {
+              "name": "x",
+              "type": "int"
+            },
+            {
+              "name": "y",
+              "type": "int"
+            },
+            {
+              "name": "z",
+              "type": "int"
+            },
+            {
+              "name": "yaw",
+              "type": "byte"
+            },
+            {
+              "name": "pitch",
+              "type": "byte"
+            },
+            {
+              "name": "onGround",
+              "type": "bool"
+            }
+          ]
+        },
+        "entity_head_rotation": {
+          "id": "0x34",
+          "fields": [
+            {
+              "name": "entityId",
+              "type": "varint"
+            },
+            {
+              "name": "headYaw",
+              "type": "byte"
+            }
+          ]
+        },
+        "entity_status": {
+          "id": "0x1a",
+          "fields": [
+            {
+              "name": "entityId",
+              "type": "int"
+            },
+            {
+              "name": "entityStatus",
+              "type": "byte"
+            }
+          ]
+        },
+        "attach_entity": {
+          "id": "0x3a",
+          "fields": [
+            {
+              "name": "entityId",
+              "type": "int"
+            },
+            {
+              "name": "vehicleId",
+              "type": "int"
+            },
+            {
+              "name": "leash",
+              "type": "bool"
+            }
+          ]
+        },
+        "entity_metadata": {
+          "id": "0x39",
+          "fields": [
+            {
+              "name": "entityId",
+              "type": "varint"
+            },
+            {
+              "name": "metadata",
+              "type": "entityMetadata"
+            }
+          ]
+        },
+        "entity_effect": {
+          "id": "0x4a",
+          "fields": [
+            {
+              "name": "entityId",
+              "type": "varint"
+            },
+            {
+              "name": "effectId",
+              "type": "byte"
+            },
+            {
+              "name": "amplifier",
+              "type": "byte"
+            },
+            {
+              "name": "duration",
+              "type": "varint"
+            },
+            {
+              "name": "hideParticles",
+              "type": "bool"
+            }
+          ]
+        },
+        "remove_entity_effect": {
+          "id": "0x31",
+          "fields": [
+            {
+              "name": "entityId",
+              "type": "varint"
+            },
+            {
+              "name": "effectId",
+              "type": "byte"
+            }
+          ]
+        },
+        "experience": {
+          "id": "0x3d",
+          "fields": [
+            {
+              "name": "experienceBar",
+              "type": "float"
+            },
+            {
+              "name": "level",
+              "type": "varint"
+            },
+            {
+              "name": "totalExperience",
+              "type": "varint"
+            }
+          ]
+        },
+        "update_attributes": {
+          "id": "0x49",
+          "fields": [
+            {
+              "name": "entityId",
+              "type": "varint"
+            },
+            {
+              "name": "properties",
+              "type": [
+                "array",
+                {
+                  "countType": "int",
+                  "type": [
+                    "container",
+                    [
+                      {
+                        "name": "key",
+                        "type": "string"
+                      },
+                      {
+                        "name": "value",
+                        "type": "double"
+                      },
+                      {
+                        "name": "modifiers",
+                        "type": [
+                          "array",
+                          {
+                            "countType": "varint",
+                            "type": [
+                              "container",
+                              [
+                                {
+                                  "name": "UUID",
+                                  "type": "UUID"
+                                },
+                                {
+                                  "name": "amount",
+                                  "type": "double"
+                                },
+                                {
+                                  "name": "operation",
+                                  "type": "byte"
+                                }
+                              ]
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "map_chunk": {
+          "id": "0x20",
+          "fields": [
+            {
+              "name": "x",
+              "type": "int"
+            },
+            {
+              "name": "z",
+              "type": "int"
+            },
+            {
+              "name": "groundUp",
+              "type": "bool"
+            },
+            {
+              "name": "bitMap",
+              "type": "varint"
+            },
+            {
+              "name": "chunkData",
+              "type": [
+                "buffer",
+                {
+                  "countType": "varint"
+                }
+              ]
+            }
+          ]
+        },
+        "multi_block_change": {
+          "id": "0x10",
+          "fields": [
+            {
+              "name": "chunkX",
+              "type": "int"
+            },
+            {
+              "name": "chunkZ",
+              "type": "int"
+            },
+            {
+              "name": "records",
+              "type": [
+                "array",
+                {
+                  "countType": "varint",
+                  "type": [
+                    "container",
+                    [
+                      {
+                        "name": "horizontalPos",
+                        "type": "ubyte"
+                      },
+                      {
+                        "name": "y",
+                        "type": "ubyte"
+                      },
+                      {
+                        "name": "blockId",
+                        "type": "varint"
+                      }
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "block_change": {
+          "id": "0x0b",
+          "fields": [
+            {
+              "name": "location",
+              "type": "position"
+            },
+            {
+              "name": "type",
+              "type": "varint"
+            }
+          ]
+        },
+        "block_action": {
+          "id": "0x0a",
+          "fields": [
+            {
+              "name": "location",
+              "type": "position"
+            },
+            {
+              "name": "byte1",
+              "type": "ubyte"
+            },
+            {
+              "name": "byte2",
+              "type": "ubyte"
+            },
+            {
+              "name": "blockId",
+              "type": "varint"
+            }
+          ]
+        },
+        "block_break_animation": {
+          "id": "0x08",
+          "fields": [
+            {
+              "name": "entityId",
+              "type": "varint"
+            },
+            {
+              "name": "location",
+              "type": "position"
+            },
+            {
+              "name": "destroyStage",
+              "type": "byte"
+            }
+          ]
+        },
+        "explosion": {
+          "id": "0x1b",
+          "fields": [
+            {
+              "name": "x",
+              "type": "float"
+            },
+            {
+              "name": "y",
+              "type": "float"
+            },
+            {
+              "name": "z",
+              "type": "float"
+            },
+            {
+              "name": "radius",
+              "type": "float"
+            },
+            {
+              "name": "affectedBlockOffsets",
+              "type": [
+                "array",
+                {
+                  "countType": "int",
+                  "type": [
+                    "container",
+                    [
+                      {
+                        "name": "x",
+                        "type": "byte"
+                      },
+                      {
+                        "name": "y",
+                        "type": "byte"
+                      },
+                      {
+                        "name": "z",
+                        "type": "byte"
+                      }
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "playerMotionX",
+              "type": "float"
+            },
+            {
+              "name": "playerMotionY",
+              "type": "float"
+            },
+            {
+              "name": "playerMotionZ",
+              "type": "float"
+            }
+          ]
+        },
+        "world_event": {
+          "id": "0x21",
+          "fields": [
+            {
+              "name": "effectId",
+              "type": "int"
+            },
+            {
+              "name": "location",
+              "type": "position"
+            },
+            {
+              "name": "data",
+              "type": "int"
+            },
+            {
+              "name": "global",
+              "type": "bool"
+            }
+          ]
+        },
+        "named_sound_effect": {
+          "id": "0x23",
+          "fields": [
+            {
+              "name": "soundName",
+              "type": "string"
+            },
+            {
+              "name": "x",
+              "type": "int"
+            },
+            {
+              "name": "y",
+              "type": "int"
+            },
+            {
+              "name": "z",
+              "type": "int"
+            },
+            {
+              "name": "volume",
+              "type": "float"
+            },
+            {
+              "name": "pitch",
+              "type": "ubyte"
+            }
+          ]
+        },
+        "world_particles": {
+          "id": "0x22",
+          "fields": [
+            {
+              "name": "particleId",
+              "type": "int"
+            },
+            {
+              "name": "longDistance",
+              "type": "bool"
+            },
+            {
+              "name": "x",
+              "type": "float"
+            },
+            {
+              "name": "y",
+              "type": "float"
+            },
+            {
+              "name": "z",
+              "type": "float"
+            },
+            {
+              "name": "offsetX",
+              "type": "float"
+            },
+            {
+              "name": "offsetY",
+              "type": "float"
+            },
+            {
+              "name": "offsetZ",
+              "type": "float"
+            },
+            {
+              "name": "particleData",
+              "type": "float"
+            },
+            {
+              "name": "particles",
+              "type": "int"
+            },
+            {
+              "name": "data",
+              "type": [
+                "array",
+                {
+                  "count": {
+                    "field": "particleId",
+                    "map": {
+                      "36": 2,
+                      "37": 1,
+                      "38": 1
+                    },
+                    "default": 0
+                  },
+                  "type": "varint"
+                }
+              ]
+            }
+          ]
+        },
+        "game_state_change": {
+          "id": "0x1e",
+          "fields": [
+            {
+              "name": "reason",
+              "type": "ubyte"
+            },
+            {
+              "name": "gameMode",
+              "type": "float"
+            }
+          ]
+        },
+        "spawn_entity_weather": {
+          "id": "0x02",
+          "fields": [
+            {
+              "name": "entityId",
+              "type": "varint"
+            },
+            {
+              "name": "type",
+              "type": "byte"
+            },
+            {
+              "name": "x",
+              "type": "int"
+            },
+            {
+              "name": "y",
+              "type": "int"
+            },
+            {
+              "name": "z",
+              "type": "int"
+            }
+          ]
+        },
+        "open_window": {
+          "id": "0x13",
+          "fields": [
+            {
+              "name": "windowId",
+              "type": "ubyte"
+            },
+            {
+              "name": "inventoryType",
+              "type": "string"
+            },
+            {
+              "name": "windowTitle",
+              "type": "string"
+            },
+            {
+              "name": "slotCount",
+              "type": "ubyte"
+            },
+            {
+              "name": "entityId",
+              "type": [
+                "switch",
+                {
+                  "compareTo": "inventoryType",
+                  "fields": {
+                    "EntityHorse": "int"
+                  },
+                  "default": "void"
+                }
+              ]
+            }
+          ]
+        },
+        "close_window": {
+          "id": "0x12",
+          "fields": [
+            {
+              "name": "windowId",
+              "type": "ubyte"
+            }
+          ]
+        },
+        "set_slot": {
+          "id": "0x16",
+          "fields": [
+            {
+              "name": "windowId",
+              "type": "byte"
+            },
+            {
+              "name": "slot",
+              "type": "short"
+            },
+            {
+              "name": "item",
+              "type": "slot"
+            }
+          ]
+        },
+        "window_items": {
+          "id": "0x14",
+          "fields": [
+            {
+              "name": "windowId",
+              "type": "ubyte"
+            },
+            {
+              "name": "items",
+              "type": [
+                "array",
+                {
+                  "countType": "short",
+                  "type": "slot"
+                }
+              ]
+            }
+          ]
+        },
+        "craft_progress_bar": {
+          "id": "0x15",
+          "fields": [
+            {
+              "name": "windowId",
+              "type": "ubyte"
+            },
+            {
+              "name": "property",
+              "type": "short"
+            },
+            {
+              "name": "value",
+              "type": "short"
+            }
+          ]
+        },
+        "transaction": {
+          "id": "0x11",
+          "fields": [
+            {
+              "name": "windowId",
+              "type": "byte"
+            },
+            {
+              "name": "action",
+              "type": "short"
+            },
+            {
+              "name": "accepted",
+              "type": "bool"
+            }
+          ]
+        },
+        "update_sign": {
+          "id": "0x45",
+          "fields": [
+            {
+              "name": "location",
+              "type": "position"
+            },
+            {
+              "name": "text1",
+              "type": "string"
+            },
+            {
+              "name": "text2",
+              "type": "string"
+            },
+            {
+              "name": "text3",
+              "type": "string"
+            },
+            {
+              "name": "text4",
+              "type": "string"
+            }
+          ]
+        },
+        "map": {
+          "id": "0x25",
+          "fields": [
+            {
+              "name": "itemDamage",
+              "type": "varint"
+            },
+            {
+              "name": "scale",
+              "type": "byte"
+            },
+            {
+              "name": "trackingPosition",
+              "type": "bool"
+            },
+            {
+              "name": "icons",
+              "type": [
+                "array",
+                {
+                  "countType": "varint",
+                  "type": [
+                    "container",
+                    [
+                      {
+                        "name": "directionAndType",
+                        "type": "byte"
+                      },
+                      {
+                        "name": "x",
+                        "type": "byte"
+                      },
+                      {
+                        "name": "y",
+                        "type": "byte"
+                      }
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "columns",
+              "type": "byte"
+            },
+            {
+              "name": "rows",
+              "type": [
+                "switch",
+                {
+                  "compareTo": "columns",
+                  "fields": {
+                    "0": "void"
+                  },
+                  "default": "byte"
+                }
+              ]
+            },
+            {
+              "name": "x",
+              "type": [
+                "switch",
+                {
+                  "compareTo": "columns",
+                  "fields": {
+                    "0": "void"
+                  },
+                  "default": "byte"
+                }
+              ]
+            },
+            {
+              "name": "y",
+              "type": [
+                "switch",
+                {
+                  "compareTo": "columns",
+                  "fields": {
+                    "0": "void"
+                  },
+                  "default": "byte"
+                }
+              ]
+            },
+            {
+              "name": "data",
+              "type": [
+                "switch",
+                {
+                  "compareTo": "columns",
+                  "fields": {
+                    "0": "void"
+                  },
+                  "default": [
+                    "buffer",
+                    {
+                      "countType": "varint"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "tile_entity_data": {
+          "id": "0x09",
+          "fields": [
+            {
+              "name": "location",
+              "type": "position"
+            },
+            {
+              "name": "action",
+              "type": "ubyte"
+            },
+            {
+              "name": "nbtData",
+              "type": "optionalNbt"
+            }
+          ]
+        },
+        "open_sign_entity": {
+          "id": "0x2a",
+          "fields": [
+            {
+              "name": "location",
+              "type": "position"
+            }
+          ]
+        },
+        "statistics": {
+          "id": "0x07",
+          "fields": [
+            {
+              "name": "entries",
+              "type": [
+                "array",
+                {
+                  "countType": "varint",
+                  "type": [
+                    "container",
+                    [
+                      {
+                        "name": "name",
+                        "type": "string"
+                      },
+                      {
+                        "name": "value",
+                        "type": "varint"
+                      }
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "player_info": {
+          "id": "0x2d",
+          "fields": [
+            {
+              "name": "action",
+              "type": "varint"
+            },
+            {
+              "name": "data",
+              "type": [
+                "array",
+                {
+                  "countType": "varint",
+                  "type": [
+                    "container",
+                    [
+                      {
+                        "name": "UUID",
+                        "type": "UUID"
+                      },
+                      {
+                        "name": "name",
+                        "type": [
+                          "switch",
+                          {
+                            "compareTo": "../action",
+                            "fields": {
+                              "0": "string"
+                            },
+                            "default": "void"
+                          }
+                        ]
+                      },
+                      {
+                        "name": "properties",
+                        "type": [
+                          "switch",
+                          {
+                            "compareTo": "../action",
+                            "fields": {
+                              "0": [
+                                "array",
+                                {
+                                  "countType": "varint",
+                                  "type": [
+                                    "container",
+                                    [
+                                      {
+                                        "name": "name",
+                                        "type": "string"
+                                      },
+                                      {
+                                        "name": "value",
+                                        "type": "string"
+                                      },
+                                      {
+                                        "name": "signature",
+                                        "type": [
+                                          "option",
+                                          "string"
+                                        ]
+                                      }
+                                    ]
+                                  ]
+                                }
+                              ]
+                            },
+                            "default": "void"
+                          }
+                        ]
+                      },
+                      {
+                        "name": "gamemode",
+                        "type": [
+                          "switch",
+                          {
+                            "compareTo": "../action",
+                            "fields": {
+                              "0": "varint",
+                              "1": "varint"
+                            },
+                            "default": "void"
+                          }
+                        ]
+                      },
+                      {
+                        "name": "ping",
+                        "type": [
+                          "switch",
+                          {
+                            "compareTo": "../action",
+                            "fields": {
+                              "0": "varint",
+                              "2": "varint"
+                            },
+                            "default": "void"
+                          }
+                        ]
+                      },
+                      {
+                        "name": "displayName",
+                        "type": [
+                          "switch",
+                          {
+                            "compareTo": "../action",
+                            "fields": {
+                              "0": [
+                                "option",
+                                "string"
+                              ],
+                              "3": [
+                                "option",
+                                "string"
+                              ]
+                            },
+                            "default": "void"
+                          }
+                        ]
+                      }
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "abilities": {
+          "id": "0x2b",
+          "fields": [
+            {
+              "name": "flags",
+              "type": "byte"
+            },
+            {
+              "name": "flyingSpeed",
+              "type": "float"
+            },
+            {
+              "name": "walkingSpeed",
+              "type": "float"
+            }
+          ]
+        },
+        "tab_complete": {
+          "id": "0x0e",
+          "fields": [
+            {
+              "name": "matches",
+              "type": [
+                "array",
+                {
+                  "countType": "varint",
+                  "type": "string"
+                }
+              ]
+            }
+          ]
+        },
+        "scoreboard_objective": {
+          "id": "0x3f",
+          "fields": [
+            {
+              "name": "name",
+              "type": "string"
+            },
+            {
+              "name": "action",
+              "type": "byte"
+            },
+            {
+              "name": "displayText",
+              "type": [
+                "switch",
+                {
+                  "compareTo": "action",
+                  "fields": {
+                    "0": "string",
+                    "2": "string"
+                  },
+                  "default": "void"
+                }
+              ]
+            },
+            {
+              "name": "type",
+              "type": [
+                "switch",
+                {
+                  "compareTo": "action",
+                  "fields": {
+                    "0": "string",
+                    "2": "string"
+                  },
+                  "default": "void"
+                }
+              ]
+            }
+          ]
+        },
+        "scoreboard_score": {
+          "id": "0x41",
+          "fields": [
+            {
+              "name": "itemName",
+              "type": "string"
+            },
+            {
+              "name": "action",
+              "type": "byte"
+            },
+            {
+              "name": "scoreName",
+              "type": "string"
+            },
+            {
+              "name": "value",
+              "type": [
+                "switch",
+                {
+                  "compareTo": "action",
+                  "fields": {
+                    "1": "void"
+                  },
+                  "default": "varint"
+                }
+              ]
+            }
+          ]
+        },
+        "scoreboard_display_objective": {
+          "id": "0x38",
+          "fields": [
+            {
+              "name": "position",
+              "type": "byte"
+            },
+            {
+              "name": "name",
+              "type": "string"
+            }
+          ]
+        },
+        "scoreboard_team": {
+          "id": "0x40",
+          "fields": [
+            {
+              "name": "team",
+              "type": "string"
+            },
+            {
+              "name": "mode",
+              "type": "byte"
+            },
+            {
+              "name": "name",
+              "type": [
+                "switch",
+                {
+                  "compareTo": "mode",
+                  "fields": {
+                    "0": "string",
+                    "2": "string"
+                  },
+                  "default": "void"
+                }
+              ]
+            },
+            {
+              "name": "prefix",
+              "type": [
+                "switch",
+                {
+                  "compareTo": "mode",
+                  "fields": {
+                    "0": "string",
+                    "2": "string"
+                  },
+                  "default": "void"
+                }
+              ]
+            },
+            {
+              "name": "suffix",
+              "type": [
+                "switch",
+                {
+                  "compareTo": "mode",
+                  "fields": {
+                    "0": "string",
+                    "2": "string"
+                  },
+                  "default": "void"
+                }
+              ]
+            },
+            {
+              "name": "friendlyFire",
+              "type": [
+                "switch",
+                {
+                  "compareTo": "mode",
+                  "fields": {
+                    "0": "byte",
+                    "2": "byte"
+                  },
+                  "default": "void"
+                }
+              ]
+            },
+            {
+              "name": "nameTagVisibility",
+              "type": [
+                "switch",
+                {
+                  "compareTo": "mode",
+                  "fields": {
+                    "0": "string",
+                    "2": "string"
+                  },
+                  "default": "void"
+                }
+              ]
+            },
+            {
+              "name": "collisionRule",
+              "type": [
+                "switch",
+                {
+                  "compareTo": "mode",
+                  "fields": {
+                    "0": "string",
+                    "2": "string"
+                  },
+                  "default": "void"
+                }
+              ]
+            },
+            {
+              "name": "color",
+              "type": [
+                "switch",
+                {
+                  "compareTo": "mode",
+                  "fields": {
+                    "0": "byte",
+                    "2": "byte"
+                  },
+                  "default": "void"
+                }
+              ]
+            },
+            {
+              "name": "players",
+              "type": [
+                "switch",
+                {
+                  "compareTo": "mode",
+                  "fields": {
+                    "0": [
+                      "array",
+                      {
+                        "countType": "varint",
+                        "type": "string"
+                      }
+                    ],
+                    "3": [
+                      "array",
+                      {
+                        "countType": "varint",
+                        "type": "string"
+                      }
+                    ],
+                    "4": [
+                      "array",
+                      {
+                        "countType": "varint",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "default": "void"
+                }
+              ]
+            }
+          ]
+        },
+        "custom_payload": {
+          "id": "0x18",
+          "fields": [
+            {
+              "name": "channel",
+              "type": "string"
+            },
+            {
+              "name": "data",
+              "type": "restBuffer"
+            }
+          ]
+        },
+        "kick_disconnect": {
+          "id": "0x19",
+          "fields": [
+            {
+              "name": "reason",
+              "type": "string"
+            }
+          ]
+        },
+        "difficulty": {
+          "id": "0x0d",
+          "fields": [
+            {
+              "name": "difficulty",
+              "type": "ubyte"
+            }
+          ]
+        },
+        "combat_event": {
+          "id": "0x2c",
+          "fields": [
+            {
+              "name": "event",
+              "type": "varint"
+            },
+            {
+              "name": "duration",
+              "type": [
+                "switch",
+                {
+                  "compareTo": "event",
+                  "fields": {
+                    "1": "varint"
+                  },
+                  "default": "void"
+                }
+              ]
+            },
+            {
+              "name": "playerId",
+              "type": [
+                "switch",
+                {
+                  "compareTo": "event",
+                  "fields": {
+                    "2": "varint"
+                  },
+                  "default": "void"
+                }
+              ]
+            },
+            {
+              "name": "entityId",
+              "type": [
+                "switch",
+                {
+                  "compareTo": "event",
+                  "fields": {
+                    "1": "int",
+                    "2": "int"
+                  },
+                  "default": "void"
+                }
+              ]
+            },
+            {
+              "name": "message",
+              "type": [
+                "switch",
+                {
+                  "compareTo": "event",
+                  "fields": {
+                    "2": "string"
+                  },
+                  "default": "void"
+                }
+              ]
+            }
+          ]
+        },
+        "camera": {
+          "id": "0x36",
+          "fields": [
+            {
+              "name": "cameraId",
+              "type": "varint"
+            }
+          ]
+        },
+        "world_border": {
+          "id": "0x35",
+          "fields": [
+            {
+              "name": "action",
+              "type": "varint"
+            },
+            {
+              "name": "radius",
+              "type": [
+                "switch",
+                {
+                  "compareTo": "action",
+                  "fields": {
+                    "0": "double"
+                  },
+                  "default": "void"
+                }
+              ]
+            },
+            {
+              "name": "x",
+              "type": [
+                "switch",
+                {
+                  "compareTo": "action",
+                  "fields": {
+                    "2": "double",
+                    "3": "double"
+                  },
+                  "default": "void"
+                }
+              ]
+            },
+            {
+              "name": "z",
+              "type": [
+                "switch",
+                {
+                  "compareTo": "action",
+                  "fields": {
+                    "2": "double",
+                    "3": "double"
+                  },
+                  "default": "void"
+                }
+              ]
+            },
+            {
+              "name": "old_radius",
+              "type": [
+                "switch",
+                {
+                  "compareTo": "action",
+                  "fields": {
+                    "1": "double",
+                    "3": "double"
+                  },
+                  "default": "void"
+                }
+              ]
+            },
+            {
+              "name": "new_radius",
+              "type": [
+                "switch",
+                {
+                  "compareTo": "action",
+                  "fields": {
+                    "1": "double",
+                    "3": "double"
+                  },
+                  "default": "void"
+                }
+              ]
+            },
+            {
+              "name": "speed",
+              "type": [
+                "switch",
+                {
+                  "compareTo": "action",
+                  "fields": {
+                    "1": "varint",
+                    "3": "varint"
+                  },
+                  "default": "void"
+                }
+              ]
+            },
+            {
+              "name": "portalBoundary",
+              "type": [
+                "switch",
+                {
+                  "compareTo": "action",
+                  "fields": {
+                    "3": "varint"
+                  },
+                  "default": "void"
+                }
+              ]
+            },
+            {
+              "name": "warning_time",
+              "type": [
+                "switch",
+                {
+                  "compareTo": "action",
+                  "fields": {
+                    "3": "varint",
+                    "4": "varint"
+                  },
+                  "default": "void"
+                }
+              ]
+            },
+            {
+              "name": "warning_blocks",
+              "type": [
+                "switch",
+                {
+                  "compareTo": "action",
+                  "fields": {
+                    "3": "varint",
+                    "5": "varint"
+                  },
+                  "default": "void"
+                }
+              ]
+            }
+          ]
+        },
+        "title": {
+          "id": "0x44",
+          "fields": [
+            {
+              "name": "action",
+              "type": "varint"
+            },
+            {
+              "name": "text",
+              "type": [
+                "switch",
+                {
+                  "compareTo": "action",
+                  "fields": {
+                    "0": "string",
+                    "1": "string"
+                  },
+                  "default": "void"
+                }
+              ]
+            },
+            {
+              "name": "fadeIn",
+              "type": [
+                "switch",
+                {
+                  "compareTo": "action",
+                  "fields": {
+                    "2": "int"
+                  },
+                  "default": "void"
+                }
+              ]
+            },
+            {
+              "name": "stay",
+              "type": [
+                "switch",
+                {
+                  "compareTo": "action",
+                  "fields": {
+                    "2": "int"
+                  },
+                  "default": "void"
+                }
+              ]
+            },
+            {
+              "name": "fadeOut",
+              "type": [
+                "switch",
+                {
+                  "compareTo": "action",
+                  "fields": {
+                    "2": "int"
+                  },
+                  "default": "void"
+                }
+              ]
+            }
+          ]
+        },
+        "set_compression": {
+          "id": "0x1d",
+          "fields": [
+            {
+              "name": "threshold",
+              "type": "varint"
+            }
+          ]
+        },
+        "playerlist_header": {
+          "id": "0x46",
+          "fields": [
+            {
+              "name": "header",
+              "type": "string"
+            },
+            {
+              "name": "footer",
+              "type": "string"
+            }
+          ]
+        },
+        "resource_pack_send": {
+          "id": "0x32",
+          "fields": [
+            {
+              "name": "url",
+              "type": "string"
+            },
+            {
+              "name": "hash",
+              "type": "string"
+            }
+          ]
+        },
+        "boss_bar": {
+          "id": "0x0c",
+          "fields": [
+            {
+              "name": "entityUUID",
+              "type": "UUID"
+            },
+            {
+              "name": "action",
+              "type": "varint"
+            },
+            {
+              "name": "title",
+              "type": [
+                "switch",
+                {
+                  "compareTo": "action",
+                  "fields": {
+                    "0": "string",
+                    "3": "string"
+                  },
+                  "default": "void"
+                }
+              ]
+            },
+            {
+              "name": "health",
+              "type": [
+                "switch",
+                {
+                  "compareTo": "action",
+                  "fields": {
+                    "0": "float",
+                    "2": "float"
+                  },
+                  "default": "void"
+                }
+              ]
+            },
+            {
+              "name": "color",
+              "type": [
+                "switch",
+                {
+                  "compareTo": "action",
+                  "fields": {
+                    "0": "varint",
+                    "4": "varint"
+                  },
+                  "default": "void"
+                }
+              ]
+            },
+            {
+              "name": "dividers",
+              "type": [
+                "switch",
+                {
+                  "compareTo": "action",
+                  "fields": {
+                    "0": "varint",
+                    "4": "varint"
+                  },
+                  "default": "void"
+                }
+              ]
+            },
+            {
+              "name": "flags",
+              "type": [
+                "switch",
+                {
+                  "compareTo": "action",
+                  "fields": {
+                    "0": "ubyte",
+                    "5": "ubyte"
+                  },
+                  "default": "void"
+                }
+              ]
+            }
+          ]
+        },
+        "set_cooldown": {
+          "id": "0x17",
+          "fields": [
+            {
+              "name": "itemID",
+              "type": "varint"
+            },
+            {
+              "name": "cooldownTicks",
+              "type": "varint"
+            }
+          ]
+        },
+        "unload_chunk": {
+          "id": "0x1c",
+          "fields": [
+            {
+              "name": "chunkX",
+              "type": "int"
+            },
+            { 
+              "name": "chunkZ",
+              "type": "int"
+            }
+          ]
+        }
+      },
+      "toServer": {
+        "keep_alive": {
+          "id": "0x0a",
+          "fields": [
+            {
+              "name": "keepAliveId",
+              "type": "varint"
+            }
+          ]
+        },
+        "chat": {
+          "id": "0x01",
+          "fields": [
+            {
+              "name": "message",
+              "type": "string"
+            }
+          ]
+        },
+        "use_entity": {
+          "id": "0x09",
+          "fields": [
+            {
+              "name": "target",
+              "type": "varint"
+            },
+            {
+              "name": "mouse",
+              "type": "varint"
+            },
+            {
+              "name": "x",
+              "type": [
+                "switch",
+                {
+                  "compareTo": "mouse",
+                  "fields": {
+                    "2": "float"
+                  },
+                  "default": "void"
+                }
+              ]
+            },
+            {
+              "name": "y",
+              "type": [
+                "switch",
+                {
+                  "compareTo": "mouse",
+                  "fields": {
+                    "2": "float"
+                  },
+                  "default": "void"
+                }
+              ]
+            },
+            {
+              "name": "z",
+              "type": [
+                "switch",
+                {
+                  "compareTo": "mouse",
+                  "fields": {
+                    "2": "float"
+                  },
+                  "default": "void"
+                }
+              ]
+            },
+            {
+              "name": "hand",
+              "type": [
+                "switch",
+                {
+                  "compareTo": "mouse",
+                  "fields": {
+                    "0": "varint",
+                    "2": "varint"
+                  },
+                  "default": "void"
+                }
+              ]
+            }
+          ]
+        },
+        "flying": {
+          "id": "0x0e",
+          "fields": [
+            {
+              "name": "onGround",
+              "type": "bool"
+            }
+          ]
+        },
+        "position": {
+          "id": "0x0b",
+          "fields": [
+            {
+              "name": "x",
+              "type": "double"
+            },
+            {
+              "name": "y",
+              "type": "double"
+            },
+            {
+              "name": "z",
+              "type": "double"
+            },
+            {
+              "name": "onGround",
+              "type": "bool"
+            }
+          ]
+        },
+        "look": {
+          "id": "0x0d",
+          "fields": [
+            {
+              "name": "yaw",
+              "type": "float"
+            },
+            {
+              "name": "pitch",
+              "type": "float"
+            },
+            {
+              "name": "onGround",
+              "type": "bool"
+            }
+          ]
+        },
+        "position_look": {
+          "id": "0x0c",
+          "fields": [
+            {
+              "name": "x",
+              "type": "double"
+            },
+            {
+              "name": "y",
+              "type": "double"
+            },
+            {
+              "name": "z",
+              "type": "double"
+            },
+            {
+              "name": "yaw",
+              "type": "float"
+            },
+            {
+              "name": "pitch",
+              "type": "float"
+            },
+            {
+              "name": "onGround",
+              "type": "bool"
+            }
+          ]
+        },
+        "block_dig": {
+          "id": "0x10",
+          "fields": [
+            {
+              "name": "status",
+              "type": "byte"
+            },
+            {
+              "name": "location",
+              "type": "position"
+            },
+            {
+              "name": "face",
+              "type": "byte"
+            }
+          ]
+        },
+        "block_place": {
+          "id": "0x19",
+          "fields": [
+            {
+              "name": "location",
+              "type": "position"
+            },
+            {
+              "name": "direction",
+              "type": "varint"
+            },
+            {
+              "name": "hand",
+              "type": "varint"
+            },
+            {
+              "name": "cursorX",
+              "type": "byte"
+            },
+            {
+              "name": "cursorY",
+              "type": "byte"
+            },
+            {
+              "name": "cursorZ",
+              "type": "byte"
+            }
+          ]
+        },
+        "held_item_slot": {
+          "id": "0x14",
+          "fields": [
+            {
+              "name": "slotId",
+              "type": "short"
+            }
+          ]
+        },
+        "arm_animation": {
+          "id": "0x17",
+          "fields": [
+            {
+              "name": "hand",
+              "type": "varint"
+            }
+          ]
+        },
+        "entity_action": {
+          "id": "0x11",
+          "fields": [
+            {
+              "name": "entityId",
+              "type": "varint"
+            },
+            {
+              "name": "actionId",
+              "type": "varint"
+            },
+            {
+              "name": "jumpBoost",
+              "type": "varint"
+            }
+          ]
+        },
+        "steer_vehicle": {
+          "id": "0x12",
+          "fields": [
+            {
+              "name": "sideways",
+              "type": "float"
+            },
+            {
+              "name": "forward",
+              "type": "float"
+            },
+            {
+              "name": "jump",
+              "type": "ubyte"
+            }
+          ]
+        },
+        "close_window": {
+          "id": "0x07",
+          "fields": [
+            {
+              "name": "windowId",
+              "type": "ubyte"
+            }
+          ]
+        },
+        "window_click": {
+          "id": "0x06",
+          "fields": [
+            {
+              "name": "windowId",
+              "type": "ubyte"
+            },
+            {
+              "name": "slot",
+              "type": "short"
+            },
+            {
+              "name": "mouseButton",
+              "type": "byte"
+            },
+            {
+              "name": "action",
+              "type": "short"
+            },
+            {
+              "name": "mode",
+              "type": "byte"
+            },
+            {
+              "name": "item",
+              "type": "slot"
+            }
+          ]
+        },
+        "transaction": {
+          "id": "0x04",
+          "fields": [
+            {
+              "name": "windowId",
+              "type": "byte"
+            },
+            {
+              "name": "action",
+              "type": "short"
+            },
+            {
+              "name": "accepted",
+              "type": "bool"
+            }
+          ]
+        },
+        "set_creative_slot": {
+          "id": "0x15",
+          "fields": [
+            {
+              "name": "slot",
+              "type": "short"
+            },
+            {
+              "name": "item",
+              "type": "slot"
+            }
+          ]
+        },
+        "enchant_item": {
+          "id": "0x05",
+          "fields": [
+            {
+              "name": "windowId",
+              "type": "byte"
+            },
+            {
+              "name": "enchantment",
+              "type": "byte"
+            }
+          ]
+        },
+        "update_sign": {
+          "id": "0x16",
+          "fields": [
+            {
+              "name": "location",
+              "type": "position"
+            },
+            {
+              "name": "text1",
+              "type": "string"
+            },
+            {
+              "name": "text2",
+              "type": "string"
+            },
+            {
+              "name": "text3",
+              "type": "string"
+            },
+            {
+              "name": "text4",
+              "type": "string"
+            }
+          ]
+        },
+        "abilities": {
+          "id": "0x0f",
+          "fields": [
+            {
+              "name": "flags",
+              "type": "byte"
+            },
+            {
+              "name": "flyingSpeed",
+              "type": "float"
+            },
+            {
+              "name": "walkingSpeed",
+              "type": "float"
+            }
+          ]
+        },
+        "tab_complete": {
+          "id": "0x00",
+          "fields": [
+            {
+              "name": "text",
+              "type": "string"
+            },
+            {
+              "name": "block",
+              "type": [
+                "option",
+                "position"
+              ]
+            }
+          ]
+        },
+        "settings": {
+          "id": "0x03",
+          "fields": [
+            {
+              "name": "locale",
+              "type": "string"
+            },
+            {
+              "name": "viewDistance",
+              "type": "byte"
+            },
+            {
+              "name": "chatFlags",
+              "type": "varint"
+            },
+            {
+              "name": "chatColors",
+              "type": "bool"
+            },
+            {
+              "name": "skinParts",
+              "type": "ubyte"
+            },
+            {
+              "name": "mainHand",
+              "type": "varint"
+            }
+          ]
+        },
+        "client_command": {
+          "id": "0x02",
+          "fields": [
+            {
+              "name": "payload",
+              "type": "varint"
+            }
+          ]
+        },
+        "custom_payload": {
+          "id": "0x08",
+          "fields": [
+            {
+              "name": "channel",
+              "type": "string"
+            },
+            {
+              "name": "data",
+              "type": "restBuffer"
+            }
+          ]
+        },
+        "spectate": {
+          "id": "0x18",
+          "fields": [
+            {
+              "name": "target",
+              "type": "UUID"
+            }
+          ]
+        },
+        "resource_pack_receive": {
+          "id": "0x13",
+          "fields": [
+            {
+              "name": "hash",
+              "type": "string"
+            },
+            {
+              "name": "result",
+              "type": "varint"
+            }
+          ]
+        },
+        "use_item": {
+          "id": "0x1a",
+          "fields": [
+            {
+              "name": "hand",
+              "type": "varint"
+            }
+          ]
+        }
+      }
+    }
+  }
+}
+
+},{}],614:[function(require,module,exports){
+arguments[4][302][0].apply(exports,arguments)
+},{"dup":302}],615:[function(require,module,exports){
+arguments[4][303][0].apply(exports,arguments)
+},{"dup":303}],616:[function(require,module,exports){
+module.exports=[
+  {
+    "id": "",
+    "name": "Player",
+    "slots": [
+      {
+        "name": "craft result",
+        "index": 0
+      },
+      {
+        "name": "craft grid",
+        "index": 1,
+        "size": 4
+      },
+      {
+        "name": "armor",
+        "index": 5,
+        "size": 4
+      },
+      {
+        "name": "helmet",
+        "index": 5
+      },
+      {
+        "name": "chestplate",
+        "index": 6
+      },
+      {
+        "name": "leggings",
+        "index": 7
+      },
+      {
+        "name": "boots",
+        "index": 8
+      }
+    ]
+  },
+  {
+    "id": "EntityHorse",
+    "name": "Horse",
+    "slots": [
+      {
+        "name": "saddle",
+        "index": 0
+      },
+      {
+        "name": "armor",
+        "index": 1
+      },
+      {
+        "name": "storage",
+        "index": 2,
+        "size": 15
+      }
+    ],
+    "openedWith": [
+      {
+        "type": "entity",
+        "id": 100
+      }
+    ]
+  },
+  {
+    "id": "minecraft:anvil",
+    "name": "Anvil",
+    "slots": [
+      {
+        "name": "tool",
+        "index": 0
+      },
+      {
+        "name": "combined",
+        "index": 1
+      },
+      {
+        "name": "result",
+        "index": 2
+      }
+    ],
+    "properties": [
+      "repair cost"
+    ]
+  },
+  {
+    "id": "minecraft:beacon",
+    "name": "Beacon",
+    "slots": [
+      {
+        "name": "input",
+        "index": 0
+      }
+    ],
+    "properties": [
+      "level",
+      "effect 1",
+      "effect 2"
+    ],
+    "openedWith": [
+      {
+        "type": "block",
+        "id": 138
+      }
+    ]
+  },
+  {
+    "id": "minecraft:brewing_stand",
+    "name": "Brewing Stand",
+    "slots": [
+      {
+        "name": "ingredient",
+        "index": 0
+      },
+      {
+        "name": "result",
+        "index": 1,
+        "size": 3
+      }
+    ],
+    "properties": [
+      "brew time"
+    ],
+    "openedWith": [
+      {
+        "type": "block",
+        "id": 117
+      }
+    ]
+  },
+  {
+    "id": "minecraft:chest",
+    "name": "Chest"
+  },
+  {
+    "id": "minecraft:container",
+    "name": "Container"
+  },
+  {
+    "id": "minecraft:crafting_table",
+    "name": "Workbench",
+    "slots": [
+      {
+        "name": "craft result",
+        "index": 0
+      },
+      {
+        "name": "craft grid",
+        "index": 1,
+        "size": 9
+      }
+    ]
+  },
+  {
+    "id": "minecraft:dispenser",
+    "name": "Dispenser"
+  },
+  {
+    "id": "minecraft:dropper",
+    "name": "Dropper"
+  },
+  {
+    "id": "minecraft:enchanting_table",
+    "name": "Enchantment Table",
+    "slots": [
+      {
+        "name": "enchanted",
+        "index": 0
+      },
+      {
+        "name": "lapis",
+        "index": 1
+      }
+    ],
+    "properties": [
+      "xp 1",
+      "xp 2",
+      "xp 3",
+      "seed",
+      "tooltip 1",
+      "tooltip 2",
+      "tooltip 3"
+    ]
+  },
+  {
+    "id": "minecraft:furnace",
+    "name": "Furnace",
+    "slots": [
+      {
+        "name": "smelted",
+        "index": 0
+      },
+      {
+        "name": "fuel",
+        "index": 1
+      },
+      {
+        "name": "result",
+        "index": 2
+      }
+    ],
+    "properties": [
+      "fuel",
+      "fuel max",
+      "progress",
+      "progress max"
+    ]
+  },
+  {
+    "id": "minecraft:hopper",
+    "name": "Hopper"
+  },
+  {
+    "id": "minecraft:villager",
+    "name": "NPC Trade",
+    "slots": [
+      {
+        "name": "give 1",
+        "index": 0
+      },
+      {
+        "name": "give 2",
+        "index": 1
+      },
+      {
+        "name": "take",
+        "index": 2
+      }
+    ]
+  }
+]
+
+},{}],617:[function(require,module,exports){
+module.exports=[
+  {
+    "minecraftVersion": "16w03a",
+    "version": 96,
+    "usesNetty": true,
+    "majorVersion": "1.9"
+  },
+  {
+    "minecraftVersion": "16w02a",
+    "version": 95,
+    "usesNetty": true,
+    "majorVersion": "1.9"
+  },
+  {
+    "minecraftVersion": "15w51b",
+    "version": 94,
+    "usesNetty": true,
+    "majorVersion": "1.9"
+  },
+  {
+    "minecraftVersion": "15w51a",
+    "version": 93,
+    "usesNetty": true,
+    "majorVersion": "1.9"
+  },
+  {
+    "minecraftVersion": "15w50a",
+    "version": 92,
+    "usesNetty": true,
+    "majorVersion": "1.9"
+  },
+  {
+    "minecraftVersion": "15w49b",
+    "version": 91,
+    "usesNetty": true,
+    "majorVersion": "1.9"
+  },
+  {
+    "minecraftVersion": "15w49a",
+    "version": 90,
+    "usesNetty": true,
+    "majorVersion": "1.9"
+  },
+  {
+    "minecraftVersion": "15w47c",
+    "version": 89,
+    "usesNetty": true,
+    "majorVersion": "1.9"
+  },
+  {
+    "minecraftVersion": "15w47b",
+    "version": 88,
+    "usesNetty": true,
+    "majorVersion": "1.9"
+  },
+  {
+    "minecraftVersion": "15w47a",
+    "version": 87,
+    "usesNetty": true,
+    "majorVersion": "1.9"
+  },
+  {
+    "minecraftVersion": "15w46a",
+    "version": 86,
+    "usesNetty": true,
+    "majorVersion": "1.9"
+  },
+  {
+    "minecraftVersion": "15w45a",
+    "version": 85,
+    "usesNetty": true,
+    "majorVersion": "1.9"
+  },
+  {
+    "minecraftVersion": "15w44b",
+    "version": 84,
+    "usesNetty": true,
+    "majorVersion": "1.9"
+  },
+  {
+    "minecraftVersion": "15w44a",
+    "version": 83,
+    "usesNetty": true,
+    "majorVersion": "1.9"
+  },
+  {
+    "minecraftVersion": "15w43c",
+    "version": 82,
+    "usesNetty": true,
+    "majorVersion": "1.9"
+  },
+  {
+    "minecraftVersion": "15w43b",
+    "version": 81,
+    "usesNetty": true,
+    "majorVersion": "1.9"
+  },
+  {
+    "minecraftVersion": "15w43a",
+    "version": 80,
+    "usesNetty": true,
+    "majorVersion": "1.9"
+  },
+  {
+    "minecraftVersion": "15w42a",
+    "version": 79,
+    "usesNetty": true,
+    "majorVersion": "1.9"
+  },
+  {
+    "minecraftVersion": "15w41b",
+    "version": 78,
+    "usesNetty": true,
+    "majorVersion": "1.9"
+  },
+  {
+    "minecraftVersion": "15w41a",
+    "version": 77,
+    "usesNetty": true,
+    "majorVersion": "1.9"
+  },
+  {
+    "minecraftVersion": "15w40b",
+    "version": 76,
+    "usesNetty": true,
+    "majorVersion": "1.9"
+  },
+  {
+    "minecraftVersion": "15w40a",
+    "version": 75,
+    "usesNetty": true,
+    "majorVersion": "1.9"
+  },
+  {
+    "minecraftVersion": "15w39c",
+    "version": 74,
+    "usesNetty": true,
+    "majorVersion": "1.9"
+  },
+  {
+    "minecraftVersion": "15w38b",
+    "version": 73,
+    "usesNetty": true,
+    "majorVersion": "1.9"
+  },
+  {
+    "minecraftVersion": "15w38a",
+    "version": 72,
+    "usesNetty": true,
+    "majorVersion": "1.9"
+  },
+  {
+    "minecraftVersion": "15w37a",
+    "version": 71,
+    "usesNetty": true,
+    "majorVersion": "1.9"
+  },
+  {
+    "minecraftVersion": "15w36d",
+    "version": 70,
+    "usesNetty": true,
+    "majorVersion": "1.9"
+  },
+  {
+    "minecraftVersion": "15w36c",
+    "version": 69,
+    "usesNetty": true,
+    "majorVersion": "1.9"
+  },
+  {
+    "minecraftVersion": "15w36b",
+    "version": 68,
+    "usesNetty": true,
+    "majorVersion": "1.9"
+  },
+  {
+    "minecraftVersion": "15w36a",
+    "version": 67,
+    "usesNetty": true,
+    "majorVersion": "1.9"
+  },
+  {
+    "minecraftVersion": "15w35e",
+    "version": 66,
+    "usesNetty": true,
+    "majorVersion": "1.9"
+  },
+  {
+    "minecraftVersion": "15w35d",
+    "version": 65,
+    "usesNetty": true,
+    "majorVersion": "1.9"
+  },
+  {
+    "minecraftVersion": "15w35c",
+    "version": 64,
+    "usesNetty": true,
+    "majorVersion": "1.9"
+  },
+  {
+    "minecraftVersion": "15w35b",
+    "version": 63,
+    "usesNetty": true,
+    "majorVersion": "1.9"
+  },
+  {
+    "minecraftVersion": "15w35a",
+    "version": 62,
+    "usesNetty": true,
+    "majorVersion": "1.9"
+  },
+  {
+    "minecraftVersion": "15w34d",
+    "version": 61,
+    "usesNetty": true,
+    "majorVersion": "1.9"
+  },
+  {
+    "minecraftVersion": "15w34c",
+    "version": 60,
+    "usesNetty": true,
+    "majorVersion": "1.9"
+  },
+  {
+    "minecraftVersion": "15w34b",
+    "version": 59,
+    "usesNetty": true,
+    "majorVersion": "1.9"
+  },
+  {
+    "minecraftVersion": "15w34a",
+    "version": 58,
+    "usesNetty": true,
+    "majorVersion": "1.9"
+  },
+  {
+    "minecraftVersion": "15w33c",
+    "version": 57,
+    "usesNetty": true,
+    "majorVersion": "1.9"
+  },
+  {
+    "minecraftVersion": "15w33b",
+    "version": 56,
+    "usesNetty": true,
+    "majorVersion": "1.9"
+  },
+  {
+    "minecraftVersion": "15w33a",
+    "version": 55,
+    "usesNetty": true,
+    "majorVersion": "1.9"
+  },
+  {
+    "minecraftVersion": "15w32c",
+    "version": 54,
+    "usesNetty": true,
+    "majorVersion": "1.9"
+  },
+  {
+    "minecraftVersion": "15w32b",
+    "version": 53,
+    "usesNetty": true,
+    "majorVersion": "1.9"
+  },
+  {
+    "minecraftVersion": "15w32a",
+    "version": 52,
+    "usesNetty": true,
+    "majorVersion": "1.9"
+  },
+  {
+    "minecraftVersion": "15w31c",
+    "version": 51,
+    "usesNetty": true,
+    "majorVersion": "1.9"
+  },
+  {
+    "minecraftVersion": "15w31b",
+    "version": 50,
+    "usesNetty": true,
+    "majorVersion": "1.9"
+  },
+  {
+    "minecraftVersion": "15w31a",
+    "version": 49,
+    "usesNetty": true,
+    "majorVersion": "1.9"
+  },
+  {
+    "minecraftVersion": "15w14a",
+    "version": 48,
+    "usesNetty": true,
+    "majorVersion": "1.9"
+  },
+  {
+    "minecraftVersion": "1.8.9",
+    "version": 47,
+    "usesNetty": true,
+    "majorVersion": "1.8"
+  },
+  {
+    "minecraftVersion": "1.8.8",
+    "version": 47,
+    "usesNetty": true,
+    "majorVersion": "1.8"
+  },
+  {
+    "minecraftVersion": "1.8.7",
+    "version": 47,
+    "usesNetty": true,
+    "majorVersion": "1.8"
+  },
+  {
+    "minecraftVersion": "1.8.6",
+    "version": 47,
+    "usesNetty": true,
+    "majorVersion": "1.8"
+  },
+  {
+    "minecraftVersion": "1.8.5",
+    "version": 47,
+    "usesNetty": true,
+    "majorVersion": "1.8"
+  },
+  {
+    "minecraftVersion": "1.8.4",
+    "version": 47,
+    "usesNetty": true,
+    "majorVersion": "1.8"
+  },
+  {
+    "minecraftVersion": "1.8.3",
+    "version": 47,
+    "usesNetty": true,
+    "majorVersion": "1.8"
+  },
+  {
+    "minecraftVersion": "1.8.2",
+    "version": 47,
+    "usesNetty": true,
+    "majorVersion": "1.8"
+  },
+  {
+    "minecraftVersion": "1.8.1",
+    "version": 47,
+    "usesNetty": true,
+    "majorVersion": "1.8"
+  },
+  {
+    "minecraftVersion": "1.8",
+    "version": 47,
+    "usesNetty": true,
+    "majorVersion": "1.8"
+  },
+  {
+    "minecraftVersion": "1.8-pre3",
+    "version": 46,
+    "usesNetty": true,
+    "majorVersion": "1.8"
+  },
+  {
+    "minecraftVersion": "1.8-pre2",
+    "version": 45,
+    "usesNetty": true,
+    "majorVersion": "1.8"
+  },
+  {
+    "minecraftVersion": "1.8-pre1",
+    "version": 44,
+    "usesNetty": true,
+    "majorVersion": "1.8"
+  },
+  {
+    "minecraftVersion": "14w34d",
+    "version": 43,
+    "usesNetty": true,
+    "majorVersion": "1.8"
+  },
+  {
+    "minecraftVersion": "14w34c",
+    "version": 42,
+    "usesNetty": true,
+    "majorVersion": "1.8"
+  },
+  {
+    "minecraftVersion": "14w34b",
+    "version": 41,
+    "usesNetty": true,
+    "majorVersion": "1.8"
+  },
+  {
+    "minecraftVersion": "14w34a",
+    "version": 40,
+    "usesNetty": true,
+    "majorVersion": "1.8"
+  },
+  {
+    "minecraftVersion": "14w33c",
+    "version": 39,
+    "usesNetty": true,
+    "majorVersion": "1.8"
+  },
+  {
+    "minecraftVersion": "14w33b",
+    "version": 38,
+    "usesNetty": true,
+    "majorVersion": "1.8"
+  },
+  {
+    "minecraftVersion": "14w33a",
+    "version": 37,
+    "usesNetty": true,
+    "majorVersion": "1.8"
+  },
+  {
+    "minecraftVersion": "14w32d",
+    "version": 36,
+    "usesNetty": true,
+    "majorVersion": "1.8"
+  },
+  {
+    "minecraftVersion": "14w32c",
+    "version": 35,
+    "usesNetty": true,
+    "majorVersion": "1.8"
+  },
+  {
+    "minecraftVersion": "14w32b",
+    "version": 34,
+    "usesNetty": true,
+    "majorVersion": "1.8"
+  },
+  {
+    "minecraftVersion": "14w32a",
+    "version": 33,
+    "usesNetty": true,
+    "majorVersion": "1.8"
+  },
+  {
+    "minecraftVersion": "14w31a",
+    "version": 32,
+    "usesNetty": true,
+    "majorVersion": "1.8"
+  },
+  {
+    "minecraftVersion": "14w30c",
+    "version": 31,
+    "usesNetty": true,
+    "majorVersion": "1.8"
+  },
+  {
+    "minecraftVersion": "14w30a",
+    "version": 30,
+    "usesNetty": true,
+    "majorVersion": "1.8"
+  },
+  {
+    "minecraftVersion": "14w29a",
+    "version": 29,
+    "usesNetty": true,
+    "majorVersion": "1.8"
+  },
+  {
+    "minecraftVersion": "14w28b",
+    "version": 28,
+    "usesNetty": true,
+    "majorVersion": "1.8"
+  },
+  {
+    "minecraftVersion": "14w28a",
+    "version": 27,
+    "usesNetty": true,
+    "majorVersion": "1.8"
+  },
+  {
+    "minecraftVersion": "14w27b",
+    "version": 26,
+    "usesNetty": true,
+    "majorVersion": "1.8"
+  },
+  {
+    "minecraftVersion": "14w27a",
+    "version": 26,
+    "usesNetty": true,
+    "majorVersion": "1.8"
+  },
+  {
+    "minecraftVersion": "14w26c",
+    "version": 25,
+    "usesNetty": true,
+    "majorVersion": "1.8"
+  },
+  {
+    "minecraftVersion": "14w26b",
+    "version": 24,
+    "usesNetty": true,
+    "majorVersion": "1.8"
+  },
+  {
+    "minecraftVersion": "14w26a",
+    "version": 23,
+    "usesNetty": true,
+    "majorVersion": "1.8"
+  },
+  {
+    "minecraftVersion": "14w25b",
+    "version": 22,
+    "usesNetty": true,
+    "majorVersion": "1.8"
+  },
+  {
+    "minecraftVersion": "14w25a",
+    "version": 21,
+    "usesNetty": true,
+    "majorVersion": "1.8"
+  },
+  {
+    "minecraftVersion": "14w21b",
+    "version": 20,
+    "usesNetty": true,
+    "majorVersion": "1.8"
+  },
+  {
+    "minecraftVersion": "14w21a",
+    "version": 19,
+    "usesNetty": true,
+    "majorVersion": "1.8"
+  },
+  {
+    "minecraftVersion": "14w20a",
+    "version": 18,
+    "usesNetty": true,
+    "majorVersion": "1.8"
+  },
+  {
+    "minecraftVersion": "14w19a",
+    "version": 17,
+    "usesNetty": true,
+    "majorVersion": "1.8"
+  },
+  {
+    "minecraftVersion": "14w18b",
+    "version": 16,
+    "usesNetty": true,
+    "majorVersion": "1.8"
+  },
+  {
+    "minecraftVersion": "14w17a",
+    "version": 15,
+    "usesNetty": true,
+    "majorVersion": "1.8"
+  },
+  {
+    "minecraftVersion": "14w11a",
+    "version": 14,
+    "usesNetty": true,
+    "majorVersion": "1.8"
+  },
+  {
+    "minecraftVersion": "14w08a",
+    "version": 12,
+    "usesNetty": true,
+    "majorVersion": "1.8"
+  },
+  {
+    "minecraftVersion": "14w07a",
+    "version": 11,
+    "usesNetty": true,
+    "majorVersion": "1.8"
+  },
+  {
+    "minecraftVersion": "14w06a",
+    "version": 10,
+    "usesNetty": true,
+    "majorVersion": "1.8"
+  },
+  {
+    "minecraftVersion": "14w05a",
+    "version": 9,
+    "usesNetty": true,
+    "majorVersion": "1.8"
+  },
+  {
+    "minecraftVersion": "14w04b",
+    "version": 8,
+    "usesNetty": true,
+    "majorVersion": "1.8"
+  },
+  {
+    "minecraftVersion": "14w04a",
+    "version": 7,
+    "usesNetty": true,
+    "majorVersion": "1.8"
+  },
+  {
+    "minecraftVersion": "14w03a",
+    "version": 6,
+    "usesNetty": true,
+    "majorVersion": "1.8"
+  },
+  {
+    "minecraftVersion": "14w02a",
+    "version": 5,
+    "usesNetty": true,
+    "majorVersion": "1.8"
+  },
+  {
+    "minecraftVersion": "1.7.10",
+    "version": 5,
+    "usesNetty": true,
+    "majorVersion": "1.7"
+  },
+  {
+    "minecraftVersion": "1.7.9",
+    "version": 5,
+    "usesNetty": true,
+    "majorVersion": "1.7"
+  },
+  {
+    "minecraftVersion": "1.7.8",
+    "version": 5,
+    "usesNetty": true,
+    "majorVersion": "1.7"
+  },
+  {
+    "minecraftVersion": "1.7.7",
+    "version": 5,
+    "usesNetty": true,
+    "majorVersion": "1.7"
+  },
+  {
+    "minecraftVersion": "1.7.6",
+    "version": 5,
+    "usesNetty": true,
+    "majorVersion": "1.7"
+  },
+  {
+    "minecraftVersion": "1.7.5",
+    "version": 4,
+    "usesNetty": true,
+    "majorVersion": "1.7"
+  },
+  {
+    "minecraftVersion": "1.7.4",
+    "version": 4,
+    "usesNetty": true,
+    "majorVersion": "1.7"
+  },
+  {
+    "minecraftVersion": "1.7.3-pre",
+    "version": 4,
+    "usesNetty": true,
+    "majorVersion": "1.7"
+  },
+  {
+    "minecraftVersion": "1.7.2",
+    "version": 4,
+    "usesNetty": true,
+    "majorVersion": "1.7"
+  },
+  {
+    "minecraftVersion": "1.7.1-pre",
+    "version": 4,
+    "usesNetty": true,
+    "majorVersion": "1.7"
+  },
+  {
+    "minecraftVersion": "1.6.4",
+    "version": 78,
+    "usesNetty": false,
+    "majorVersion": "1.6"
+  },
+  {
+    "minecraftVersion": "1.6.2",
+    "version": 74,
+    "usesNetty": false,
+    "majorVersion": "1.6"
+  },
+  {
+    "minecraftVersion": "1.6.1",
+    "version": 73,
+    "usesNetty": false,
+    "majorVersion": "1.6"
+  },
+  {
+    "minecraftVersion": "1.6-pre",
+    "version": 72,
+    "usesNetty": false,
+    "majorVersion": "1.6"
+  },
+  {
+    "minecraftVersion": "13w26a",
+    "version": 72,
+    "usesNetty": false,
+    "majorVersion": "1.6"
+  },
+  {
+    "minecraftVersion": "13w25c",
+    "version": 71,
+    "usesNetty": false,
+    "majorVersion": "1.6"
+  },
+  {
+    "minecraftVersion": "13w25b",
+    "version": 71,
+    "usesNetty": false,
+    "majorVersion": "1.6"
+  },
+  {
+    "minecraftVersion": "13w25a",
+    "version": 71,
+    "usesNetty": false,
+    "majorVersion": "1.6"
+  },
+  {
+    "minecraftVersion": "13w24b",
+    "version": 70,
+    "usesNetty": false,
+    "majorVersion": "1.6"
+  },
+  {
+    "minecraftVersion": "13w24a",
+    "version": 69,
+    "usesNetty": false,
+    "majorVersion": "1.6"
+  },
+  {
+    "minecraftVersion": "13w23b",
+    "version": 68,
+    "usesNetty": false,
+    "majorVersion": "1.6"
+  },
+  {
+    "minecraftVersion": "13w23a",
+    "version": 67,
+    "usesNetty": false,
+    "majorVersion": "1.6"
+  },
+  {
+    "minecraftVersion": "13w22a",
+    "version": 67,
+    "usesNetty": false,
+    "majorVersion": "1.6"
+  },
+  {
+    "minecraftVersion": "13w21b",
+    "version": 67,
+    "usesNetty": false,
+    "majorVersion": "1.6"
+  },
+  {
+    "minecraftVersion": "13w21a",
+    "version": 67,
+    "usesNetty": false,
+    "majorVersion": "1.6"
+  },
+  {
+    "minecraftVersion": "13w19a",
+    "version": 66,
+    "usesNetty": false,
+    "majorVersion": "1.6"
+  },
+  {
+    "minecraftVersion": "13w18a",
+    "version": 65,
+    "usesNetty": false,
+    "majorVersion": "1.6"
+  },
+  {
+    "minecraftVersion": "13w17a",
+    "version": 64,
+    "usesNetty": false,
+    "majorVersion": "1.6"
+  },
+  {
+    "minecraftVersion": "13w16b",
+    "version": 63,
+    "usesNetty": false,
+    "majorVersion": "1.6"
+  },
+  {
+    "minecraftVersion": "1.5.2",
+    "version": 61,
+    "usesNetty": false,
+    "majorVersion": "1.5"
+  },
+  {
+    "minecraftVersion": "1.5.1",
+    "version": 60,
+    "usesNetty": false,
+    "majorVersion": "1.5"
+  },
+  {
+    "minecraftVersion": "1.5",
+    "version": 60,
+    "usesNetty": false,
+    "majorVersion": "1.5"
+  },
+  {
+    "minecraftVersion": "13w09b",
+    "version": 59,
+    "usesNetty": false,
+    "majorVersion": "1.5"
+  },
+  {
+    "minecraftVersion": "13w06a",
+    "version": 58,
+    "usesNetty": false,
+    "majorVersion": "1.5"
+  },
+  {
+    "minecraftVersion": "13w05b",
+    "version": 57,
+    "usesNetty": false,
+    "majorVersion": "1.5"
+  },
+  {
+    "minecraftVersion": "13w05a",
+    "version": 56,
+    "usesNetty": false,
+    "majorVersion": "1.5"
+  },
+  {
+    "minecraftVersion": "13w04a",
+    "version": 55,
+    "usesNetty": false,
+    "majorVersion": "1.5"
+  },
+  {
+    "minecraftVersion": "13w03a",
+    "version": 54,
+    "usesNetty": false,
+    "majorVersion": "1.5"
+  },
+  {
+    "minecraftVersion": "13w02a",
+    "version": 53,
+    "usesNetty": false,
+    "majorVersion": "1.5"
+  },
+  {
+    "minecraftVersion": "13w01a",
+    "version": 52,
+    "usesNetty": false,
+    "majorVersion": "1.5"
+  },
+  {
+    "minecraftVersion": "1.4.7",
+    "version": 51,
+    "usesNetty": false,
+    "majorVersion": "1.4"
+  },
+  {
+    "minecraftVersion": "1.4.6",
+    "version": 51,
+    "usesNetty": false,
+    "majorVersion": "1.4"
+  },
+  {
+    "minecraftVersion": "12w49a",
+    "version": 50,
+    "usesNetty": false,
+    "majorVersion": "1.4"
+  },
+  {
+    "minecraftVersion": "1.4.5",
+    "version": 49,
+    "usesNetty": false,
+    "majorVersion": "1.4"
+  },
+  {
+    "minecraftVersion": "1.4.4",
+    "version": 49,
+    "usesNetty": false,
+    "majorVersion": "1.4"
+  },
+  {
+    "minecraftVersion": "1.4.3-pre",
+    "version": 48,
+    "usesNetty": false,
+    "majorVersion": "1.4"
+  },
+  {
+    "minecraftVersion": "1.4.2",
+    "version": 47,
+    "usesNetty": false,
+    "majorVersion": "1.4"
+  },
+  {
+    "minecraftVersion": "12w41a",
+    "version": 46,
+    "usesNetty": false,
+    "majorVersion": "1.4"
+  },
+  {
+    "minecraftVersion": "12w40a",
+    "version": 45,
+    "usesNetty": false,
+    "majorVersion": "1.4"
+  },
+  {
+    "minecraftVersion": "12w34b",
+    "version": 42,
+    "usesNetty": false,
+    "majorVersion": "1.4"
+  },
+  {
+    "minecraftVersion": "12w34a",
+    "version": 41,
+    "usesNetty": false,
+    "majorVersion": "1.4"
+  },
+  {
+    "minecraftVersion": "12w32a",
+    "version": 40,
+    "usesNetty": false,
+    "majorVersion": "1.4"
+  },
+  {
+    "minecraftVersion": "1.3.2",
+    "version": 39,
+    "usesNetty": false,
+    "majorVersion": "1.3"
+  },
+  {
+    "minecraftVersion": "1.3.1",
+    "version": 39,
+    "usesNetty": false,
+    "majorVersion": "1.3"
+  },
+  {
+    "minecraftVersion": "12w27a",
+    "version": 38,
+    "usesNetty": false,
+    "majorVersion": "1.3"
+  },
+  {
+    "minecraftVersion": "12w26a",
+    "version": 37,
+    "usesNetty": false,
+    "majorVersion": "1.3"
+  },
+  {
+    "minecraftVersion": "12w25a",
+    "version": 37,
+    "usesNetty": false,
+    "majorVersion": "1.3"
+  },
+  {
+    "minecraftVersion": "12w24a",
+    "version": 36,
+    "usesNetty": false,
+    "majorVersion": "1.3"
+  },
+  {
+    "minecraftVersion": "12w23a",
+    "version": 35,
+    "usesNetty": false,
+    "majorVersion": "1.3"
+  },
+  {
+    "minecraftVersion": "12w22a",
+    "version": 34,
+    "usesNetty": false,
+    "majorVersion": "1.3"
+  },
+  {
+    "minecraftVersion": "12w21ab",
+    "version": 33,
+    "usesNetty": false,
+    "majorVersion": "1.3"
+  },
+  {
+    "minecraftVersion": "12w19a",
+    "version": 32,
+    "usesNetty": false,
+    "majorVersion": "1.3"
+  },
+  {
+    "minecraftVersion": "12w18a",
+    "version": 32,
+    "usesNetty": false,
+    "majorVersion": "1.3"
+  },
+  {
+    "minecraftVersion": "12w17a",
+    "version": 31,
+    "usesNetty": false,
+    "majorVersion": "1.3"
+  },
+  {
+    "minecraftVersion": "12w16a",
+    "version": 30,
+    "usesNetty": false,
+    "majorVersion": "1.3"
+  },
+  {
+    "minecraftVersion": "1.2.5",
+    "version": 29,
+    "usesNetty": false,
+    "majorVersion": "1.2"
+  },
+  {
+    "minecraftVersion": "1.2.4",
+    "version": 29,
+    "usesNetty": false,
+    "majorVersion": "1.2"
+  },
+  {
+    "minecraftVersion": "1.2.3",
+    "version": 28,
+    "usesNetty": false,
+    "majorVersion": "1.2"
+  },
+  {
+    "minecraftVersion": "1.2.2",
+    "version": 28,
+    "usesNetty": false,
+    "majorVersion": "1.2"
+  },
+  {
+    "minecraftVersion": "1.2.1",
+    "version": 28,
+    "usesNetty": false,
+    "majorVersion": "1.2"
+  },
+  {
+    "minecraftVersion": "12w07a",
+    "version": 27,
+    "usesNetty": false,
+    "majorVersion": "1.2"
+  },
+  {
+    "minecraftVersion": "12w06a",
+    "version": 25,
+    "usesNetty": false,
+    "majorVersion": "1.2"
+  },
+  {
+    "minecraftVersion": "12w01a",
+    "version": 24,
+    "usesNetty": false,
+    "majorVersion": "1.2"
+  },
+  {
+    "minecraftVersion": "12w03a",
+    "version": 24,
+    "usesNetty": false,
+    "majorVersion": "1.2"
+  },
+  {
+    "minecraftVersion": "12w04a",
+    "version": 24,
+    "usesNetty": false,
+    "majorVersion": "1.2"
+  },
+  {
+    "minecraftVersion": "12w05a",
+    "version": 24,
+    "usesNetty": false,
+    "majorVersion": "1.2"
+  },
+  {
+    "minecraftVersion": "1.1",
+    "version": 23,
+    "usesNetty": false,
+    "majorVersion": "1.1"
+  },
+  {
+    "minecraftVersion": "1.0.0",
+    "version": 22,
+    "usesNetty": false,
+    "majorVersion": "1.0"
+  }
+]
+
+},{}],618:[function(require,module,exports){
+arguments[4][417][0].apply(exports,arguments)
+},{"dup":417}],619:[function(require,module,exports){
+arguments[4][418][0].apply(exports,arguments)
+},{"dup":418}],620:[function(require,module,exports){
+arguments[4][419][0].apply(exports,arguments)
+},{"./compound":618,"./nbt.json":619,"dup":419,"protodef":629,"zlib":16}],621:[function(require,module,exports){
+arguments[4][420][0].apply(exports,arguments)
+},{"../utils":628,"dup":420}],622:[function(require,module,exports){
+arguments[4][421][0].apply(exports,arguments)
+},{"babel-runtime/core-js/object/keys":541,"dup":421}],623:[function(require,module,exports){
+arguments[4][422][0].apply(exports,arguments)
+},{"../utils":628,"babel-runtime/core-js/object/keys":541,"dup":422}],624:[function(require,module,exports){
+arguments[4][423][0].apply(exports,arguments)
+},{"../utils":628,"assert":2,"babel-runtime/core-js/object/keys":541,"buffer":17,"dup":423}],625:[function(require,module,exports){
+arguments[4][424][0].apply(exports,arguments)
+},{"./protodef":626,"./serializer":627,"./utils":628,"dup":424}],626:[function(require,module,exports){
+arguments[4][425][0].apply(exports,arguments)
+},{"./datatypes/conditional":621,"./datatypes/numeric":622,"./datatypes/structures":623,"./datatypes/utils":624,"./utils":628,"babel-runtime/core-js/object/keys":541,"babel-runtime/helpers/class-call-check":543,"babel-runtime/helpers/create-class":544,"buffer":17,"dup":425,"lodash.reduce":586}],627:[function(require,module,exports){
+arguments[4][426][0].apply(exports,arguments)
+},{"babel-runtime/helpers/class-call-check":543,"babel-runtime/helpers/create-class":544,"babel-runtime/helpers/get":545,"babel-runtime/helpers/inherits":546,"dup":426,"readable-stream":644}],628:[function(require,module,exports){
+arguments[4][427][0].apply(exports,arguments)
+},{"dup":427}],629:[function(require,module,exports){
+arguments[4][428][0].apply(exports,arguments)
+},{"./dist/index.js":625,"dup":428}],630:[function(require,module,exports){
+arguments[4][429][0].apply(exports,arguments)
+},{"../utils":637,"babel-runtime/helpers/object-without-properties":547,"dup":429}],631:[function(require,module,exports){
+arguments[4][421][0].apply(exports,arguments)
+},{"babel-runtime/core-js/object/keys":541,"dup":421}],632:[function(require,module,exports){
+arguments[4][431][0].apply(exports,arguments)
+},{"../utils":637,"babel-runtime/core-js/object/keys":541,"dup":431}],633:[function(require,module,exports){
+arguments[4][432][0].apply(exports,arguments)
+},{"../utils":637,"assert":2,"babel-runtime/core-js/object/keys":541,"buffer":17,"dup":432}],634:[function(require,module,exports){
+arguments[4][424][0].apply(exports,arguments)
+},{"./protodef":635,"./serializer":636,"./utils":637,"dup":424}],635:[function(require,module,exports){
+arguments[4][434][0].apply(exports,arguments)
+},{"./datatypes/conditional":630,"./datatypes/numeric":631,"./datatypes/structures":632,"./datatypes/utils":633,"./utils":637,"babel-runtime/core-js/object/keys":541,"babel-runtime/helpers/class-call-check":543,"babel-runtime/helpers/create-class":544,"buffer":17,"dup":434,"lodash.reduce":586}],636:[function(require,module,exports){
+arguments[4][426][0].apply(exports,arguments)
+},{"babel-runtime/helpers/class-call-check":543,"babel-runtime/helpers/create-class":544,"babel-runtime/helpers/get":545,"babel-runtime/helpers/inherits":546,"dup":426,"readable-stream":644}],637:[function(require,module,exports){
+arguments[4][436][0].apply(exports,arguments)
+},{"dup":436}],638:[function(require,module,exports){
+arguments[4][428][0].apply(exports,arguments)
+},{"./dist/index.js":634,"dup":428}],639:[function(require,module,exports){
+arguments[4][438][0].apply(exports,arguments)
+},{"./_stream_readable":641,"./_stream_writable":643,"_process":219,"core-util-is":572,"dup":438,"inherits":573}],640:[function(require,module,exports){
+arguments[4][439][0].apply(exports,arguments)
+},{"./_stream_transform":642,"core-util-is":572,"dup":439,"inherits":573}],641:[function(require,module,exports){
+arguments[4][440][0].apply(exports,arguments)
+},{"./_stream_duplex":639,"_process":219,"buffer":17,"core-util-is":572,"dup":440,"events":213,"inherits":573,"isarray":574,"stream":233,"string_decoder/":645,"util":3}],642:[function(require,module,exports){
+arguments[4][441][0].apply(exports,arguments)
+},{"./_stream_duplex":639,"core-util-is":572,"dup":441,"inherits":573}],643:[function(require,module,exports){
+arguments[4][442][0].apply(exports,arguments)
+},{"./_stream_duplex":639,"_process":219,"buffer":17,"core-util-is":572,"dup":442,"inherits":573,"stream":233}],644:[function(require,module,exports){
+arguments[4][447][0].apply(exports,arguments)
+},{"./lib/_stream_duplex.js":639,"./lib/_stream_passthrough.js":640,"./lib/_stream_readable.js":641,"./lib/_stream_transform.js":642,"./lib/_stream_writable.js":643,"dup":447,"stream":233}],645:[function(require,module,exports){
+arguments[4][234][0].apply(exports,arguments)
+},{"buffer":17,"dup":234}],646:[function(require,module,exports){
+(function (Buffer){
+var crypto = require('crypto');
+
+// error codes
+var invalidNamespace =
+  'options.namespace must be a string or a Buffer ' +
+  'containing a valid UUID, or a UUID object';
+
+var invalidName =
+  'options.name must be either a string or a Buffer';
+
+var invalidMacAddress =
+  "invalid options.mac - must either not be set, the value `false`, " +
+  "a Buffer of length 6, or a MAC address as a string";
+
+var moreThan10000 =
+  "can not generate more than 10000 UUIDs per second";
+
+// Node ID according to rfc4122#section-4.5
+var randomHost = crypto.randomBytes(16);
+randomHost[0] = randomHost[0] | 0x01;
+
+// randomize clockSeq initially, as per rfc4122#section-4.1.5
+var seed = crypto.randomBytes(2);
+var clockSeq = (seed[0] | (seed[1] << 8)) & 0x3fff;
+
+// clock values
+var lastMTime = 0;
+var lastNTime = 0;
+
+// lookup table hex to byte
+var hex2byte = {};
+
+// lookup table byte to hex
+var byte2hex = [];
+
+// populate lookup tables
+for (var i = 0; i < 256; i++) {
+    var hex = (i + 0x100).toString(16).substr(1);
+    hex2byte[hex] = i;
+    byte2hex[i] = hex;
+}
+
+function parseMacAddress(address) {
+    var buffer = new Buffer(6);
+    buffer[0] = hex2byte[address[0] + address[1]];
+    buffer[1] = hex2byte[address[3] + address[4]];
+    buffer[2] = hex2byte[address[6] + address[7]];
+    buffer[3] = hex2byte[address[9] + address[10]];
+    buffer[4] = hex2byte[address[12] + address[13]];
+    buffer[5] = hex2byte[address[15] + address[16]];
+    return buffer;
+}
+
+// MAC address for v1 uuids
+var macAddress = randomHost;
+var macAddressLoaded = false;
+
+require('macaddress').one(function (err, result) {
+    if (!err) {
+        macAddress = parseMacAddress(result);
+    }
+    macAddressLoaded = true;
+});
+
+// UUID class
+var UUID = function (uuid) {
+    
+    var check = UUID.check(uuid);
+    if (!check) {
+        throw "not a UUID";
+    }
+
+    this.version = check.version;
+    this.variant = check.variant;
+
+    this[check.format] = uuid;
+};
+
+UUID.prototype.toString = function () {
+    if (!this.ascii) {
+        this.ascii = UUID.stringify(this.binary);
+    }
+    return this.ascii;
+};
+
+UUID.prototype.toBuffer = function () {
+    if (!this.binary) {
+        this.binary = UUID.parse(this.ascii);
+    }
+    return new Buffer(this.binary);
+};
+
+UUID.prototype.inspect = function () {
+    return "UUID v" + this.version + " " + this.toString();
+};
+
+function error(message, callback) {
+    if (callback) {
+        callback(message, null);
+    } else {
+        throw new Error(message);
+    }
+}
+
+// read stringified uuid into a Buffer
+function parse(string) {
+    
+    var buffer = new Buffer(16);
+    var j = 0;
+    for (var i = 0; i < 16; i++) {
+        buffer[i] = hex2byte[string[j++] + string[j++]];
+        if (i == 3 || i == 5 || i == 7 || i == 9) {
+            j += 1;
+        }
+    }
+
+    return buffer;
+}
+
+// according to rfc4122#section-4.1.1
+function getVariant(bits) {
+    switch (bits) {
+        case 0: case 1: case 3:
+            return 'ncs';
+        case 4: case 5:
+            return 'rfc4122';
+        case 6:
+            return 'microsoft';
+        default:
+            return 'future';
+    }
+}
+
+function check(uuid, offset) {
+
+    if (typeof uuid === 'string') {
+        uuid = uuid.toLowerCase();
+
+        if (!/^[a-f0-9]{8}(\-[a-f0-9]{4}){3}\-([a-f0-9]{12})$/.test(uuid)) {
+            return false;
+        }
+
+        if (uuid == "00000000-0000-0000-0000-000000000000") {
+            return { version: undefined, variant: 'nil', format: 'ascii' };
+        }
+
+        return {
+            version: (hex2byte[uuid[14] + uuid[15]] & 0xf0) >> 4,
+            variant: getVariant((hex2byte[uuid[19] + uuid[20]] & 0xe0) >> 5),
+            format: 'ascii'
+        };
+    }
+
+    if (uuid instanceof Buffer) {
+        offset = offset || 0;
+
+        if (uuid.length < offset + 16) {
+            return false;
+        }
+
+        for (var i = 0; i < 16; i++) {
+            if (uuid[offset + i] !== 0) {
+                break;
+            }
+        }
+        if (i == 16) {
+            return { version: undefined, variant: 'nil', format: 'binary' };
+        }
+
+        return {
+            version: (uuid[offset + 6] & 0xf0) >> 4,
+            variant: getVariant((uuid[offset + 8] & 0xe0) >> 5),
+            format: 'binary'
+        };
+    }
+}
+
+// v1
+function uuidTimeBased(nodeId, options, callback) {
+
+    var mTime = Date.now();
+    var nTime = lastNTime + 1;
+    var delta = (mTime - lastMTime) + (nTime - lastNTime) / 10000;
+
+    if (delta < 0) {
+        clockSeq = (clockSeq + 1) & 0x3fff;
+        nTime = 0;
+    } else if (mTime > lastMTime) {
+        nTime = 0;
+    } else if (nTime >= 10000) {
+        return moreThan10000;
+    }
+
+    lastMTime = mTime;
+    lastNTime = nTime;
+
+    // unix timestamp to gregorian epoch as per rfc4122#section-4.5
+    mTime += 12219292800000;
+
+    var buffer = new Buffer(16);
+    var myClockSeq = options.clockSeq === undefined ?
+            clockSeq : (options.clockSeq & 0x3fff);
+    var timeLow = ((mTime & 0xfffffff) * 10000 + nTime) % 0x100000000;
+    var timeHigh = (mTime / 0x100000000 * 10000) & 0xfffffff;
+
+    buffer[0] = timeLow >>> 24 & 0xff;
+    buffer[1] = timeLow >>> 16 & 0xff;
+    buffer[2] = timeLow >>> 8 & 0xff;
+    buffer[3] = timeLow & 0xff;
+
+    buffer[4] = timeHigh >>> 8 & 0xff;
+    buffer[5] = timeHigh & 0xff;
+
+    buffer[6] = (timeHigh >>> 24 & 0x0f) | 0x10;
+    buffer[7] = (timeHigh >>> 16 & 0x3f) | 0x80;
+
+    buffer[8] = myClockSeq >>> 8;
+    buffer[9] = myClockSeq & 0xff;
+
+    var result;
+    switch (options.encoding && options.encoding[0]) {
+        case 'b':
+        case 'B':
+            buffer[10] = nodeId[0];
+            buffer[11] = nodeId[1];
+            buffer[12] = nodeId[2];
+            buffer[13] = nodeId[3];
+            buffer[14] = nodeId[4];
+            buffer[15] = nodeId[5];
+            result = buffer;
+            break;
+        case 'o':
+        case 'U':
+            buffer[10] = nodeId[0];
+            buffer[11] = nodeId[1];
+            buffer[12] = nodeId[2];
+            buffer[13] = nodeId[3];
+            buffer[14] = nodeId[4];
+            buffer[15] = nodeId[5];
+            result = new UUID(buffer);
+            break;
+        default:
+            result = byte2hex[buffer[0]] + byte2hex[buffer[1]] +
+                     byte2hex[buffer[2]] + byte2hex[buffer[3]] + '-' +
+                     byte2hex[buffer[4]] + byte2hex[buffer[5]] + '-' +
+                     byte2hex[buffer[6]] + byte2hex[buffer[7]] + '-' +
+                     byte2hex[buffer[8]] + byte2hex[buffer[9]] + '-' +
+                     byte2hex[nodeId[0]] + byte2hex[nodeId[1]] +
+                     byte2hex[nodeId[2]] + byte2hex[nodeId[3]] +
+                     byte2hex[nodeId[4]] + byte2hex[nodeId[5]];
+            break;
+    }
+    if (callback) {
+        setImmediate(function () {
+            callback(null, result);
+        });
+    }
+    return result;
+}
+
+// v3 + v5
+function uuidNamed(hashFunc, version, arg1, arg2) {
+
+    var options = arg1 || {};
+    var callback = typeof arg1 === 'function' ? arg1 : arg2;
+
+    var namespace = options.namespace;
+    var name = options.name;
+
+    var hash = crypto.createHash(hashFunc);
+
+    if (typeof namespace === 'string') {
+        if (!check(namespace)) {
+            return error(invalidNamespace, callback);
+        }
+        namespace = parse(namespace);
+    } else if (namespace instanceof UUID) {
+        namespace = namespace.toBuffer();
+    } else if (!(namespace instanceof Buffer) || namespace.length !== 16) {
+        return error(invalidNamespace, callback);
+    }
+
+    var nameIsNotAString = typeof name !== 'string';
+    if (nameIsNotAString && !(name instanceof Buffer)) {
+        return error(invalidName, callback);
+    }
+
+    hash.update(namespace);
+    hash.update(options.name, nameIsNotAString ? 'binary' : 'utf8');
+
+    var buffer = hash.digest();
+
+    var result;
+    switch (options.encoding && options.encoding[0]) {
+        case 'b':
+        case 'B':
+            buffer[6] = (buffer[6] & 0x0f) | version;
+            buffer[8] = (buffer[8] & 0x3f) | 0x80;
+            result = buffer;
+            break;
+        case 'o':
+        case 'U':
+            buffer[6] = (buffer[6] & 0x0f) | version;
+            buffer[8] = (buffer[8] & 0x3f) | 0x80;
+            result = new UUID(buffer);
+            break;
+        default:
+            result = byte2hex[buffer[0]] + byte2hex[buffer[1]] +
+                     byte2hex[buffer[2]] + byte2hex[buffer[3]] + '-' +
+                     byte2hex[buffer[4]] + byte2hex[buffer[5]] + '-' +
+                     byte2hex[(buffer[6] & 0x0f) | version] +
+                     byte2hex[buffer[7]] + '-' +
+                     byte2hex[(buffer[8] & 0x3f) | 0x80] +
+                     byte2hex[buffer[9]] + '-' +
+                     byte2hex[buffer[10]] + byte2hex[buffer[11]] +
+                     byte2hex[buffer[12]] + byte2hex[buffer[13]] +
+                     byte2hex[buffer[14]] + byte2hex[buffer[15]];
+            break;
+    }
+    if (callback) {
+        setImmediate(function () {
+            callback(null, result);
+        });
+    } else {
+        return result;
+    }
+}
+
+// v4
+function uuidRandom(arg1, arg2) {
+
+    var options = arg1 || {};
+    var callback = typeof arg1 === 'function' ? arg1 : arg2;
+
+    var buffer = crypto.randomBytes(16);
+
+    buffer[6] = (buffer[6] & 0x0f) | 0x40;
+    buffer[8] = (buffer[8] & 0x3f) | 0x80;
+
+    var result;
+    switch (options.encoding && options.encoding[0]) {
+        case 'b':
+        case 'B':
+            result = buffer;
+            break;
+        case 'o':
+        case 'U':
+            result = new UUID(buffer);
+            break;
+        default:
+            result = byte2hex[buffer[0]] + byte2hex[buffer[1]] +
+                     byte2hex[buffer[2]] + byte2hex[buffer[3]] + '-' +
+                     byte2hex[buffer[4]] + byte2hex[buffer[5]] + '-' +
+                     byte2hex[(buffer[6] & 0x0f) | 0x40] +
+                     byte2hex[buffer[7]] + '-' +
+                     byte2hex[(buffer[8] & 0x3f) | 0x80] +
+                     byte2hex[buffer[9]] + '-' +
+                     byte2hex[buffer[10]] + byte2hex[buffer[11]] +
+                     byte2hex[buffer[12]] + byte2hex[buffer[13]] +
+                     byte2hex[buffer[14]] + byte2hex[buffer[15]];
+            break;
+    }
+    if (callback) {
+        setImmediate(function () {
+            callback(null, result);
+        });
+    } else {
+        return result;
+    }
+}
+
+// v4 fast
+function uuidRandomFast() {
+
+    var r1 = Math.random() * 0x100000000;
+    var r2 = Math.random() * 0x100000000;
+    var r3 = Math.random() * 0x100000000;
+    var r4 = Math.random() * 0x100000000;
+
+    return byte2hex[ r1        & 0xff] + 
+           byte2hex[ r1 >>>  8 & 0xff] +
+           byte2hex[ r1 >>> 16 & 0xff] +
+           byte2hex[ r1 >>> 24 & 0xff] + '-' +
+           byte2hex[ r2 & 0xff] +
+           byte2hex[ r2 >>>  8 & 0xff] + '-' +
+           byte2hex[(r2 >>> 16 & 0x0f) | 0x40] +
+           byte2hex[ r2 >>> 24 & 0xff] + '-' +
+           byte2hex[(r3 & 0x3f) | 0x80] +
+           byte2hex[ r3 >>>  8 & 0xff] + '-' +
+           byte2hex[ r3 >>> 16 & 0xff] +
+           byte2hex[ r3 >>> 24 & 0xff] +
+           byte2hex[ r4        & 0xff] +
+           byte2hex[ r4 >>>  8 & 0xff] +
+           byte2hex[ r4 >>> 16 & 0xff] +
+           byte2hex[ r1 >>> 24 & 0xff];
+}
+
+function stringify(buffer) {
+    return byte2hex[buffer[0]]  + byte2hex[buffer[1]]  +
+           byte2hex[buffer[2]]  + byte2hex[buffer[3]]  + '-' +
+           byte2hex[buffer[4]]  + byte2hex[buffer[5]]  + '-' +
+           byte2hex[buffer[6]]  + byte2hex[buffer[7]]  + '-' +
+           byte2hex[buffer[8]]  + byte2hex[buffer[9]]  + '-' +
+           byte2hex[buffer[10]] + byte2hex[buffer[11]] +
+           byte2hex[buffer[12]] + byte2hex[buffer[13]] +
+           byte2hex[buffer[14]] + byte2hex[buffer[15]];
+}
+
+UUID.stringify = stringify;
+
+UUID.parse = parse;
+
+UUID.check = check;
+
+// according to rfc4122#section-4.1.7
+UUID.nil = new UUID("00000000-0000-0000-0000-000000000000");
+
+// from rfc4122#appendix-C
+UUID.namespace = {
+    dns:  new UUID("6ba7b810-9dad-11d1-80b4-00c04fd430c8"),
+    url:  new UUID("6ba7b811-9dad-11d1-80b4-00c04fd430c8"),
+    oid:  new UUID("6ba7b812-9dad-11d1-80b4-00c04fd430c8"),
+    x500: new UUID("6ba7b814-9dad-11d1-80b4-00c04fd430c8")
+};
+
+UUID.v1 = function v1(arg1, arg2) {
+
+    var options = arg1 || {};
+    var callback = typeof arg1 == 'function' ? arg1 : arg2;
+
+    var nodeId = options.mac;
+
+    if (nodeId === undefined) {
+        if (!macAddressLoaded && callback) {
+            setImmediate(function () {
+                UUID.v1(options, callback);
+            });
+            return;
+        }
+        return uuidTimeBased(macAddress, options, callback);
+    }
+    if (nodeId === false) {
+        return uuidTimeBased(randomHost, options, callback);
+    }
+    return uuidTimeBased(parseMacAddress(nodeId), options, callback);
+};
+
+UUID.v4 = uuidRandom;
+
+UUID.v4fast = uuidRandomFast;
+
+UUID.v3 = function (options, callback) {
+    return uuidNamed('md5', 0x30, options, callback);
+};
+
+UUID.v5 = function (options, callback) {
+    return uuidNamed('sha1', 0x50, options, callback);
+};
+
+module.exports = UUID;
+
+}).call(this,require("buffer").Buffer)
+},{"buffer":17,"crypto":21,"macaddress":587}],647:[function(require,module,exports){
 var mineflayer = require('../../mineflayer-ws');
 var tellraw2dom = require('tellraw2dom');
 
@@ -128563,7 +136472,7 @@ document.body.addEventListener('keyup', function(event) {
   inputNode.value = '';
 });
 
-},{"../../mineflayer-ws":608,"tellraw2dom":604}],604:[function(require,module,exports){
+},{"../../mineflayer-ws":652,"tellraw2dom":648}],648:[function(require,module,exports){
 'use strict';
 
 var colormc2html = {
@@ -128686,10 +136595,10 @@ module.exports = parseRaw;
 
 
 
-},{}],605:[function(require,module,exports){
+},{}],649:[function(require,module,exports){
 module.exports = '1.8';
 
-},{}],606:[function(require,module,exports){
+},{}],650:[function(require,module,exports){
 (function (Buffer){
 'use strict';
 
@@ -128761,14 +136670,14 @@ function createClient(options) {
   }
 
   function onKeepAlive(packet) {
-    client.write(0x00, {
+    client.write('keep_alive', {
       keepAliveId: packet.keepAliveId
     });
   }
 }
 
 }).call(this,require("buffer").Buffer)
-},{"./mcversion.js":605,"assert":2,"buffer":17,"minecraft-data":610,"minecraft-protocol":459,"through":636}],607:[function(require,module,exports){
+},{"./mcversion.js":649,"assert":2,"buffer":17,"minecraft-data":654,"minecraft-protocol":526,"through":680}],651:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -128877,7 +136786,7 @@ Bot.prototype.end = function() {
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./minecraft-protocol-stream":606,"browser-hex":609,"events":213,"minecraft-data":610,"mineflayer":238,"mineflayer/lib/plugins/bed":249,"mineflayer/lib/plugins/block_actions":250,"mineflayer/lib/plugins/blocks":251,"mineflayer/lib/plugins/chat":252,"mineflayer/lib/plugins/chest":253,"mineflayer/lib/plugins/craft":254,"mineflayer/lib/plugins/creative":255,"mineflayer/lib/plugins/digging":256,"mineflayer/lib/plugins/dispenser":257,"mineflayer/lib/plugins/enchantment_table":258,"mineflayer/lib/plugins/entities":259,"mineflayer/lib/plugins/experience":260,"mineflayer/lib/plugins/game":262,"mineflayer/lib/plugins/health":263,"mineflayer/lib/plugins/inventory":264,"mineflayer/lib/plugins/kick":265,"mineflayer/lib/plugins/physics":266,"mineflayer/lib/plugins/rain":267,"mineflayer/lib/plugins/settings":269,"mineflayer/lib/plugins/simple_inventory":270,"mineflayer/lib/plugins/sound":271,"mineflayer/lib/plugins/spawn_point":272,"mineflayer/lib/plugins/time":273,"path":217,"util":235}],608:[function(require,module,exports){
+},{"./minecraft-protocol-stream":650,"browser-hex":653,"events":213,"minecraft-data":654,"mineflayer":239,"mineflayer/lib/plugins/bed":250,"mineflayer/lib/plugins/block_actions":251,"mineflayer/lib/plugins/blocks":252,"mineflayer/lib/plugins/chat":253,"mineflayer/lib/plugins/chest":254,"mineflayer/lib/plugins/craft":256,"mineflayer/lib/plugins/creative":257,"mineflayer/lib/plugins/digging":258,"mineflayer/lib/plugins/dispenser":259,"mineflayer/lib/plugins/enchantment_table":260,"mineflayer/lib/plugins/entities":261,"mineflayer/lib/plugins/experience":262,"mineflayer/lib/plugins/game":264,"mineflayer/lib/plugins/health":265,"mineflayer/lib/plugins/inventory":266,"mineflayer/lib/plugins/kick":267,"mineflayer/lib/plugins/physics":268,"mineflayer/lib/plugins/rain":269,"mineflayer/lib/plugins/settings":271,"mineflayer/lib/plugins/simple_inventory":272,"mineflayer/lib/plugins/sound":273,"mineflayer/lib/plugins/spawn_point":274,"mineflayer/lib/plugins/time":275,"path":218,"util":236}],652:[function(require,module,exports){
 'use strict';
 
 var mineflayer = require('./mineflayer-stream');
@@ -128903,7 +136812,7 @@ module.exports = {
   createBot: createBot
 };
 
-},{"./mineflayer-stream":607,"websocket-stream":664}],609:[function(require,module,exports){
+},{"./mineflayer-stream":651,"websocket-stream":708}],653:[function(require,module,exports){
 'use strict';
 
 var zero = function (n, max) {
@@ -128969,59 +136878,59 @@ module.exports = function (buffer) {
   return str;
 };
 
-},{}],610:[function(require,module,exports){
-arguments[4][277][0].apply(exports,arguments)
-},{"./lib/loader":613,"./minecraft-data/data/1.8/biomes":614,"./minecraft-data/data/1.8/blocks":615,"./minecraft-data/data/1.8/effects":616,"./minecraft-data/data/1.8/entities":617,"./minecraft-data/data/1.8/instruments":618,"./minecraft-data/data/1.8/items":619,"./minecraft-data/data/1.8/materials":620,"./minecraft-data/data/1.8/protocol":621,"./minecraft-data/data/1.8/recipes":622,"./minecraft-data/data/1.8/version":623,"./minecraft-data/data/1.8/windows":624,"./minecraft-data/data/1.9/biomes":625,"./minecraft-data/data/1.9/blocks":626,"./minecraft-data/data/1.9/effects":627,"./minecraft-data/data/1.9/entities":628,"./minecraft-data/data/1.9/instruments":629,"./minecraft-data/data/1.9/items":630,"./minecraft-data/data/1.9/materials":631,"./minecraft-data/data/1.9/protocol":632,"./minecraft-data/data/1.9/recipes":633,"./minecraft-data/data/1.9/version":634,"./minecraft-data/data/1.9/windows":635,"dup":277}],611:[function(require,module,exports){
-arguments[4][278][0].apply(exports,arguments)
-},{"dup":278}],612:[function(require,module,exports){
+},{}],654:[function(require,module,exports){
 arguments[4][279][0].apply(exports,arguments)
-},{"./indexer.js":611,"dup":279}],613:[function(require,module,exports){
+},{"./lib/loader":657,"./minecraft-data/data/1.8/biomes":658,"./minecraft-data/data/1.8/blocks":659,"./minecraft-data/data/1.8/effects":660,"./minecraft-data/data/1.8/entities":661,"./minecraft-data/data/1.8/instruments":662,"./minecraft-data/data/1.8/items":663,"./minecraft-data/data/1.8/materials":664,"./minecraft-data/data/1.8/protocol":665,"./minecraft-data/data/1.8/recipes":666,"./minecraft-data/data/1.8/version":667,"./minecraft-data/data/1.8/windows":668,"./minecraft-data/data/1.9/biomes":669,"./minecraft-data/data/1.9/blocks":670,"./minecraft-data/data/1.9/effects":671,"./minecraft-data/data/1.9/entities":672,"./minecraft-data/data/1.9/instruments":673,"./minecraft-data/data/1.9/items":674,"./minecraft-data/data/1.9/materials":675,"./minecraft-data/data/1.9/protocol":676,"./minecraft-data/data/1.9/recipes":677,"./minecraft-data/data/1.9/version":678,"./minecraft-data/data/1.9/windows":679,"dup":279}],655:[function(require,module,exports){
 arguments[4][280][0].apply(exports,arguments)
-},{"./indexes.js":612,"dup":280}],614:[function(require,module,exports){
+},{"dup":280}],656:[function(require,module,exports){
 arguments[4][281][0].apply(exports,arguments)
-},{"dup":281}],615:[function(require,module,exports){
+},{"./indexer.js":655,"dup":281}],657:[function(require,module,exports){
 arguments[4][282][0].apply(exports,arguments)
-},{"dup":282}],616:[function(require,module,exports){
+},{"./indexes.js":656,"dup":282}],658:[function(require,module,exports){
 arguments[4][283][0].apply(exports,arguments)
-},{"dup":283}],617:[function(require,module,exports){
+},{"dup":283}],659:[function(require,module,exports){
 arguments[4][284][0].apply(exports,arguments)
-},{"dup":284}],618:[function(require,module,exports){
+},{"dup":284}],660:[function(require,module,exports){
 arguments[4][285][0].apply(exports,arguments)
-},{"dup":285}],619:[function(require,module,exports){
+},{"dup":285}],661:[function(require,module,exports){
 arguments[4][286][0].apply(exports,arguments)
-},{"dup":286}],620:[function(require,module,exports){
+},{"dup":286}],662:[function(require,module,exports){
 arguments[4][287][0].apply(exports,arguments)
-},{"dup":287}],621:[function(require,module,exports){
+},{"dup":287}],663:[function(require,module,exports){
 arguments[4][288][0].apply(exports,arguments)
-},{"dup":288}],622:[function(require,module,exports){
+},{"dup":288}],664:[function(require,module,exports){
 arguments[4][289][0].apply(exports,arguments)
-},{"dup":289}],623:[function(require,module,exports){
+},{"dup":289}],665:[function(require,module,exports){
 arguments[4][290][0].apply(exports,arguments)
-},{"dup":290}],624:[function(require,module,exports){
+},{"dup":290}],666:[function(require,module,exports){
 arguments[4][291][0].apply(exports,arguments)
-},{"dup":291}],625:[function(require,module,exports){
-arguments[4][281][0].apply(exports,arguments)
-},{"dup":281}],626:[function(require,module,exports){
+},{"dup":291}],667:[function(require,module,exports){
+arguments[4][292][0].apply(exports,arguments)
+},{"dup":292}],668:[function(require,module,exports){
 arguments[4][293][0].apply(exports,arguments)
-},{"dup":293}],627:[function(require,module,exports){
-arguments[4][294][0].apply(exports,arguments)
-},{"dup":294}],628:[function(require,module,exports){
-arguments[4][284][0].apply(exports,arguments)
-},{"dup":284}],629:[function(require,module,exports){
-arguments[4][285][0].apply(exports,arguments)
-},{"dup":285}],630:[function(require,module,exports){
-arguments[4][297][0].apply(exports,arguments)
-},{"dup":297}],631:[function(require,module,exports){
+},{"dup":293}],669:[function(require,module,exports){
+arguments[4][283][0].apply(exports,arguments)
+},{"dup":283}],670:[function(require,module,exports){
+arguments[4][295][0].apply(exports,arguments)
+},{"dup":295}],671:[function(require,module,exports){
+arguments[4][296][0].apply(exports,arguments)
+},{"dup":296}],672:[function(require,module,exports){
+arguments[4][286][0].apply(exports,arguments)
+},{"dup":286}],673:[function(require,module,exports){
 arguments[4][287][0].apply(exports,arguments)
-},{"dup":287}],632:[function(require,module,exports){
+},{"dup":287}],674:[function(require,module,exports){
 arguments[4][299][0].apply(exports,arguments)
-},{"dup":299}],633:[function(require,module,exports){
-arguments[4][300][0].apply(exports,arguments)
-},{"dup":300}],634:[function(require,module,exports){
+},{"dup":299}],675:[function(require,module,exports){
+arguments[4][289][0].apply(exports,arguments)
+},{"dup":289}],676:[function(require,module,exports){
 arguments[4][301][0].apply(exports,arguments)
-},{"dup":301}],635:[function(require,module,exports){
-arguments[4][291][0].apply(exports,arguments)
-},{"dup":291}],636:[function(require,module,exports){
+},{"dup":301}],677:[function(require,module,exports){
+arguments[4][302][0].apply(exports,arguments)
+},{"dup":302}],678:[function(require,module,exports){
+arguments[4][303][0].apply(exports,arguments)
+},{"dup":303}],679:[function(require,module,exports){
+arguments[4][293][0].apply(exports,arguments)
+},{"dup":293}],680:[function(require,module,exports){
 (function (process){
 var Stream = require('stream')
 
@@ -129133,7 +137042,7 @@ function through (write, end, opts) {
 
 
 }).call(this,require('_process'))
-},{"_process":218,"stream":232}],637:[function(require,module,exports){
+},{"_process":219,"stream":233}],681:[function(require,module,exports){
 (function (process,Buffer){
 var stream = require('readable-stream')
 var eos = require('end-of-stream')
@@ -129363,7 +137272,7 @@ Duplexify.prototype.end = function(data, enc, cb) {
 
 module.exports = Duplexify
 }).call(this,require('_process'),require("buffer").Buffer)
-},{"_process":218,"buffer":17,"end-of-stream":638,"readable-stream":651,"util":235}],638:[function(require,module,exports){
+},{"_process":219,"buffer":17,"end-of-stream":682,"readable-stream":695,"util":236}],682:[function(require,module,exports){
 var once = require('once');
 
 var noop = function() {};
@@ -129436,7 +137345,7 @@ var eos = function(stream, opts, callback) {
 };
 
 module.exports = eos;
-},{"once":640}],639:[function(require,module,exports){
+},{"once":684}],683:[function(require,module,exports){
 // Returns a wrapper function that returns a wrapped callback
 // The wrapper function should do some stuff, and return a
 // presumably different callback function.
@@ -129471,7 +137380,7 @@ function wrappy (fn, cb) {
   }
 }
 
-},{}],640:[function(require,module,exports){
+},{}],684:[function(require,module,exports){
 var wrappy = require('wrappy')
 module.exports = wrappy(once)
 
@@ -129494,17 +137403,17 @@ function once (fn) {
   return f
 }
 
-},{"wrappy":639}],641:[function(require,module,exports){
-arguments[4][220][0].apply(exports,arguments)
-},{"./_stream_readable":643,"./_stream_writable":645,"core-util-is":646,"dup":220,"inherits":652,"process-nextick-args":648}],642:[function(require,module,exports){
+},{"wrappy":683}],685:[function(require,module,exports){
 arguments[4][221][0].apply(exports,arguments)
-},{"./_stream_transform":644,"core-util-is":646,"dup":221,"inherits":652}],643:[function(require,module,exports){
+},{"./_stream_readable":687,"./_stream_writable":689,"core-util-is":690,"dup":221,"inherits":696,"process-nextick-args":692}],686:[function(require,module,exports){
 arguments[4][222][0].apply(exports,arguments)
-},{"./_stream_duplex":641,"_process":218,"buffer":17,"core-util-is":646,"dup":222,"events":213,"inherits":652,"isarray":647,"process-nextick-args":648,"string_decoder/":649,"util":3}],644:[function(require,module,exports){
+},{"./_stream_transform":688,"core-util-is":690,"dup":222,"inherits":696}],687:[function(require,module,exports){
 arguments[4][223][0].apply(exports,arguments)
-},{"./_stream_duplex":641,"core-util-is":646,"dup":223,"inherits":652}],645:[function(require,module,exports){
+},{"./_stream_duplex":685,"_process":219,"buffer":17,"core-util-is":690,"dup":223,"events":213,"inherits":696,"isarray":691,"process-nextick-args":692,"string_decoder/":693,"util":3}],688:[function(require,module,exports){
 arguments[4][224][0].apply(exports,arguments)
-},{"./_stream_duplex":641,"buffer":17,"core-util-is":646,"dup":224,"events":213,"inherits":652,"process-nextick-args":648,"util-deprecate":650}],646:[function(require,module,exports){
+},{"./_stream_duplex":685,"core-util-is":690,"dup":224,"inherits":696}],689:[function(require,module,exports){
+arguments[4][225][0].apply(exports,arguments)
+},{"./_stream_duplex":685,"buffer":17,"core-util-is":690,"dup":225,"events":213,"inherits":696,"process-nextick-args":692,"util-deprecate":694}],690:[function(require,module,exports){
 (function (Buffer){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -129615,21 +137524,21 @@ function objectToString(o) {
 }
 
 }).call(this,{"isBuffer":require("../../../../../../../../../../../../.nvm/versions/node/v4.2.4/lib/node_modules/browserify/node_modules/insert-module-globals/node_modules/is-buffer/index.js")})
-},{"../../../../../../../../../../../../.nvm/versions/node/v4.2.4/lib/node_modules/browserify/node_modules/insert-module-globals/node_modules/is-buffer/index.js":215}],647:[function(require,module,exports){
+},{"../../../../../../../../../../../../.nvm/versions/node/v4.2.4/lib/node_modules/browserify/node_modules/insert-module-globals/node_modules/is-buffer/index.js":215}],691:[function(require,module,exports){
 arguments[4][216][0].apply(exports,arguments)
-},{"dup":216}],648:[function(require,module,exports){
-arguments[4][226][0].apply(exports,arguments)
-},{"_process":218,"dup":226}],649:[function(require,module,exports){
-arguments[4][233][0].apply(exports,arguments)
-},{"buffer":17,"dup":233}],650:[function(require,module,exports){
+},{"dup":216}],692:[function(require,module,exports){
 arguments[4][227][0].apply(exports,arguments)
-},{"dup":227}],651:[function(require,module,exports){
-arguments[4][229][0].apply(exports,arguments)
-},{"./lib/_stream_duplex.js":641,"./lib/_stream_passthrough.js":642,"./lib/_stream_readable.js":643,"./lib/_stream_transform.js":644,"./lib/_stream_writable.js":645,"dup":229}],652:[function(require,module,exports){
+},{"_process":219,"dup":227}],693:[function(require,module,exports){
+arguments[4][234][0].apply(exports,arguments)
+},{"buffer":17,"dup":234}],694:[function(require,module,exports){
+arguments[4][228][0].apply(exports,arguments)
+},{"dup":228}],695:[function(require,module,exports){
+arguments[4][230][0].apply(exports,arguments)
+},{"./lib/_stream_duplex.js":685,"./lib/_stream_passthrough.js":686,"./lib/_stream_readable.js":687,"./lib/_stream_transform.js":688,"./lib/_stream_writable.js":689,"dup":230}],696:[function(require,module,exports){
 arguments[4][214][0].apply(exports,arguments)
-},{"dup":214}],653:[function(require,module,exports){
-arguments[4][436][0].apply(exports,arguments)
-},{"./_stream_readable":654,"./_stream_writable":656,"_process":218,"core-util-is":657,"dup":436,"inherits":652}],654:[function(require,module,exports){
+},{"dup":214}],697:[function(require,module,exports){
+arguments[4][438][0].apply(exports,arguments)
+},{"./_stream_readable":698,"./_stream_writable":700,"_process":219,"core-util-is":701,"dup":438,"inherits":696}],698:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -130615,7 +138524,7 @@ function indexOf (xs, x) {
 }
 
 }).call(this,require('_process'))
-},{"_process":218,"buffer":17,"core-util-is":657,"events":213,"inherits":652,"isarray":658,"stream":232,"string_decoder/":659}],655:[function(require,module,exports){
+},{"_process":219,"buffer":17,"core-util-is":701,"events":213,"inherits":696,"isarray":702,"stream":233,"string_decoder/":703}],699:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -130827,7 +138736,7 @@ function done(stream, er) {
   return stream.push(null);
 }
 
-},{"./_stream_duplex":653,"core-util-is":657,"inherits":652}],656:[function(require,module,exports){
+},{"./_stream_duplex":697,"core-util-is":701,"inherits":696}],700:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -131217,15 +139126,15 @@ function endWritable(stream, state, cb) {
 }
 
 }).call(this,require('_process'))
-},{"./_stream_duplex":653,"_process":218,"buffer":17,"core-util-is":657,"inherits":652,"stream":232}],657:[function(require,module,exports){
-arguments[4][646][0].apply(exports,arguments)
-},{"../../../../../../../../../../../../.nvm/versions/node/v4.2.4/lib/node_modules/browserify/node_modules/insert-module-globals/node_modules/is-buffer/index.js":215,"dup":646}],658:[function(require,module,exports){
+},{"./_stream_duplex":697,"_process":219,"buffer":17,"core-util-is":701,"inherits":696,"stream":233}],701:[function(require,module,exports){
+arguments[4][690][0].apply(exports,arguments)
+},{"../../../../../../../../../../../../.nvm/versions/node/v4.2.4/lib/node_modules/browserify/node_modules/insert-module-globals/node_modules/is-buffer/index.js":215,"dup":690}],702:[function(require,module,exports){
 arguments[4][216][0].apply(exports,arguments)
-},{"dup":216}],659:[function(require,module,exports){
-arguments[4][233][0].apply(exports,arguments)
-},{"buffer":17,"dup":233}],660:[function(require,module,exports){
-arguments[4][230][0].apply(exports,arguments)
-},{"./lib/_stream_transform.js":655,"dup":230}],661:[function(require,module,exports){
+},{"dup":216}],703:[function(require,module,exports){
+arguments[4][234][0].apply(exports,arguments)
+},{"buffer":17,"dup":234}],704:[function(require,module,exports){
+arguments[4][231][0].apply(exports,arguments)
+},{"./lib/_stream_transform.js":699,"dup":231}],705:[function(require,module,exports){
 (function (process){
 var Transform = require('readable-stream/transform')
   , inherits  = require('util').inherits
@@ -131325,7 +139234,7 @@ module.exports.obj = through2(function (options, transform, flush) {
 })
 
 }).call(this,require('_process'))
-},{"_process":218,"readable-stream/transform":660,"util":235,"xtend":663}],662:[function(require,module,exports){
+},{"_process":219,"readable-stream/transform":704,"util":236,"xtend":707}],706:[function(require,module,exports){
 
 /**
  * Module dependencies.
@@ -131370,7 +139279,7 @@ function ws(uri, protocols, opts) {
 
 if (WebSocket) ws.prototype = WebSocket.prototype;
 
-},{}],663:[function(require,module,exports){
+},{}],707:[function(require,module,exports){
 module.exports = extend
 
 var hasOwnProperty = Object.prototype.hasOwnProperty;
@@ -131391,7 +139300,7 @@ function extend() {
     return target
 }
 
-},{}],664:[function(require,module,exports){
+},{}],708:[function(require,module,exports){
 (function (process,Buffer){
 var through = require('through2')
 var duplexify = require('duplexify')
@@ -131477,4 +139386,4 @@ function WebSocketStream(target, protocols) {
 }
 
 }).call(this,require('_process'),require("buffer").Buffer)
-},{"_process":218,"buffer":17,"duplexify":637,"through2":661,"ws":662}]},{},[603]);
+},{"_process":219,"buffer":17,"duplexify":681,"through2":705,"ws":706}]},{},[647]);
