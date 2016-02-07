@@ -7,7 +7,7 @@ var Client = require('minecraft-protocol').Client;
 var protocol = require('minecraft-protocol');
 var assert = require('assert');
 var states = protocol.states;
-var createClientStream = require('minecraft-protocol').createClientStream;
+var createClient = require('minecraft-protocol').createClient;
 
 module.exports = {
   protocol: protocol,
@@ -18,8 +18,7 @@ function createClient(options) {
   assert.ok(options, "options is required");
   assert.ok(options.stream, "stream is required");
 
-  var client = createClientStream(options);
-  client.setSocket(options.stream);
+  var client = createClient(options);
 
   client.on('connect', onConnect);
 
