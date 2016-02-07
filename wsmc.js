@@ -2,6 +2,7 @@
 
 var mcversion = require('./mcversion.js');
 var minecraft_protocol = require('minecraft-protocol');
+var autoVersionForge = require('minecraft-protocol-forge').autoVersionForge;
 var minecraft_data = require('minecraft-data')(mcversion);
 var protodef = require('protodef');
 var readVarInt = protodef.types.varint[0];
@@ -19,6 +20,7 @@ var argv = (require('optimist'))
   .argv;
 
 var PACKET_DEBUG = process.env.NODE_DEBUG && /wsmc/.test(process.env.NODE_DEBUG);
+var FIXED_MC_VERSION = false; // either a version string, or false to auto-detect
 
 console.log('WS('+argv.wshost+':'+argv.wsport+') <--> MC('+argv.mchost+':'+argv.mcport+')');
 
@@ -41,10 +43,12 @@ wss.on('connection', function(new_websocket_connection) {
   //ws.write('OK', {binary: true});
 
   var mc = minecraft_protocol.createClient({
+    version: FIXED_MC_VERSION,
     host: argv.mchost,
     port: argv.mcport,
     username: argv.prefix + userIndex,
     password: null});
+  autoVersionForge(mc);
 
   userIndex += 1;
 
