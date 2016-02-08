@@ -90,7 +90,7 @@ public class MinecraftClientHandler extends ChannelHandlerAdapter {
                 //minecraft.websocket.writeAndFlush(new BinaryWebSocketFrame(m.retain()));
             }
         } finally {
-            ReferenceCountUtil.release(msg);
+            m.release();
         }
     }
 
