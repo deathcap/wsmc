@@ -85,8 +85,8 @@ public class MinecraftClientHandler extends ChannelHandlerAdapter {
                 // prepend length
                 Varint21LengthFieldPrepender2 prepender = new Varint21LengthFieldPrepender2();
                 prepender.encode(null, original, out);
-                minecraft.websocket.writeAndFlush(new BinaryWebSocketFrame(out));
                 System.out.println("mc -> ws: "+HexDumper.hexByteBuf(out));
+                minecraft.websocket.writeAndFlush(new BinaryWebSocketFrame(out));
                 //minecraft.websocket.writeAndFlush(new BinaryWebSocketFrame(m.retain()));
             }
         } finally {
