@@ -14,7 +14,7 @@
     "minecraft-data": "~0.16.3",
     "minecraft-protocol": "~0.16.6",
     "minecraft-protocol-forge": "PrismarineJS/node-minecraft-protocol-forge",
-    "mineflayer": "^1.6.0",
+    "mineflayer": "PrismarineJS/mineflayer",
     "optimist": "^0.6.1",
     "protodef": "^0.2.5",
     "through": "^2.3.8",
