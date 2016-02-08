@@ -82,6 +82,7 @@
             </goals>
           </execution>
         </executions>
+        <!--
         <configuration>
           <executable>browserify</executable>
           <arguments>
@@ -89,6 +90,7 @@
           </arguments>
           <outputFile>${basedir}/src/main/resources/www/bundle.js</outputFile>
         </configuration>
+        -->
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
