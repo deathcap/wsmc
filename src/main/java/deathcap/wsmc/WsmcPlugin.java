@@ -2,11 +2,9 @@ package deathcap.wsmc;
 
 import deathcap.wsmc.mc.PacketFilter;
 import deathcap.wsmc.web.WebThread;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Arrays;
@@ -22,14 +20,15 @@ public class WsmcPlugin extends JavaPlugin implements Listener {
 
         final FileConfiguration config = getConfig();
         config.options().copyDefaults(true);
+
         config.addDefault("verbose", new Boolean(true));
         config.addDefault("websocket.bind-address", "0.0.0.0");
         config.addDefault("websocket.bind-port", 24444);
         config.addDefault("websocket.external-scheme", "http");
-        config.addDefault("websocket.external-domain", "localhost"); // TODO: lookup DNS
+        config.addDefault("websocket.external-domain", "localhost"); // TODO: lookup DNS. and/or Bukkit.getServer().getIp()?
         config.addDefault("websocket.external-port", 24444);
         config.addDefault("minecraft.connect-address", "localhost");
-        config.addDefault("minecraft.connect-port", 25565);
+        config.addDefault("minecraft.connect-port", Bukkit.getServer().getPort());
         config.addDefault("minecraft.announce-on-join", true);
         config.addDefault("minecraft.allow-anonymous", false);
         config.addDefault("filter.whitelist", new Integer[] { }); // TODO: each direction
