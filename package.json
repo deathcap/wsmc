@@ -11,15 +11,15 @@
   "dependencies": {
     "browser-hex": "^1.0.0",
     "hex": "^0.1.0",
-    "minecraft-data": "~0.16.3",
+    "minecraft-data": "~0.19.1",
     "minecraft-protocol": "deathcap/node-minecraft-protocols",
     "minecraft-protocol-forge": "PrismarineJS/node-minecraft-protocol-forge",
     "mineflayer": "PrismarineJS/mineflayer",
     "optimist": "^0.6.1",
     "protodef": "^0.2.5",
     "through": "^2.3.8",
-    "websocket-stream": "^1.4.0",
-    "ws": "^0.4.31"
+    "websocket-stream": "^3.1.0",
+    "ws": "^1.0.1"
   },
   "scripts": {
     "start-debug": "NODE_DEBUG=mc-proto,wsmc node wsmc.js",
