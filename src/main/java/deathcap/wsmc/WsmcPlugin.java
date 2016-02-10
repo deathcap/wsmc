@@ -25,7 +25,7 @@ public class WsmcPlugin extends JavaPlugin implements Listener {
         config.addDefault("websocket.bind-address", "");
         config.addDefault("websocket.bind-port", 24444);
         config.addDefault("websocket.external-scheme", "http");
-        config.addDefault("websocket.external-domain", "localhost"); // TODO: lookup DNS. and/or Bukkit.getServer().getIp()?
+        config.addDefault("websocket.external-domain", "");
         config.addDefault("websocket.external-port", 24444);
         config.addDefault("minecraft.connect-address", "localhost");
         config.addDefault("minecraft.connect-port", Bukkit.getServer().getPort());
@@ -33,6 +33,16 @@ public class WsmcPlugin extends JavaPlugin implements Listener {
         config.addDefault("minecraft.allow-anonymous", false);
         config.addDefault("filter.whitelist", new Integer[] { }); // TODO: each direction
         config.addDefault("filter.blacklist", new Integer[] { });
+
+        // If 'auto', try to get external IP (hits Amazon), or if empty, get local hostname
+        // TODO: is it reasonable to contact an external server by default? Erring on the conservative side
+        if (this.getConfig().getString("websocket.external-domain").equals("auto")) {
+            this.getConfig().set("websocket.external-domain", ExternalNetworkAddressChecker.checkip());
+        }
+        if (this.getConfig().getString("websocket.external-domain").equals("")) {
+            this.getConfig().set("websocket.external-domain", ExternalNetworkAddressChecker.getHostName());
+        }
+
         saveConfig();
 
         String url = this.getConfig().getString("websocket.external-scheme")

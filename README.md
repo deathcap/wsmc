@@ -49,10 +49,10 @@ Configure the plugin in `plugins/WSMC/config.yml`:
 * `websocket`: configuration options for the WebSocket (WS) server side
  * `bind-address` (): the network address to listen for incoming connections on
  * `bind-port` (24444): the TCP port to serve the WebSocket and HTTP server on
- * `external-scheme` (http), `external-domain` (localhost), and `external-port` (24444): used to
+ * `external-scheme` (http), `external-domain` (), and `external-port` (24444): used to
     construct the externally-accessible URL for users to click on for accessing the web client.
     You'll want to set the domain to your externally-facing IP or domain name, and the port may
-    need to be changed if you forward the `bind-port`.
+    need to be changed if you forward the `bind-port`. If empty or "auto", will try to auto-detect.
 
 * `minecraft`: configuration options for the Minecraft (MC) client side
  * `connect-address` (localhost): Minecraft server to connect to, usually this will be localhost
