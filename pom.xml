@@ -21,6 +21,18 @@
       <id>sonatype-oss</id>
       <url>https://oss.sonatype.org/content/repositories/public/</url>
     </repository>
+    <!-- https://docs.spongepowered.org/en/plugin/workspace/dependencies.html -->
+    <repository>
+      <id>sponge-maven-repo</id>
+      <name>Sponge maven repo</name>
+      <url>http://repo.spongepowered.org/maven</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
   </repositories>
 
   <properties>
@@ -42,12 +54,22 @@
       <version>17.0</version>
       <scope>compile</scope>
     </dependency>
+
+    <!-- Bukkit/Spigot plugin -->
     <dependency>
       <groupId>org.spigotmc</groupId>
       <artifactId>spigot-api</artifactId>
       <version>1.8.3-R0.1-SNAPSHOT</version>
       <scope>provided</scope>
     </dependency>
+    <!-- SpongeForge/SpongeVanilla plugin -->
+    <dependency>
+      <groupId>org.spongepowered</groupId>
+      <artifactId>spongeapi</artifactId>
+      <version>3.0.0</version>
+      <scope>provided</scope>
+    </dependency>
+
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
