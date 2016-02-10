@@ -21,6 +21,7 @@ import deathcap.wsmc.WsmcPlugin;
 import deathcap.wsmc.mc.PacketFilter;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelFuture;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.group.DefaultChannelGroup;
@@ -64,7 +65,15 @@ public class WebThread extends Thread {
                     channel(NioServerSocketChannel.class).
                     childHandler(new ServerHandler(this, this.mcAddress, this.mcPort, this.users, this.filter, this.verbose));
 
-            Channel channel = bootstrap.bind(this.wsAddress, this.wsPort)
+            ChannelFuture channelFuture;
+
+            if (this.wsAddress == null || this.wsAddress.equals("")) {
+                channelFuture = bootstrap.bind(this.wsPort);
+            } else {
+                channelFuture = bootstrap.bind(this.wsAddress, this.wsPort);
+            }
+
+            Channel channel = channelFuture
                 .sync()
                 .channel();
 

@@ -22,7 +22,7 @@ public class WsmcPlugin extends JavaPlugin implements Listener {
         config.options().copyDefaults(true);
 
         config.addDefault("verbose", new Boolean(true));
-        config.addDefault("websocket.bind-address", "0.0.0.0");
+        config.addDefault("websocket.bind-address", "");
         config.addDefault("websocket.bind-port", 24444);
         config.addDefault("websocket.external-scheme", "http");
         config.addDefault("websocket.external-domain", "localhost"); // TODO: lookup DNS. and/or Bukkit.getServer().getIp()?

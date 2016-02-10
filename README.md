@@ -47,7 +47,7 @@ for how to setup authentication in WSMC.
 Configure the plugin in `plugins/WSMC/config.yml`:
 
 * `websocket`: configuration options for the WebSocket (WS) server side
- * `bind-address` (0.0.0.0): the network address to listen for incoming connections on
+ * `bind-address` (): the network address to listen for incoming connections on
  * `bind-port` (24444): the TCP port to serve the WebSocket and HTTP server on
  * `external-scheme` (http), `external-domain` (localhost), and `external-port` (24444): used to
     construct the externally-accessible URL for users to click on for accessing the web client.
