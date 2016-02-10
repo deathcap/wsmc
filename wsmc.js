@@ -12,7 +12,7 @@ var hex = require('hex');
 var WebSocketServer = (require('ws')).Server;
 var websocket_stream = require('websocket-stream');
 var argv = (require('optimist'))
-  .default('wshost', '0.0.0.0')
+  .default('wshost', '')
   .default('wsport', 24444)
   .default('mchost', 'localhost')
   .default('mcport', 25565)

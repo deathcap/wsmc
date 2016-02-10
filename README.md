@@ -94,7 +94,7 @@ To use it, run:
 
 Options default to:
 
-    --wshost=0.0.0.0    websocket host to listen on
+    --wshost=           websocket host to listen on
     --wsport=24444      websocket port to listen on
     --mchost=localhost  minecraft host to connect to
     --mcport=25565      minecraft port to connect to
