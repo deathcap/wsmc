@@ -30,6 +30,10 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.util.ResourceLeakDetector;
 import io.netty.util.concurrent.GlobalEventExecutor;
 
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.SocketAddress;
+
 public class WebThread extends Thread {
 
     public String wsAddress;
@@ -65,17 +69,17 @@ public class WebThread extends Thread {
                     channel(NioServerSocketChannel.class).
                     childHandler(new ServerHandler(this, this.mcAddress, this.mcPort, this.users, this.filter, this.verbose));
 
-            ChannelFuture channelFuture;
+            SocketAddress socketAddress;
 
             if (this.wsAddress == null || this.wsAddress.equals("")) {
-                channelFuture = bootstrap.bind(this.wsPort);
+                socketAddress = new InetSocketAddress((InetAddress) null, this.wsPort);
             } else {
-                channelFuture = bootstrap.bind(this.wsAddress, this.wsPort);
+                socketAddress = new InetSocketAddress(this.wsAddress, this.wsPort);
             }
 
-            Channel channel = channelFuture
-                .sync()
-                .channel();
+            Channel channel = bootstrap.bind(socketAddress)
+                    .sync()
+                    .channel();
 
             channel.closeFuture().sync();
         } catch (InterruptedException e) {
