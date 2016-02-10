@@ -18,8 +18,6 @@ package deathcap.wsmc.web;
 
 import deathcap.wsmc.HexDumper;
 import deathcap.wsmc.UserAuthenticator;
-import deathcap.wsmc.UserIdentityLinker;
-import deathcap.wsmc.WsmcPlugin;
 import deathcap.wsmc.mc.DefinedPacket;
 import deathcap.wsmc.mc.MinecraftThread;
 import deathcap.wsmc.mc.PacketFilter;
@@ -32,9 +30,7 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
 import io.netty.util.CharsetUtil;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.logging.Logger;

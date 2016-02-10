@@ -9,7 +9,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Arrays;
 
-public class WsmcPlugin extends JavaPlugin implements Listener {
+public class WsmcBukkitPlugin extends JavaPlugin implements Listener {
 
     private WebThread webThread;
     private UserIdentityLinker users;

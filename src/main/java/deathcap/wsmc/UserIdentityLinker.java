@@ -12,7 +12,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import java.security.SecureRandom;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 // Links a random "key" to the player's identity for websocket authentication
 public class UserIdentityLinker implements Listener, CommandExecutor, UserAuthenticator {
@@ -22,9 +21,9 @@ public class UserIdentityLinker implements Listener, CommandExecutor, UserAuthen
     private final String webURL;
     private final boolean announceOnJoin;
     private final boolean allowAnonymous;
-    private final WsmcPlugin plugin;
+    private final WsmcBukkitPlugin plugin;
 
-    public UserIdentityLinker(String webURL, boolean announceOnJoin, boolean allowAnonymous, WsmcPlugin plugin) {
+    public UserIdentityLinker(String webURL, boolean announceOnJoin, boolean allowAnonymous, WsmcBukkitPlugin plugin) {
         this.webURL = webURL;
         this.announceOnJoin = announceOnJoin;
         this.allowAnonymous = allowAnonymous;
