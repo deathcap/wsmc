@@ -20,7 +20,7 @@ simply copy the jar into the `plugins` directory. Tested with:
 * [Spigot](https://www.spigotmc.org) - a modification to Minecraft implementing Bukkit
 * [Junket](https://github.com/deathcap/Junket) - partial implementation of Bukkit (no server)
 
-Configure in `plugins/WSMC/plugin.yml`, default:
+Configure in `plugins/WSMC/config.yml`, default:
 
     websocket:
       bind-address: 0.0.0.0
@@ -34,25 +34,39 @@ Configure in `plugins/WSMC/plugin.yml`, default:
       announce-on-join: true
       allow-anonymous: false
 
-### Authentication
+#### Authentication
 
-TODO (incomplete, experimental), see [https://github.com/deathcap/wsmc/issues/2](https://github.com/deathcap/wsmc/issues/2).
-First login through the regular Minecraft client, with your account, and you'll get a per-user URL to login to WSMC
-(can be disabled with `announce-on-join: false`). Alternatively the same URL can be retrieved using the `/web` command,
-either from a player or with `/web playername` from the server console.
+By design, wsmc does not handle user passwords. Several techniques to authenticate are available:
 
-Authentication can be disabled by setting `allow-anonymous: true` (for testing purposes, warning: allows logging in as any user).
+*First login through the regular Minecraft client*: by default, the wsmc/Java plugin will announce
+"Web client enabled (click to view)" to each user who logs in. You can click this link to go to a
+per-user URL to login to the web client.  If desired, the join message can be disabled by setting
+`announce-on-join: false` in `plugins/WSMC/config.yml`. Users can manually retrieve this URL by
+typing the `/web` command. The URL contains your username and a per-user key.
+
+*Manual setup by administrator via console*: an administrator can type the `/web username` command
+to create a new key for a given *username*. The URL can be distributed however you like,
+and will be used to login with the specified username. Useful for testing with multiple users.
+
+*No authentication*: setting `allow-anonymous: true` will disable authentication completely.
+Use this setting with caution, as it allows logging in as any user.
 
 #### Command-line mode
 
-Alternatively, the plugin can be used from the command-line, for testing purposes (no auth):
+If your server does not support Bukkit plugins, then WSMC can be ran standalone from the
+command-line:
 
     java -cp target/wsmc*.jar deathcap.wsmc.Main 0.0.0.0 24444 localhost 25565
 
+User authentication is not supported in this mode.
 
 ### WSMC for JavaScript (Node.js script)
 
-Install [Node.js](http://nodejs.org/) then run:
+The first version of WSMC was written in JavaScript. It is still functional but
+lacks authentication and requires installing [Node.js](http://nodejs.org/). Java-based servers
+will likely find WSMC/Java more useful, but WSMC/JavaScript is also provided as an alternative.
+
+To use it, run:
 
     node wsmc.js
 
@@ -68,7 +82,7 @@ When the proxy receives a WS connection, it will connect to the MC server,
 perform the handshake, negotiate encryption, then pass raw binary packets between
 the WS client and MC server using [websocket-stream](https://github.com/maxogden/websocket-stream).
 
-Limitation: WSMC doesn't perform user authentication (how could it?). Users currently can connect
+Limitation: WSMC/JavaScript doesn't perform user authentication. Users currently can connect
 with no password and they will be given a username beginning with 'webuser-' followed by a number.
 
 ## Client Example
