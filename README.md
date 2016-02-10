@@ -58,12 +58,12 @@ and will be used to login with the specified username. Useful for testing with m
 *No authentication*: setting `allow-anonymous: true` will disable authentication completely.
 Use this setting with caution, as it allows logging in as any user.
 
-#### Command-line mode
+#### Standalone mode
 
 If your server does not support Bukkit plugins, then WSMC can be ran standalone from the
 command-line:
 
-    java -cp target/wsmc*.jar deathcap.wsmc.Main 0.0.0.0 24444 localhost 25565
+    java -jar target/wsmc*.jar 0.0.0.0 24444 localhost 25565
 
 User authentication is not supported in this mode.
 
