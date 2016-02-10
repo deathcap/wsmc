@@ -6,14 +6,15 @@ Allows you to write Minecraft clients connecting over [WebSockets](http://www.we
 
 ## Proxy Usage
 
-### WSMC for Java (Bukkit plugin)
+### WSMC for Java
 
 Install [Maven](https://maven.apache.org/) and build with:
 
     mvn clean install
 
+#### For Bukkit servers
 
-Load the plugin with software implementing the [Bukkit API](https://github.com/Bukkit/Bukkit),
+To load the plugin with software implementing the [Bukkit API](https://github.com/Bukkit/Bukkit),
 simply copy the jar into the `plugins` directory. Tested with:
 
 * [Glowstone++](https://glowstoneplusplus.github.io) - an open source server for Minecraft and Bukkit
@@ -21,7 +22,29 @@ simply copy the jar into the `plugins` directory. Tested with:
 * [Junket](https://github.com/deathcap/Junket) - partial implementation of Bukkit (no server)
 * vanilla servers - standalone mode (no plugin, see below)
 
-Configure in `plugins/WSMC/config.yml`:
+#### For other servers (standalone mode)
+
+If your server does not support Bukkit plugins, then WSMC can be ran standalone from the
+command-line:
+
+    java -jar target/wsmc*.jar 0.0.0.0 24444 localhost 25565
+
+User authentication is not supported in this mode.
+
+TODO: [Sponge](https://github.com/deathcap/wsmc/issues/7),
+[Forge](https://github.com/deathcap/wsmc/issues/8),
+[BungeeCord](https://github.com/deathcap/wsmc/issues/13) plugin support.
+
+#### Configuration
+
+The proxy must be able to connect to the Minecraft server without authentication, i.e., in
+"offline mode". This does *not* mean the Minecraft server has to be remotely accessible
+without authentication (although that is a sufficient condition), it can be behind another
+proxy in "online mode" such as [BungeeCord](https://github.com/SpigotMC/BungeeCord). See below
+for how to setup authentication in WSMC.
+
+
+Configure the plugin in `plugins/WSMC/config.yml`:
 
 * `websocket`: configuration options for the WebSocket (WS) server side
  * `bind-address` (0.0.0.0): the network address to listen for incoming connections on
@@ -58,14 +81,6 @@ and will be used to login with the specified username. Useful for testing with m
 *No authentication*: setting `allow-anonymous: true` will disable authentication completely.
 Use this setting with caution, as it allows logging in as any user.
 
-#### Standalone mode
-
-If your server does not support Bukkit plugins, then WSMC can be ran standalone from the
-command-line:
-
-    java -jar target/wsmc*.jar 0.0.0.0 24444 localhost 25565
-
-User authentication is not supported in this mode.
 
 ### WSMC for JavaScript (Node.js script)
 
