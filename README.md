@@ -13,26 +13,31 @@ Install [Maven](https://maven.apache.org/) and build with:
     mvn clean install
 
 
-Load the plugin with with software implementing the [Bukkit API](https://github.com/Bukkit/Bukkit),
+Load the plugin with software implementing the [Bukkit API](https://github.com/Bukkit/Bukkit),
 simply copy the jar into the `plugins` directory. Tested with:
 
 * [Glowstone++](https://glowstoneplusplus.github.io) - an open source server for Minecraft and Bukkit
 * [Spigot](https://www.spigotmc.org) - a modification to Minecraft implementing Bukkit
 * [Junket](https://github.com/deathcap/Junket) - partial implementation of Bukkit (no server)
+* vanilla servers - standalone mode (no plugin, see below)
 
-Configure in `plugins/WSMC/config.yml`, default:
+Configure in `plugins/WSMC/config.yml`:
 
-    websocket:
-      bind-address: 0.0.0.0
-      bind-port: 24444
-      external-scheme: http
-      external-domain: localhost
-      external-port: 24444
-    minecraft:
-      connect-address: localhost
-      connect-port: 25565
-      announce-on-join: true
-      allow-anonymous: false
+* `websocket`: configuration options for the WebSocket (WS) server side
+ * `bind-address` (0.0.0.0): the network address to listen for incoming connections on
+ * `bind-port` (24444): the TCP port to serve the WebSocket and HTTP server on
+ * `external-scheme` (http), `external-domain` (localhost), and `external-port` (24444): used to
+    construct the externally-accessible URL for users to click on for accessing the web client.
+    You'll want to set the domain to your externally-facing IP or domain name, and the port may
+    need to be changed if you forward the `bind-port`.
+
+* `minecraft`: configuration options for the Minecraft (MC) client side
+ * `connect-address` (localhost): Minecraft server to connect to, usually this will be localhost
+    if the WSMC proxy is running on the same system as the Minecraft server.
+ * `connect-port` (25565): Minecraft server port, if available this will default to the port configured
+    in Bukkit, or the Minecraft default of 25565
+ * `announce-on-join` (true): when new users connect, send them their web login link
+ * `allow-anonymous` (false): allow any user to login as anyone (intended for testing only)
 
 #### Authentication
 
@@ -40,9 +45,11 @@ By design, wsmc does not handle user passwords. Several techniques to authentica
 
 *First login through the regular Minecraft client*: by default, the wsmc/Java plugin will announce
 "Web client enabled (click to view)" to each user who logs in. You can click this link to go to a
-per-user URL to login to the web client.  If desired, the join message can be disabled by setting
-`announce-on-join: false` in `plugins/WSMC/config.yml`. Users can manually retrieve this URL by
-typing the `/web` command. The URL contains your username and a per-user key.
+per-user URL to login to the web client. The link can be saved and reused as long as the server is up.
+
+If desired, the join message can be disabled by setting `announce-on-join: false` in `plugins/WSMC/config.yml`.
+Users can manually retrieve this URL by typing the `/web` command. The URL contains your username and a per-user key;
+it should be kept secret or users will be able to impersonate each other.
 
 *Manual setup by administrator via console*: an administrator can type the `/web username` command
 to create a new key for a given *username*. The URL can be distributed however you like,
