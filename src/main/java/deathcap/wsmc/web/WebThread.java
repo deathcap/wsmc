@@ -71,22 +71,7 @@ public class WebThread extends Thread {
             SocketAddress socketAddress;
 
             if (this.wsAddress == null || this.wsAddress.equals("")) {
-                try {
-                    // At least on my system, (InetAddress)null and bind(port) (no address) will only bind IPv6 for
-                    // some reason. IPv4 is obviously more or as important. NetUtil.LOCALHOST4 will force IPv4
-                    // localhost (= 127.0.0.1, 0.0.0.0, localhost) but break IPv6 ([::1] and global IPv6 address).
-                    // InetAddress.getLocalHost(), despite the name, will break accessing by localhost (someone will
-                    // return HTTP 200 "Not implemented" [not 501 Not Implemented]), for unknown reasons. But it works
-                    // with the (usually RFC1918) IPv4 network address, so it's the best I know how to do for now.
-                    // TODO: really bind to everything! loopback, ethernet, each IPv4 (and perhaps IPv6), just make it work
-                    // for more failed attempts see https://github.com/deathcap/wsmc/issues/30
-                    socketAddress = new InetSocketAddress(InetAddress.getLocalHost(), this.wsPort);
-                } catch (UnknownHostException ex) {
-                    System.out.println("Could not find local host: " + ex);
-                    ex.printStackTrace();
-
-                    socketAddress = new InetSocketAddress((InetAddress) null, this.wsPort);
-                }
+                socketAddress = new InetSocketAddress((InetAddress) null, this.wsPort);
             } else {
                 socketAddress = new InetSocketAddress(this.wsAddress, this.wsPort);
             }
