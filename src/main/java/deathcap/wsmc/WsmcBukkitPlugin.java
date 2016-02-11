@@ -45,14 +45,7 @@ public class WsmcBukkitPlugin extends JavaPlugin implements Listener {
         config.addDefault("filter.whitelist", new Integer[] { }); // TODO: each direction
         config.addDefault("filter.blacklist", new Integer[] { });
 
-        // If 'auto', try to get external IP (hits Amazon), or if empty, get local hostname
-        // TODO: is it reasonable to contact an external server by default? Erring on the conservative side
-        if (this.getConfig().getString("websocket.external-domain").equals("auto")) {
-            this.getConfig().set("websocket.external-domain", ExternalNetworkAddressChecker.checkip());
-        }
-        if (this.getConfig().getString("websocket.external-domain").equals("")) {
-            this.getConfig().set("websocket.external-domain", ExternalNetworkAddressChecker.getHostName());
-        }
+        externalDomain = ExternalNetworkAddressChecker.autoConfigureIfNeeded(externalDomain);
 
         verbose = this.getConfig().getBoolean("verbose");
         wsAddress = this.getConfig().getString("websocket.bind-address");

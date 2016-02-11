@@ -37,6 +37,9 @@ public class WsmcSpongePlugin {
         ConfigurationNode rootNode = null;
         ConfigurationOptions configurationOptions = ConfigurationOptions.defaults();
         configurationOptions.setShouldCopyDefaults(true);
+        // TODO: find out why defaults are not being copied
+        // setShouldCopyDefaults(true) is supposed to according to https://docs.spongepowered.org/en/plugin/configuration/nodes.html
+        // set the defaults if not given but I'm not seeing this happen (using SpongeAPI 3.0.0), but doing this works:
 
         try {
             rootNode = configManager.load(configurationOptions);
@@ -68,9 +71,8 @@ public class WsmcSpongePlugin {
         announceOnJoin = rootNode.getNode("minecraft", "announce-on-join").getBoolean(announceOnJoin);
         allowAnonymous = rootNode.getNode("minecraft", "allow-anonymous").getBoolean(allowAnonymous);
 
-        // TODO: find out why defaults are not being copied
-        // setShouldCopyDefaults(true) is supposed to according to https://docs.spongepowered.org/en/plugin/configuration/nodes.html
-        // set the defaults if not given but I'm not seeing this happen (using SpongeAPI 3.0.0), but doing this works:
+        externalDomain = ExternalNetworkAddressChecker.autoConfigureIfNeeded(externalDomain);
+        
         rootNode.getNode("verbose").setValue(verbose);
         rootNode.getNode("websocket", "bind-address").setValue(wsAddress);
         rootNode.getNode("websocket", "bind-port").setValue(wsPort);
