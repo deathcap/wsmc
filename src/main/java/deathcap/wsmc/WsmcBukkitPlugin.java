@@ -22,26 +22,26 @@ public class WsmcBukkitPlugin extends JavaPlugin implements Listener {
         config.options().copyDefaults(true);
 
         boolean verbose = true;
-        String websocket_bind_address = "";
-        int websocket_bind_port = 24444;
-        String websocket_external_scheme = "http";
-        String websocket_external_domain = "";
-        int websocket_external_port = 24444;
-        String minecraft_connect_address = "localhost";
-        int minecraft_connect_port = Bukkit.getServer().getPort();
-        boolean minecraft_announce_on_join = true;
-        boolean minecraft_allow_anonymous = false;
+        String wsAddress = "";
+        int wsPort = 24444;
+        String externalScheme = "http";
+        String externalDomain = "";
+        int externalPort = 24444;
+        String mcAddress = "localhost";
+        int mcPort = Bukkit.getServer().getPort();
+        boolean announceOnJoin = true;
+        boolean allowAnonymous = false;
 
         config.addDefault("verbose", new Boolean(verbose));
-        config.addDefault("websocket.bind-address", websocket_bind_address);
-        config.addDefault("websocket.bind-port", websocket_bind_port);
-        config.addDefault("websocket.external-scheme", websocket_external_scheme);
-        config.addDefault("websocket.external-domain", websocket_external_domain);
-        config.addDefault("websocket.external-port", websocket_external_port);
-        config.addDefault("minecraft.connect-address", minecraft_connect_address);
-        config.addDefault("minecraft.connect-port", minecraft_connect_port);
-        config.addDefault("minecraft.announce-on-join", minecraft_announce_on_join);
-        config.addDefault("minecraft.allow-anonymous", minecraft_allow_anonymous);
+        config.addDefault("websocket.bind-address", wsAddress);
+        config.addDefault("websocket.bind-port", wsPort);
+        config.addDefault("websocket.external-scheme", externalScheme);
+        config.addDefault("websocket.external-domain", externalDomain);
+        config.addDefault("websocket.external-port", externalPort);
+        config.addDefault("minecraft.connect-address", mcAddress);
+        config.addDefault("minecraft.connect-port", mcPort);
+        config.addDefault("minecraft.announce-on-join", announceOnJoin);
+        config.addDefault("minecraft.allow-anonymous", allowAnonymous);
         config.addDefault("filter.whitelist", new Integer[] { }); // TODO: each direction
         config.addDefault("filter.blacklist", new Integer[] { });
 
@@ -55,21 +55,21 @@ public class WsmcBukkitPlugin extends JavaPlugin implements Listener {
         }
 
         verbose = this.getConfig().getBoolean("verbose");
-        websocket_bind_address = this.getConfig().getString("websocket.bind-address");
-        websocket_bind_port = this.getConfig().getInt("websocket.bind-port");
-        websocket_external_scheme = this.getConfig().getString("websocket.external-scheme");
-        websocket_external_domain = this.getConfig().getString("websocket.external-domain");
-        websocket_external_port = this.getConfig().getInt("websocket.external-port");
-        minecraft_connect_address = this.getConfig().getString("minecraft.connect-address");
-        minecraft_connect_port = this.getConfig().getInt("minecraft.connect-port");
-        minecraft_announce_on_join = this.getConfig().getBoolean("minecraft.announce-on-join");
-        minecraft_allow_anonymous = this.getConfig().getBoolean("minecraft.allow-anonymous");
+        wsAddress = this.getConfig().getString("websocket.bind-address");
+        wsPort = this.getConfig().getInt("websocket.bind-port");
+        externalScheme = this.getConfig().getString("websocket.external-scheme");
+        externalDomain = this.getConfig().getString("websocket.external-domain");
+        externalPort = this.getConfig().getInt("websocket.external-port");
+        mcAddress = this.getConfig().getString("minecraft.connect-address");
+        mcPort = this.getConfig().getInt("minecraft.connect-port");
+        announceOnJoin = this.getConfig().getBoolean("minecraft.announce-on-join");
+        allowAnonymous = this.getConfig().getBoolean("minecraft.allow-anonymous");
 
         saveConfig();
 
-        users = new UserIdentityLinker(websocket_external_scheme, websocket_external_domain, websocket_external_port,
-                minecraft_announce_on_join,
-                minecraft_allow_anonymous,
+        users = new UserIdentityLinker(externalScheme, externalDomain, externalPort,
+                announceOnJoin,
+                allowAnonymous,
                 this);
         getServer().getPluginManager().registerEvents(users, this);
         getCommand("web").setExecutor(users);
@@ -80,10 +80,10 @@ public class WsmcBukkitPlugin extends JavaPlugin implements Listener {
 
 
         webThread = new WebThread(
-                websocket_bind_address,
-                websocket_bind_port,
-                minecraft_connect_address,
-                minecraft_connect_port,
+                wsAddress,
+                wsPort,
+                mcAddress,
+                mcPort,
                 users, filter,
                 verbose
                 );
