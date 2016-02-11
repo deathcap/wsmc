@@ -7,6 +7,7 @@ import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.ConfigurationOptions;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.loader.ConfigurationLoader;
+import org.spongepowered.api.Sponge;
 import org.spongepowered.api.config.DefaultConfig;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.game.state.GameStartedServerEvent;
@@ -51,7 +52,8 @@ public class WsmcSpongePlugin {
         String externalDomain = "";
         int externalPort = 24444;
         String mcAddress = "localhost";
-        int mcPort = 25565; // TODO: Sponge equivalent of Bukkit.getServer().getPort()?
+        int mcPort = Sponge.getServer().getBoundAddress().isPresent() ?
+                Sponge.getServer().getBoundAddress().get().getPort() : 25565;
         boolean announceOnJoin = true;
         boolean allowAnonymous = false;
 
@@ -95,7 +97,7 @@ public class WsmcSpongePlugin {
                 this);
                 */
 
-        System.out.println("WS("+wsPort+":"+wsPort+") <--> MC("+mcAddress+":"+mcPort+")");
+        System.out.println("WS("+wsAddress+":"+wsPort+") <--> MC("+mcAddress+":"+mcPort+")");
 
         filter = new PacketFilter(); // TODO
 
