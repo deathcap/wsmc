@@ -23,6 +23,15 @@ public class UserIdentityLinker implements Listener, CommandExecutor, UserAuthen
     private final boolean allowAnonymous;
     private final WsmcBukkitPlugin plugin;
 
+    public UserIdentityLinker(String websocket_external_scheme, String websocket_external_domain, int websocket_external_port, boolean announceOnJoin, boolean allowAnonymous, WsmcBukkitPlugin plugin) {
+        this(websocket_external_scheme
+                + "://"
+                + websocket_external_domain
+                + (websocket_external_port != 80
+                ? (":" + websocket_external_port) : "")
+                + "/", announceOnJoin, allowAnonymous, plugin);
+    }
+
     public UserIdentityLinker(String webURL, boolean announceOnJoin, boolean allowAnonymous, WsmcBukkitPlugin plugin) {
         this.webURL = webURL;
         this.announceOnJoin = announceOnJoin;

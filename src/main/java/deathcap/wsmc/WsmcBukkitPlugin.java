@@ -67,13 +67,7 @@ public class WsmcBukkitPlugin extends JavaPlugin implements Listener {
 
         saveConfig();
 
-        String url = websocket_external_scheme
-                + "://"
-                + websocket_external_domain
-                + (websocket_external_port != 80
-                    ? (":" + websocket_external_port) : "")
-                + "/";
-        users = new UserIdentityLinker(url,
+        users = new UserIdentityLinker(websocket_external_scheme, websocket_external_domain, websocket_external_port,
                 minecraft_announce_on_join,
                 minecraft_allow_anonymous,
                 this);
