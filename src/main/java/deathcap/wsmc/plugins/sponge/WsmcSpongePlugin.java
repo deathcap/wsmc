@@ -2,7 +2,6 @@ package deathcap.wsmc.plugins.sponge;
 
 import com.google.inject.Inject;
 import deathcap.wsmc.ExternalNetworkAddressChecker;
-import deathcap.wsmc.PlayerTeller;
 import deathcap.wsmc.UserIdentityLinker;
 import deathcap.wsmc.mc.PacketFilter;
 import deathcap.wsmc.web.WebThread;
@@ -44,7 +43,6 @@ public class WsmcSpongePlugin implements CommandExecutor {
     private WebThread webThread;
     private UserIdentityLinker users;
     private PacketFilter filter;
-    private PlayerTeller teller;
 
     boolean announceOnJoin = true;
 
@@ -106,8 +104,6 @@ public class WsmcSpongePlugin implements CommandExecutor {
             ex.printStackTrace();
         }
 
-        teller = new SpongePlayerTeller();
-
         users = new UserIdentityLinker(externalScheme, externalDomain, externalPort,
                 allowAnonymous);
 
@@ -137,13 +133,25 @@ public class WsmcSpongePlugin implements CommandExecutor {
         webThread.start();
     }
 
+    private void tellPlayer(String username, String destination, String url) {
+        Player player = Sponge.getServer().getPlayer(destination).orElse(null);
+
+        if (player == null) {
+            // TODO: server console
+            System.out.println("Web client enabled: " + url);
+        } else {
+            player.sendMessage(Text.of("Web client enabled: " + url));
+            // TODO: clickable link
+        }
+    }
+
     @Listener
     public void onPlayerJoin(ClientConnectionEvent.Join event) {
         if (!this.announceOnJoin) return;
 
         String name = event.getTargetEntity().getName();
 
-        this.teller.tellPlayer(name, name, this.users.getOrGenerateUserURL(name));
+        this.tellPlayer(name, name, this.users.getOrGenerateUserURL(name));
     }
 
     @Override
@@ -153,7 +161,7 @@ public class WsmcSpongePlugin implements CommandExecutor {
 
             Player player = (Player) commandSource;
 
-            this.teller.tellPlayer(player.getName(), player.getName(), this.users.getOrGenerateUserURL(player.getName()));
+            this.tellPlayer(player.getName(), player.getName(), this.users.getOrGenerateUserURL(player.getName()));
 
             return CommandResult.success();
         } else {
@@ -163,7 +171,7 @@ public class WsmcSpongePlugin implements CommandExecutor {
                 return CommandResult.empty();
             }
 
-            this.teller.tellPlayer(name, null, this.users.getOrGenerateUserURL(name));
+            this.tellPlayer(name, null, this.users.getOrGenerateUserURL(name));
 
             return CommandResult.empty();
         }

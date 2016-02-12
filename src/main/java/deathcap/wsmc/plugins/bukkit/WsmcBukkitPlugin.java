@@ -1,7 +1,6 @@
 package deathcap.wsmc.plugins.bukkit;
 
 import deathcap.wsmc.ExternalNetworkAddressChecker;
-import deathcap.wsmc.PlayerTeller;
 import deathcap.wsmc.UserIdentityLinker;
 import deathcap.wsmc.mc.PacketFilter;
 import deathcap.wsmc.web.WebThread;
@@ -21,7 +20,6 @@ public class WsmcBukkitPlugin extends JavaPlugin implements Listener, CommandExe
     private WebThread webThread;
     private UserIdentityLinker users;
     private PacketFilter filter;
-    private PlayerTeller teller;
 
     boolean announceOnJoin = true;
 
@@ -69,8 +67,6 @@ public class WsmcBukkitPlugin extends JavaPlugin implements Listener, CommandExe
 
         saveConfig();
 
-        teller = new BukkitPlayerTeller();
-
         users = new UserIdentityLinker(externalScheme, externalDomain, externalPort,
                 allowAnonymous);
         getServer().getPluginManager().registerEvents(this, this);
@@ -99,13 +95,41 @@ public class WsmcBukkitPlugin extends JavaPlugin implements Listener, CommandExe
         }
     }
 
+    private void tellPlayer(String username, String destination, String url) {
+        if (destination == null) {
+            // console
+            String msg = "Web client enabled: "+url;
+            Bukkit.getServer().getConsoleSender().sendMessage(msg);
+        } else {
+            // player - /tellraw link
+            String raw =
+                    "{" +
+                            "\"text\": \"\"," + // required though unused
+                            "\"extra\": [" +    // clickable link
+                            "{" +
+                            "\"text\": \"Web client enabled (click to view)\"," +
+                            "\"bold\": \"true\"," +
+                            "\"clickEvent\": {" +
+                            "\"action\": \"open_url\"," +
+                            "\"value\": \"" + url + "\"" +  // TODO: json encode
+                            "}" +
+                            "}" +
+                            "]" +
+                            "}";
+            // TODO: switch to RichMessage API after https://github.com/Bukkit/Bukkit/pull/1065
+            //player.sendRawMessage(raw); // not what we want, actually just strips ChatColors
+            // TODO: note /tellraw Glowstone https://github.com/SpaceManiac/Glowstone/issues/124
+            Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "tellraw " + destination + " " + raw);
+        }
+    }
+
     // org.bukkit.command.CommandExecutor
 
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String label, String[] args) {
         if (commandSender instanceof Player) {
             Player player = (Player)commandSender;
-            this.teller.tellPlayer(player.getName(), player.getName(), this.users.getOrGenerateUserURL(player.getName()));
+            this.tellPlayer(player.getName(), player.getName(), this.users.getOrGenerateUserURL(player.getName()));
 
             return true;
         } else {
@@ -123,7 +147,7 @@ public class WsmcBukkitPlugin extends JavaPlugin implements Listener, CommandExe
             }
             */
 
-            this.teller.tellPlayer(playerName, null, this.users.getOrGenerateUserURL(playerName));
+            this.tellPlayer(playerName, null, this.users.getOrGenerateUserURL(playerName));
 
             return false;
         }
@@ -141,6 +165,6 @@ public class WsmcBukkitPlugin extends JavaPlugin implements Listener, CommandExe
 
         String name = player.getName();
 
-        this.teller.tellPlayer(name, name, this.users.getOrGenerateUserURL(name));
+        this.tellPlayer(name, name, this.users.getOrGenerateUserURL(name));
     }
 }
