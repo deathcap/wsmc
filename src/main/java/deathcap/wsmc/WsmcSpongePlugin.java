@@ -12,13 +12,16 @@ import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
+import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.command.spec.CommandExecutor;
+import org.spongepowered.api.command.spec.CommandSpec;
 import org.spongepowered.api.config.DefaultConfig;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.game.state.GameStartedServerEvent;
 import org.spongepowered.api.event.network.ClientConnectionEvent;
 import org.spongepowered.api.plugin.Plugin;
+import org.spongepowered.api.text.Text;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -101,9 +104,18 @@ public class WsmcSpongePlugin implements CommandExecutor {
         }
 
         teller = new SpongePlayerTeller();
-        
+
         users = new UserIdentityLinker(externalScheme, externalDomain, externalPort,
                 allowAnonymous);
+
+        CommandSpec commandSpec = CommandSpec.builder()
+                .description(Text.of("Get a per-user web URL from WebSocket-Minecraft (WSMC)"))
+                //.permission("wsmc.command.web") // TODO
+                .arguments(GenericArguments.onlyOne(GenericArguments.playerOrSource(Text.of("player")))) // TODO: change to string, since this requires the player to be online :(
+                .executor(this)
+                .build();
+        Sponge.getCommandManager().register(this, commandSpec, "web");
+
 
         System.out.println("WS("+wsAddress+":"+wsPort+") <--> MC("+mcAddress+":"+mcPort+")");
 
@@ -135,8 +147,14 @@ public class WsmcSpongePlugin implements CommandExecutor {
     public CommandResult execute(CommandSource commandSource, CommandContext commandContext) throws CommandException {
         if (commandSource instanceof Player) {
             Player player = (Player) commandSource;
+
+            this.teller.tellPlayer(player.getName(), player.getName(), this.users.getOrGenerateUserURL(player.getName()));
+
+            return CommandResult.success();
         }
+
         // TODO
+        System.out.println("COMMAND: "+commandSource+" = "+commandContext);
         return CommandResult.empty();
     }
 }
