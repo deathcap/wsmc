@@ -1,5 +1,8 @@
-package deathcap.wsmc;
+package deathcap.wsmc.plugins.bukkit;
 
+import deathcap.wsmc.ExternalNetworkAddressChecker;
+import deathcap.wsmc.PlayerTeller;
+import deathcap.wsmc.UserIdentityLinker;
 import deathcap.wsmc.mc.PacketFilter;
 import deathcap.wsmc.web.WebThread;
 import org.bukkit.Bukkit;
@@ -12,8 +15,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import java.util.Arrays;
 
 public class WsmcBukkitPlugin extends JavaPlugin implements Listener, CommandExecutor {
 

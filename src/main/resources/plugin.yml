@@ -3,7 +3,7 @@ version: ${project.version}
 description: WebSocket proxy to Minecraft
 author: deathcap
 
-main: deathcap.wsmc.WsmcBukkitPlugin
+main: deathcap.wsmc.plugins.bukkit.WsmcBukkitPlugin
 load: STARTUP
 
 commands:

@@ -1,6 +1,9 @@
-package deathcap.wsmc;
+package deathcap.wsmc.plugins.sponge;
 
 import com.google.inject.Inject;
+import deathcap.wsmc.ExternalNetworkAddressChecker;
+import deathcap.wsmc.PlayerTeller;
+import deathcap.wsmc.UserIdentityLinker;
 import deathcap.wsmc.mc.PacketFilter;
 import deathcap.wsmc.web.WebThread;
 import ninja.leaping.configurate.ConfigurationNode;

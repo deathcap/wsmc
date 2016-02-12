@@ -1,5 +1,6 @@
-package deathcap.wsmc;
+package deathcap.wsmc.plugins.bukkit;
 
+import deathcap.wsmc.PlayerTeller;
 import org.bukkit.Bukkit;
 
 public class BukkitPlayerTeller implements PlayerTeller {
