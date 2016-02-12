@@ -3,17 +3,26 @@ package deathcap.wsmc;
 import deathcap.wsmc.mc.PacketFilter;
 import deathcap.wsmc.web.WebThread;
 import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Arrays;
 
-public class WsmcBukkitPlugin extends JavaPlugin implements Listener {
+public class WsmcBukkitPlugin extends JavaPlugin implements Listener, CommandExecutor {
 
     private WebThread webThread;
     private UserIdentityLinker users;
     private PacketFilter filter;
+    private PlayerTeller teller;
+
+    boolean announceOnJoin = true;
 
     @Override
     public void onEnable() {
@@ -21,42 +30,50 @@ public class WsmcBukkitPlugin extends JavaPlugin implements Listener {
         final FileConfiguration config = getConfig();
         config.options().copyDefaults(true);
 
-        config.addDefault("verbose", new Boolean(true));
-        config.addDefault("websocket.bind-address", "");
-        config.addDefault("websocket.bind-port", 24444);
-        config.addDefault("websocket.external-scheme", "http");
-        config.addDefault("websocket.external-domain", "");
-        config.addDefault("websocket.external-port", 24444);
-        config.addDefault("minecraft.connect-address", "localhost");
-        config.addDefault("minecraft.connect-port", Bukkit.getServer().getPort());
-        config.addDefault("minecraft.announce-on-join", true);
-        config.addDefault("minecraft.allow-anonymous", false);
+        boolean verbose = true;
+        String wsAddress = "";
+        int wsPort = 24444;
+        String externalScheme = "http";
+        String externalDomain = "";
+        int externalPort = 24444;
+        String mcAddress = "localhost";
+        int mcPort = Bukkit.getServer().getPort();
+        boolean allowAnonymous = false;
+
+        config.addDefault("verbose", new Boolean(verbose));
+        config.addDefault("websocket.bind-address", wsAddress);
+        config.addDefault("websocket.bind-port", wsPort);
+        config.addDefault("websocket.external-scheme", externalScheme);
+        config.addDefault("websocket.external-domain", externalDomain);
+        config.addDefault("websocket.external-port", externalPort);
+        config.addDefault("minecraft.connect-address", mcAddress);
+        config.addDefault("minecraft.connect-port", mcPort);
+        config.addDefault("minecraft.announce-on-join", announceOnJoin);
+        config.addDefault("minecraft.allow-anonymous", allowAnonymous);
         config.addDefault("filter.whitelist", new Integer[] { }); // TODO: each direction
         config.addDefault("filter.blacklist", new Integer[] { });
 
-        // If 'auto', try to get external IP (hits Amazon), or if empty, get local hostname
-        // TODO: is it reasonable to contact an external server by default? Erring on the conservative side
-        if (this.getConfig().getString("websocket.external-domain").equals("auto")) {
-            this.getConfig().set("websocket.external-domain", ExternalNetworkAddressChecker.checkip());
-        }
-        if (this.getConfig().getString("websocket.external-domain").equals("")) {
-            this.getConfig().set("websocket.external-domain", ExternalNetworkAddressChecker.getHostName());
-        }
+        verbose = this.getConfig().getBoolean("verbose");
+        wsAddress = this.getConfig().getString("websocket.bind-address");
+        wsPort = this.getConfig().getInt("websocket.bind-port");
+        externalScheme = this.getConfig().getString("websocket.external-scheme");
+        externalDomain = this.getConfig().getString("websocket.external-domain");
+        externalPort = this.getConfig().getInt("websocket.external-port");
+        mcAddress = this.getConfig().getString("minecraft.connect-address");
+        mcPort = this.getConfig().getInt("minecraft.connect-port");
+        announceOnJoin = this.getConfig().getBoolean("minecraft.announce-on-join");
+        allowAnonymous = this.getConfig().getBoolean("minecraft.allow-anonymous");
+
+        externalDomain = ExternalNetworkAddressChecker.autoConfigureIfNeeded(externalDomain);
 
         saveConfig();
 
-        String url = this.getConfig().getString("websocket.external-scheme")
-                + "://"
-                + this.getConfig().getString("websocket.external-domain")
-                + (this.getConfig().getInt("websocket.external-port") != 80
-                    ? (":" + this.getConfig().getInt("websocket.external-port")) : "")
-                + "/";
-        users = new UserIdentityLinker(url,
-                this.getConfig().getBoolean("minecraft.announce-on-join"),
-                this.getConfig().getBoolean("minecraft.allow-anonymous"),
-                this);
-        getServer().getPluginManager().registerEvents(users, this);
-        getCommand("web").setExecutor(users);
+        teller = new BukkitPlayerTeller();
+
+        users = new UserIdentityLinker(externalScheme, externalDomain, externalPort,
+                allowAnonymous);
+        getServer().getPluginManager().registerEvents(this, this);
+        getCommand("web").setExecutor(this);
 
         filter = new PacketFilter();
         for (int id : this.getConfig().getIntegerList("filter.whitelist")) filter.addWhitelist(id);
@@ -64,12 +81,12 @@ public class WsmcBukkitPlugin extends JavaPlugin implements Listener {
 
 
         webThread = new WebThread(
-                this.getConfig().getString("websocket.bind-address"),
-                this.getConfig().getInt("websocket.bind-port"),
-                this.getConfig().getString("minecraft.connect-address"),
-                this.getConfig().getInt("minecraft.connect-port"),
+                wsAddress,
+                wsPort,
+                mcAddress,
+                mcPort,
                 users, filter,
-                this.getConfig().getBoolean("verbose")
+                verbose
                 );
         webThread.start();
     }
@@ -79,5 +96,50 @@ public class WsmcBukkitPlugin extends JavaPlugin implements Listener {
         if (webThread != null) {
             webThread.interrupt();
         }
+    }
+
+    // org.bukkit.command.CommandExecutor
+
+    @Override
+    public boolean onCommand(CommandSender commandSender, Command command, String label, String[] args) {
+        if (commandSender instanceof Player) {
+            Player player = (Player)commandSender;
+            this.teller.tellPlayer(player.getName(), player.getName(), this.users.getOrGenerateUserURL(player.getName()));
+
+            return true;
+        } else {
+            if (args.length < 1) {
+                commandSender.sendMessage("player name required for /web");
+                return false;
+            }
+
+            String playerName = args[0];
+            /*
+            Player player = this.plugin.getServer().getPlayer(playerName);
+            if (player == null) {
+                commandSender.sendMessage("no such player "+playerName);
+                return false;
+            }
+            */
+
+            this.teller.tellPlayer(playerName, null, this.users.getOrGenerateUserURL(playerName));
+
+            return false;
+        }
+    }
+
+
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent event) {
+        if (!this.announceOnJoin) return;
+
+        Player player = event.getPlayer();
+
+        // TODO: don't show if client brand is our own
+        // TODO: option to only show on first connect
+
+        String name = player.getName();
+
+        this.teller.tellPlayer(name, name, this.users.getOrGenerateUserURL(name));
     }
 }
