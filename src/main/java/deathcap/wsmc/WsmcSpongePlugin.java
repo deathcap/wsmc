@@ -111,7 +111,7 @@ public class WsmcSpongePlugin implements CommandExecutor {
         CommandSpec commandSpec = CommandSpec.builder()
                 .description(Text.of("Get a per-user web URL from WebSocket-Minecraft (WSMC)"))
                 //.permission("wsmc.command.web") // TODO
-                .arguments(GenericArguments.onlyOne(GenericArguments.playerOrSource(Text.of("player")))) // TODO: change to string, since this requires the player to be online :(
+                .arguments(GenericArguments.optional(GenericArguments.string(Text.of("player"))))
                 .executor(this)
                 .build();
         Sponge.getCommandManager().register(this, commandSpec, "web");
@@ -146,15 +146,23 @@ public class WsmcSpongePlugin implements CommandExecutor {
     @Override
     public CommandResult execute(CommandSource commandSource, CommandContext commandContext) throws CommandException {
         if (commandSource instanceof Player) {
+            // If from a player, always give URL for that user TODO: allow other users if ops? permission?
+
             Player player = (Player) commandSource;
 
             this.teller.tellPlayer(player.getName(), player.getName(), this.users.getOrGenerateUserURL(player.getName()));
 
             return CommandResult.success();
-        }
+        } else {
+            String name = (String) commandContext.getOne("player").orElse(null);
+            if (name == null) {
+                commandSource.sendMessage(Text.of("player name required for /web"));
+                return CommandResult.empty();
+            }
 
-        // TODO
-        System.out.println("COMMAND: "+commandSource+" = "+commandContext);
-        return CommandResult.empty();
+            this.teller.tellPlayer(name, null, this.users.getOrGenerateUserURL(name));
+
+            return CommandResult.empty();
+        }
     }
 }
