@@ -20,6 +20,7 @@ public class WsmcBukkitPlugin extends JavaPlugin implements Listener, CommandExe
     private WebThread webThread;
     private UserIdentityLinker users;
     private PacketFilter filter;
+    private PlayerTeller teller;
 
     boolean announceOnJoin = true;
 
@@ -67,9 +68,10 @@ public class WsmcBukkitPlugin extends JavaPlugin implements Listener, CommandExe
 
         saveConfig();
 
+        teller = new BukkitPlayerTeller();
+
         users = new UserIdentityLinker(externalScheme, externalDomain, externalPort,
-                allowAnonymous,
-                this);
+                allowAnonymous);
         getServer().getPluginManager().registerEvents(users, this);
         getCommand("web").setExecutor(this);
 
@@ -102,7 +104,7 @@ public class WsmcBukkitPlugin extends JavaPlugin implements Listener, CommandExe
     public boolean onCommand(CommandSender commandSender, Command command, String label, String[] args) {
         if (commandSender instanceof Player) {
             Player player = (Player)commandSender;
-            this.users.tellPlayer(player.getName(), player.getName());
+            this.teller.tellPlayer(player.getName(), player.getName(), this.users.getOrGenerateUserURL(player.getName()));
 
             return true;
         } else {
@@ -120,7 +122,7 @@ public class WsmcBukkitPlugin extends JavaPlugin implements Listener, CommandExe
             }
             */
 
-            this.users.tellPlayer(playerName, null);
+            this.teller.tellPlayer(playerName, null, this.users.getOrGenerateUserURL(playerName));
 
             return false;
         }
@@ -136,6 +138,6 @@ public class WsmcBukkitPlugin extends JavaPlugin implements Listener, CommandExe
         // TODO: don't show if client brand is our own
         // TODO: option to only show on first connect
 
-        this.users.tellPlayer(player.getName(), player.getName());
+        this.teller.tellPlayer(player.getName(), player.getName(), this.users.getOrGenerateUserURL(player.getName()));
     }
 }

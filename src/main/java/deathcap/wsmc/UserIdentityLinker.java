@@ -15,21 +15,19 @@ public class UserIdentityLinker implements Listener, UserAuthenticator {
     private SecureRandom random = new SecureRandom();
     private final String webURL;
     private final boolean allowAnonymous;
-    private final WsmcBukkitPlugin plugin;
 
-    public UserIdentityLinker(String externalScheme, String externalDomain, int externalPort, boolean allowAnonymous, WsmcBukkitPlugin plugin) {
+    public UserIdentityLinker(String externalScheme, String externalDomain, int externalPort, boolean allowAnonymous) {
         this(externalScheme
                 + "://"
                 + externalDomain
                 + (externalPort != 80
                 ? (":" + externalPort) : "")
-                + "/", allowAnonymous, plugin);
+                + "/", allowAnonymous);
     }
 
-    public UserIdentityLinker(String webURL, boolean allowAnonymous, WsmcBukkitPlugin plugin) {
+    public UserIdentityLinker(String webURL, boolean allowAnonymous) {
         this.webURL = webURL;
         this.allowAnonymous = allowAnonymous;
-        this.plugin = plugin;
     }
 
     // Try to login, returning username if successful, null otherwise
@@ -82,7 +80,13 @@ public class UserIdentityLinker implements Listener, UserAuthenticator {
         return sb.toString();
     }
 
-    public String getOrGenerateUserKey(String name) {
+    public String getOrGenerateUserURL(String name) {
+        String key = this.getOrGenerateUserKey(name);
+        String url = this.webURL+"#"+name+":"+key; // TODO: urlencode
+        return url;
+    }
+
+    private String getOrGenerateUserKey(String name) {
         //UUID uuid = player.getUniqueId(); // TODO?
         //String name = player.getName();
 
@@ -94,38 +98,5 @@ public class UserIdentityLinker implements Listener, UserAuthenticator {
         }
 
         return key;
-    }
-
-    // TODO: factor this out
-
-    // Give a player a URL to authenticate and join over the websocket
-    public void tellPlayer(String username, String destination) {
-        String key = this.getOrGenerateUserKey(username);
-        String url = this.webURL+"#"+username+":"+key; // TODO: urlencode
-        if (destination == null) {
-            // console
-            String msg = "Web client enabled: "+url;
-            Bukkit.getServer().getConsoleSender().sendMessage(msg);
-        } else {
-            // player - /tellraw link
-            String raw =
-            "{" +
-                "\"text\": \"\"," + // required though unused
-                "\"extra\": [" +    // clickable link
-                "{" +
-                    "\"text\": \"Web client enabled (click to view)\"," +
-                        "\"bold\": \"true\"," +
-                        "\"clickEvent\": {" +
-                            "\"action\": \"open_url\"," +
-                            "\"value\": \"" + url + "\"" +  // TODO: json encode
-                        "}" +
-                    "}" +
-                "]" +
-            "}";
-            // TODO: switch to RichMessage API after https://github.com/Bukkit/Bukkit/pull/1065
-            //player.sendRawMessage(raw); // not what we want, actually just strips ChatColors
-            // TODO: note /tellraw Glowstone https://github.com/SpaceManiac/Glowstone/issues/124
-            plugin.getServer().dispatchCommand(Bukkit.getConsoleSender(), "tellraw "+destination+" "+raw);
-        }
     }
 }
