@@ -1,15 +1,11 @@
 package deathcap.wsmc;
 
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
-
 import java.security.SecureRandom;
 import java.util.HashMap;
 import java.util.Map;
 
 // Links a random "key" to the player's identity for websocket authentication
-public class UserIdentityLinker implements Listener, UserAuthenticator {
+public class UserIdentityLinker implements UserAuthenticator {
 
     private Map<String, String> keys = new HashMap<String, String>(); // TODO: persist TODO: UUID? but need player name anyway
     private SecureRandom random = new SecureRandom();

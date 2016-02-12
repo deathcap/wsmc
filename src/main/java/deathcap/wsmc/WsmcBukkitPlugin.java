@@ -72,7 +72,7 @@ public class WsmcBukkitPlugin extends JavaPlugin implements Listener, CommandExe
 
         users = new UserIdentityLinker(externalScheme, externalDomain, externalPort,
                 allowAnonymous);
-        getServer().getPluginManager().registerEvents(users, this);
+        getServer().getPluginManager().registerEvents(this, this);
         getCommand("web").setExecutor(this);
 
         filter = new PacketFilter();
