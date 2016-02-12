@@ -16,22 +16,20 @@ public class UserIdentityLinker implements Listener, UserAuthenticator {
     private Map<String, String> keys = new HashMap<String, String>(); // TODO: persist TODO: UUID? but need player name anyway
     private SecureRandom random = new SecureRandom();
     private final String webURL;
-    private final boolean announceOnJoin;
     private final boolean allowAnonymous;
     private final WsmcBukkitPlugin plugin;
 
-    public UserIdentityLinker(String externalScheme, String externalDomain, int externalPort, boolean announceOnJoin, boolean allowAnonymous, WsmcBukkitPlugin plugin) {
+    public UserIdentityLinker(String externalScheme, String externalDomain, int externalPort, boolean allowAnonymous, WsmcBukkitPlugin plugin) {
         this(externalScheme
                 + "://"
                 + externalDomain
                 + (externalPort != 80
                 ? (":" + externalPort) : "")
-                + "/", announceOnJoin, allowAnonymous, plugin);
+                + "/", allowAnonymous, plugin);
     }
 
-    public UserIdentityLinker(String webURL, boolean announceOnJoin, boolean allowAnonymous, WsmcBukkitPlugin plugin) {
+    public UserIdentityLinker(String webURL, boolean allowAnonymous, WsmcBukkitPlugin plugin) {
         this.webURL = webURL;
-        this.announceOnJoin = announceOnJoin;
         this.allowAnonymous = allowAnonymous;
         this.plugin = plugin;
     }
@@ -98,18 +96,6 @@ public class UserIdentityLinker implements Listener, UserAuthenticator {
         }
 
         return key;
-    }
-
-    @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent event) {
-        if (!this.announceOnJoin) return;
-
-        Player player = event.getPlayer();
-
-        // TODO: don't show if client brand is our own
-        // TODO: option to only show on first connect
-
-        this.tellPlayer(player, player);
     }
 
     // TODO: factor these out
