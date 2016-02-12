@@ -8,16 +8,23 @@ import ninja.leaping.configurate.ConfigurationOptions;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.loader.ConfigurationLoader;
 import org.spongepowered.api.Sponge;
+import org.spongepowered.api.command.CommandException;
+import org.spongepowered.api.command.CommandResult;
+import org.spongepowered.api.command.CommandSource;
+import org.spongepowered.api.command.args.CommandContext;
+import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.config.DefaultConfig;
+import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.game.state.GameStartedServerEvent;
+import org.spongepowered.api.event.network.ClientConnectionEvent;
 import org.spongepowered.api.plugin.Plugin;
 
 import java.io.IOException;
 import java.nio.file.Path;
 
 @Plugin(id = "WSMC", name = "WebSocket-Minecraft Proxy", version = "0.0.1")
-public class WsmcSpongePlugin {
+public class WsmcSpongePlugin implements CommandExecutor {
 
     // https://docs.spongepowered.org/en/plugin/configuration/index.html
     @Inject
@@ -29,8 +36,11 @@ public class WsmcSpongePlugin {
     private ConfigurationLoader<CommentedConfigurationNode> configManager;
 
     private WebThread webThread;
-    //private UserIdentityLinker users; // TODO
+    private UserIdentityLinker users;
     private PacketFilter filter;
+    private PlayerTeller teller;
+
+    boolean announceOnJoin = true;
 
     @Listener
     public void onServerStart(GameStartedServerEvent event) {
@@ -57,7 +67,6 @@ public class WsmcSpongePlugin {
         String mcAddress = "localhost";
         int mcPort = Sponge.getServer().getBoundAddress().isPresent() ?
                 Sponge.getServer().getBoundAddress().get().getPort() : 25565;
-        boolean announceOnJoin = true;
         boolean allowAnonymous = false;
 
         verbose = rootNode.getNode("verbose").getBoolean(verbose);
@@ -91,13 +100,10 @@ public class WsmcSpongePlugin {
             ex.printStackTrace();
         }
 
-        /* TODO: add UserIdentityLinker to Sponge - need to refactor out messaging user (not Bukkit plugin)
-        users = null;
-        new UserIdentityLinker(externalScheme, externalDomain, externalPort,
-                announceOnJoin,
-                allowAnonymous,
-                this);
-                */
+        teller = new SpongePlayerTeller();
+        
+        users = new UserIdentityLinker(externalScheme, externalDomain, externalPort,
+                allowAnonymous);
 
         System.out.println("WS("+wsAddress+":"+wsPort+") <--> MC("+mcAddress+":"+mcPort+")");
 
@@ -108,11 +114,29 @@ public class WsmcSpongePlugin {
                 wsPort,
                 mcAddress,
                 mcPort,
-                null, //users, // TODO
+                users,
                 filter,
                 verbose
         );
 
         webThread.start();
+    }
+
+    @Listener
+    public void onPlayerJoin(ClientConnectionEvent.Join event) {
+        if (!this.announceOnJoin) return;
+
+        String name = event.getTargetEntity().getName();
+
+        this.teller.tellPlayer(name, name, this.users.getOrGenerateUserURL(name));
+    }
+
+    @Override
+    public CommandResult execute(CommandSource commandSource, CommandContext commandContext) throws CommandException {
+        if (commandSource instanceof Player) {
+            Player player = (Player) commandSource;
+        }
+        // TODO
+        return CommandResult.empty();
     }
 }

@@ -138,6 +138,8 @@ public class WsmcBukkitPlugin extends JavaPlugin implements Listener, CommandExe
         // TODO: don't show if client brand is our own
         // TODO: option to only show on first connect
 
-        this.teller.tellPlayer(player.getName(), player.getName(), this.users.getOrGenerateUserURL(player.getName()));
+        String name = player.getName();
+
+        this.teller.tellPlayer(name, name, this.users.getOrGenerateUserURL(name));
     }
 }
