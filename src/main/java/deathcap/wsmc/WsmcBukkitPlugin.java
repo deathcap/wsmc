@@ -102,7 +102,7 @@ public class WsmcBukkitPlugin extends JavaPlugin implements Listener, CommandExe
     public boolean onCommand(CommandSender commandSender, Command command, String label, String[] args) {
         if (commandSender instanceof Player) {
             Player player = (Player)commandSender;
-            this.users.tellPlayer(player, player);
+            this.users.tellPlayer(player.getName(), player.getName());
 
             return true;
         } else {
@@ -136,6 +136,6 @@ public class WsmcBukkitPlugin extends JavaPlugin implements Listener, CommandExe
         // TODO: don't show if client brand is our own
         // TODO: option to only show on first connect
 
-        this.users.tellPlayer(player, player);
+        this.users.tellPlayer(player.getName(), player.getName());
     }
 }

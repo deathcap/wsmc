@@ -2,9 +2,7 @@ package deathcap.wsmc;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
 
 import java.security.SecureRandom;
 import java.util.HashMap;
@@ -98,13 +96,9 @@ public class UserIdentityLinker implements Listener, UserAuthenticator {
         return key;
     }
 
-    // TODO: factor these out
+    // TODO: factor this out
 
     // Give a player a URL to authenticate and join over the websocket
-    public void tellPlayer(Player whom, Player destination) {
-        this.tellPlayer(whom.getName(), destination.getName());
-    }
-
     public void tellPlayer(String username, String destination) {
         String key = this.getOrGenerateUserKey(username);
         String url = this.webURL+"#"+username+":"+key; // TODO: urlencode
