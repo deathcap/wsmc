@@ -12,6 +12,8 @@ Install [Maven](https://maven.apache.org/) and build with:
 
     mvn clean install
 
+Current protocol support: 1.8.9, 1.9 snapshot 15w40b ([details](https://github.com/PrismarineJS/node-minecraft-protocol))
+
 #### For Bukkit servers
 
 To load the plugin with software implementing the [Bukkit API](https://github.com/Bukkit/Bukkit),
@@ -20,20 +22,27 @@ simply copy the jar into the `plugins` directory. Tested with:
 * [Glowstone++](https://glowstoneplusplus.github.io) - an open source server for Minecraft and Bukkit
 * [Spigot](https://www.spigotmc.org) - a modification to Minecraft implementing Bukkit
 * [Junket](https://github.com/deathcap/Junket) - partial implementation of Bukkit (no server)
-* vanilla servers - standalone mode (no plugin, see below)
+
+### For Sponge servers
+
+WSMC also includes [Sponge API](https://www.spongepowered.org) support, simply copy the jar
+to the `mods` folder. For use with:
+
+* [SpongeForge](https://github.com/SpongePowered/SpongeForge)
+* [SpongeVanilla](https://github.com/SpongePowered/SpongeVanilla)
 
 #### For other servers (standalone mode)
 
-If your server does not support Bukkit plugins, then WSMC can be ran standalone from the
+If your server does not support Bukkit or Sponge plugins, then WSMC can be ran standalone from the
 command-line:
 
     java -jar target/wsmc*.jar 0.0.0.0 24444 localhost 25565
 
-User authentication is not supported in this mode.
+Tested with:
 
-TODO: [Sponge](https://github.com/deathcap/wsmc/issues/7),
-[Forge](https://github.com/deathcap/wsmc/issues/8),
-[BungeeCord](https://github.com/deathcap/wsmc/issues/13) plugin support.
+* vanilla server
+
+User authentication is not supported in this mode.
 
 #### Configuration
 
@@ -44,7 +53,7 @@ proxy in "online mode" such as [BungeeCord](https://github.com/SpigotMC/BungeeCo
 for how to setup authentication in WSMC.
 
 
-Configure the plugin in `plugins/WSMC/config.yml`:
+Configure the plugin in `plugins/WSMC/config.yml` (Bukkit) or `config/wsmc.conf` (Sponge):
 
 * `websocket`: configuration options for the WebSocket (WS) server side
  * `bind-address` (): the network address to listen for incoming connections on
