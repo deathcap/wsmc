@@ -1,9 +1,6 @@
 package deathcap.wsmc;
 
 import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -14,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 // Links a random "key" to the player's identity for websocket authentication
-public class UserIdentityLinker implements Listener, CommandExecutor, UserAuthenticator {
+public class UserIdentityLinker implements Listener, UserAuthenticator {
 
     private Map<String, String> keys = new HashMap<String, String>(); // TODO: persist TODO: UUID? but need player name anyway
     private SecureRandom random = new SecureRandom();
@@ -115,12 +112,14 @@ public class UserIdentityLinker implements Listener, CommandExecutor, UserAuthen
         this.tellPlayer(player, player);
     }
 
+    // TODO: factor these out
+
     // Give a player a URL to authenticate and join over the websocket
-    private void tellPlayer(Player whom, Player destination) {
+    public void tellPlayer(Player whom, Player destination) {
         this.tellPlayer(whom.getName(), destination.getName());
     }
 
-    private void tellPlayer(String username, String destination) {
+    public void tellPlayer(String username, String destination) {
         String key = this.getOrGenerateUserKey(username);
         String url = this.webURL+"#"+username+":"+key; // TODO: urlencode
         if (destination == null) {
@@ -147,34 +146,6 @@ public class UserIdentityLinker implements Listener, CommandExecutor, UserAuthen
             //player.sendRawMessage(raw); // not what we want, actually just strips ChatColors
             // TODO: note /tellraw Glowstone https://github.com/SpaceManiac/Glowstone/issues/124
             plugin.getServer().dispatchCommand(Bukkit.getConsoleSender(), "tellraw "+destination+" "+raw);
-        }
-    }
-
-    @Override
-    public boolean onCommand(CommandSender commandSender, Command command, String label, String[] args) {
-        if (commandSender instanceof Player) {
-            Player player = (Player)commandSender;
-            this.tellPlayer(player, player);
-
-            return true;
-        } else {
-            if (args.length < 1) {
-                commandSender.sendMessage("player name required for /web");
-                return false;
-            }
-
-            String playerName = args[0];
-            /*
-            Player player = this.plugin.getServer().getPlayer(playerName);
-            if (player == null) {
-                commandSender.sendMessage("no such player "+playerName);
-                return false;
-            }
-            */
-
-            this.tellPlayer(playerName, null);
-
-            return false;
         }
     }
 }

@@ -3,13 +3,17 @@ package deathcap.wsmc;
 import deathcap.wsmc.mc.PacketFilter;
 import deathcap.wsmc.web.WebThread;
 import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Arrays;
 
-public class WsmcBukkitPlugin extends JavaPlugin implements Listener {
+public class WsmcBukkitPlugin extends JavaPlugin implements Listener, CommandExecutor {
 
     private WebThread webThread;
     private UserIdentityLinker users;
@@ -65,7 +69,7 @@ public class WsmcBukkitPlugin extends JavaPlugin implements Listener {
                 allowAnonymous,
                 this);
         getServer().getPluginManager().registerEvents(users, this);
-        getCommand("web").setExecutor(users);
+        getCommand("web").setExecutor(this);
 
         filter = new PacketFilter();
         for (int id : this.getConfig().getIntegerList("filter.whitelist")) filter.addWhitelist(id);
@@ -87,6 +91,36 @@ public class WsmcBukkitPlugin extends JavaPlugin implements Listener {
     public void onDisable() {
         if (webThread != null) {
             webThread.interrupt();
+        }
+    }
+
+    // org.bukkit.command.CommandExecutor
+
+    @Override
+    public boolean onCommand(CommandSender commandSender, Command command, String label, String[] args) {
+        if (commandSender instanceof Player) {
+            Player player = (Player)commandSender;
+            this.users.tellPlayer(player, player);
+
+            return true;
+        } else {
+            if (args.length < 1) {
+                commandSender.sendMessage("player name required for /web");
+                return false;
+            }
+
+            String playerName = args[0];
+            /*
+            Player player = this.plugin.getServer().getPlayer(playerName);
+            if (player == null) {
+                commandSender.sendMessage("no such player "+playerName);
+                return false;
+            }
+            */
+
+            this.users.tellPlayer(playerName, null);
+
+            return false;
         }
     }
 }
