@@ -52,8 +52,6 @@ public class WsmcBukkitPlugin extends JavaPlugin implements Listener, CommandExe
         config.addDefault("filter.whitelist", new Integer[] { }); // TODO: each direction
         config.addDefault("filter.blacklist", new Integer[] { });
 
-        externalDomain = ExternalNetworkAddressChecker.autoConfigureIfNeeded(externalDomain);
-
         verbose = this.getConfig().getBoolean("verbose");
         wsAddress = this.getConfig().getString("websocket.bind-address");
         wsPort = this.getConfig().getInt("websocket.bind-port");
@@ -64,6 +62,8 @@ public class WsmcBukkitPlugin extends JavaPlugin implements Listener, CommandExe
         mcPort = this.getConfig().getInt("minecraft.connect-port");
         announceOnJoin = this.getConfig().getBoolean("minecraft.announce-on-join");
         allowAnonymous = this.getConfig().getBoolean("minecraft.allow-anonymous");
+
+        externalDomain = ExternalNetworkAddressChecker.autoConfigureIfNeeded(externalDomain);
 
         saveConfig();
 
