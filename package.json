@@ -13,7 +13,7 @@
     "hex": "^0.1.0",
     "minecraft-data": "~0.16.3",
     "minecraft-protocol": "deathcap/node-minecraft-protocols",
-    "minecraft-protocol-forge": "PrismarineJS/node-minecraft-protocol-forge",
+    "minecraft-protocol-forge": "^1.0.0",
     "mineflayer": "PrismarineJS/mineflayer",
     "optimist": "^0.6.1",
     "protodef": "^0.2.5",
