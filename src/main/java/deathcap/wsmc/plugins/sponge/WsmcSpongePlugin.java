@@ -24,8 +24,15 @@ import org.spongepowered.api.event.game.state.GameStartedServerEvent;
 import org.spongepowered.api.event.network.ClientConnectionEvent;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.text.Text;
+import org.spongepowered.api.text.action.ClickAction;
+import org.spongepowered.api.text.action.TextActions;
+import org.spongepowered.api.text.format.TextFormat;
+import org.spongepowered.api.text.format.TextStyle;
+import org.spongepowered.api.text.format.TextStyles;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.file.Path;
 
 @Plugin(id = "WSMC", name = "WebSocket-Minecraft Proxy", version = "0.0.1")
@@ -140,8 +147,16 @@ public class WsmcSpongePlugin implements CommandExecutor {
             // TODO: server console
             System.out.println("Web client enabled: " + url);
         } else {
-            player.sendMessage(Text.of("Web client enabled: " + url));
-            // TODO: clickable link
+            //player.sendMessage(Text.of("Web client enabled: " + url));
+            try {
+                player.sendMessage(Text.builder()
+                        .style(TextStyles.BOLD)
+                        .append(Text.of("Web client enabled (click to view)"))
+                        .onClick(TextActions.openUrl(new URL(url)))
+                        .build());
+            } catch (MalformedURLException ex) {
+                ex.printStackTrace();
+            }
         }
     }
 
