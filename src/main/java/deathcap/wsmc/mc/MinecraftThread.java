@@ -11,14 +11,19 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 public class MinecraftThread extends Thread {
 
     public final String host;
+    public String taggedHost;
     public final int port;
     public final String username;
     public final ChannelHandlerContext websocket;
     public ClientHandler clientHandler;
     public boolean loggingIn = true;
 
-    public MinecraftThread(String host, int port, String username, ChannelHandlerContext websocket) {
+    public MinecraftThread(String host, int port, boolean forge, String username, ChannelHandlerContext websocket) {
         this.host = host;
+
+        this.taggedHost = host;
+        if (forge) this.taggedHost += "\0FML\0";
+
         this.port = port;
         this.username = username;
         this.websocket = websocket;

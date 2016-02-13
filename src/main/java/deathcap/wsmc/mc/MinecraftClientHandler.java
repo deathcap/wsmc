@@ -109,8 +109,8 @@ public class MinecraftClientHandler extends ChannelHandlerAdapter {
         DefinedPacket.writeVarInt(HANDSHAKE_OPCODE, handshake);
         DefinedPacket.writeVarInt(MC_PROTOCOL_VERSION, handshake);
 
-        DefinedPacket.writeVarInt(this.minecraft.host.length(), handshake);
-        handshake.writeBytes(this.minecraft.host.getBytes());
+        DefinedPacket.writeVarInt(this.minecraft.taggedHost.length(), handshake);
+        handshake.writeBytes(this.minecraft.taggedHost.getBytes());
         handshake.writeShort(this.minecraft.port);
         DefinedPacket.writeVarInt(NEXT_STATE_LOGIN, handshake);
 
