@@ -179,6 +179,24 @@ public abstract class DefinedPacket
         }
     }
 
+    public static int sizeOfVarInt(int value)
+    {
+        int size = 0;
+        while ( true )
+        {
+            value >>>= 7;
+
+            size++;
+
+            if ( value == 0 )
+            {
+                break;
+            }
+        }
+
+        return size;
+    }
+
     public static int readVarShort(ByteBuf buf)
     {
         int low = buf.readUnsignedShort();
