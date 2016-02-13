@@ -18,6 +18,7 @@ package deathcap.wsmc.web;
 
 import deathcap.wsmc.UserIdentityLinker;
 import deathcap.wsmc.mc.PacketFilter;
+import deathcap.wsmc.mc.PingStatus;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.EventLoopGroup;
@@ -40,6 +41,8 @@ public class WebThread extends Thread {
     public PacketFilter filter;
     public boolean verbose;
 
+    public String pingResponse;
+
     public WebThread(String wsAddress, int wsPort, String mcAddress, int mcPort, UserIdentityLinker users, PacketFilter filter, boolean verbose) {
         this.wsAddress = wsAddress;
         this.wsPort = wsPort;
@@ -57,6 +60,16 @@ public class WebThread extends Thread {
 
     @Override
     public void run() {
+        // First ping the server and save the response, it'll be useful later for Forge
+        // https://github.com/deathcap/wsmc/issues/40
+        try {
+            PingStatus pingStatus = new PingStatus(this.mcAddress, this.mcPort);
+            this.pingResponse = pingStatus.sendPing();
+            System.out.println("ping response: " + this.pingResponse);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
         EventLoopGroup bossGroup = new NioEventLoopGroup();
         EventLoopGroup workerGroup = new NioEventLoopGroup();
         try {

@@ -14,6 +14,7 @@ import java.net.Socket;
 // http://wiki.vg/Server_List_Ping#Current
 
 // TODO: refactor into a library? maybe with https://github.com/WaterfallMC/LegacyPinger/?
+// TODO: possibly also support 0xfe legacy pings, but they don't contain Forge modlist
 
 public class PingStatus {
 
@@ -36,7 +37,7 @@ public class PingStatus {
         this.port = port;
     }
 
-    public void sendPing() throws IOException {
+    public String sendPing() throws IOException {
         Socket socket = new Socket();
         InetAddress host = InetAddress.getByName(this.hostname);
 
@@ -62,7 +63,7 @@ public class PingStatus {
 
         String json = DefinedPacket.readString(response);
 
-        System.out.println("response="+json);
+        return json;
     }
 
     private void writePacket(int packetID, ByteBuf data) throws IOException {
