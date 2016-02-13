@@ -16,6 +16,8 @@
 
 package deathcap.wsmc.web;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import deathcap.wsmc.UserIdentityLinker;
 import deathcap.wsmc.mc.PacketFilter;
 import deathcap.wsmc.mc.ping.PingResponse;
@@ -43,6 +45,7 @@ public class WebThread extends Thread {
     public boolean verbose;
 
     public PingResponse pingResponse;
+    public String pingResponseText;
 
     public WebThread(String wsAddress, int wsPort, String mcAddress, int mcPort, UserIdentityLinker users, PacketFilter filter, boolean verbose) {
         this.wsAddress = wsAddress;
@@ -65,8 +68,9 @@ public class WebThread extends Thread {
         // https://github.com/deathcap/wsmc/issues/40
         try {
             PingStatus pingStatus = new PingStatus(this.mcAddress, this.mcPort);
-            this.pingResponse = pingStatus.ping();
-            System.out.println("ping response: " + this.pingResponse);
+            this.pingResponseText = pingStatus.ping();
+            this.pingResponse = PingStatus.parse(this.pingResponseText);
+
             System.out.println("ping description="+this.pingResponse.description+", type="+(this.pingResponse.modinfo != null ? this.pingResponse.modinfo.type : "(no modinfo)"));
         } catch (Exception ex) {
             ex.printStackTrace();
