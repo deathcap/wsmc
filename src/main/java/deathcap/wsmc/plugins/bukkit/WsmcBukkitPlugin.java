@@ -95,7 +95,7 @@ public class WsmcBukkitPlugin extends JavaPlugin implements Listener, CommandExe
         }
     }
 
-    private void tellPlayer(String username, String destination, String url) {
+    private void tellPlayer(String destination, String url) {
         if (destination == null) {
             // console
             String msg = "Web client enabled: "+url;
@@ -129,7 +129,7 @@ public class WsmcBukkitPlugin extends JavaPlugin implements Listener, CommandExe
     public boolean onCommand(CommandSender commandSender, Command command, String label, String[] args) {
         if (commandSender instanceof Player) {
             Player player = (Player)commandSender;
-            this.tellPlayer(player.getName(), player.getName(), this.users.getOrGenerateUserURL(player.getName()));
+            this.tellPlayer(player.getName(), this.users.getOrGenerateUserURL(player.getName()));
 
             return true;
         } else {
@@ -147,7 +147,7 @@ public class WsmcBukkitPlugin extends JavaPlugin implements Listener, CommandExe
             }
             */
 
-            this.tellPlayer(playerName, null, this.users.getOrGenerateUserURL(playerName));
+            this.tellPlayer(null, this.users.getOrGenerateUserURL(playerName));
 
             return false;
         }
@@ -165,6 +165,6 @@ public class WsmcBukkitPlugin extends JavaPlugin implements Listener, CommandExe
 
         String name = player.getName();
 
-        this.tellPlayer(name, name, this.users.getOrGenerateUserURL(name));
+        this.tellPlayer(name, this.users.getOrGenerateUserURL(name));
     }
 }

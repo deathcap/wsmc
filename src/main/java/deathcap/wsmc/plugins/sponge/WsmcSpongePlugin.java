@@ -140,7 +140,7 @@ public class WsmcSpongePlugin implements CommandExecutor {
         webThread.start();
     }
 
-    private void tellPlayer(String username, String destination, String url) {
+    private void tellPlayer(String destination, String url) {
         Player player = Sponge.getServer().getPlayer(destination).orElse(null);
 
         if (player == null) {
@@ -166,7 +166,7 @@ public class WsmcSpongePlugin implements CommandExecutor {
 
         String name = event.getTargetEntity().getName();
 
-        this.tellPlayer(name, name, this.users.getOrGenerateUserURL(name));
+        this.tellPlayer(name, this.users.getOrGenerateUserURL(name));
     }
 
     @Override
@@ -176,7 +176,7 @@ public class WsmcSpongePlugin implements CommandExecutor {
 
             Player player = (Player) commandSource;
 
-            this.tellPlayer(player.getName(), player.getName(), this.users.getOrGenerateUserURL(player.getName()));
+            this.tellPlayer(player.getName(), this.users.getOrGenerateUserURL(player.getName()));
 
             return CommandResult.success();
         } else {
@@ -186,7 +186,7 @@ public class WsmcSpongePlugin implements CommandExecutor {
                 return CommandResult.empty();
             }
 
-            this.tellPlayer(name, null, this.users.getOrGenerateUserURL(name));
+            this.tellPlayer(null, this.users.getOrGenerateUserURL(name));
 
             return CommandResult.empty();
         }
