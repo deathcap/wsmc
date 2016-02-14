@@ -40,9 +40,9 @@ public class MinecraftClientHandler extends ChannelHandlerAdapter {
             if (this.compressionThreshold >= -1) {
                 // http://wiki.vg/Protocol#With_compression "The format of a packet changes slighty to include the size of the uncompressed packet."
                 int uncompressedDataLength = DefinedPacket.readVarInt(m);
-                System.out.println("read dataLength="+uncompressedDataLength);
+                //System.out.println("read dataLength="+uncompressedDataLength); // TODO: verbose only
                 if (uncompressedDataLength != 0) {
-                    System.out.println("TODO: support compressed packets, "+uncompressedDataLength); // decompress?
+                    //TODO? System.out.println("TODO: support compressed packets, "+uncompressedDataLength); // decompress?
                     //System.exit(-1);
                 }
             }
@@ -110,11 +110,11 @@ public class MinecraftClientHandler extends ChannelHandlerAdapter {
                 // otherwise proxy through to WS
 
                 ByteBuf out = Unpooled.buffer(original.readableBytes());
-                System.out.println("m = "+original+"="+HexDumper.hexByteBuf(original));
+                //System.out.println("m = "+original+"="+HexDumper.hexByteBuf(original)); // TODO: only in verbose
                 // prepend length
                 Varint21LengthFieldPrepender2 prepender = new Varint21LengthFieldPrepender2();
                 prepender.encode(null, original, out);
-                System.out.println("mc -> ws: "+HexDumper.hexByteBuf(out));
+                //System.out.println("mc -> ws: "+HexDumper.hexByteBuf(out)); // TODO: only in verbose
                 minecraft.websocket.writeAndFlush(new BinaryWebSocketFrame(out));
                 //minecraft.websocket.writeAndFlush(new BinaryWebSocketFrame(m.retain()));
             }

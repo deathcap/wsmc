@@ -69,7 +69,7 @@ public class WsmcSpongePlugin implements CommandExecutor {
             ex.printStackTrace();
         }
 
-        boolean verbose = true;
+        boolean verbose = false;
         String wsAddress = "";
         int wsPort = 24444;
         String externalScheme = "http";
