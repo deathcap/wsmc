@@ -88,12 +88,12 @@ public class MinecraftClientHandler extends ChannelHandlerAdapter {
                     ByteBuf out = Unpooled.buffer();
                     Varint21LengthFieldPrepender2 prepender = new Varint21LengthFieldPrepender2();
                     prepender.encode(null, custom, out);
+                    custom.release();
                     System.out.println("[login success] mc -> ws: "+HexDumper.hexByteBuf(out));
                     minecraft.websocket.writeAndFlush(new BinaryWebSocketFrame(out));
 
                     // DON'T pass through to WS, since we wrote our own
                     passToWebSocket = false;
-                    return;
                 } else if (opcode == LOGIN_SET_COMPRESSION) {
                     this.compressionThreshold = DefinedPacket.readVarInt(m);
                     System.out.println("Compression threshold set to "+this.compressionThreshold);
@@ -118,6 +118,8 @@ public class MinecraftClientHandler extends ChannelHandlerAdapter {
                 minecraft.websocket.writeAndFlush(new BinaryWebSocketFrame(out));
                 //minecraft.websocket.writeAndFlush(new BinaryWebSocketFrame(m.retain()));
             }
+
+            original.release();
         } finally {
             m.release();
         }
