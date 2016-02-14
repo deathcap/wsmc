@@ -83,16 +83,7 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<BinaryWebSocke
 
         msg.release();
 
-        boolean forge = false;
-        if (this.webThread.pingResponse != null && this.webThread.pingResponse.modinfo != null) {
-            String type = this.webThread.pingResponse.modinfo.type;
-            if ("FML".equals(type)) {
-                forge = true;
-                logger.info("Forge support enabled");
-            }
-        }
-
-        MinecraftThread minecraft = new MinecraftThread(this.mcAddress, this.mcPort, forge, username, ctx);
+        MinecraftThread minecraft = new MinecraftThread(this.mcAddress, this.mcPort, this.webThread.pingResponseText, username, ctx);
         minecraftThreads.put(ctx.channel().remoteAddress().toString(), minecraft); // TODO: cleanup
         minecraft.start();
     }

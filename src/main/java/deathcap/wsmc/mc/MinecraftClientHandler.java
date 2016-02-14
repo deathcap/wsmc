@@ -81,8 +81,9 @@ public class MinecraftClientHandler extends ChannelHandlerAdapter {
                     if (this.compressionThreshold >= -1) DefinedPacket.writeVarInt(0, custom);
                     DefinedPacket.writeVarInt(LOGIN_SUCCESS_OPCODE, custom);
                     DefinedPacket.writeString(uuid, custom);
-                    //DefinedPacket.writeString(username + "XXXASDF", custom); // TODO: add ping response data \0
-                    DefinedPacket.writeString(username, custom);
+                    //DefinedPacket.writeString(username, custom);
+                    // WSMC protocol addition: login success packet username field includes server ping JSON
+                    DefinedPacket.writeString(username + "\0" + this.minecraft.pingResponseText, custom);
 
                     ByteBuf out = Unpooled.buffer();
                     Varint21LengthFieldPrepender2 prepender = new Varint21LengthFieldPrepender2();

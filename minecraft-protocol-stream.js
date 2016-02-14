@@ -4,6 +4,7 @@
 
 var EmptyTransformStream = require('through')();
 var Client = require('minecraft-protocol').Client;
+var forgeHandshake = require('minecraft-protocol-forge').forgeHandshake;
 var protocol = require('minecraft-protocol');
 var assert = require('assert');
 var states = protocol.states;
@@ -59,7 +60,15 @@ function createClient(options) {
     // successful login, transition to play phase
     client.state = states.PLAY;
     client.uuid = packet.uuid;
-    client.username = packet.username;
+
+    if (packet.username.indexOf('\0') !== -1) {
+      var parts = packet.username.split('\0');
+      console.log('WSMC-augmented login packet detected, username field pieces: ',parts);
+      client.username = parts[0];
+      client.wsmcPingResponse = JSON.parse(parts[1]); // ping payload response, modinfo for Forge servers
+    } else {
+      client.username = packet.username;
+    }
   }
 
   function onCompressionRequest(packet) {
