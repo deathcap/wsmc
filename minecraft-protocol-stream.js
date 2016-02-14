@@ -66,6 +66,12 @@ function createClient(options) {
       console.log('WSMC-augmented login packet detected, username field pieces: ',parts);
       client.username = parts[0];
       client.wsmcPingResponse = JSON.parse(parts[1]); // ping payload response, modinfo for Forge servers
+
+      if (client.wsmcPingResponse.modinfo && client.wsmcPingResponse.modinfo.type === 'FML') {
+        var modList = client.wsmcPingResponse.modinfo.modList;
+        console.log('Enabling Forge support with mods:', modList);
+        forgeHandshake(client, {forgeMods: modList});
+      }
     } else {
       client.username = packet.username;
     }
