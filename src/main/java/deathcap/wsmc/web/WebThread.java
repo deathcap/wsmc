@@ -56,7 +56,9 @@ public class WebThread extends Thread {
         this.filter = filter;
         this.verbose = verbose;
 
-        ResourceLeakDetector.setLevel(ResourceLeakDetector.Level.ADVANCED);
+        // TODO: fix leaks
+        ResourceLeakDetector.setLevel(ResourceLeakDetector.Level.DISABLED);
+        //ResourceLeakDetector.setLevel(ResourceLeakDetector.Level.ADVANCED);
     }
 
     private final ChannelGroup channels = new DefaultChannelGroup("wsmc Connections",
