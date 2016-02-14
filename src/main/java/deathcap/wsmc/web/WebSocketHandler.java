@@ -83,7 +83,7 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<BinaryWebSocke
 
         msg.release();
 
-        MinecraftThread minecraft = new MinecraftThread(this.mcAddress, this.mcPort, username, ctx);
+        MinecraftThread minecraft = new MinecraftThread(this.mcAddress, this.mcPort, this.webThread.pingResponseText, username, ctx);
         minecraftThreads.put(ctx.channel().remoteAddress().toString(), minecraft); // TODO: cleanup
         minecraft.start();
     }

@@ -127,6 +127,25 @@ the binary data transmitted over the wire for efficiency.
 A nice benefit of using WebSockets is that the protocol is already message-based, so the client 
 doesn't have to concern itself with packet lengths (each WS message contains exactly one MC packet).
 
+## WSMC Protocol Differences
+
+Although WSMC proxies the MC protocol over WS mostly unscathed, there are some changes to cope
+with the WS environment:
+
+MC packets have a varint length field prefix; WSMC packets lack this field because WS is already
+message-based and it would be redundant. But only in one direction, currently (TBD).
+
+MC login uses a complicated [handshake phase](http://wiki.vg/Protocol#Handshaking);
+WSMC begins with the WS client sending the username and login key in the initial packet
+(separated by a colon, or only the username if logging in without authentication),
+and then immediately switching to the [login phase](http://wiki.vg/Protocol#Login).
+
+MC's [login success](http://wiki.vg/Protocol#Login_Success) packet contains fields for the
+UUID and username. WSMC extends the username field with a \0 byte followed by the JSON
+response from the [server list ping](http://wiki.vg/Server_List_Ping#Response). This information
+is included because WS otherwise has no mechanism to retrieve the server ping information.
+
+
 ## Project Ideas
 
 Now that your Minecraft server is accessible via WebSocket, what can you do with it? The mcwebchat

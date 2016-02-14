@@ -1,7 +1,9 @@
-package deathcap.wsmc.mc;
+package deathcap.wsmc.mc.ping;
 
-
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import deathcap.wsmc.HexDumper;
+import deathcap.wsmc.mc.DefinedPacket;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 
@@ -37,7 +39,7 @@ public class PingStatus {
         this.port = port;
     }
 
-    public String sendPing() throws IOException {
+    public String ping() throws IOException {
         Socket socket = new Socket();
         InetAddress host = InetAddress.getByName(this.hostname);
 
@@ -64,6 +66,12 @@ public class PingStatus {
         String json = DefinedPacket.readString(response);
 
         return json;
+    }
+
+    public static PingResponse parse(String json) {
+        Gson gson = new GsonBuilder().create();
+
+        return gson.fromJson(json, PingResponse.class);
     }
 
     private void writePacket(int packetID, ByteBuf data) throws IOException {

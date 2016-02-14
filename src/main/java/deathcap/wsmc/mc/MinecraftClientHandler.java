@@ -40,12 +40,14 @@ public class MinecraftClientHandler extends ChannelHandlerAdapter {
             if (this.compressionThreshold >= -1) {
                 // http://wiki.vg/Protocol#With_compression "The format of a packet changes slighty to include the size of the uncompressed packet."
                 int uncompressedDataLength = DefinedPacket.readVarInt(m);
-                System.out.println("read dataLength="+uncompressedDataLength);
+                //System.out.println("read dataLength="+uncompressedDataLength); // TODO: verbose only
                 if (uncompressedDataLength != 0) {
-                    System.out.println("TODO: support compressed packets, "+uncompressedDataLength); // decompress?
+                    //TODO? System.out.println("TODO: support compressed packets, "+uncompressedDataLength); // decompress?
                     //System.exit(-1);
                 }
             }
+
+            boolean passToWebSocket = !this.minecraft.loggingIn; // if not logging in (PLAY state), pass all by default
 
             if (this.minecraft.loggingIn) {
                 int opcode = DefinedPacket.readVarInt(m);
@@ -56,39 +58,68 @@ public class MinecraftClientHandler extends ChannelHandlerAdapter {
                     String reason = DefinedPacket.readString(m);
                     System.out.println("Server disconnect reason = " + reason);
                     ctx.close();
+                    passToWebSocket = false;
                 } else if (opcode == LOGIN_ENCRYPTION_REQUEST_OPCODE) {
                     // http://wiki.vg/Protocol#Login says
                     // "For unauthenticated and* localhost connections there is no encryption. In that case Login Start is directly followed by Login Success."
                     // we don't implement encryption so this is a final error
                     System.out.println("Received encryption request! Is the server not in offline mode?");
                     ctx.close();
+                    passToWebSocket = false;
                 } else if (opcode == LOGIN_SUCCESS_OPCODE) {
                     System.out.println("Login success");
                     this.minecraft.loggingIn = false;
-                    // pass through to WS
+
+                    // Read and rewrite the packet
+
+                    String uuid = DefinedPacket.readString(m);
+                    String username = DefinedPacket.readString(m);
+
+                    System.out.println("LOGIN_SUCCESS_OPCODE read uuid="+uuid+", username="+username);
+
+                    ByteBuf custom = Unpooled.buffer();
+                    if (this.compressionThreshold >= -1) DefinedPacket.writeVarInt(0, custom);
+                    DefinedPacket.writeVarInt(LOGIN_SUCCESS_OPCODE, custom);
+                    DefinedPacket.writeString(uuid, custom);
+                    //DefinedPacket.writeString(username, custom);
+                    // WSMC protocol addition: login success packet username field includes server ping JSON
+                    DefinedPacket.writeString(username + "\0" + this.minecraft.pingResponseText, custom);
+
+                    ByteBuf out = Unpooled.buffer();
+                    Varint21LengthFieldPrepender2 prepender = new Varint21LengthFieldPrepender2();
+                    prepender.encode(null, custom, out);
+                    custom.release();
+                    System.out.println("[login success] mc -> ws: "+HexDumper.hexByteBuf(out));
+                    minecraft.websocket.writeAndFlush(new BinaryWebSocketFrame(out));
+
+                    // DON'T pass through to WS, since we wrote our own
+                    passToWebSocket = false;
                 } else if (opcode == LOGIN_SET_COMPRESSION) {
                     this.compressionThreshold = DefinedPacket.readVarInt(m);
                     System.out.println("Compression threshold set to "+this.compressionThreshold);
-                    this.minecraft.loggingIn = false;
                     // pass through to WS
+                    passToWebSocket = true;
                 } else {
                     System.out.println("?? unrecognized login opcode: "+opcode);
                     ctx.close();
+                    passToWebSocket = false;
                 }
             }
 
-            if (!this.minecraft.loggingIn) {
+            if (passToWebSocket) {
                 // otherwise proxy through to WS
 
                 ByteBuf out = Unpooled.buffer(original.readableBytes());
-                System.out.println("m = "+original+"="+HexDumper.hexByteBuf(original));
+                //System.out.println("m = "+original+"="+HexDumper.hexByteBuf(original)); // TODO: only in verbose
                 // prepend length
                 Varint21LengthFieldPrepender2 prepender = new Varint21LengthFieldPrepender2();
                 prepender.encode(null, original, out);
-                System.out.println("mc -> ws: "+HexDumper.hexByteBuf(out));
+                //System.out.println("mc -> ws: "+HexDumper.hexByteBuf(out)); // TODO: only in verbose
                 minecraft.websocket.writeAndFlush(new BinaryWebSocketFrame(out));
                 //minecraft.websocket.writeAndFlush(new BinaryWebSocketFrame(m.retain()));
             }
+
+            original.release();
         } finally {
             m.release();
         }
@@ -109,8 +140,8 @@ public class MinecraftClientHandler extends ChannelHandlerAdapter {
         DefinedPacket.writeVarInt(HANDSHAKE_OPCODE, handshake);
         DefinedPacket.writeVarInt(MC_PROTOCOL_VERSION, handshake);
 
-        DefinedPacket.writeVarInt(this.minecraft.host.length(), handshake);
-        handshake.writeBytes(this.minecraft.host.getBytes());
+        DefinedPacket.writeVarInt(this.minecraft.taggedHost.length(), handshake);
+        handshake.writeBytes(this.minecraft.taggedHost.getBytes());
         handshake.writeShort(this.minecraft.port);
         DefinedPacket.writeVarInt(NEXT_STATE_LOGIN, handshake);
 

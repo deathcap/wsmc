@@ -16,9 +16,12 @@
 
 package deathcap.wsmc.web;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import deathcap.wsmc.UserIdentityLinker;
 import deathcap.wsmc.mc.PacketFilter;
-import deathcap.wsmc.mc.PingStatus;
+import deathcap.wsmc.mc.ping.PingResponse;
+import deathcap.wsmc.mc.ping.PingStatus;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.EventLoopGroup;
@@ -41,7 +44,8 @@ public class WebThread extends Thread {
     public PacketFilter filter;
     public boolean verbose;
 
-    public String pingResponse;
+    public PingResponse pingResponse;
+    public String pingResponseText;
 
     public WebThread(String wsAddress, int wsPort, String mcAddress, int mcPort, UserIdentityLinker users, PacketFilter filter, boolean verbose) {
         this.wsAddress = wsAddress;
@@ -52,7 +56,9 @@ public class WebThread extends Thread {
         this.filter = filter;
         this.verbose = verbose;
 
-        ResourceLeakDetector.setLevel(ResourceLeakDetector.Level.ADVANCED);
+        // TODO: fix leaks
+        ResourceLeakDetector.setLevel(ResourceLeakDetector.Level.DISABLED);
+        //ResourceLeakDetector.setLevel(ResourceLeakDetector.Level.ADVANCED);
     }
 
     private final ChannelGroup channels = new DefaultChannelGroup("wsmc Connections",
@@ -64,8 +70,10 @@ public class WebThread extends Thread {
         // https://github.com/deathcap/wsmc/issues/40
         try {
             PingStatus pingStatus = new PingStatus(this.mcAddress, this.mcPort);
-            this.pingResponse = pingStatus.sendPing();
-            System.out.println("ping response: " + this.pingResponse);
+            this.pingResponseText = pingStatus.ping();
+            this.pingResponse = PingStatus.parse(this.pingResponseText);
+
+            System.out.println("ping description="+this.pingResponse.description+", type="+(this.pingResponse.modinfo != null ? this.pingResponse.modinfo.type : "(no modinfo)"));
         } catch (Exception ex) {
             ex.printStackTrace();
         }

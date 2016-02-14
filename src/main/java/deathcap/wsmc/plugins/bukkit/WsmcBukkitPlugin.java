@@ -29,7 +29,7 @@ public class WsmcBukkitPlugin extends JavaPlugin implements Listener, CommandExe
         final FileConfiguration config = getConfig();
         config.options().copyDefaults(true);
 
-        boolean verbose = true;
+        boolean verbose = false;
         String wsAddress = "";
         int wsPort = 24444;
         String externalScheme = "http";
