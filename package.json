@@ -16,7 +16,7 @@
     "minecraft-protocol-forge": "^1.0.0",
     "mineflayer": "^1.7.0",
     "optimist": "^0.6.1",
-    "protodef": "^0.2.6",
+    "protodef": "^1.0.0",
     "through": "^2.3.8",
     "websocket-stream": "^1.4.0",
     "ws": "^0.4.31"
