@@ -11,7 +11,7 @@
   "dependencies": {
     "browser-hex": "^1.0.0",
     "hex": "^0.1.0",
-    "minecraft-data": "~0.16.3",
+    "minecraft-data": "~0.20.3",
     "minecraft-protocol": "deathcap/node-minecraft-protocols",
     "minecraft-protocol-forge": "^1.0.0",
     "mineflayer": "^1.7.0",
