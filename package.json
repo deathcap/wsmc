@@ -14,7 +14,7 @@
     "minecraft-data": "~0.16.3",
     "minecraft-protocol": "deathcap/node-minecraft-protocols",
     "minecraft-protocol-forge": "^1.0.0",
-    "mineflayer": "^1.7.0",
+    "mineflayer": "^1.7.2",
     "optimist": "^0.6.1",
     "protodef": "^0.2.6",
     "through": "^2.3.8",
