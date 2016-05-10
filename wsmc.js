@@ -1,7 +1,7 @@
 'use strict';
 
 var mcversion = require('./mcversion.js');
-var minecraft_protocol = require('minecraft-protocol');
+var minecraft_protocol = require('minecraft-protocol/src');
 var autoVersionForge = require('minecraft-protocol-forge').autoVersionForge;
 var minecraft_data = require('minecraft-data')(mcversion);
 var protodef = require('protodef');

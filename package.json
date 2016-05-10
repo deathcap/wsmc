@@ -12,7 +12,7 @@
     "browser-hex": "^1.0.0",
     "hex": "^0.1.0",
     "minecraft-data": "~0.16.3",
-    "minecraft-protocol": "deathcap/node-minecraft-protocols",
+    "minecraft-protocol": "^0.19.4",
     "minecraft-protocol-forge": "^1.0.0",
     "mineflayer": "^1.7.0",
     "optimist": "^0.6.1",
@@ -20,6 +20,9 @@
     "through": "^2.3.8",
     "websocket-stream": "^1.4.0",
     "ws": "^0.4.31"
+  },
+  "engines": {
+    "node": ">= 6.0.0"
   },
   "scripts": {
     "start-debug": "NODE_DEBUG=mc-proto,wsmc node wsmc.js",

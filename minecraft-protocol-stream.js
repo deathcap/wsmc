@@ -3,9 +3,9 @@
 //process.env.NODE_DEBUG = 'mc-proto'; // for node-minecraft-protocol console packet debugging TODO: envify
 
 var EmptyTransformStream = require('through')();
-var Client = require('minecraft-protocol').Client;
+var Client = require('minecraft-protocol/src').Client;
 var forgeHandshake = require('minecraft-protocol-forge').forgeHandshake;
-var protocol = require('minecraft-protocol');
+var protocol = require('minecraft-protocol/src');
 var assert = require('assert');
 var states = protocol.states;
 
